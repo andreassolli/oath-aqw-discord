@@ -1,6 +1,7 @@
 import discord
 from config import HELPER_ROLE_ID
 
+
 def build_ticket_embed(
     *,
     requester_id: int,
@@ -16,9 +17,7 @@ def build_ticket_embed(
 ):
     requester_member = guild.get_member(requester_id)
     requester_mention = (
-        requester_member.mention
-        if requester_member
-        else f"<@{requester_id}>"
+        requester_member.mention if requester_member else f"<@{requester_id}>"
     )
 
     # Resolve claimer mentions
@@ -29,63 +28,25 @@ def build_ticket_embed(
         )
     else:
         helpers = "—"
+    embed = discord.Embed(title=f"🎫 {type} Ticket", color=discord.Color.blurple())
 
-    helper_role = guild.get_role(HELPER_ROLE_ID)
+    embed.add_field(name="Requester", value=requester_mention, inline=True)
 
-    role_mention = helper_role.mention
+    embed.add_field(name="Username", value=username, inline=True)
 
-    embed = discord.Embed(
-        title=f"🎫 {type} Ticket",
-        color=discord.Color.blurple()
-    )
+    embed.add_field(name="Server", value=f"`{server}`", inline=True)
 
-    embed.add_field(
-        name="Requester",
-        value=requester_mention,
-        inline=True
-    )
+    embed.add_field(name="Bosses", value=", ".join(bosses), inline=False)
+
+    embed.add_field(name="Points", value=str(points), inline=True)
 
     embed.add_field(
-        name="Username",
-        value=username,
-        inline=True
+        name="Helpers", value=f"{len(claimers) + 1} / {max_claims + 1}", inline=True
     )
 
-    embed.add_field(
-        name="Server",
-        value=f"`{server}`",
-        inline=True
-    )
+    embed.add_field(name="Room", value=f"`{room}`", inline=True)
 
-    embed.add_field(
-        name="Bosses",
-        value=", ".join(bosses),
-        inline=False
-    )
-
-    embed.add_field(
-        name="Points",
-        value=str(points),
-        inline=True
-    )
-
-    embed.add_field(
-        name="Helpers",
-        value=f"{len(claimers)+1} / {max_claims+1}",
-        inline=True
-    )
-
-    embed.add_field(
-        name="Room",
-        value=f"`{room}`",
-        inline=True
-    )
-
-    embed.add_field(
-        name="Currently Helping",
-        value=helpers,
-        inline=False
-    )
+    embed.add_field(name="Currently Helping", value=helpers, inline=False)
 
     embed.set_footer(text=f"Use the buttons below to help!")
 

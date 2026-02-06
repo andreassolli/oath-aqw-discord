@@ -1,14 +1,14 @@
 import discord
+from config import ADMIN_ROLE_ID, GUIDE_CHANNEL_ID, HELPER_ROLE_ID, TICKET_CATEGORY_ID
 from firebase_admin import firestore
 from firebase_client import db
-from tickets.ids import get_next_ticket_id
-from tickets.views import TicketActionView
-from config import HELPER_ROLE_ID, ADMIN_ROLE_ID
-from config import TICKET_CATEGORY_ID
-from tickets.embed_utils import build_ticket_embed
-from tickets.utils import set_active_ticket, clear_active_ticket
 from tickets.confirm_complete_view import ConfirmCompleteView
+from tickets.embed_utils import build_ticket_embed
+from tickets.ids import get_next_ticket_id
+from tickets.utils import clear_active_ticket, find_guide_threads, set_active_ticket
+from tickets.views import TicketActionView
 from utils.ticket import get_overwrites
+
 
 class CreateTicketModal(discord.ui.Modal):
     def __init__(self, ticket_type: str, server: str, bosses: list[str]):
@@ -25,19 +25,14 @@ class CreateTicketModal(discord.ui.Modal):
             self.bosses_input = discord.ui.TextInput(
                 label="List bosses (comma-separated)",
                 placeholder="Boss1, Boss2, Boss3",
-                required=True
+                required=True,
             )
             self.add_item(self.bosses_input)
 
-        self.username = discord.ui.TextInput(
-            label="Username",
-            required=True
-        )
+        self.username = discord.ui.TextInput(label="Username", required=True)
 
         self.room = discord.ui.TextInput(
-            label="Room",
-            placeholder="Private rooms need 4+ digits",
-            required=True
+            label="Room", placeholder="Private rooms need 4+ digits", required=True
         )
 
         self.add_item(self.username)
@@ -47,7 +42,7 @@ class CreateTicketModal(discord.ui.Modal):
             self.max_claims = discord.ui.TextInput(
                 label="Maximum helpers",
                 placeholder="Digit between 1 and 20",
-                required=True
+                required=True,
             )
             self.add_item(self.max_claims)
         else:
@@ -57,7 +52,17 @@ class CreateTicketModal(discord.ui.Modal):
         await interaction.response.defer(ephemeral=True)
         type_doc = db.collection("point_rules").document(self.type).get()
         type_data = type_doc.to_dict() or {}
-        six_helper_bosses = ["Astral Shrine", "Grim Challenge", "Apex Azalith", "The Beast", "Void Trio", "Lich King", "Deimos", "Azalith", "Kathool Depths"]
+        six_helper_bosses = [
+            "Astral Shrine",
+            "Grim Challenge",
+            "Apex Azalith",
+            "The Beast",
+            "Void Trio",
+            "Lich King",
+            "Deimos",
+            "Azalith",
+            "Kathool Depths",
+        ]
 
         role = interaction.guild.get_role(HELPER_ROLE_ID)
         if self.max_claims is not None:
@@ -85,15 +90,11 @@ class CreateTicketModal(discord.ui.Modal):
 
         if self.type in {"other bosses", "spamming", "testing"}:
             bosses = [
-                b.strip()
-                for b in self.bosses_input.value.split(",")
-                if b.strip()
+                b.strip() for b in self.bosses_input.value.split(",") if b.strip()
             ]
             points = 1 * len(bosses)
         else:
             bosses = self._preset_bosses
-
-            amount = len(bosses)
 
             type_ref = db.collection("point_rules")
             points = 0
@@ -116,24 +117,26 @@ class CreateTicketModal(discord.ui.Modal):
 
                 points += int(legion_data.get("points", 1))
 
-        db.collection("tickets").document(name).set({
-            "ticket_id": ticket_id,
-            "channel_id": channel.id,
-            "user_id": interaction.user.id,
-            "bosses": bosses,
-            "points": points,
-            "max_claims": max_claims_value,
-            "claimers": [],
-            "username": self.username.value,
-            "room": self.room.value,
-            "status": "open",
-            "type": self.type,
-            "server": self.server,
-            "created_at": firestore.SERVER_TIMESTAMP,
-            "reping_helpers": True,
-            "reminder_sent": False,
-            "auto_closed": False,
-        })
+        db.collection("tickets").document(f"ticket-{ticket_id:03d}").set(
+            {
+                "ticket_id": ticket_id,
+                "channel_id": channel.id,
+                "user_id": interaction.user.id,
+                "bosses": bosses,
+                "points": points,
+                "max_claims": max_claims_value,
+                "claimers": [],
+                "username": self.username.value,
+                "room": self.room.value,
+                "status": "open",
+                "type": self.type,
+                "server": self.server,
+                "created_at": firestore.SERVER_TIMESTAMP,
+                "reping_helpers": True,
+                "reminder_sent": False,
+                "auto_closed": False,
+            }
+        )
 
         embed = build_ticket_embed(
             requester_id=interaction.user.id,
@@ -148,11 +151,8 @@ class CreateTicketModal(discord.ui.Modal):
             server=self.server,
         )
         allowed_mentioning = discord.AllowedMentions(
-            users=True,
-            roles=True,
-            everyone=False
+            users=True, roles=True, everyone=False
         )
-
 
         message = await channel.send(
             embed=embed,
@@ -164,14 +164,24 @@ class CreateTicketModal(discord.ui.Modal):
             allowed_mentions=allowed_mentioning,
         )
 
-        db.collection("tickets").document(name).update({
-            "message_id": message.id
-        })
+        guide_threads = await find_guide_threads(
+            guild=interaction.guild,
+            guide_channel_id=GUIDE_CHANNEL_ID,
+            bosses=bosses,
+        )
+
+        if guide_threads:
+            lines = []
+            for boss, thread in guide_threads.items():
+                lines.append(f"• **{boss}** → {thread.mention}")
+
+            await channel.send("📘 **Relevant Guides**\n" + "\n".join(lines))
+
+        db.collection("tickets").document(name).update({"message_id": message.id})
 
         set_active_ticket(interaction.user.id, name)
         await interaction.followup.send(
-            f"✅ Ticket created: {channel.mention}",
-            ephemeral=True
+            f"✅ Ticket created: {channel.mention}", ephemeral=True
         )
 
         try:
