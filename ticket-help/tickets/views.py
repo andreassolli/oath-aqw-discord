@@ -1,18 +1,20 @@
-import discord
-from firebase_admin import firestore
-from tickets.confirm_cancel_view import ConfirmCancelView
-from config import HELPER_ROLE_ID, ADMIN_ROLE_ID, WEEKLY_REQUESTER_CAP
-from dashboard.updater import update_dashboard
-from firebase_client import db
-from tickets.ids import get_next_ticket_id
-from tickets.utils import set_active_ticket, clear_active_ticket, get_week_start
-from tickets.logging import log_ticket_event
-from commands.permissions import has_admin_role, has_helper_role, has_oathsworn_role
-from tickets.embed_utils import build_ticket_embed
 from datetime import datetime, timedelta
-from tickets.embed_logging import build_logging_embed
+
+import discord
+from commands.permissions import has_admin_role, has_helper_role, has_oathsworn_role
+from config import ADMIN_ROLE_ID, HELPER_ROLE_ID, WEEKLY_REQUESTER_CAP
+from dashboard.updater import update_dashboard
+from firebase_admin import firestore
+from firebase_client import db
+
+from tickets.confirm_cancel_view import ConfirmCancelView
 from tickets.confirm_complete_view import ConfirmCompleteView
-from utils.ticket import can_claim_ticket
+from tickets.embed_logging import build_logging_embed
+from tickets.embed_utils import build_ticket_embed
+from tickets.ids import get_next_ticket_id
+from tickets.logging import log_ticket_event
+from tickets.utils import clear_active_ticket, get_week_start, set_active_ticket
+
 
 class TicketActionView(discord.ui.View):
     def __init__(self, ticket_name: str, max_claims: int, room: str):
@@ -45,7 +47,7 @@ class TicketActionView(discord.ui.View):
                 claimers=ticket_data["claimers"],
                 guild=interaction.guild,
                 type=ticket_data["type"],
-                server=ticket_data["server"]
+                server=ticket_data["server"],
             )
 
             await message.edit(embed=embed, view=self)
@@ -81,15 +83,34 @@ class TicketActionView(discord.ui.View):
 
             await interaction.channel.send(
                 f"🔁 {interaction.user.mention} unclaimed this ticket "
-                f"({len(claimers)+1}/{self.max_claims+1})"
+                f"({len(claimers) + 1}/{self.max_claims + 1})"
             )
             return
 
-        # Check for if the user:
-        # 1. Is not the requester
-        # 2. Is a helper
-        # 3. Have no active ticket
-        can_claim_ticket(claimers, self.max_claims, interaction, requester_id)
+        if len(claimers) >= self.max_claims:
+            return await interaction.followup.send(
+                "🚫 No more spots available.", ephemeral=True
+            )
+
+        user_ref = db.collection("users").document(str(interaction.user.id))
+        user_doc = user_ref.get()
+
+        if user_doc.exists and user_doc.to_dict().get("active_ticket"):
+            return await interaction.followup.send(
+                "🚫 You are already helping on another ticket.", ephemeral=True
+            )
+
+        if interaction.user.id == requester_id:
+            return await interaction.followup.send(
+                "🚫 Ticket creator cannot claim their own ticket.",
+                ephemeral=True,
+            )
+
+        if not has_helper_role(interaction):
+            return await interaction.followup.send(
+                "🚫 You are not a helper, become one to claim or unclaim tickets.",
+                ephemeral=True,
+            )
 
         claimers.append(interaction.user.id)
         doc_ref.update({"claimers": claimers})
@@ -99,15 +120,13 @@ class TicketActionView(discord.ui.View):
 
         await interaction.channel.send(
             f"✅ {interaction.user.mention} claimed this ticket "
-            f"({len(claimers)+1}/{self.max_claims+1})"
+            f"({len(claimers) + 1}/{self.max_claims + 1})"
         )
-
 
     @discord.ui.button(label="📋 Copy Room", style=discord.ButtonStyle.secondary)
     async def copy_room(self, interaction: discord.Interaction, _):
         await interaction.response.send_message(
-            f"📋 **Room code:**\n```{self.room}```",
-            ephemeral=True
+            f"📋 **Room code:**\n```{self.room}```", ephemeral=True
         )
 
     @discord.ui.button(label="🎉 Complete Ticket", style=discord.ButtonStyle.primary)
@@ -119,16 +138,14 @@ class TicketActionView(discord.ui.View):
 
         if not doc.exists:
             return await interaction.followup.send(
-                "❌ Ticket data not found.",
-                ephemeral=True
+                "❌ Ticket data not found.", ephemeral=True
             )
 
         data = doc.to_dict()
 
         if data.get("status") in ("completing", "completed"):
             return await interaction.followup.send(
-                "⚠️ This ticket has already been completed.",
-                ephemeral=True
+                "⚠️ This ticket has already been completed.", ephemeral=True
             )
 
         requester_id = data.get("user_id")
@@ -155,15 +172,17 @@ class TicketActionView(discord.ui.View):
                 "Completing unfinished tickets is against the rules. "
                 "Is the ticket **finished**?\n",
                 ephemeral=True,
-                view=view
+                view=view,
             )
             return
 
-        doc_ref.update({
-            "status": "completing",
-            "closed_by": interaction.user.id,
-            "closed_at": firestore.SERVER_TIMESTAMP,
-        })
+        doc_ref.update(
+            {
+                "status": "completing",
+                "closed_by": interaction.user.id,
+                "closed_at": firestore.SERVER_TIMESTAMP,
+            }
+        )
 
         claimers = [uid for uid in claimers if uid != requester_id]
 
@@ -175,17 +194,17 @@ class TicketActionView(discord.ui.View):
             username = member.display_name
 
             if user_ref.get().exists:
-                user_ref.update({
-                    "username": username,
-                    "points": firestore.Increment(points),
-                    "tickets_claimed": firestore.Increment(1),
-                })
+                user_ref.update(
+                    {
+                        "username": username,
+                        "points": firestore.Increment(points),
+                        "tickets_claimed": firestore.Increment(1),
+                    }
+                )
             else:
-                user_ref.set({
-                    "username": username,
-                    "points": points,
-                    "tickets_claimed": 1
-                })
+                user_ref.set(
+                    {"username": username, "points": points, "tickets_claimed": 1}
+                )
 
         user_ref = db.collection("users").document(str(requester_id))
         user_doc = user_ref.get()
@@ -258,7 +277,6 @@ class TicketActionView(discord.ui.View):
         await update_dashboard(interaction.client)
         await interaction.channel.delete()
 
-
     @discord.ui.button(label="📣 Ping Helpers", style=discord.ButtonStyle.primary)
     async def ping_helpers(self, interaction: discord.Interaction, _):
         doc_ref = db.collection("tickets").document(self.ticket_name)
@@ -266,8 +284,7 @@ class TicketActionView(discord.ui.View):
 
         if not doc.exists:
             return await interaction.response.send_message(
-                "❌ Ticket data not found.",
-                ephemeral=True
+                "❌ Ticket data not found.", ephemeral=True
             )
 
         data = doc.to_dict()
@@ -278,7 +295,7 @@ class TicketActionView(discord.ui.View):
         if interaction.user.id != requester_id and not is_admin:
             return await interaction.response.send_message(
                 "🚫 Only the ticket creator or an admin can ping helpers.",
-                ephemeral=True
+                ephemeral=True,
             )
 
         now = datetime.utcnow()
@@ -293,31 +310,25 @@ class TicketActionView(discord.ui.View):
                 return await interaction.response.send_message(
                     f"⏳ Helpers were pinged recently.\n"
                     f"Try again in **{mins}m {secs}s**.",
-                    ephemeral=True
+                    ephemeral=True,
                 )
 
         helper_role = interaction.guild.get_role(HELPER_ROLE_ID)
         if not helper_role:
             return await interaction.response.send_message(
-                "❌ Helper role not found.",
-                ephemeral=True
+                "❌ Helper role not found.", ephemeral=True
             )
 
-        doc_ref.update({
-            "last_helper_ping": firestore.SERVER_TIMESTAMP
-        })
+        doc_ref.update({"last_helper_ping": firestore.SERVER_TIMESTAMP})
 
         await interaction.response.send_message(
-            "📣 Helpers have been pinged!",
-            ephemeral=True
+            "📣 Helpers have been pinged!", ephemeral=True
         )
 
         await interaction.channel.send(
-            f"{helper_role.mention}\n"
-            f"⚠️ **More helpers needed for this ticket!**",
-            allowed_mentions=discord.AllowedMentions(roles=True)
+            f"{helper_role.mention}\n⚠️ **More helpers needed for this ticket!**",
+            allowed_mentions=discord.AllowedMentions(roles=True),
         )
-
 
     @discord.ui.button(label="🗑️ Cancel Ticket", style=discord.ButtonStyle.danger)
     async def cancel_ticket(self, interaction: discord.Interaction, _):
@@ -340,12 +351,11 @@ class TicketActionView(discord.ui.View):
                 ephemeral=True,
             )
 
-
         view = ConfirmCancelView(self.ticket_name, data)
 
         await interaction.response.send_message(
             "⚠️ **Are you sure you want to cancel this ticket?**\n"
             "This action cannot be undone.",
             ephemeral=True,
-            view=view
+            view=view,
         )

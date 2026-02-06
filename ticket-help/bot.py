@@ -1,23 +1,23 @@
 import discord
-from discord import app_commands
-from config import TOKEN
-from panels.panel_setup import setup_ticket_panel
-from dashboard.updater import update_dashboard
 from commands.admin import (
-    reload_point_rules,
-    set_boss_points,
-    reset_all_points,
-    set_user_points,
     add_boss,
-    delete_boss,
-    lookup_points,
-    delete_type,
     add_points,
-    subtract_points,
+    delete_boss,
+    delete_type,
+    lookup_points,
+    reload_point_rules,
     remove_claimer,
-    sync_usernames
+    reset_all_points,
+    set_boss_points,
+    set_user_points,
+    subtract_points,
 )
+from config import TOKEN
+from dashboard.updater import update_dashboard
+from discord import app_commands
+from panels.panel_setup import setup_ticket_panel
 from tickets.auto_manager import TicketAutoManager
+
 
 class MyClient(discord.Client):
     def __init__(self):
@@ -38,7 +38,6 @@ class MyClient(discord.Client):
         self.tree.add_command(add_points)
         self.tree.add_command(subtract_points)
         self.tree.add_command(remove_claimer)
-        self.tree.add_command(sync_usernames)
 
         await self.tree.sync()
 
@@ -55,7 +54,6 @@ async def on_ready():
 
     await setup_ticket_panel(client)
     await update_dashboard(client)
-
 
 
 client.run(TOKEN)
