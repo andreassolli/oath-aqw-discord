@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 import discord
 from commands.permissions import has_admin_role, has_helper_role, has_oathsworn_role
-from config import ADMIN_ROLE_ID, HELPER_ROLE_ID, WEEKLY_REQUESTER_CAP
+from config import HELPER_ROLE_ID, WEEKLY_REQUESTER_CAP
 from dashboard.updater import update_dashboard
 from firebase_admin import firestore
 from firebase_client import db

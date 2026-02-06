@@ -1,7 +1,8 @@
-import discord
-from config import HELPER_ROLE_ID
 from typing import Optional
+
+import discord
 from firebase_client import db
+
 
 def build_logging_embed(
     *,
@@ -22,9 +23,9 @@ def build_logging_embed(
     req_ref = db.collection("users").document(str(requester_id))
     req_doc = req_ref.get()
     req_data = req_doc.to_dict() if req_doc.exists else {}
-    requester_before = req_data.get("points", 0)
+    requester_after = req_data.get("points", 0)
     points_awarded = len(bosses) * 1
-    requester_after = requester_before + points_awarded
+    requester_before = requester_after - points_awarded
     requester_mention = (
         requester_member.display_name
         if requester_member
@@ -33,9 +34,7 @@ def build_logging_embed(
 
     closer = guild.get_member(closer_id)
     closer_mention = (
-        closer.display_name
-        if closer
-        else req_data.get("username", f"User {closer_id}")
+        closer.display_name if closer else req_data.get("username", f"User {closer_id}")
     )
 
     title = "🗑️ Cancelled Ticket" if cancelled else "🎉 Completed Ticket"
@@ -48,8 +47,8 @@ def build_logging_embed(
             user_doc = user_ref.get()
             user_data = user_doc.to_dict() if user_doc.exists else {}
             if points:
-                before = user_data.get("points", 0)
-                after = before + points
+                after = user_data.get("points", 0)
+                before = after + points
 
                 name = user_data.get("username", f"User {user_id}")
 
@@ -59,16 +58,11 @@ def build_logging_embed(
             else:
                 name = user_data.get("username", f"User {user_id}")
 
-                helper_lines.append(
-                    f"**{name}**"
-                )
+                helper_lines.append(f"**{name}**")
         helpers_value = "\n".join(helper_lines)
     else:
         helpers_value = "—"
 
-    helper_role = guild.get_role(HELPER_ROLE_ID)
-
-    role_mention = helper_role.mention
     if cancelled:
         requester_value = f"{requester_mention} — {requester_before} pts"
     else:
@@ -77,53 +71,22 @@ def build_logging_embed(
             f"{requester_before} → {requester_after} (**+{points_awarded}** pts)"
         )
 
-    embed = discord.Embed(
-        title=title,
-        color=discord.Color.blurple()
-    )
+    embed = discord.Embed(title=title, color=discord.Color.blurple())
 
-    embed.add_field(
-        name="Requester",
-        value=requester_value,
-        inline=True
-    )
+    embed.add_field(name="Requester", value=requester_value, inline=True)
 
-    embed.add_field(
-        name="Username",
-        value=username,
-        inline=True
-    )
+    embed.add_field(name="Username", value=username, inline=True)
 
-    embed.add_field(
-        name="Closed by",
-        value=closer_mention,
-        inline=True
-    )
+    embed.add_field(name="Closed by", value=closer_mention, inline=True)
 
-    embed.add_field(
-        name="Bosses",
-        value=", ".join(bosses),
-        inline=False
-    )
+    embed.add_field(name="Bosses", value=", ".join(bosses), inline=False)
 
     if not cancelled and points is not None:
-        embed.add_field(
-            name="Points Awarded",
-            value=str(points),
-            inline=True
-        )
+        embed.add_field(name="Points Awarded", value=str(points), inline=True)
 
-    embed.add_field(
-        name="Type",
-        value=f"{type}",
-        inline=True
-    )
+    embed.add_field(name="Type", value=f"{type}", inline=True)
 
-    embed.add_field(
-        name="Helpers",
-        value=helpers_value,
-        inline=False
-    )
+    embed.add_field(name="Helpers", value=helpers_value, inline=False)
 
     embed.set_footer(text=f"Created: {created_at}")
 
