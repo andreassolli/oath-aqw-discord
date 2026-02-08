@@ -14,6 +14,7 @@ def build_ticket_embed(
     guild: discord.Guild,
     type: str,
     server: str,
+    total_kills: str,
 ):
     requester_member = guild.get_member(requester_id)
     requester_mention = (
@@ -28,6 +29,11 @@ def build_ticket_embed(
         )
     else:
         helpers = "—"
+
+    helper_role = guild.get_role(HELPER_ROLE_ID)
+
+    role_mention = helper_role.mention
+
     embed = discord.Embed(title=f"🎫 {type} Ticket", color=discord.Color.blurple())
 
     embed.add_field(name="Requester", value=requester_mention, inline=True)
@@ -38,13 +44,21 @@ def build_ticket_embed(
 
     embed.add_field(name="Bosses", value=", ".join(bosses), inline=False)
 
+    if type == "spamming":
+        embed.add_field(name="Total Kills", value=total_kills, inline=True)
+
     embed.add_field(name="Points", value=str(points), inline=True)
 
     embed.add_field(
         name="Helpers", value=f"{len(claimers) + 1} / {max_claims + 1}", inline=True
     )
 
-    embed.add_field(name="Room", value=f"`{room}`", inline=True)
+    # if type == "spamming" or type == "testing":
+    #    embed.add_field(
+    #    name="Room",
+    #    value=f"`{room}`",
+    #    inline=True
+    # )
 
     embed.add_field(name="Currently Helping", value=helpers, inline=False)
 

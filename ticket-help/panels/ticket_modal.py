@@ -1,11 +1,13 @@
+import random
+
 import discord
-from config import ADMIN_ROLE_ID, GUIDE_CHANNEL_ID, HELPER_ROLE_ID, TICKET_CATEGORY_ID
+from config import ADMIN_ROLE_ID, HELPER_ROLE_ID, TICKET_CATEGORY_ID
 from firebase_admin import firestore
 from firebase_client import db
 from tickets.confirm_complete_view import ConfirmCompleteView
 from tickets.embed_utils import build_ticket_embed
 from tickets.ids import get_next_ticket_id
-from tickets.utils import clear_active_ticket, find_guide_threads, set_active_ticket
+from tickets.utils import clear_active_ticket, set_active_ticket
 from tickets.views import TicketActionView
 from utils.ticket import get_overwrites
 
@@ -31,25 +33,62 @@ class CreateTicketModal(discord.ui.Modal):
 
         self.username = discord.ui.TextInput(label="Username", required=True)
 
-        self.room = discord.ui.TextInput(
-            label="Room", placeholder="Private rooms need 4+ digits", required=True
-        )
+        # if self.type in {"other bosses", "spamming", "testing"}:
+        #    self.room_input = discord.ui.TextInput(
+        #        label="Room",
+        #        placeholder="Private rooms need 4+ digits",
+        #        required=True
+        #    )
+        #    self.add_item(self.room_input)
+        #    self.room = None
+        # else:
+        self.room = random.randint(11111, 99999)
+        self.room_input = None
 
         self.add_item(self.username)
-        self.add_item(self.room)
 
         if self.type in {"other bosses", "spamming", "testing"}:
-            self.max_claims = discord.ui.TextInput(
+            self.max_claims_input = discord.ui.TextInput(
                 label="Maximum helpers",
                 placeholder="Digit between 1 and 20",
                 required=True,
             )
-            self.add_item(self.max_claims)
+            self.add_item(self.max_claims_input)
         else:
+            self.max_claims_input = None
             self.max_claims = None
+
+        if self.type == "spamming":
+            self.total_kills_input = discord.ui.TextInput(
+                label="Total kills",
+                placeholder="Digit between 1 and 500",
+                required=True,
+            )
+            self.add_item(self.total_kills_input)
+        else:
+            self.total_kills_input = None
+            self.total_kills = 1
 
     async def on_submit(self, interaction: discord.Interaction):
         await interaction.response.defer(ephemeral=True)
+        try:
+            room_value = int(self.room_input.value) if self.room_input else self.room
+        except ValueError:
+            await interaction.response.send_message(
+                "❌ Room must be a number.", ephemeral=True
+            )
+            return
+
+        if self.total_kills_input:
+            try:
+                total_kills_value = int(self.total_kills_input.value)
+            except ValueError:
+                return await interaction.response.send_message(
+                    "❌ Total kills must be a number.", ephemeral=True
+                )
+        else:
+            total_kills_value = 1
+
         type_doc = db.collection("point_rules").document(self.type).get()
         type_data = type_doc.to_dict() or {}
         six_helper_bosses = [
@@ -65,8 +104,8 @@ class CreateTicketModal(discord.ui.Modal):
         ]
 
         role = interaction.guild.get_role(HELPER_ROLE_ID)
-        if self.max_claims is not None:
-            max_claims_value = int(self.max_claims.value)
+        if self.max_claims_input:
+            max_claims_value = int(self.max_claims_input.value)
         elif any(
             bossA in bossB
             for bossA in six_helper_bosses
@@ -77,13 +116,14 @@ class CreateTicketModal(discord.ui.Modal):
             max_claims_value = 3
 
         ticket_id = get_next_ticket_id()
-        name = f"「🔖」ticket-{ticket_id:03d}"
+        channel_name = f"「🔖」ticket-{ticket_id:03d}"
+        ticket_name = f"ticket-{ticket_id:03d}"
         category = interaction.guild.get_channel(TICKET_CATEGORY_ID)
 
         overwrites = get_overwrites(interaction)
 
         channel = await interaction.guild.create_text_channel(
-            name=name,
+            name=channel_name,
             category=category,
             overwrites=overwrites,
         )
@@ -95,6 +135,8 @@ class CreateTicketModal(discord.ui.Modal):
             points = 1 * len(bosses)
         else:
             bosses = self._preset_bosses
+
+            amount = len(bosses)
 
             type_ref = db.collection("point_rules")
             points = 0
@@ -117,7 +159,7 @@ class CreateTicketModal(discord.ui.Modal):
 
                 points += int(legion_data.get("points", 1))
 
-        db.collection("tickets").document(f"ticket-{ticket_id:03d}").set(
+        db.collection("tickets").document(ticket_name).set(
             {
                 "ticket_id": ticket_id,
                 "channel_id": channel.id,
@@ -127,7 +169,7 @@ class CreateTicketModal(discord.ui.Modal):
                 "max_claims": max_claims_value,
                 "claimers": [],
                 "username": self.username.value,
-                "room": self.room.value,
+                "room": room_value,
                 "status": "open",
                 "type": self.type,
                 "server": self.server,
@@ -135,6 +177,7 @@ class CreateTicketModal(discord.ui.Modal):
                 "reping_helpers": True,
                 "reminder_sent": False,
                 "auto_closed": False,
+                "total_kills": total_kills_value,
             }
         )
 
@@ -143,13 +186,15 @@ class CreateTicketModal(discord.ui.Modal):
             bosses=bosses,
             points=points,
             username=self.username.value,
-            room=self.room.value,
+            room=room_value,
             max_claims=max_claims_value,
             claimers=[],
             guild=interaction.guild,
             type=self.type,
             server=self.server,
+            total_kills=total_kills_value,
         )
+
         allowed_mentioning = discord.AllowedMentions(
             users=True, roles=True, everyone=False
         )
@@ -157,29 +202,19 @@ class CreateTicketModal(discord.ui.Modal):
         message = await channel.send(
             embed=embed,
             view=TicketActionView(
-                ticket_name=name,
+                ticket_name=ticket_name,
                 max_claims=max_claims_value,
-                room=self.room.value,
+                room=room_value,
+                bosses=bosses,
             ),
             allowed_mentions=allowed_mentioning,
         )
 
-        guide_threads = await find_guide_threads(
-            guild=interaction.guild,
-            guide_channel_id=GUIDE_CHANNEL_ID,
-            bosses=bosses,
+        db.collection("tickets").document(ticket_name).update(
+            {"message_id": message.id}
         )
 
-        if guide_threads:
-            lines = []
-            for boss, thread in guide_threads.items():
-                lines.append(f"• **{boss}** → {thread.mention}")
-
-            await channel.send("📘 **Relevant Guides**\n" + "\n".join(lines))
-
-        db.collection("tickets").document(name).update({"message_id": message.id})
-
-        set_active_ticket(interaction.user.id, name)
+        set_active_ticket(interaction.user.id, ticket_name)
         await interaction.followup.send(
             f"✅ Ticket created: {channel.mention}", ephemeral=True
         )

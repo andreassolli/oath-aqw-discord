@@ -1,6 +1,7 @@
 from typing import Optional
 
 import discord
+from config import HELPER_ROLE_ID
 from firebase_client import db
 
 
@@ -17,6 +18,7 @@ def build_logging_embed(
     closer_id: str,
     cancelled: bool,
     points: Optional[int] = None,
+    total_kills: Optional[str] = None,
 ):
 
     requester_member = guild.get_member(requester_id)
@@ -48,7 +50,7 @@ def build_logging_embed(
             user_data = user_doc.to_dict() if user_doc.exists else {}
             if points:
                 after = user_data.get("points", 0)
-                before = after + points
+                before = after - points
 
                 name = user_data.get("username", f"User {user_id}")
 
@@ -63,8 +65,11 @@ def build_logging_embed(
     else:
         helpers_value = "—"
 
+    helper_role = guild.get_role(HELPER_ROLE_ID)
+
+    role_mention = helper_role.mention
     if cancelled:
-        requester_value = f"{requester_mention} — {requester_before} pts"
+        requester_value = f"{requester_mention}"
     else:
         requester_value = (
             f"{requester_mention} — "
@@ -80,6 +85,9 @@ def build_logging_embed(
     embed.add_field(name="Closed by", value=closer_mention, inline=True)
 
     embed.add_field(name="Bosses", value=", ".join(bosses), inline=False)
+
+    if type == "spamming":
+        embed.add_field(name="Total Kills", value=total_kills, inline=True)
 
     if not cancelled and points is not None:
         embed.add_field(name="Points Awarded", value=str(points), inline=True)

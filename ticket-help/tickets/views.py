@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 import discord
 from commands.permissions import has_admin_role, has_helper_role, has_oathsworn_role
-from config import HELPER_ROLE_ID, WEEKLY_REQUESTER_CAP
+from config import ADMIN_ROLE_ID, HELPER_ROLE_ID, WEEKLY_REQUESTER_CAP
 from dashboard.updater import update_dashboard
 from firebase_admin import firestore
 from firebase_client import db
@@ -13,15 +13,17 @@ from tickets.embed_logging import build_logging_embed
 from tickets.embed_utils import build_ticket_embed
 from tickets.ids import get_next_ticket_id
 from tickets.logging import log_ticket_event
+from tickets.points import get_boss_room
 from tickets.utils import clear_active_ticket, get_week_start, set_active_ticket
 
 
 class TicketActionView(discord.ui.View):
-    def __init__(self, ticket_name: str, max_claims: int, room: str):
+    def __init__(self, ticket_name: str, max_claims: int, room: str, bosses: list[str]):
         super().__init__(timeout=None)
         self.ticket_name = ticket_name
         self.max_claims = max_claims
         self.room = room
+        self.bosses = bosses
 
     async def _update_ticket_embed(self, interaction: discord.Interaction):
         doc_ref = db.collection("tickets").document(self.ticket_name)
@@ -48,6 +50,7 @@ class TicketActionView(discord.ui.View):
                 guild=interaction.guild,
                 type=ticket_data["type"],
                 server=ticket_data["server"],
+                total_kills=ticket_data["total_kills"],
             )
 
             await message.edit(embed=embed, view=self)
@@ -123,10 +126,48 @@ class TicketActionView(discord.ui.View):
             f"({len(claimers) + 1}/{self.max_claims + 1})"
         )
 
-    @discord.ui.button(label="📋 Copy Room", style=discord.ButtonStyle.secondary)
+    @discord.ui.button(label="📋 Get room codes", style=discord.ButtonStyle.secondary)
     async def copy_room(self, interaction: discord.Interaction, _):
+        doc_ref = db.collection("tickets").document(self.ticket_name)
+        doc = doc_ref.get()
+
+        if not doc.exists:
+            return await interaction.followup.send(
+                "❌ Ticket data not found.", ephemeral=True
+            )
+
+        data = doc.to_dict()
+        claimers = data.get("claimers", [])
+
+        requester_id = data.get("user_id")
+        if interaction.user.id not in claimers and interaction.user.id != requester_id:
+            return await interaction.response.send_message(
+                "❌ You must claim this ticket first!", ephemeral=True
+            )
+
+        lines = []
+
+        for boss in self.bosses:
+            boss_name = boss.lower()
+
+            if boss_name == "void trio":
+                lines.append(f"/join voidflibbi-{self.room}")
+                lines.append(f"/join voidnightbane-{self.room}")
+                lines.append(f"/join voidxyfrag-{self.room}")
+            elif boss_name == "deimos":
+                lines.append(f"/join deimos-{self.room}")
+            elif boss_name == "lich king":
+                lines.append(f"/join frozenlair-{self.room}")
+            elif boss_name == "the beast":
+                lines.append(f"/join sevencircleswar-{self.room}")
+            else:
+                room = get_boss_room(boss)
+                lines.append(f"/join {room}-{self.room}")
+
+        rooms_text = "\n".join(lines)
+
         await interaction.response.send_message(
-            f"📋 **Room code:**\n```{self.room}```", ephemeral=True
+            f"📋 **Room codes:**\n```{rooms_text}```", ephemeral=True
         )
 
     @discord.ui.button(label="🎉 Complete Ticket", style=discord.ButtonStyle.primary)
