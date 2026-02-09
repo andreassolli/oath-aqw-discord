@@ -15,7 +15,7 @@ def build_logging_embed(
     guild: discord.Guild,
     type: str,
     created_at: str,
-    closer_id: str,
+    closer_id: int,
     cancelled: bool,
     points: Optional[int] = None,
     total_kills: Optional[str] = None,

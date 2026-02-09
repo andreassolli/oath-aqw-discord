@@ -1,13 +1,19 @@
 import random
 
 import discord
-from config import ADMIN_ROLE_ID, HELPER_ROLE_ID, TICKET_CATEGORY_ID
+from config import (
+    ADMIN_ROLE_ID,
+    GUIDE_CHANNEL_ID,
+    HELPER_ROLE_ID,
+    TICKET_CATEGORY_ID,
+    spam_points,
+)
 from firebase_admin import firestore
 from firebase_client import db
 from tickets.confirm_complete_view import ConfirmCompleteView
 from tickets.embed_utils import build_ticket_embed
 from tickets.ids import get_next_ticket_id
-from tickets.utils import clear_active_ticket, set_active_ticket
+from tickets.utils import clear_active_ticket, find_guide_threads, set_active_ticket
 from tickets.views import TicketActionView
 from utils.ticket import get_overwrites
 
@@ -103,7 +109,6 @@ class CreateTicketModal(discord.ui.Modal):
             "Kathool Depths",
         ]
 
-        role = interaction.guild.get_role(HELPER_ROLE_ID)
         if self.max_claims_input:
             max_claims_value = int(self.max_claims_input.value)
         elif any(
@@ -129,14 +134,22 @@ class CreateTicketModal(discord.ui.Modal):
         )
 
         if self.type in {"other bosses", "spamming", "testing"}:
-            bosses = [
-                b.strip() for b in self.bosses_input.value.split(",") if b.strip()
-            ]
-            points = 1 * len(bosses)
+            bosses = [boss.strip() for boss in self.bosses_input.value.split(",")]
+            start = 0
+            end = len(spam_points) - 1
+            mid = (start + end) // 2
+            while start < end:
+                mid = (start + end) // 2
+                if spam_points[mid] > total_kills_value:
+                    end = mid - 1
+                elif spam_points[mid] < total_kills_value:
+                    start = mid + 1
+                else:
+                    break
+
+            points = mid + 1
         else:
             bosses = self._preset_bosses
-
-            amount = len(bosses)
 
             type_ref = db.collection("point_rules")
             points = 0
@@ -186,13 +199,13 @@ class CreateTicketModal(discord.ui.Modal):
             bosses=bosses,
             points=points,
             username=self.username.value,
-            room=room_value,
+            room=str(room_value),
             max_claims=max_claims_value,
             claimers=[],
             guild=interaction.guild,
             type=self.type,
             server=self.server,
-            total_kills=total_kills_value,
+            total_kills=str(total_kills_value),
         )
 
         allowed_mentioning = discord.AllowedMentions(
@@ -204,11 +217,24 @@ class CreateTicketModal(discord.ui.Modal):
             view=TicketActionView(
                 ticket_name=ticket_name,
                 max_claims=max_claims_value,
-                room=room_value,
+                room=str(room_value),
                 bosses=bosses,
             ),
             allowed_mentions=allowed_mentioning,
         )
+
+        guide_threads = await find_guide_threads(
+            guild=interaction.guild,
+            guide_channel_id=GUIDE_CHANNEL_ID,
+            bosses=bosses,
+        )
+
+        if guide_threads:
+            lines = []
+            for boss, thread in guide_threads.items():
+                lines.append(f"• **{boss}** → {thread.mention}")
+
+            await channel.send("📘 **Relevant Guides**\n" + "\n".join(lines))
 
         db.collection("tickets").document(ticket_name).update(
             {"message_id": message.id}

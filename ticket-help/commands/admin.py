@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import discord
 from commands.permissions import has_admin_role
 from dashboard.updater import update_dashboard
@@ -24,7 +26,7 @@ async def remove_claimer(
     doc_ref = db.collection("tickets").document(ticket_name)
     doc = doc_ref.get()
 
-    if not doc.exists:
+    if not doc:
         return await interaction.response.send_message(
             f"❌ Ticket `{ticket_name}` not found.", ephemeral=True
         )
@@ -59,6 +61,7 @@ async def remove_claimer(
                     ticket_name=ticket_name,
                     max_claims=data.get("max_claims"),
                     room=data.get("room"),
+                    bosses=data.get("bosses"),
                 )
 
                 embed = build_ticket_embed(
@@ -434,29 +437,4 @@ async def reload_point_rules(interaction: discord.Interaction):
 
     await interaction.response.send_message(
         "🔄 Point rules cache reloaded from Firestore.", ephemeral=True
-    )
-
-
-@app_commands.command(
-    name="update-points", description="Set how many points a boss-related ticket gives"
-)
-async def set_boss_points(interaction: discord.Interaction, boss: str, points: int):
-    if not interaction.user.guild_permissions.administrator:
-        return await interaction.response.send_message(
-            "❌ Admin only command.", ephemeral=True
-        )
-
-    if points < 0 or points > 100:
-        return await interaction.response.send_message(
-            "❌ Points must be between 0 and 100.", ephemeral=True
-        )
-
-    boss = boss.lower().strip()
-
-    db.collection("point_rules").document(boss).set(
-        {"keywords": [boss], "points": points}, merge=True
-    )
-
-    await interaction.response.send_message(
-        f"✅ Boss **{boss}** now awards **{points} points** per ticket.", ephemeral=True
     )

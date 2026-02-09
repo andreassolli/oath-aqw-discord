@@ -1,5 +1,4 @@
 import discord
-from config import HELPER_ROLE_ID
 
 
 def build_ticket_embed(
@@ -29,10 +28,6 @@ def build_ticket_embed(
         )
     else:
         helpers = "—"
-
-    helper_role = guild.get_role(HELPER_ROLE_ID)
-
-    role_mention = helper_role.mention
 
     embed = discord.Embed(title=f"🎫 {type} Ticket", color=discord.Color.blurple())
 

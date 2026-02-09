@@ -1,13 +1,15 @@
-import discord
-from firebase_admin import firestore
 from datetime import datetime
-from firebase_client import db
-from tickets.utils import clear_active_ticket, get_week_start
-from dashboard.updater import update_dashboard
-from tickets.logging import log_ticket_event
-from tickets.embed_logging import build_logging_embed
+
+import discord
 from commands.permissions import has_admin_role
 from config import WEEKLY_REQUESTER_CAP
+from dashboard.updater import update_dashboard
+from firebase_admin import firestore
+from firebase_client import db
+
+from tickets.embed_logging import build_logging_embed
+from tickets.logging import log_ticket_event
+from tickets.utils import clear_active_ticket, get_week_start
 
 
 class ConfirmCompleteView(discord.ui.View):
@@ -22,8 +24,7 @@ class ConfirmCompleteView(discord.ui.View):
 
         if not doc.exists:
             await interaction.response.send_message(
-                "❌ Ticket data not found.",
-                ephemeral=True
+                "❌ Ticket data not found.", ephemeral=True
             )
             return False
 
@@ -32,14 +33,15 @@ class ConfirmCompleteView(discord.ui.View):
 
         if interaction.user.id != requester_id and not has_admin_role(interaction):
             await interaction.response.send_message(
-                "🚫 You can’t interact with this confirmation.",
-                ephemeral=True
+                "🚫 You can’t interact with this confirmation.", ephemeral=True
             )
             return False
 
         return True
 
-    @discord.ui.button(label="✅ Yes, confirm ticket", style=discord.ButtonStyle.success)
+    @discord.ui.button(
+        label="✅ Yes, confirm ticket", style=discord.ButtonStyle.success
+    )
     async def confirm(self, interaction: discord.Interaction, _):
         self.confirmed = True
         await interaction.response.defer(ephemeral=True)
@@ -49,8 +51,7 @@ class ConfirmCompleteView(discord.ui.View):
 
         if not doc.exists:
             return await interaction.followup.send(
-                "❌ Ticket data not found.",
-                ephemeral=True
+                "❌ Ticket data not found.", ephemeral=True
             )
 
         data = doc.to_dict()
@@ -58,18 +59,19 @@ class ConfirmCompleteView(discord.ui.View):
         # 🔒 Hard guard
         if data.get("status") in ("completing", "completed"):
             return await interaction.followup.send(
-                "⚠️ This ticket has already been completed.",
-                ephemeral=True
+                "⚠️ This ticket has already been completed.", ephemeral=True
             )
 
         requester_id = data["user_id"]
 
         # 🔐 Lock immediately
-        doc_ref.update({
-            "status": "completing",
-            "closed_by": interaction.user.id,
-            "closed_at": firestore.SERVER_TIMESTAMP,
-        })
+        doc_ref.update(
+            {
+                "status": "completing",
+                "closed_by": interaction.user.id,
+                "closed_at": firestore.SERVER_TIMESTAMP,
+            }
+        )
 
         # ---- Award helper points ----
         points = data.get("points", 1)
@@ -86,17 +88,17 @@ class ConfirmCompleteView(discord.ui.View):
                 username = "Unknown"
 
             if user_ref.get().exists:
-                user_ref.update({
-                    "username": username,
-                    "points": firestore.Increment(points),
-                    "tickets_claimed": firestore.Increment(1),
-                })
+                user_ref.update(
+                    {
+                        "username": username,
+                        "points": firestore.Increment(points),
+                        "tickets_claimed": firestore.Increment(1),
+                    }
+                )
             else:
-                user_ref.set({
-                    "username": username,
-                    "points": points,
-                    "tickets_claimed": 1
-                })
+                user_ref.set(
+                    {"username": username, "points": points, "tickets_claimed": 1}
+                )
 
         # ---- Award requester points ----
         user_ref = db.collection("users").document(str(requester_id))
@@ -107,12 +109,14 @@ class ConfirmCompleteView(discord.ui.View):
 
         MULTIPLIERS = {
             "testing": 0,
-            "spamming": 2,
             "7 man bosses": 2,
         }
 
         multiplier = MULTIPLIERS.get(ticket_type, 1)
-        reward = multiplier * amount_bosses
+        if ticket_type == "spamming":
+            reward = points / 2
+        else:
+            reward = multiplier * amount_bosses
 
         now = datetime.utcnow()
         week_start = get_week_start(now)
@@ -174,8 +178,7 @@ class ConfirmCompleteView(discord.ui.View):
     async def cancel(self, interaction: discord.Interaction, _):
         self.confirmed = True
         await interaction.message.edit(
-            content="✅ Ticket was **not** completed.",
-            view=None
+            content="✅ Ticket was **not** completed.", view=None
         )
 
     async def on_timeout(self):

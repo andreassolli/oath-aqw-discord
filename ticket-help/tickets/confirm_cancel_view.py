@@ -1,11 +1,12 @@
 import discord
-from firebase_admin import firestore
-from tickets.utils import clear_active_ticket
+from commands.permissions import has_admin_role
 from dashboard.updater import update_dashboard
-from commands.permissions import has_admin_role, has_oathsworn_role
+from firebase_admin import firestore
 from firebase_client import db
-from tickets.logging import log_ticket_event
+
 from tickets.embed_logging import build_logging_embed
+from tickets.logging import log_ticket_event
+from tickets.utils import clear_active_ticket
 
 
 class ConfirmCancelView(discord.ui.View):
@@ -15,18 +16,15 @@ class ConfirmCancelView(discord.ui.View):
         self.ticket_data = ticket_data
         self.confirmed = False
 
-
     async def interaction_check(self, interaction: discord.Interaction) -> bool:
         requester_id = self.ticket_data.get("user_id")
 
-        is_requester = interaction.user.id == requester_id
+        is_requester = str(interaction.user.id) == requester_id
         is_admin = has_admin_role(interaction)
-        is_oathsworn = has_oathsworn_role(interaction)
 
-        if not (is_requester or is_admin or is_oathsworn):
+        if not (is_requester or is_admin):
             await interaction.response.send_message(
-                "🚫 You can’t interact with this confirmation.",
-                ephemeral=True
+                "🚫 You can’t interact with this confirmation.", ephemeral=True
             )
             return False
 
@@ -50,11 +48,13 @@ class ConfirmCancelView(discord.ui.View):
             closer_id=interaction.user.id,
             cancelled=True,
         )
-        doc_ref.update({
-            "status": "cancelled",
-            "closed_by": interaction.user.id,
-            "closed_at": firestore.SERVER_TIMESTAMP,
-        })
+        doc_ref.update(
+            {
+                "status": "cancelled",
+                "closed_by": interaction.user.id,
+                "closed_at": firestore.SERVER_TIMESTAMP,
+            }
+        )
 
         clear_active_ticket(self.ticket_data["user_id"], self.ticket_name)
         claimers = self.ticket_data.get("claimers", [])
@@ -62,13 +62,9 @@ class ConfirmCancelView(discord.ui.View):
             clear_active_ticket(user_id, self.ticket_name)
 
         await interaction.response.edit_message(
-            content="🗑️ Ticket cancelled.",
-            view=None
+            content="🗑️ Ticket cancelled.", view=None
         )
 
-        claimer_mentions = ", ".join(f"<@{uid}>" for uid in claimers) or "None"
-        closer_mention = interaction.user.mention
-        requester_id = self.ticket_data.get("user_id")
         await log_ticket_event(interaction.client, embed=embed)
 
         await update_dashboard(interaction.client)
@@ -77,8 +73,7 @@ class ConfirmCancelView(discord.ui.View):
     @discord.ui.button(label="❌ No, keep ticket", style=discord.ButtonStyle.danger)
     async def cancel(self, interaction: discord.Interaction, _):
         await interaction.response.edit_message(
-            content="✅ Ticket was **not** cancelled.",
-            view=None
+            content="✅ Ticket was **not** cancelled.", view=None
         )
 
     async def on_timeout(self):
