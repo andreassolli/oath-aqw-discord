@@ -17,12 +17,19 @@ class ConfirmCancelView(discord.ui.View):
         self.confirmed = False
 
     async def interaction_check(self, interaction: discord.Interaction) -> bool:
-        requester_id = self.ticket_data.get("user_id")
+        doc_ref = db.collection("tickets").document(self.ticket_name)
+        doc = doc_ref.get()
 
-        is_requester = str(interaction.user.id) == requester_id
-        is_admin = has_admin_role(interaction)
+        if not doc.exists:
+            await interaction.response.send_message(
+                "❌ Ticket data not found.", ephemeral=True
+            )
+            return False
 
-        if not (is_requester or is_admin):
+        data = doc.to_dict()
+        requester_id = data["user_id"]
+
+        if interaction.user.id != requester_id and not has_admin_role(interaction):
             await interaction.response.send_message(
                 "🚫 You can’t interact with this confirmation.", ephemeral=True
             )

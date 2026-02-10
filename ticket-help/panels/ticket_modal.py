@@ -147,7 +147,7 @@ class CreateTicketModal(discord.ui.Modal):
                 else:
                     break
 
-            points = mid + 1
+            points = start + 1
         else:
             bosses = self._preset_bosses
 

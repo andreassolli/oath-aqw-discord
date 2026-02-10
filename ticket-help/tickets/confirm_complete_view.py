@@ -114,7 +114,7 @@ class ConfirmCompleteView(discord.ui.View):
 
         multiplier = MULTIPLIERS.get(ticket_type, 1)
         if ticket_type == "spamming":
-            reward = points / 2
+            reward = points // 2
         else:
             reward = multiplier * amount_bosses
 
