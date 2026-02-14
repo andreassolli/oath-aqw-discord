@@ -1,0 +1,25 @@
+import discord
+
+
+class BossMultiSelect(discord.ui.Select):
+    def __init__(self, bosses: list[dict[str, str]]):
+        options = [
+            discord.SelectOption(
+                label=boss["name"],
+                value=boss["name"],
+                description=boss["room"] or "No room available",
+            )
+            for boss in bosses
+        ]
+
+        super().__init__(
+            placeholder="Select one or more bosses",
+            min_values=1,
+            max_values=len(options),
+            options=options,
+            row=0,
+        )
+
+    async def callback(self, interaction: discord.Interaction):
+        self.view.selected_bosses = self.values
+        await interaction.response.defer()
