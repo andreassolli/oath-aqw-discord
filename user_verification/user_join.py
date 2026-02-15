@@ -86,6 +86,7 @@ class DidUserJoinView(discord.ui.View):
                 member,
                 is_join_event=True,
             )
+            await member.edit(nick=self.ign)
 
         if not isinstance(channel, discord.TextChannel):
             return

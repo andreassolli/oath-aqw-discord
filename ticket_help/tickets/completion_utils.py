@@ -162,6 +162,7 @@ async def finalize_ticket(
         requester_before=requester_before,
         requester_after=requester_after,
         helper_changes=helper_changes,
+        id=ticket_data.get("ticket_id", 0),
     )
 
     doc_ref.update({"status": "completed"})

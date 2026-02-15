@@ -104,6 +104,7 @@ class ConfirmCancelView(discord.ui.View):
             created_at=self.ticket_data["created_at"],
             cancelled=True,
             closer_id=interaction.user.id,
+            id=data.get("ticket_id", 0),
         )
 
         doc_ref.update(

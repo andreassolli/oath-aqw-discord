@@ -13,6 +13,22 @@ class Bans(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
+    @app_commands.command(name="vet", description="View all banned users")
+    @app_commands.describe(username="AQW username to check")
+    @app_commands.checks.has_role(OATHSWORN_ROLE_ID)
+    async def vet(self, interaction: discord.Interaction, username: str):
+
+        if is_user_banned(username):
+            await interaction.response.send_message(
+                f"⚠️ **{username}** is banned.",
+                ephemeral=True,
+            )
+        else:
+            await interaction.response.send_message(
+                f"✅ **{username}** is not banned.",
+                ephemeral=True,
+            )
+
     @app_commands.command(name="banlist", description="View all banned users")
     @app_commands.checks.has_role(OATHSWORN_ROLE_ID)
     @is_ban_channel()

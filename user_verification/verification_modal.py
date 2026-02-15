@@ -86,6 +86,7 @@ class VerificationModal(discord.ui.Modal):
                     is_join_event=False,
                     verified_guild=user["guild"],
                 )
+                await member.edit(nick=aqw_username)
 
             if isinstance(log_channel, discord.TextChannel):
                 embed = build_verification_log_embed(
@@ -158,7 +159,7 @@ class VerificationModal(discord.ui.Modal):
             )
 
             # 🔥 Now store ticket AFTER message exists
-            identifier = f"{aqw_username}_{interaction.user.id}"
+            identifier = f"{aqw_username}:{interaction.user.id}"
             db.collection("join_tickets").document(identifier).set(
                 {
                     "channel_id": str(channel.id),

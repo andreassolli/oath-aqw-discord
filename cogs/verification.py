@@ -1,8 +1,11 @@
+from multiprocessing.spawn import old_main_modules
 from typing import Any, Dict, cast
 
 import discord
 from discord import app_commands
+from discord.app_commands.models import app_command_option_factory
 from discord.ext import commands
+from discord.types.command import ApplicationCommand
 from google.cloud import firestore
 from google.cloud.firestore import DocumentSnapshot
 
@@ -23,6 +26,44 @@ class VerificationCog(commands.Cog):
         await setup_verification_panel(self.bot)
 
     @app_commands.command(
+        name="sync-nicknames", description="Sync nicknames for all verified users"
+    )
+    @app_commands.checks.has_role(DISCORD_MANAGER_ROLE_ID)
+    async def sync_nicknames(self, interaction: discord.Interaction):
+        await interaction.response.defer(ephemeral=True)
+
+        users_ref = db.collection("users")
+        docs = users_ref.where("verified", "==", True).stream()
+
+        updated_count = 0
+        for doc in docs:
+            data = doc.to_dict()
+            discord_id = data.get("discord_id")
+            aqw_username = data.get("aqw_username")
+
+            if not discord_id or not aqw_username:
+                continue
+
+            guild = interaction.guild
+            if not guild:
+                continue
+
+            member = guild.get_member(int(discord_id))
+            if not member:
+                continue
+
+            try:
+                await member.edit(nick=aqw_username)
+                updated_count += 1
+            except Exception as e:
+                print(f"Failed to update nickname for {member}: {e}")
+
+        await interaction.followup.send(
+            f"✅ Synced nicknames for {updated_count} verified users.",
+            ephemeral=True,
+        )
+
+    @app_commands.command(
         name="approve-join", description="Approve a user's join request"
     )
     @app_commands.describe(
@@ -32,6 +73,8 @@ class VerificationCog(commands.Cog):
     async def join_approve(
         self,
         interaction: discord.Interaction,
+        user: discord.Member,
+        username: str,
     ):
 
         await interaction.response.defer(ephemeral=True)
@@ -43,7 +86,8 @@ class VerificationCog(commands.Cog):
                 ephemeral=True,
             )
 
-        doc = db.collection("join_tickets").document(str(channel.id)).get()
+        identifier = f"{username}:{user}"
+        doc = db.collection("join_tickets").document(identifier).get()
 
         if not doc.exists:
             return await interaction.followup.send(
@@ -64,6 +108,52 @@ class VerificationCog(commands.Cog):
             discord_id=data["discord_id"],
             ign=data["ign"],
             status="approved",
+        )
+
+    @app_commands.command(
+        name="reject-join", description="Reject a user's join request"
+    )
+    @app_commands.describe(
+        user="The Discord user to reject", username="Their AQW username"
+    )
+    @app_commands.checks.has_role(OATHSWORN_ROLE_ID)
+    async def join_reject(
+        self,
+        interaction: discord.Interaction,
+        user: discord.Member,
+        username: str,
+    ):
+        await interaction.response.defer(ephemeral=True)
+
+        channel = interaction.channel
+        if not isinstance(channel, discord.TextChannel):
+            return await interaction.followup.send(
+                "❌ Must be used inside a join ticket channel.",
+                ephemeral=True,
+            )
+
+        identifier = f"{username}_{user}"
+        doc = db.collection("join_tickets").document(identifier).get()
+
+        if not doc.exists:
+            return await interaction.followup.send(
+                "❌ No join ticket found for this channel.",
+                ephemeral=True,
+            )
+
+        data = doc.to_dict()
+
+        if not data:
+            return await interaction.followup.send(
+                "❌ Join ticket data is missing.",
+                ephemeral=True,
+            )
+
+        await process_join_ticket(
+            interaction=interaction,
+            discord_id=data["discord_id"],
+            ign=data["ign"],
+            status="rejected",
         )
 
     @app_commands.command(name="force-verify", description="Force verify a user")
