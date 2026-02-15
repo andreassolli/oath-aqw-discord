@@ -17,6 +17,10 @@ BADGE_EMOJIS = {
     "Class Collector II": "<:classbadge:1471256107057156117>",
     "Class Collector III": "<:classbadge:1471256107057156117>",
     "Class Collector IV": "<:classbadge:1471256107057156117>",
+    "Whale I": "<whale~1:1457113483274358826>",
+    "Whale II": "<whale~1:1457113483274358826>",
+    "Whale III": "<whale~1:1457113483274358826>",
+    "Whale IV": "<whale~1:1457113483274358826>",
     "Guild Founder": "<:oathcoin:1462999179998531614>",
     "AQW Founder": "<:aqwfounder:1471269208791978034>",
 }
@@ -38,6 +42,10 @@ BADGES_DESCRIPTIONS = {
     "Class Collector II": "Obtain 100 Classes, no duplicate names.",
     "Class Collector III": "Obtain 150 Classes, no duplicate names.",
     "Class Collector IV": "Obtain 200 Classes, no duplicate names.",
+    "Whale I": "Obtain 150 combined Exclusive/Support/HeroMart Badges, and have 2 Upholder Badges.",
+    "Whale II": "Obtain 200 combined Exclusive/Support/HeroMart Badges, have gifted more than 25 000 ACs during gifting event, and have 4 Upholder Badges.",
+    "Whale III": "Obtain 250 combined Exclusive/Support/HeroMart Badges, have gifted more than 50 000 ACs during gifting event, have 4 Upholder Badges and one of the loyalty badges for either ACs, Membership or Years Played.",
+    "Whale IV": "Obtain 300 combined Exclusive/Support/HeroMart Badges, an IODA in your inventory, have gifted more than 100 000 ACs during two gifting events, have 2 out of 3 of the loyalty badges, and have 8 Upholder Badges OR 3 out of 3 loyalty badges.",
     "Guild Founder": "Awarded to those who helped found or support the Oath discord server from the beginning.",
     "AQW Founder": "Awarded to those who have the founder badge in AQW.",
 }

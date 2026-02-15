@@ -14,6 +14,7 @@ from firebase_client import db
 from user_verification.process_join_ticket import process_join_ticket
 from user_verification.utils import fetch_aqw_profile
 from user_verification.verification_panel import setup_verification_panel
+from utils import is_bot_channel
 
 
 class VerificationCog(commands.Cog):
@@ -24,6 +25,64 @@ class VerificationCog(commands.Cog):
     async def on_ready(self):
         await self.bot.wait_until_ready()
         await setup_verification_panel(self.bot)
+
+    @app_commands.command(
+        name="list-guild-members",
+        description="List all verified members in a specific guild",
+    )
+    @app_commands.describe(guild="The name of the guild to list members for")
+    @is_bot_channel()
+    async def list_guild_members(self, interaction: discord.Interaction, guild: str):
+        await interaction.response.defer(ephemeral=True)
+
+        users_ref = db.collection("users")
+        docs = (
+            users_ref.where("verified", "==", True).where("guild", "==", guild).stream()
+        )
+
+        members = []
+        for doc in docs:
+            data = doc.to_dict()
+            aqw_username = data.get("aqw_username", "Unknown")
+            discord_id = data.get("discord_id")
+            if discord_id:
+                members.append(f"{aqw_username} (ID: {discord_id})")
+
+        if not members:
+            return await interaction.followup.send(
+                f"No verified members found in guild **{guild}**.", ephemeral=True
+            )
+
+        message = f"**Verified Members in {guild}:**\n" + "\n".join(members)
+        await interaction.followup.send(message, ephemeral=True)
+
+    @app_commands.command(
+        name="list-guilds", description="List all verified guilds in the server"
+    )
+    @is_bot_channel()
+    async def list_guilds(self, interaction: discord.Interaction):
+        await interaction.response.defer(ephemeral=True)
+
+        users_ref = db.collection("users")
+        docs = users_ref.where("verified", "==", True).stream()
+
+        guild_counts: Dict[str, int] = {}
+        for doc in docs:
+            data = doc.to_dict()
+            guild = data.get("guild", "Unknown")
+            guild_counts[guild] = guild_counts.get(guild, 0) + 1
+
+        if not guild_counts:
+            return await interaction.followup.send(
+                "No verified users found.", ephemeral=True
+            )
+
+        sorted_guilds = sorted(guild_counts.items(), key=lambda x: x[1], reverse=True)
+        message = "**Verified Guilds:**\n"
+        for guild, count in sorted_guilds:
+            message += f"- {guild}: {count} members\n"
+
+        await interaction.followup.send(message, ephemeral=True)
 
     @app_commands.command(
         name="sync-nicknames", description="Sync nicknames for all verified users"

@@ -129,6 +129,54 @@ async def founder_check(ccid: str) -> bool:
     )
 
 
+async def get_whale_badges(ccid: str) -> dict[str, int | bool]:
+    url = f"{AQW_BADGES}{ccid}"
+    badge_categories = {"HeroMart", "Support", "Exclusive"}
+    pet_badges = {"15 Years Played", "AC Loyalty", "Member Loyalty"}
+    ioda = await check_for_ioda(ccid)
+    gifting_2021 = False
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as resp:
+            badges = await resp.json()
+            whale_badges = sum(
+                1 for badge in badges if badge["sCategory"] in badge_categories
+            )
+            upholder_badges = sum(
+                1 for badge in badges if badge["sCategory"] == "Upholder"
+            )
+            platinum_badges = sum(
+                1 for badge in badges if badge["sTitle"] in pet_badges
+            )
+            gifting_badges = sum(
+                1 for badge in badges if "giftingtier7" in badge["sFileName"]
+            )
+            lower_gifting = any(
+                "giftingtier4" in badge.get("sFileName", "") for badge in badges
+            )
+            medium_gifting = any(
+                "giftingtier5" in badge.get("sFileName", "") for badge in badges
+            )
+            gifting_2021 = any(
+                any(
+                    tier in badge.get("sFileName", "").lower()
+                    for tier in ("giftingtier3r1", "giftingtier4r1")
+                )
+                for badge in badges
+            )
+            if gifting_2021:
+                gifting_badges += 1
+
+    return {
+        "whale_badges": whale_badges,
+        "upholder_badges": upholder_badges,
+        "platinum_badges": platinum_badges,
+        "gifting_badges": gifting_badges,
+        "lower_gifting": lower_gifting,
+        "medium_gifting": medium_gifting,
+        "ioda": ioda,
+    }
+
+
 BADGE_CATEGORIES = {
     "51% Weapons": {
         "51% Weapons I": 7,
@@ -154,6 +202,12 @@ BADGE_CATEGORIES = {
         "Class Collector III": 150,
         "Class Collector IV": 200,
     },
+    "Whale": {
+        "Whale I": 150,
+        "Whale II": 200,
+        "Whale III": 250,
+        "Whale IV": 300,
+    },
 }
 
 
@@ -168,12 +222,13 @@ def get_badge_category(badge_name: str) -> str | None:
     return None
 
 
-async def get_category_counts(ccid: str) -> dict[str, int]:
+async def get_category_counts(ccid: str) -> dict[str, int | bool]:
     return {
         "51% Weapons": await get_weapon_count(ccid),
         "Epic Journey": await get_epic_badges(ccid),
         "Achievement Badges": await get_total_badges(ccid),
         "Class Collector": await get_class_count(ccid),
+        "Whale": (await get_whale_badges(ccid))["whale_badges"],
     }
 
 
@@ -191,6 +246,7 @@ def get_highest_from_category(category: dict[str, int], count: int) -> str | Non
 BADGE_DISPLAY_ORDER = [
     "Guild Founder",
     "AQW Founder",
+    "Whale",
     "Epic Journey",
     "Achievement Badges",
     "Class Collector",
@@ -211,3 +267,46 @@ def sort_badges(badges: list[str]) -> list[str]:
         return (999, badge)
 
     return sorted(badges, key=badge_key)
+
+
+async def check_for_ioda(ccid: str) -> bool:
+    url = f"{AQW_INVENTORY}{ccid}"
+
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as resp:
+            resp.raise_for_status()
+            inventory = await resp.json()
+
+    return any(
+        "Item of Digital Awesomeness" in item.get("strName") for item in inventory
+    )
+
+
+async def define_whale(ccid: str) -> str | None:
+    whaling = await get_whale_badges(ccid)
+    if (
+        whaling["whale_badges"] >= 300
+        and whaling["lower_gifting"]
+        and whaling["medium_gifting"]
+        and whaling["platinum_badges"] >= 2
+        and (whaling["upholder_badges"] >= 8 or whaling["platinum_badges"] >= 3)
+        and whaling["ioda"]
+    ):
+        return "Whale IV"
+    elif (
+        whaling["whale_badges"] >= 250
+        and whaling["gifting_badges"] >= 1
+        and whaling["platinum_badges"] >= 1
+        and whaling["upholder_badges"] >= 4
+    ):
+        return "Whale III"
+    elif (
+        whaling["whale_badges"] >= 200
+        and whaling["gifting_badges"] >= 1
+        and whaling["upholder_badges"] >= 4
+    ):
+        return "Whale II"
+    elif whaling["whale_badges"] >= 150 and whaling["upholder_badges"] >= 2:
+        return "Whale I"
+    else:
+        return None

@@ -40,6 +40,10 @@ BADGE_TO_IMAGE = {
     "51% Weapons II": ASSETS_DIR / "weapon2.png",
     "51% Weapons III": ASSETS_DIR / "weapon3.png",
     "51% Weapons IV": ASSETS_DIR / "weapon4.png",
+    "Whale I": ASSETS_DIR / "whale1.png",
+    "Whale II": ASSETS_DIR / "whale2.png",
+    "Whale III": ASSETS_DIR / "whale3.png",
+    "Whale IV": ASSETS_DIR / "whale4.png",
 }
 
 
