@@ -40,6 +40,8 @@ class BadgesMultiSelectView(discord.ui.View):
                 ephemeral=True,
             )
 
+        await interaction.response.defer(ephemeral=True)
+
         values = self.selected_values
 
         if not values:
@@ -87,8 +89,6 @@ class BadgesMultiSelectView(discord.ui.View):
         current_highest_per_category: dict[str, str] = {}
 
         for badge in current_badges:
-            if badge == "Whale":
-                continue
             category = get_badge_category(badge)
             if category:
                 current_highest_per_category[category] = badge
@@ -129,12 +129,29 @@ class BadgesMultiSelectView(discord.ui.View):
             updated_badges.append(highest_allowed)
 
         whale_badge = await define_whale(ccid)
+        print(f"Determined whale badge: {whale_badge}")
+
         if whale_badge:
-            if "Whale" not in current_badges:
-                updated_badges.append(whale_badge)
-                passed.append("Whale")
+            existing_whale = next(
+                (b for b in current_badges if b.startswith("Whale")),
+                None,
+            )
+
+            if existing_whale == whale_badge:
+                skipped.append(whale_badge)
+
             else:
-                skipped.append("Whale")
+                # Remove old Whale tier(s)
+                updated_badges = [
+                    b for b in updated_badges if not b.startswith("Whale")
+                ]
+
+                updated_badges.append(whale_badge)
+
+                if existing_whale:
+                    passed.append(f"{existing_whale} → {whale_badge}")
+                else:
+                    passed.append(whale_badge)
 
         if updated_badges != current_badges:
             user_ref.set({"badges": updated_badges}, merge=True)

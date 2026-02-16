@@ -1,5 +1,6 @@
 from datetime import datetime
 from typing import Any, Dict, cast
+from urllib.parse import quote
 
 import discord
 from google.cloud import firestore
@@ -35,16 +36,16 @@ class VerificationModal(discord.ui.Modal):
         self.add_item(self.username)
 
     async def on_submit(self, interaction: discord.Interaction):
-        aqw_username = self.username.value.strip()
+        encoded_name = quote(self.username.value, safe="")
         user_id = interaction.user.id
 
         await interaction.response.defer(ephemeral=True)
 
         if self.action == "verify":
-            user = await fetch_aqw_profile(aqw_username)
+            user = await fetch_aqw_profile(encoded_name)
             if not user:
                 return await interaction.followup.send(
-                    f"❌ Could not find AQW profile for username: **{aqw_username}**",
+                    f"❌ Could not find AQW profile for username: **{self.username.value}**",
                     ephemeral=True,
                 )
 
@@ -57,14 +58,14 @@ class VerificationModal(discord.ui.Modal):
             previous_igns: list[str] = data.get("previous_igns", [])
 
             updates: dict[str, Any] = {
-                "aqw_username": aqw_username,
+                "aqw_username": encoded_name,
                 "ccid": user["ccid"],
                 "guild": user["guild"],
                 "verified": True,
                 "verified_at": discord.utils.utcnow(),
             }
 
-            if old_ign and old_ign.lower() != aqw_username.lower():
+            if old_ign and old_ign.lower() != encoded_name.lower():
                 # Avoid duplicates
                 if old_ign not in previous_igns:
                     updates["previous_igns"] = firestore.ArrayUnion([old_ign])
@@ -86,25 +87,25 @@ class VerificationModal(discord.ui.Modal):
                     is_join_event=False,
                     verified_guild=user["guild"],
                 )
-                await member.edit(nick=aqw_username)
+                await member.edit(nick=self.username.value)
 
             if isinstance(log_channel, discord.TextChannel):
                 embed = build_verification_log_embed(
                     guild=guild,
                     discord_id=user_id,
-                    ign=aqw_username,
+                    ign=self.username.value,
                     previous_igns=previous_igns,
                     guild_name=user.get("guild"),
                 )
                 await log_channel.send(embed=embed)
 
             await interaction.followup.send(
-                f"✅ **Verification complete**\nAQW Username: **{aqw_username}**\nGuild: **{user.get('guild', 'None')}**",
+                f"✅ **Verification complete**\nAQW Username: **{self.username.value}**\nGuild: **{user.get('guild', 'None')}**",
                 ephemeral=True,
             )
 
         elif self.action == "join":
-            user = await fetch_aqw_profile(aqw_username)
+            user = await fetch_aqw_profile(encoded_name)
             guild_obj = interaction.guild
             if guild_obj is None:
                 return await interaction.followup.send(
@@ -130,7 +131,7 @@ class VerificationModal(discord.ui.Modal):
             channel = await guild_obj.create_text_channel(
                 name=f"join-{member.name}",
                 category=category,
-                topic=f"Join request | IGN: {aqw_username} | Discord: {member.id}",
+                topic=f"Join request | IGN: {self.username.value} | Discord: {member.id}",
             )
 
             # Permissions
@@ -149,7 +150,7 @@ class VerificationModal(discord.ui.Modal):
             embed = build_join_ticket_embed(
                 guild=guild_obj,
                 discord_id=interaction.user.id,
-                ign=aqw_username,
+                ign=self.username.value,
             )
 
             message = await channel.send(
@@ -159,13 +160,13 @@ class VerificationModal(discord.ui.Modal):
             )
 
             # 🔥 Now store ticket AFTER message exists
-            identifier = f"{aqw_username}:{interaction.user.id}"
+            identifier = f"{self.username.value}:{interaction.user.id}"
             db.collection("join_tickets").document(identifier).set(
                 {
                     "channel_id": str(channel.id),
                     "message_id": str(message.id),
                     "discord_id": interaction.user.id,
-                    "ign": aqw_username,
+                    "ign": self.username.value,
                     "created_at": datetime.utcnow(),
                     "status": "open",
                 }
@@ -177,7 +178,7 @@ class VerificationModal(discord.ui.Modal):
             )
             await interaction.followup.send(
                 f"🛡️ **Request to join submitted**\n"
-                f"AQW Username: **{aqw_username}**\n\n"
+                f"AQW Username: **{self.username.value}**\n\n"
                 "An officer will review your request.",
                 ephemeral=True,
             )

@@ -3,10 +3,10 @@ from io import BytesIO, StringIO
 from typing import Any
 
 import aiohttp
-import requests
 from PIL import Image, ImageDraw
 
 from config import AQW_BADGES, AQW_INVENTORY, WEAPON_SHEET
+from http_client import get_session
 
 _weapon_name_cache: set[str] | None = None
 
@@ -22,12 +22,12 @@ def ordinal(n: int) -> str:
 async def fetch_avatar(url: str) -> Image.Image:
     timeout = aiohttp.ClientTimeout(total=10)
 
-    async with aiohttp.ClientSession(timeout=timeout) as session:
-        async with session.get(url) as resp:
-            if resp.status != 200:
-                raise RuntimeError(f"Avatar fetch failed: {resp.status}")
+    session = await get_session()
+    async with session.get(url) as resp:
+        if resp.status != 200:
+            raise RuntimeError(f"Avatar fetch failed: {resp.status}")
 
-            data = await resp.read()
+        data = await resp.read()
 
     return Image.open(BytesIO(data)).convert("RGBA")
 
@@ -49,13 +49,17 @@ async def get_weapon_names() -> set[str]:
 
     if WEAPON_SHEET is None:
         raise RuntimeError("Weapon sheet URL not configured")
-    r = requests.get(WEAPON_SHEET)
-    r.raise_for_status()
 
-    csv_data = StringIO(r.text)
+    session = await get_session()
+
+    async with session.get(WEAPON_SHEET) as resp:
+        resp.raise_for_status()
+        text = await resp.text()
+
+    csv_data = StringIO(text)
     reader = csv.DictReader(csv_data)
 
-    _weapon_name_cache = {row["Name"] for row in reader}
+    _weapon_name_cache = {row["Name"] for row in reader if row.get("Name")}
 
     return _weapon_name_cache
 
@@ -63,9 +67,9 @@ async def get_weapon_names() -> set[str]:
 async def get_weapon_count(ccid: str) -> int:
     url = f"{AQW_INVENTORY}{ccid}"
 
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url) as resp:
-            inventory = await resp.json()
+    session = await get_session()
+    async with session.get(url) as resp:
+        inventory = await resp.json()
 
     weapons_list = await get_weapon_names()
     name_set = set(weapons_list)
@@ -78,10 +82,10 @@ async def get_weapon_count(ccid: str) -> int:
 async def get_class_count(ccid: str) -> int:
     url = f"{AQW_INVENTORY}{ccid}"
 
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url) as resp:
-            resp.raise_for_status()
-            inventory = await resp.json()
+    session = await get_session()
+    async with session.get(url) as resp:
+        resp.raise_for_status()
+        inventory = await resp.json()
 
     unique_classes: set[str] = set()
 
@@ -97,9 +101,9 @@ async def get_class_count(ccid: str) -> int:
 async def get_epic_badges(ccid: str) -> int:
     url = f"{AQW_BADGES}{ccid}"
 
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url) as resp:
-            badges = await resp.json()
+    session = await get_session()
+    async with session.get(url) as resp:
+        badges = await resp.json()
 
     return sum(1 for badge in badges if badge["sCategory"] == "Epic Hero")
 
@@ -107,10 +111,10 @@ async def get_epic_badges(ccid: str) -> int:
 async def get_total_badges(ccid: str) -> int:
     url = f"{AQW_BADGES}{ccid}"
 
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url) as resp:
-            resp.raise_for_status()
-            badges = await resp.json()
+    session = await get_session()
+    async with session.get(url) as resp:
+        resp.raise_for_status()
+        badges = await resp.json()
 
     return len(badges)
 
@@ -118,10 +122,10 @@ async def get_total_badges(ccid: str) -> int:
 async def founder_check(ccid: str) -> bool:
     url = f"{AQW_BADGES}{ccid}"
 
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url) as resp:
-            resp.raise_for_status()
-            badges = await resp.json()
+    session = await get_session()
+    async with session.get(url) as resp:
+        resp.raise_for_status()
+        badges = await resp.json()
 
     return any(
         badge.get("sTitle") == "Founder" and badge.get("sCategory") == "Legendary"
@@ -135,36 +139,32 @@ async def get_whale_badges(ccid: str) -> dict[str, int | bool]:
     pet_badges = {"15 Years Played", "AC Loyalty", "Member Loyalty"}
     ioda = await check_for_ioda(ccid)
     gifting_2021 = False
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url) as resp:
-            badges = await resp.json()
-            whale_badges = sum(
-                1 for badge in badges if badge["sCategory"] in badge_categories
+    session = await get_session()
+    async with session.get(url) as resp:
+        badges = await resp.json()
+        whale_badges = sum(
+            1 for badge in badges if badge["sCategory"] in badge_categories
+        )
+        upholder_badges = sum(1 for badge in badges if "Upholder" in badge["sTitle"])
+        platinum_badges = sum(1 for badge in badges if badge["sTitle"] in pet_badges)
+        gifting_badges = sum(
+            1 for badge in badges if "giftingtier7" in badge["sFileName"]
+        )
+        lower_gifting = any(
+            "giftingtier4" in badge.get("sFileName", "") for badge in badges
+        )
+        medium_gifting = any(
+            "giftingtier5" in badge.get("sFileName", "") for badge in badges
+        )
+        gifting_2021 = any(
+            any(
+                tier in badge.get("sFileName", "").lower()
+                for tier in ("giftingtier3r1", "giftingtier4r1")
             )
-            upholder_badges = sum(
-                1 for badge in badges if badge["sCategory"] == "Upholder"
-            )
-            platinum_badges = sum(
-                1 for badge in badges if badge["sTitle"] in pet_badges
-            )
-            gifting_badges = sum(
-                1 for badge in badges if "giftingtier7" in badge["sFileName"]
-            )
-            lower_gifting = any(
-                "giftingtier4" in badge.get("sFileName", "") for badge in badges
-            )
-            medium_gifting = any(
-                "giftingtier5" in badge.get("sFileName", "") for badge in badges
-            )
-            gifting_2021 = any(
-                any(
-                    tier in badge.get("sFileName", "").lower()
-                    for tier in ("giftingtier3r1", "giftingtier4r1")
-                )
-                for badge in badges
-            )
-            if gifting_2021:
-                gifting_badges += 1
+            for badge in badges
+        )
+        if gifting_2021:
+            gifting_badges += 1
 
     return {
         "whale_badges": whale_badges,
@@ -272,10 +272,10 @@ def sort_badges(badges: list[str]) -> list[str]:
 async def check_for_ioda(ccid: str) -> bool:
     url = f"{AQW_INVENTORY}{ccid}"
 
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url) as resp:
-            resp.raise_for_status()
-            inventory = await resp.json()
+    session = await get_session()
+    async with session.get(url) as resp:
+        resp.raise_for_status()
+        inventory = await resp.json()
 
     return any(
         "Item of Digital Awesomeness" in item.get("strName") for item in inventory

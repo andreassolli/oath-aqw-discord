@@ -59,6 +59,7 @@ BADGES = [
     "Class Collector",
     "Achievement Badges",
     "Epic Journey",
+    "Whale",
     "AQW Founder",
 ]
 

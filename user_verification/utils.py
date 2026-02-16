@@ -1,11 +1,12 @@
+import asyncio
 import re
 from datetime import datetime
 from typing import TypedDict
 
-import aiohttp
 import discord
 
 from config import AQW_CHAR_PAGE, INITIATE_ROLE_ID, STRANGER_ROLE_ID, UNSWORN_ROLE_ID
+from http_client import get_session
 
 
 class AQWProfile(TypedDict):
@@ -13,28 +14,37 @@ class AQWProfile(TypedDict):
     guild: str
 
 
-async def fetch_aqw_profile(username: str) -> AQWProfile:
+async def fetch_aqw_profile(username: str) -> AQWProfile | None:
     url = f"{AQW_CHAR_PAGE}{username}"
 
-    async with aiohttp.ClientSession() as session:
+    session = await get_session()
+
+    for attempt in range(3):  # retry up to 3 times
         async with session.get(url) as resp:
             html = await resp.text()
 
-    match_ccid = re.search(r"var\s+ccid\s*=\s*(\d+)\s*;", html)
+        print(f"{url} : {resp.status}")
 
-    if not match_ccid:
-        raise ValueError("ccid not found")
+        if resp.status == 429:
+            print("Rate limited. Waiting before retry...")
+            await asyncio.sleep(30)  # wait 30 seconds
+            continue
 
-    ccid = match_ccid.group(1)
+        if resp.status != 200:
+            return None
 
-    match_guild = re.search(r"&amp;guild=([^&]+)", html)
+        match_ccid = re.search(r"var\s+ccid\s*=\s*(\d+)\s*;", html)
+        if not match_ccid:
+            return None
 
-    if not match_guild:
-        guild = ""
-    else:
-        guild = match_guild.group(1)
+        ccid = match_ccid.group(1)
 
-    return {"ccid": ccid, "guild": guild}
+        match_guild = re.search(r"&amp;guild=([^&]+)", html)
+        guild = match_guild.group(1) if match_guild else ""
+
+        return {"ccid": ccid, "guild": guild}
+
+    return None  # after retries
 
 
 async def change_roles(

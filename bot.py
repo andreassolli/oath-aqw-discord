@@ -5,6 +5,7 @@ import discord
 from discord.ext import commands
 
 from config import APPLICATION_ID
+from http_client import close_session
 from startup import run_startup_tasks
 
 logging.basicConfig(level=logging.INFO)
@@ -33,6 +34,11 @@ async def on_ready():
 
     if bot.user:
         print(f"Logged in as {bot.user} (ID: {bot.user.id})")
+
+
+@bot.event
+async def on_close():
+    await close_session()
 
 
 async def main():

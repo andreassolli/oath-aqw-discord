@@ -1,15 +1,20 @@
-from multiprocessing.spawn import old_main_modules
+import asyncio
 from typing import Any, Dict, cast
+from urllib.parse import quote
 
 import discord
 from discord import app_commands
-from discord.app_commands.models import app_command_option_factory
 from discord.ext import commands
-from discord.types.command import ApplicationCommand
 from google.cloud import firestore
 from google.cloud.firestore import DocumentSnapshot
 
-from config import DISCORD_MANAGER_ROLE_ID, OATHSWORN_ROLE_ID
+from config import (
+    DISCORD_MANAGER_ROLE_ID,
+    INITIATE_ROLE_ID,
+    OATHSWORN_ROLE_ID,
+    STRANGER_ROLE_ID,
+    UNSWORN_ROLE_ID,
+)
 from firebase_client import db
 from user_verification.process_join_ticket import process_join_ticket
 from user_verification.utils import fetch_aqw_profile
@@ -36,17 +41,21 @@ class VerificationCog(commands.Cog):
         await interaction.response.defer(ephemeral=True)
 
         users_ref = db.collection("users")
-        docs = (
-            users_ref.where("verified", "==", True).where("guild", "==", guild).stream()
-        )
+        docs = users_ref.where("verified", "==", True).stream()
+
+        guild_lower = guild.lower()
+
+        filtered_docs = [
+            doc for doc in docs if doc.to_dict().get("guild", "").lower() == guild_lower
+        ]
 
         members = []
-        for doc in docs:
+        for doc in filtered_docs:
             data = doc.to_dict()
             aqw_username = data.get("aqw_username", "Unknown")
-            discord_id = data.get("discord_id")
+            discord_id = doc.id
             if discord_id:
-                members.append(f"{aqw_username} (ID: {discord_id})")
+                members.append(f"{aqw_username}")
 
         if not members:
             return await interaction.followup.send(
@@ -69,8 +78,9 @@ class VerificationCog(commands.Cog):
         guild_counts: Dict[str, int] = {}
         for doc in docs:
             data = doc.to_dict()
-            guild = data.get("guild", "Unknown")
-            guild_counts[guild] = guild_counts.get(guild, 0) + 1
+            guild = data.get("guild", "")
+            if guild != "":
+                guild_counts[guild] = guild_counts.get(guild, 0) + 1
 
         if not guild_counts:
             return await interaction.followup.send(
@@ -97,7 +107,7 @@ class VerificationCog(commands.Cog):
         updated_count = 0
         for doc in docs:
             data = doc.to_dict()
-            discord_id = data.get("discord_id")
+            discord_id = doc.id
             aqw_username = data.get("aqw_username")
 
             if not discord_id or not aqw_username:
@@ -213,6 +223,129 @@ class VerificationCog(commands.Cog):
             discord_id=data["discord_id"],
             ign=data["ign"],
             status="rejected",
+        )
+
+    @app_commands.command(
+        name="mass-verify",
+        description="Force verify all users based on their nicknames",
+    )
+    @app_commands.checks.has_role(DISCORD_MANAGER_ROLE_ID)
+    async def mass_verify(self, interaction: discord.Interaction):
+        await interaction.response.defer(ephemeral=True)
+
+        guild = interaction.guild
+        if not guild:
+            return await interaction.followup.send(
+                "❌ This command can only be used within a server.",
+                ephemeral=True,
+            )
+        initiate_role = guild.get_role(INITIATE_ROLE_ID)
+        unsworn_role = guild.get_role(UNSWORN_ROLE_ID)
+        stranger_role = guild.get_role(STRANGER_ROLE_ID)
+
+        if not guild:
+            return await interaction.followup.send(
+                "❌ This command can only be used within a server.",
+                ephemeral=True,
+            )
+
+        members = guild.members
+        verified_count = 0
+        failed_count = 0
+        failed_members = []
+        roles_to_check = {INITIATE_ROLE_ID, UNSWORN_ROLE_ID}
+        sleep = 2
+
+        async def handle_failed_verification(member: discord.Member):
+            roles_to_remove = []
+
+            if initiate_role and initiate_role in member.roles:
+                roles_to_remove.append(initiate_role)
+
+            if unsworn_role and unsworn_role in member.roles:
+                roles_to_remove.append(unsworn_role)
+
+            try:
+                if roles_to_remove:
+                    await member.remove_roles(
+                        *roles_to_remove, reason="Failed AQW verification"
+                    )
+
+                if stranger_role and stranger_role not in member.roles:
+                    await member.add_roles(
+                        stranger_role, reason="Failed AQW verification"
+                    )
+
+            except discord.Forbidden:
+                print(f"Missing permissions to modify roles for {member}")
+            except Exception as e:
+                print(f"Error modifying roles for {member}: {e}")
+
+        for member in members:
+            if member.bot:
+                continue
+            member_role_ids = {role.id for role in member.roles}
+
+            if not member_role_ids.intersection(roles_to_check):
+                continue
+
+            original_name = member.nick or member.name
+            encoded_name = quote(original_name, safe="")
+            print(f"Attempting to verify {original_name}")
+            try:
+                profile = await fetch_aqw_profile(encoded_name)
+                await asyncio.sleep(sleep)
+            except ValueError:
+                print(f"ValueError while verifying {original_name}")
+                await handle_failed_verification(member)
+                print(
+                    f"Removing roles from {original_name} due to verification failure"
+                )
+                failed_count += 1
+                failed_members.append(original_name)
+                await asyncio.sleep(sleep)
+                continue
+            except Exception as e:
+                print(f"Unexpected error verifying {original_name}: {e}")
+                await handle_failed_verification(member)
+                print(
+                    f"Removing roles from {original_name} due to verification failure"
+                )
+                failed_count += 1
+                failed_members.append(original_name)
+                await asyncio.sleep(sleep)
+                continue
+
+            if profile:
+                user_ref = db.collection("users").document(str(member.id))
+                user_ref.set(
+                    {
+                        "aqw_username": original_name,
+                        "ccid": profile["ccid"],
+                        "guild": profile["guild"],
+                        "verified": True,
+                        "verified_at": discord.utils.utcnow(),
+                    },
+                    merge=True,
+                )
+                verified_count += 1
+            else:
+                print(f"Could not verify {original_name}")
+                await handle_failed_verification(member)
+
+                print(
+                    f"Removing roles from {original_name} due to verification failure"
+                )
+
+                failed_count += 1
+                failed_members.append(original_name)
+                await asyncio.sleep(sleep)
+
+        await interaction.followup.send(
+            f"✅ Mass verification complete.\n"
+            f"Verified: {verified_count} users\n"
+            f"Failed: {failed_count} users (no matching AQW profile found)",
+            ephemeral=True,
         )
 
     @app_commands.command(name="force-verify", description="Force verify a user")
