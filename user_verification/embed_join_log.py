@@ -10,6 +10,7 @@ def build_join_log_embed(
     ign: str,
     handled_by_id: int,
     status: str,  # "approved" or "declined"
+    server: str | None = None,
 ):
     target_member = guild.get_member(discord_id)
     handler_member = guild.get_member(handled_by_id)
@@ -38,6 +39,8 @@ def build_join_log_embed(
     embed.add_field(name="User", value=target_display, inline=True)
     embed.add_field(name="IGN", value=ign, inline=True)
     embed.add_field(name="Handled by", value=handler_display, inline=True)
+    if server:
+        embed.add_field(name="Server", value=server, inline=True)
 
     embed.set_footer(text=f"Discord ID: {discord_id}")
 

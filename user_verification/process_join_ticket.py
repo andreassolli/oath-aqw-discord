@@ -12,20 +12,45 @@ from .utils import change_roles, fetch_aqw_profile
 async def process_join_ticket(
     *,
     interaction: discord.Interaction,
-    discord_id: int,
-    ign: str,
-    status: str,  # "approved" or "declined"
+    status: str,
 ):
+
     guild = interaction.guild
-    if guild is None:
-        return
-
     channel = interaction.channel
-    if not isinstance(channel, discord.TextChannel):
+
+    if guild is None or not isinstance(channel, discord.TextChannel):
         return
 
+    #
+    # FETCH TICKET USING CHANNEL ID
+    #
+    ticket_query = (
+        db.collection("join_tickets")
+        .where("channel_id", "==", channel.id)
+        .limit(1)
+        .stream()
+    )
+
+    ticket_doc = next(ticket_query, None)
+
+    if ticket_doc is None:
+        await interaction.followup.send(
+            "❌ No join ticket found for this channel.",
+            ephemeral=True,
+        )
+        return
+
+    ticket = ticket_doc.to_dict()
+
+    discord_id = ticket["discord_id"]
+    ign = ticket["ign"]
+
+    #
+    # APPROVAL LOGIC
+    #
     if status == "approved":
         profile = await fetch_aqw_profile(ign)
+
         ccid = profile["ccid"]
         guild_name = profile["guild"]
 
@@ -37,6 +62,7 @@ async def process_join_ticket(
             return
 
         member = guild.get_member(discord_id)
+
         if member:
             await member.edit(nick=ign)
             await change_roles(member, is_join_event=True)
@@ -52,7 +78,9 @@ async def process_join_ticket(
             merge=True,
         )
 
-    # 🔥 Logging
+    #
+    # LOG ACTION
+    #
     log_channel = guild.get_channel(TICKET_LOG_CHANNEL_ID)
 
     if isinstance(log_channel, discord.TextChannel):
@@ -63,15 +91,31 @@ async def process_join_ticket(
             handled_by_id=interaction.user.id,
             status=status,
         )
+
         await log_channel.send(embed=embed)
 
-    # Cleanup
-    db.collection("join_tickets").document(str(channel.id)).delete()
+    #
+    # DELETE FIRESTORE TICKET
+    #
+    ticket_doc.reference.delete()
 
+    #
+    # USER FEEDBACK
+    #
     await interaction.followup.send(
         f"Join request {status}. Channel closing in 10 seconds.",
         ephemeral=True,
     )
 
+    #
+    # DELETE CHANNEL
+    #
     await asyncio.sleep(10)
-    await channel.delete()
+
+    try:
+        await channel.delete(reason=f"Join request {status}")
+    except discord.Forbidden:
+        await interaction.followup.send(
+            "⚠️ Missing permission to delete ticket channel.",
+            ephemeral=True,
+        )

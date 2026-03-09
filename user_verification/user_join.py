@@ -1,10 +1,11 @@
 import asyncio
 from typing import Any, Dict, cast
+from urllib.parse import quote
 
 import discord
 from google.cloud import firestore
 
-from config import TICKET_LOG_CHANNEL_ID
+from config import OFFICER_ROLE_ID, TICKET_LOG_CHANNEL_ID
 from firebase_client import db
 from user_verification.embed_join_log import build_join_log_embed
 from user_verification.utils import change_roles, fetch_aqw_profile
@@ -17,19 +18,34 @@ class DidUserJoinView(discord.ui.View):
         self.ign = ign
 
     @discord.ui.button(
-        label="Yes - User Joined",
+        label="✅ User joined",
         style=discord.ButtonStyle.green,
         custom_id="join_ticket_yes",
     )
     async def yes(self, interaction: discord.Interaction, _):
+        user = interaction.user
+        if not isinstance(user, discord.Member):
+            return
+        if not any(role.id == OFFICER_ROLE_ID for role in user.roles):
+            await interaction.response.send_message(
+                "❌ You are not allowed to use this button.", ephemeral=True
+            )
+            return
+
         await interaction.response.defer()
-        channel = interaction.channel
-        if not isinstance(channel, discord.TextChannel):
+        ticket_channel = interaction.channel
+        encoded_name = quote(self.ign, safe="")
+        if not isinstance(ticket_channel, discord.TextChannel):
             return await interaction.followup.send(
                 "❌ This action must be used inside a ticket channel.",
                 ephemeral=True,
             )
-        profile = await fetch_aqw_profile(self.ign)
+        profile = await fetch_aqw_profile(encoded_name)
+        if profile is None:
+            return await interaction.followup.send(
+                "❌ Could not find a profile for that username.",
+                ephemeral=True,
+            )
         ccid = profile["ccid"]
         guild = profile["guild"]
 
@@ -73,7 +89,17 @@ class DidUserJoinView(discord.ui.View):
                 updates["previous_igns"] = firestore.ArrayUnion([old_ign])
 
         user_ref.set(updates, merge=True)
-        db.collection("join_tickets").document(str(channel.id)).delete()
+        channel_id = ticket_channel.id
+
+        docs = list(
+            db.collection("join_tickets")
+            .where("channel_id", "==", channel_id)
+            .limit(1)
+            .stream()
+        )
+
+        if docs:
+            docs[0].reference.delete()
 
         guild = interaction.guild
         if guild is None:
@@ -107,25 +133,42 @@ class DidUserJoinView(discord.ui.View):
         )
 
         await asyncio.sleep(10)
-        channel = interaction.channel
-        if isinstance(channel, discord.TextChannel):
-            await channel.delete()
+
+        await ticket_channel.delete()
 
     @discord.ui.button(
-        label="No - User Did Not Join",
+        label="❌ User did not join",
         style=discord.ButtonStyle.red,
         custom_id="join_ticket_no",
     )
     async def no(self, interaction: discord.Interaction, _):
+        user = interaction.user
+        if not isinstance(user, discord.Member):
+            return
+        if not any(role.id == OFFICER_ROLE_ID for role in user.roles):
+            await interaction.response.send_message(
+                "❌ You are not allowed to use this button.", ephemeral=True
+            )
+            return
         await interaction.response.defer()
-        channel = interaction.channel
-        if not isinstance(channel, discord.TextChannel):
+        ticket_channel = interaction.channel
+        if not isinstance(ticket_channel, discord.TextChannel):
             return await interaction.followup.send(
                 "❌ This action must be used inside a ticket channel.",
                 ephemeral=True,
             )
 
-        db.collection("join_tickets").document(str(channel.id)).delete()
+        channel_id = ticket_channel.id
+
+        docs = list(
+            db.collection("join_tickets")
+            .where("channel_id", "==", channel_id)
+            .limit(1)
+            .stream()
+        )
+
+        if docs:
+            docs[0].reference.delete()
 
         guild = interaction.guild
         if guild is None:
@@ -152,5 +195,63 @@ class DidUserJoinView(discord.ui.View):
 
         await asyncio.sleep(10)
 
-        if isinstance(channel, discord.TextChannel):
-            await channel.delete()
+        await ticket_channel.delete()
+
+    @discord.ui.button(
+        label="🔍 Details",
+        style=discord.ButtonStyle.blurple,
+        custom_id="join_ticket_details",
+    )
+    async def details(self, interaction: discord.Interaction, _):
+        user = interaction.user
+        if not isinstance(user, discord.Member):
+            return
+        if not any(role.id == OFFICER_ROLE_ID for role in user.roles):
+            return await interaction.response.send_message(
+                "❌ You do not have permission to use this command.",
+                ephemeral=True,
+            )
+
+        channel_id = str(interaction.channel_id)
+
+        query = (
+            db.collection("join_tickets")
+            .where("channel_id", "==", channel_id)
+            .limit(1)
+            .get()
+        )
+
+        docs = list(query)
+
+        if not docs:
+            return await interaction.response.send_message(
+                "❌ This button can only be used inside a ticket.",
+                ephemeral=True,
+            )
+
+        ticket = docs[0].to_dict()
+
+        if not ticket:
+            return await interaction.response.send_message(
+                "❌ This ticket does not exist.",
+                ephemeral=True,
+            )
+
+        embed = discord.Embed(
+            title="Join Ticket Info",
+            color=discord.Color.blurple(),
+        )
+
+        moosefish = "✅" if ticket["derp_moosefish"] else "❌"
+        you_mad_bro = "✅" if ticket["you_mad_bro"] else "❌"
+
+        embed.add_field(name="IGN", value=ticket["ign"], inline=True)
+        embed.add_field(name="Level", value=ticket["level"], inline=True)
+
+        embed.add_field(name="Total Badges", value=ticket["total_badges"], inline=True)
+        embed.add_field(name="Epic", value=ticket["epic_badges"], inline=True)
+
+        embed.add_field(name="Moosefish", value=moosefish, inline=True)
+        embed.add_field(name="You Mad Bro", value=you_mad_bro, inline=True)
+
+        await interaction.response.send_message(embed=embed, ephemeral=True)

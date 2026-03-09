@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Optional
 
 import discord
@@ -24,6 +25,7 @@ def build_logging_embed(
     requester_after: int,
     helper_changes: dict[int, tuple[int, int]],
     id: int,
+    drops: Optional[str] = None,
 ) -> discord.Embed:
     """
     Pure embed builder.
@@ -36,6 +38,7 @@ def build_logging_embed(
     embed = discord.Embed(
         title=title,
         color=discord.Color.red() if cancelled else discord.Color.blurple(),
+        timestamp=datetime.fromisoformat(str(created_at)),
     )
 
     # ---- Requester ----
@@ -64,10 +67,13 @@ def build_logging_embed(
     if type == "spamming" and total_kills:
         embed.add_field(name="Total Kills", value=total_kills, inline=True)
 
+    if type == "until drop" and drops:
+        embed.add_field(name="Drop Rates", value="%, ".join(drops), inline=True)
+
     if not cancelled and points is not None:
         embed.add_field(name="Base Points", value=str(points), inline=True)
 
-    embed.add_field(name="Type", value=type, inline=True)
+    embed.add_field(name="Type", value=type.capitalize(), inline=True)
 
     # ---- Helpers ----
     if claimers:
@@ -91,6 +97,6 @@ def build_logging_embed(
 
     embed.add_field(name="Helpers", value=helpers_value, inline=False)
 
-    embed.set_footer(text=f"Created: {created_at}")
+    embed.set_footer(text=f"Created")
 
     return embed

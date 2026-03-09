@@ -17,6 +17,32 @@ from ticket_help.tickets.views import TicketActionView
 
 
 @app_commands.command(
+    name="clear-active-ticket", description="Clear active ticket for a user"
+)
+async def clear_active_ticket_command(
+    interaction: discord.Interaction,
+    user: discord.Member | None = None,
+):
+    if not has_admin_role(interaction):
+        return await interaction.response.send_message(
+            "🚫 You do not have permission to use this command.",
+            ephemeral=True,
+        )
+
+    if not user:
+        return await interaction.response.send_message(
+            "🚫 User not specified.",
+            ephemeral=True,
+        )
+
+    clear_active_ticket(user.id)
+    await interaction.response.send_message(
+        f"✅ Active ticket cleared for {user.mention}.",
+        ephemeral=True,
+    )
+
+
+@app_commands.command(
     name="cancel-ticket", description="Force cancel a ticket with confirmation"
 )
 async def cancel_ticket_command(

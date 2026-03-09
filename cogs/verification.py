@@ -12,6 +12,7 @@ from config import (
     DISCORD_MANAGER_ROLE_ID,
     INITIATE_ROLE_ID,
     OATHSWORN_ROLE_ID,
+    OFFICER_ROLE_ID,
     STRANGER_ROLE_ID,
     UNSWORN_ROLE_ID,
 )
@@ -30,6 +31,54 @@ class VerificationCog(commands.Cog):
     async def on_ready(self):
         await self.bot.wait_until_ready()
         await setup_verification_panel(self.bot)
+
+    @app_commands.command(name="application-info", description="Show ticket info")
+    @app_commands.checks.has_role(OFFICER_ROLE_ID)
+    async def info(self, interaction: discord.Interaction):
+
+        channel_id = str(interaction.channel_id)
+
+        query = (
+            db.collection("join_tickets")
+            .where("channel_id", "==", channel_id)
+            .limit(1)
+            .get()
+        )
+
+        docs = list(query)
+
+        if not docs:
+            return await interaction.response.send_message(
+                "❌ This command can only be used inside a ticket.",
+                ephemeral=True,
+            )
+
+        ticket = docs[0].to_dict()
+
+        if not ticket:
+            return await interaction.response.send_message(
+                "❌ This ticket does not exist.",
+                ephemeral=True,
+            )
+
+        embed = discord.Embed(
+            title="Join Ticket Info",
+            color=discord.Color.blurple(),
+        )
+
+        moosefish = "✅" if ticket["derp_moosefish"] else "❌"
+        you_mad_bro = "✅" if ticket["you_mad_bro"] else "❌"
+
+        embed.add_field(name="IGN", value=ticket["ign"], inline=True)
+        embed.add_field(name="Level", value=ticket["level"], inline=True)
+
+        embed.add_field(name="Total Badges", value=ticket["total_badges"], inline=True)
+        embed.add_field(name="Epic", value=ticket["epic_badges"], inline=True)
+
+        embed.add_field(name="Moosefish", value=moosefish, inline=True)
+        embed.add_field(name="You Mad Bro", value=you_mad_bro, inline=True)
+
+        await interaction.response.send_message(embed=embed, ephemeral=True)
 
     @app_commands.command(
         name="list-guild-members",

@@ -88,7 +88,7 @@ async def finalize_ticket(
 
     multiplier = MULTIPLIERS.get(ticket_type, 1)
 
-    if ticket_type == "spamming":
+    if ticket_type in {"spamming", "until drop"}:
         reward = points // 2
         reward = max(reward, 1)
     else:

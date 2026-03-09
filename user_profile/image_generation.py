@@ -6,6 +6,7 @@ from typing import Any, Dict, cast
 from discord import Member
 from PIL import Image, ImageDraw, ImageFont
 
+from config import POTW_ROLE_ID
 from firebase_client import db
 
 from .mee6_fetcher import fetch_mee6_stats
@@ -50,7 +51,7 @@ BADGE_TO_IMAGE = {
 async def generate_profile_card(
     interaction,
     target: Member,
-) -> tuple[BytesIO, list[str]]:
+) -> tuple[BytesIO, list[str], bool, bool, str, int]:
     user_id = target.id
     server_id = interaction.guild.id
     mee6 = await fetch_mee6_stats(user_id, server_id)
@@ -65,15 +66,24 @@ async def generate_profile_card(
     points = data.get("points", 0)
     tickets_claimed = data.get("tickets_claimed", 0)
     guild = str(data.get("guild", "No guild"))
+    has_been_potw = data.get("has_been_potw", False)
     users_above = db.collection("users").where("points", ">", points).stream()
-
+    is_potw = any(role.id == POTW_ROLE_ID for role in target.roles)
+    game_ref = db.collection("wordle_games").document(str(target.id))
+    game_doc = game_ref.get()
+    game_data = game_doc.to_dict() if game_doc.exists else {}
+    completed_words = game_data.get("words_completed", 0)
     rank = sum(1 for _ in users_above) + 1
+    wins = data.get("wins", 0)
 
     avatar = await fetch_avatar(target.display_avatar.url)
     avatar = circle_crop(avatar, 154)
-
-    # Paste position (x, y)
     bg.paste(avatar, (29, 21), avatar)
+
+    if is_potw:
+        potw_border = Image.open(ASSETS_DIR / "potw_border.webp").convert("RGBA")
+        potw_border = potw_border.resize((158, 168), Image.Resampling.LANCZOS)
+        bg.paste(potw_border, (27, 19), potw_border)
 
     font_big = ImageFont.truetype(FONTS_DIR / "Urbanist-Regular.ttf", 36)
     font_bold = ImageFont.truetype(FONTS_DIR / "Urbanist-Bold.ttf", 44)
@@ -83,7 +93,24 @@ async def generate_profile_card(
     font_xsmall_light = ImageFont.truetype(FONTS_DIR / "Urbanist-Light.ttf", 14)
 
     draw.text((227, 21), target.display_name, font=font_big, fill="#FFFFFF")
+    if has_been_potw:
+        name = target.display_name
+        name_x = 227
+        name_y = 21
 
+        # Measure text width
+        bbox = draw.textbbox((0, 0), name, font=font_big)
+        text_width = bbox[2] - bbox[0]
+
+        # Padding between name and flare
+        padding = 6
+
+        flare_x = int(name_x + text_width + padding)
+        flare_y = int(name_y + 6)
+
+        potw_flare = Image.open(ASSETS_DIR / "potw_flare.webp").convert("RGBA")
+        potw_flare = potw_flare.resize((28, 28), Image.Resampling.LANCZOS)
+        bg.paste(potw_flare, (flare_x, flare_y), potw_flare)
     draw.text((227, 61), guild, font=font_small, fill="#A0A0AA")
 
     if target.joined_at:
@@ -114,9 +141,11 @@ async def generate_profile_card(
         fill="#A0A0AA",
     )
 
-    draw.text((375, 167), f"{mee6['messages']} sent", font=font_xsmall, fill="#FFFFFF")
+    draw.text((375, 165), f"{mee6['messages']} sent", font=font_xsmall, fill="#FFFFFF")
 
-    draw.text((375, 197), "", font=font_xsmall, fill="#FFFFFF")
+    draw.text(
+        (375, 195), f"Wordle: {completed_words}", font=font_xsmall, fill="#FFFFFF"
+    )
 
     draw.text((237, 250), "Tickets", font=font_small, fill="#FFFFFF")
 
@@ -124,7 +153,7 @@ async def generate_profile_card(
 
     draw.text((267, 311), f"{points} points", font=font_xsmall, fill="#FFFFFF")
 
-    draw.text((375, 280), "0 wins", font=font_xsmall, fill="#FFFFFF")
+    draw.text((375, 280), f"{wins} wins", font=font_xsmall, fill="#FFFFFF")
 
     draw.text(
         (375, 311),
@@ -175,4 +204,4 @@ async def generate_profile_card(
     bg.save(buffer, format="PNG")
     buffer.seek(0)
 
-    return buffer, badges
+    return buffer, badges, is_potw, has_been_potw, target.display_name, wins

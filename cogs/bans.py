@@ -1,8 +1,11 @@
+from tokenize import blank_re
+
 import discord
 from discord import app_commands
 from discord.ext import commands
 
 from config import OATHSWORN_ROLE_ID, TICKET_LOG_CHANNEL_ID
+from extra_commands import ban_embed
 from extra_commands.ban_embed import build_ban_list_embed
 from extra_commands.bans import add_ban, get_all_bans, is_user_banned, remove_ban
 from extra_commands.log_ban_embed import build_ban_log_embed
@@ -17,10 +20,12 @@ class Bans(commands.Cog):
     @app_commands.describe(username="AQW username to check")
     @app_commands.checks.has_role(OATHSWORN_ROLE_ID)
     async def vet(self, interaction: discord.Interaction, username: str):
-
-        if is_user_banned(username):
+        user = await is_user_banned(username)
+        user = user.to_dict() if user else None
+        if user:
+            ban_reason = user.get("reason")
             await interaction.response.send_message(
-                f"⚠️ **{username}** is banned.",
+                f"⚠️ **{username}** is banned. Reason: {ban_reason}",
                 ephemeral=True,
             )
         else:
@@ -46,21 +51,22 @@ class Bans(commands.Cog):
     async def ban(
         self,
         interaction: discord.Interaction,
-        user: discord.Member | None,
+        user: discord.User | None,
         username: str,
         reason: str,
     ):
         # Prevent self-ban
+        username = username.lower()
 
         # Check if already banned
-        if is_user_banned(username):
+        if await is_user_banned(username):
             return await interaction.response.send_message(
                 "⚠️ That user is already banned.",
                 ephemeral=True,
             )
         discord_id = user.id if user else None
         # Add ban
-        add_ban(
+        await add_ban(
             discord_id=discord_id,
             username=username,
             reason=reason,
@@ -100,7 +106,7 @@ class Bans(commands.Cog):
         interaction: discord.Interaction,
         username: str,
     ):
-        success = remove_ban(username)
+        success = await remove_ban(username)
 
         if not success:
             return await interaction.response.send_message(

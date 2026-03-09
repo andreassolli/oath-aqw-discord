@@ -1,12 +1,17 @@
 import csv
+from datetime import timedelta
 from io import BytesIO, StringIO
 from typing import Any
 
 import aiohttp
+import discord
+from google.cloud.firestore_v1 import FieldFilter
 from PIL import Image, ImageDraw
 
 from config import AQW_BADGES, AQW_INVENTORY, WEAPON_SHEET
+from firebase_client import db
 from http_client import get_session
+from request_utils import rate_limited_get_json
 
 _weapon_name_cache: set[str] | None = None
 
@@ -19,11 +24,21 @@ def ordinal(n: int) -> str:
     return f"{n}{suffix}"
 
 
+async def fetch_badges(ccid: str) -> list[dict]:
+    url = f"{AQW_BADGES}{ccid}"
+    return await rate_limited_get_json(url)
+
+
+async def fetch_inventory(ccid: str) -> list[dict]:
+    url = f"{AQW_INVENTORY}{ccid}"
+    return await rate_limited_get_json(url)
+
+
 async def fetch_avatar(url: str) -> Image.Image:
     timeout = aiohttp.ClientTimeout(total=10)
 
     session = await get_session()
-    async with session.get(url) as resp:
+    async with session.get(url, timeout=timeout) as resp:
         if resp.status != 200:
             raise RuntimeError(f"Avatar fetch failed: {resp.status}")
 
@@ -64,13 +79,7 @@ async def get_weapon_names() -> set[str]:
     return _weapon_name_cache
 
 
-async def get_weapon_count(ccid: str) -> int:
-    url = f"{AQW_INVENTORY}{ccid}"
-
-    session = await get_session()
-    async with session.get(url) as resp:
-        inventory = await resp.json()
-
+async def calculate_weapon_count(inventory: list[dict]) -> int:
     weapons_list = await get_weapon_names()
     name_set = set(weapons_list)
     if _weapon_name_cache:
@@ -79,13 +88,7 @@ async def get_weapon_count(ccid: str) -> int:
     return sum(1 for item in inventory if item["strName"] in name_set)
 
 
-async def get_class_count(ccid: str) -> int:
-    url = f"{AQW_INVENTORY}{ccid}"
-
-    session = await get_session()
-    async with session.get(url) as resp:
-        resp.raise_for_status()
-        inventory = await resp.json()
+async def calculate_class_count(inventory: list[dict]) -> int:
 
     unique_classes: set[str] = set()
 
@@ -98,73 +101,60 @@ async def get_class_count(ccid: str) -> int:
     return len(unique_classes)
 
 
-async def get_epic_badges(ccid: str) -> int:
-    url = f"{AQW_BADGES}{ccid}"
-
-    session = await get_session()
-    async with session.get(url) as resp:
-        badges = await resp.json()
-
-    return sum(1 for badge in badges if badge["sCategory"] == "Epic Hero")
+def calculate_epic_badges(badges: list[dict]) -> int:
+    return sum(1 for badge in badges if badge.get("sCategory") == "Epic Hero")
 
 
-async def get_total_badges(ccid: str) -> int:
-    url = f"{AQW_BADGES}{ccid}"
-
-    session = await get_session()
-    async with session.get(url) as resp:
-        resp.raise_for_status()
-        badges = await resp.json()
-
+def calculate_total_badges(badges: list[dict]) -> int:
     return len(badges)
 
 
-async def founder_check(ccid: str) -> bool:
-    url = f"{AQW_BADGES}{ccid}"
+def calculate_founder(badges: list[dict]) -> bool:
 
-    session = await get_session()
-    async with session.get(url) as resp:
-        resp.raise_for_status()
-        badges = await resp.json()
+    founder_titles = {"Founder", "Beta Tester"}
 
     return any(
-        badge.get("sTitle") == "Founder" and badge.get("sCategory") == "Legendary"
+        badge.get("sCategory") == "Legendary" and badge.get("sTitle") in founder_titles
         for badge in badges
     )
 
 
-async def get_whale_badges(ccid: str) -> dict[str, int | bool]:
-    url = f"{AQW_BADGES}{ccid}"
+def calculate_whale_badges(badges: list[dict]) -> dict:
+
     badge_categories = {"HeroMart", "Support", "Exclusive"}
+
     pet_badges = {"15 Years Played", "AC Loyalty", "Member Loyalty"}
-    ioda = await check_for_ioda(ccid)
-    gifting_2021 = False
-    session = await get_session()
-    async with session.get(url) as resp:
-        badges = await resp.json()
-        whale_badges = sum(
-            1 for badge in badges if badge["sCategory"] in badge_categories
-        )
-        upholder_badges = sum(1 for badge in badges if "Upholder" in badge["sTitle"])
-        platinum_badges = sum(1 for badge in badges if badge["sTitle"] in pet_badges)
-        gifting_badges = sum(
-            1 for badge in badges if "giftingtier7" in badge["sFileName"]
-        )
-        lower_gifting = any(
-            "giftingtier4" in badge.get("sFileName", "") for badge in badges
-        )
-        medium_gifting = any(
-            "giftingtier5" in badge.get("sFileName", "") for badge in badges
-        )
-        gifting_2021 = any(
-            any(
-                tier in badge.get("sFileName", "").lower()
-                for tier in ("giftingtier3r1", "giftingtier4r1")
-            )
-            for badge in badges
-        )
-        if gifting_2021:
-            gifting_badges += 1
+
+    whale_badges = sum(
+        1 for badge in badges if badge.get("sCategory") in badge_categories
+    )
+
+    upholder_badges = sum(
+        1 for badge in badges if "Upholder" in badge.get("sTitle", "")
+    )
+
+    platinum_badges = sum(1 for badge in badges if badge.get("sTitle") in pet_badges)
+
+    gifting_badges = sum(
+        1 for badge in badges if "giftingtier7" in badge.get("sFileName", "")
+    )
+
+    lower_gifting = any(
+        "giftingtier4" in badge.get("sFileName", "") for badge in badges
+    )
+
+    medium_gifting = any(
+        "giftingtier5" in badge.get("sFileName", "") for badge in badges
+    )
+
+    gifting_2021 = any(
+        tier in badge.get("sFileName", "").lower()
+        for badge in badges
+        for tier in ("giftingtier3r1", "giftingtier4r1")
+    )
+
+    if gifting_2021:
+        gifting_badges += 1
 
     return {
         "whale_badges": whale_badges,
@@ -173,7 +163,6 @@ async def get_whale_badges(ccid: str) -> dict[str, int | bool]:
         "gifting_badges": gifting_badges,
         "lower_gifting": lower_gifting,
         "medium_gifting": medium_gifting,
-        "ioda": ioda,
     }
 
 
@@ -222,13 +211,29 @@ def get_badge_category(badge_name: str) -> str | None:
     return None
 
 
-async def get_category_counts(ccid: str) -> dict[str, int | bool]:
+async def get_badge_stats(ccid: str) -> dict:
+
+    badges = await fetch_badges(ccid)
+
+    whale = calculate_whale_badges(badges)
+
     return {
-        "51% Weapons": await get_weapon_count(ccid),
-        "Epic Journey": await get_epic_badges(ccid),
-        "Achievement Badges": await get_total_badges(ccid),
-        "Class Collector": await get_class_count(ccid),
-        "Whale": (await get_whale_badges(ccid))["whale_badges"],
+        "total_badges": calculate_total_badges(badges),
+        "epic_badges": calculate_epic_badges(badges),
+        "founder": calculate_founder(badges),
+        **whale,
+    }
+
+
+async def get_inventory_stats(ccid: str) -> dict:
+
+    inventory = await fetch_inventory(ccid)
+
+    class_count = await calculate_class_count(inventory)
+
+    return {
+        "total_items": len(inventory),
+        "unique_classes": class_count,
     }
 
 
@@ -269,30 +274,27 @@ def sort_badges(badges: list[str]) -> list[str]:
     return sorted(badges, key=badge_key)
 
 
-async def check_for_ioda(ccid: str) -> bool:
-    url = f"{AQW_INVENTORY}{ccid}"
-
-    session = await get_session()
-    async with session.get(url) as resp:
-        resp.raise_for_status()
-        inventory = await resp.json()
+async def check_for_ioda(inventory: list[dict]) -> bool:
 
     return any(
-        "Item of Digital Awesomeness" in item.get("strName") for item in inventory
+        "Item of Digital Awesomeness" in item.get("strName", "") for item in inventory
     )
 
 
-async def define_whale(ccid: str) -> str | None:
-    whaling = await get_whale_badges(ccid)
+def define_whale(badges: list[dict], ioda: bool) -> str | None:
+
+    whaling = calculate_whale_badges(badges)
+
     if (
         whaling["whale_badges"] >= 300
         and whaling["lower_gifting"]
         and whaling["medium_gifting"]
         and whaling["platinum_badges"] >= 2
         and (whaling["upholder_badges"] >= 8 or whaling["platinum_badges"] >= 3)
-        and whaling["ioda"]
+        and ioda
     ):
         return "Whale IV"
+
     elif (
         whaling["whale_badges"] >= 250
         and whaling["gifting_badges"] >= 1
@@ -300,13 +302,15 @@ async def define_whale(ccid: str) -> str | None:
         and whaling["upholder_badges"] >= 4
     ):
         return "Whale III"
+
     elif (
         whaling["whale_badges"] >= 200
         and whaling["gifting_badges"] >= 1
         and whaling["upholder_badges"] >= 4
     ):
         return "Whale II"
+
     elif whaling["whale_badges"] >= 150 and whaling["upholder_badges"] >= 2:
         return "Whale I"
-    else:
-        return None
+
+    return None

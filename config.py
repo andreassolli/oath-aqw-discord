@@ -13,6 +13,8 @@ def env_int(name: str) -> int:
     return int(value)
 
 
+BOT_GUY_ROLE_ID = env_int("BOT_GUY_ROLE_ID")
+EVENT_CHANNEL_ID = env_int("EVENT_CHANNEL_ID")
 TOKEN = os.getenv("DISCORD_TOKEN")
 TICKET_COUNTER_FILE = "ticket_counter.txt"
 HELPER_ROLE_ID = env_int("HELPER_ROLE_ID")
@@ -32,13 +34,19 @@ APPLICATION_ID = env_int("APPLICATION_ID")
 AQW_INVENTORY = "https://account.aq.com/CharPage/inventory?ccid="
 AQW_BADGES = "https://account.aq.com/CharPage/badges?ccid="
 AQW_CHAR_PAGE = "https://account.aq.com/CharPage?id="
+CCID_PAGE = "https://game.aq.com/game/api/charpage/fvars?id="
 TEAM_CATEGORY_ID = env_int("TEAM_CATEGORY_ID")
 OFFICER_ROLE_ID = env_int("OFFICER_ROLE_ID")
 spam_points = [15, 30, 50, 75, 105, 145, 190, 240, 295, 300]
+percentage_points = {1: 4, 2: 3, 5: 2, 0.1: 10}
 BADGE_CHANNEL_ID = env_int("BADGE_CHANNEL_ID")
 UNSWORN_ROLE_ID = env_int("UNSWORN_ROLE_ID")
 INITIATE_ROLE_ID = env_int("INITIATE_ROLE_ID")
 STRANGER_ROLE_ID = env_int("STRANGER_ROLE_ID")
+POTW_ROLE_ID = env_int("POTW_ROLE_ID")
+OFFICER_CHANNEL_ID = env_int("OFFICER_CHANNEL_ID")
+LORE_CHANNEL_ID = env_int("LORE_CHANNEL_ID")
+POTW_THREAD_ID = env_int("POTW_THREAD_ID")
 # BADGES
 FORGE_BADGE = env_int("FORGE_BADGE")
 WHALE_BADGE = env_int("WHALE_BADGE")
@@ -66,7 +74,7 @@ BADGES = [
 SPAM_CMD_CHANNEL_ID = env_int("SPAM_CMD_CHANNEL_ID")
 SPAM_BOTS_CHANNEL_ID = env_int("SPAM_BOTS_CHANNEL_ID")
 TESTING_CHANNEL_ID = env_int("TESTING_CHANNEL_ID")
-
+LOBBY_CHANNEL_ID = env_int("LOBBY_CHANNEL_ID")
 ALLOWED_COMMANDS_CHANNELS = {
     SPAM_CMD_CHANNEL_ID,
     SPAM_BOTS_CHANNEL_ID,
@@ -88,3 +96,6 @@ BOSS_TYPES: dict[str, str] = {
 
 CLASS_IMAGES_SHEET: str = os.getenv("CLASS_IMAGES_SHEET") or ""
 BANNED_LIST_CHANNEL_ID = env_int("BANNED_LIST_CHANNEL_ID")
+LEADERBOARD_HISTORY_CHANNEL_ID = env_int("LEADERBOARD_HISTORY_CHANNEL_ID")
+OATH_EVENT_CHANNEL_ID = env_int("OATH_EVENT_CHANNEL_ID")
+NEW_TICKET_CATEGORY_ID = env_int("NEW_TICKET_CATEGORY_ID")

@@ -17,10 +17,10 @@ BADGE_EMOJIS = {
     "Class Collector II": "<:classbadge:1471256107057156117>",
     "Class Collector III": "<:classbadge:1471256107057156117>",
     "Class Collector IV": "<:classbadge:1471256107057156117>",
-    "Whale I": "<:whalehd:1472707505032265918>",
-    "Whale II": "<:whalehd:1472707505032265918>",
-    "Whale III": "<:whalehd:1472707505032265918>",
-    "Whale IV": "<:whalehd:1472707505032265918>",
+    "Whale I": "<:whalehd:1473998297227333734>",
+    "Whale II": "<:whalehd:1473998297227333734>",
+    "Whale III": "<:whalehd:1473998297227333734>",
+    "Whale IV": "<:whalehd:1473998297227333734>",
     "Guild Founder": "<:oathcoin:1462999179998531614>",
     "AQW Founder": "<:aqwfounder:1471269208791978034>",
 }
@@ -29,7 +29,7 @@ BADGES_DESCRIPTIONS = {
     "51% Weapons I": "Obtain 7 unique 51% Weapons.",
     "51% Weapons II": "Obtain 15 unique 51% Weapons.",
     "51% Weapons III": "Obtain 25 unique 51% Weapons.",
-    "51% Weapons IV": "Obtain **ALL** 51% Weapons.",
+    "51% Weapons IV": "Obtain almost **ALL** (32) 51% Weapons.",
     "Epic Journey I": "Obtain 16 unique Epic Journey Badges.",
     "Epic Journey II": "Obtain 23 unique Epic Journey Badges.",
     "Epic Journey III": "Obtain 30 unique Epic Journey Badges.",
@@ -47,14 +47,25 @@ BADGES_DESCRIPTIONS = {
     "Whale III": "Obtain 250 combined Exclusive/Support/HeroMart Badges, have gifted more than 50 000 ACs during gifting event, have 4 Upholder Badges and one of the loyalty badges for either ACs, Membership or Years Played.",
     "Whale IV": "Obtain 300 combined Exclusive/Support/HeroMart Badges, an IODA in your inventory, have gifted more than 100 000 ACs during two gifting events, have 2 out of 3 of the loyalty badges, and have 8 Upholder Badges OR 3 out of 3 loyalty badges.",
     "Guild Founder": "Awarded to those who helped found or support the Oath discord server from the beginning.",
-    "AQW Founder": "Awarded to those who have the founder badge in AQW.",
+    "AQW Founder": "Awarded to those who have the founder or beta-tester badge in AQW.",
 }
 
 
 class ProfileView(discord.ui.View):
-    def __init__(self, badges: list[str]):
+    def __init__(
+        self,
+        badges: list[str],
+        is_potw: bool = False,
+        has_been_potw: bool = False,
+        name: str = "",
+        wins: int = 0,
+    ):
         super().__init__(timeout=None)
         self.badges = badges  # store badge info on the view
+        self.is_potw = is_potw
+        self.has_been_potw = has_been_potw
+        self.name = name
+        self.wins = wins
 
     @discord.ui.button(label="View badges🎖️", style=discord.ButtonStyle.primary)
     async def view_badges(
@@ -74,7 +85,24 @@ class ProfileView(discord.ui.View):
             for badge in self.badges
         )
 
+        if self.is_potw:
+            potw_text = f"👑 {self.name} is currently **Player of the Week!** \n"
+        elif self.has_been_potw:
+            potw_text = f"<:potwBadge:1476938152861241565> {self.name} has previously been **Player of the Week!** \n"
+        else:
+            potw_text = ""
+
+        if self.wins:
+            win_text = f"🏆 {self.name} finished 1st during helper competition {self.wins} time(s)! \n"
+        else:
+            win_text = ""
+
+        if win_text != "" or potw_text != "":
+            extra_text = "\n"
+        else:
+            extra_text = ""
+
         await interaction.response.send_message(
-            f"🎖️ **Badges:**\n{badge_list}",
+            f"{potw_text}{win_text}{extra_text}🎖️ **Badges:**\n{badge_list}",
             ephemeral=True,
         )

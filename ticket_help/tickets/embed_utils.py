@@ -14,6 +14,7 @@ def build_ticket_embed(
     type: str,
     server: str,
     total_kills: str,
+    drops: list[str] = [],
 ):
     requester_member = guild.get_member(requester_id)
     requester_mention = (
@@ -29,7 +30,9 @@ def build_ticket_embed(
     else:
         helpers = "—"
 
-    embed = discord.Embed(title=f"🎫 {type} Ticket", color=discord.Color.blurple())
+    embed = discord.Embed(
+        title=f"🎫 {type.capitalize()} Ticket", color=discord.Color.blurple()
+    )
 
     embed.add_field(name="Requester", value=requester_mention, inline=True)
 
@@ -41,6 +44,9 @@ def build_ticket_embed(
 
     if type == "spamming":
         embed.add_field(name="Total Kills", value=total_kills, inline=True)
+
+    if type == "until drop":
+        embed.add_field(name="Drop Rates", value="%, ".join(drops), inline=True)
 
     embed.add_field(name="Points", value=str(points), inline=True)
 

@@ -16,7 +16,7 @@ from .utils import clear_active_ticket, get_week_start
 
 class ConfirmCompleteView(discord.ui.View):
     def __init__(self, ticket_name: str):
-        super().__init__(timeout=30)
+        super().__init__(timeout=60)
         self.ticket_name = ticket_name
         self.confirmed = False
 

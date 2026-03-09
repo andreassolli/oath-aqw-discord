@@ -1,50 +1,63 @@
 import asyncio
 import re
 from datetime import datetime
-from typing import TypedDict
+from typing import Dict, TypedDict
+from urllib.parse import parse_qs
 
 import discord
 
-from config import AQW_CHAR_PAGE, INITIATE_ROLE_ID, STRANGER_ROLE_ID, UNSWORN_ROLE_ID
+from config import CCID_PAGE, INITIATE_ROLE_ID, STRANGER_ROLE_ID, UNSWORN_ROLE_ID
 from http_client import get_session
 
 
 class AQWProfile(TypedDict):
     ccid: str
-    guild: str
+    guild: str | None
+    level: int
 
 
 async def fetch_aqw_profile(username: str) -> AQWProfile | None:
-    url = f"{AQW_CHAR_PAGE}{username}"
+    url = f"{CCID_PAGE}{username}"
 
     session = await get_session()
 
-    for attempt in range(3):  # retry up to 3 times
-        async with session.get(url) as resp:
-            html = await resp.text()
+    async with session.get(url) as resp:
+        text = await resp.text()
 
-        print(f"{url} : {resp.status}")
+    data = parse_qs(text.lstrip("&"))
 
-        if resp.status == 429:
-            print("Rate limited. Waiting before retry...")
-            await asyncio.sleep(30)  # wait 30 seconds
-            continue
+    char_id = data.get("CharID", [None])[0]
+    if char_id is None:
+        return None
 
-        if resp.status != 200:
-            return None
+    level_field = data.get("intLevel", [""])[0]
 
-        match_ccid = re.search(r"var\s+ccid\s*=\s*(\d+)\s*;", html)
-        if not match_ccid:
-            return None
+    guild: str | None = None
+    level = 0
 
-        ccid = match_ccid.group(1)
+    if "---" in level_field:
+        level_str, guild = level_field.split(" --- ", 1)
+        level = int(level_str)
+        if len(guild) > 1:
+            guild = guild.split(" ")[0]
+    else:
+        level = int(level_field)
 
-        match_guild = re.search(r"&amp;guild=([^&]+)", html)
-        guild = match_guild.group(1) if match_guild else ""
+    return {
+        "ccid": char_id,
+        "level": level,
+        "guild": guild,
+    }
 
-        return {"ccid": ccid, "guild": guild}
 
-    return None  # after retries
+def check_for_bot_badges(badges: list[dict]) -> Dict[str, bool]:
+    moosefish = any(badge.get("sTitle") == "Derp Moosefish" for badge in badges)
+    mad_bro = any(badge.get("sTitle") == "You mad bro?" for badge in badges)
+
+    return {
+        "moosefish": moosefish,
+        "mad_bro": mad_bro,
+    }
 
 
 async def change_roles(

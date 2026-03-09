@@ -69,6 +69,10 @@ class TicketActionView(discord.ui.View):
         self, interaction: discord.Interaction, button: discord.ui.Button
     ):
         await interaction.response.defer(ephemeral=True)
+        if interaction.user.id == "858339466267721748":
+            return await interaction.followup.send(
+                "You are banned from using the ticket system!"
+            )
 
         doc_ref = db.collection("tickets").document(self.ticket_name)
         doc = doc_ref.get()
@@ -154,20 +158,19 @@ class TicketActionView(discord.ui.View):
         lines = []
 
         for boss in self.bosses:
-            boss_name = boss.lower()
-
-            if boss_name == "void trio":
-                lines.append(f"/join voidflibbi-{self.room}")
-                lines.append(f"/join voidnightbane-{self.room}")
-                lines.append(f"/join voidxyfrag-{self.room}")
-            elif boss_name == "deimos":
-                lines.append(f"/join deimos-{self.room}")
-            elif boss_name == "lich king":
-                lines.append(f"/join frozenlair-{self.room}")
-            elif boss_name == "the beast":
-                lines.append(f"/join sevencircleswar-{self.room}")
+            custom_tickets = {"spamming", "testing", "until drop"}
+            if data.get("type") in custom_tickets:
+                rooms = boss
             else:
-                room = get_boss_room(boss)
+                rooms = get_boss_room(boss)
+
+            if not rooms:
+                continue
+
+            # Split multiple rooms by comma
+            room_list = [r.strip() for r in rooms.split(",")]
+
+            for room in room_list:
                 lines.append(f"/join {room}-{self.room}")
 
         rooms_text = "\n".join(lines)

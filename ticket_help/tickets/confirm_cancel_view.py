@@ -12,7 +12,7 @@ from .utils import clear_active_ticket
 
 class ConfirmCancelView(discord.ui.View):
     def __init__(self, ticket_name: str, ticket_data: dict):
-        super().__init__(timeout=30)
+        super().__init__(timeout=60)
         self.ticket_name = ticket_name
         self.ticket_data = ticket_data
         self.confirmed = False

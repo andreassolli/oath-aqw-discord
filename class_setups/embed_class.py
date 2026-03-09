@@ -1,3 +1,5 @@
+from inspect import isclass
+
 import discord
 
 
@@ -7,11 +9,14 @@ def build_class_embed(
     general_loadout: dict[str, str],
     consumables: dict[str, str],
     image_url: str | None,
+    description: str | None = None,
+    is_class: bool = True,
 ) -> discord.Embed:
 
+    description = description or "**Class Enhancement Setups**"
     embed = discord.Embed(
         title=class_name,
-        description="**Class Enhancement Setups**",
+        description=description,
         color=discord.Color.blurple(),
     )
 
@@ -38,11 +43,18 @@ def build_class_embed(
         inline=False,
     )
 
-    embed.add_field(
-        name="🎯 Need this class for a specific boss?",
-        value="Click one of the buttons below for boss-specific setups!",
-        inline=False,
-    )
+    if is_class:
+        embed.add_field(
+            name="🎯 Need this class for a specific boss?",
+            value="Click one of the buttons below for boss-specific setups!",
+            inline=False,
+        )
+    else:
+        embed.add_field(
+            name=f"To summon this species do @{class_name}",
+            value="Perhaps you may be able to spot one in the wild!",
+            inline=False,
+        )
 
     if image_url:
         embed.set_image(url=image_url)

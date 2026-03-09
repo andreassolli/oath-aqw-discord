@@ -4,6 +4,7 @@ from ticket_help import setup_ticket_system
 from ticket_help.commands.admin import (
     add_boss,
     adjust_points,
+    clear_active_ticket_command,
     delete_boss,
     delete_type,
     lookup_points,
@@ -34,6 +35,7 @@ class Tickets(commands.Cog):
         tree.add_command(delete_type)
         tree.add_command(adjust_points)
         tree.add_command(remove_claimer)
+        tree.add_command(clear_active_ticket_command)
 
     @commands.Cog.listener()
     async def on_ready(self):
