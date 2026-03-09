@@ -6,8 +6,25 @@ from urllib.parse import parse_qs
 
 import discord
 
-from config import CCID_PAGE, INITIATE_ROLE_ID, STRANGER_ROLE_ID, UNSWORN_ROLE_ID
+from config import (
+    CCID_PAGE,
+    INITIATE_ROLE_ID,
+    PROXY_SERVICE,
+    STRANGER_ROLE_ID,
+    UNSWORN_ROLE_ID,
+)
 from http_client import get_session
+
+HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/122.0.0.0 Safari/537.36"
+    ),
+    "Accept": "application/json, text/plain, */*",
+    "Accept-Language": "en-US,en;q=0.9",
+    "Referer": "https://account.aq.com/CharPage",
+}
 
 
 class AQWProfile(TypedDict):
@@ -21,7 +38,7 @@ async def fetch_aqw_profile(username: str) -> AQWProfile | None:
 
     session = await get_session()
 
-    async with session.get(url) as resp:
+    async with session.get(url, headers=HEADERS, proxy=PROXY_SERVICE) as resp:
         text = await resp.text()
 
     data = parse_qs(text.lstrip("&"))
