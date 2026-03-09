@@ -5,6 +5,7 @@ from collections import deque
 
 from aiohttp import ClientResponseError
 
+from config import PROXY_SERVICE
 from http_client import get_session
 
 MAX_RETRIES = 5
@@ -56,7 +57,7 @@ async def rate_limited_get_json(url: str):
         try:
             await limiter.wait()
 
-            async with session.get(url, headers=HEADERS) as resp:
+            async with session.get(url, headers=HEADERS, proxy=PROXY_SERVICE) as resp:
                 if resp.status == 429:
                     raise ClientResponseError(
                         resp.request_info,

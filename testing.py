@@ -1,8 +1,11 @@
 import asyncio
 
+import aiohttp
+
 from extra_commands.wordle import choose_new_word
 from extra_commands.wordle_share import generate_wordle_share
 from firebase_client import db
+from request_utils import get_session
 from user_profile.utils import fetch_inventory
 from user_verification.utils import fetch_aqw_profile
 
@@ -45,6 +48,6 @@ def get_all_users():
 
 if __name__ == "__main__":
     # get_all_users()
-    choose_new_word()
+    # choose_new_word()
     # asyncio.run(backfill_ccids())
     # asyncio.run(generate_wordle_share(None, "292040660696039424"))
