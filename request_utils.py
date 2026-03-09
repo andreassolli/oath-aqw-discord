@@ -9,6 +9,17 @@ from http_client import get_session
 
 MAX_RETRIES = 5
 
+HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/122.0.0.0 Safari/537.36"
+    ),
+    "Accept": "application/json, text/plain, */*",
+    "Accept-Language": "en-US,en;q=0.9",
+    "Referer": "https://account.aq.com/CharPage",
+}
+
 
 class RollingRateLimiter:
     def __init__(self, max_requests: int, per_seconds: int):
@@ -45,7 +56,7 @@ async def rate_limited_get_json(url: str):
         try:
             await limiter.wait()
 
-            async with session.get(url) as resp:
+            async with session.get(url, headers=HEADERS) as resp:
                 if resp.status == 429:
                     raise ClientResponseError(
                         resp.request_info,
