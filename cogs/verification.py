@@ -434,6 +434,23 @@ class VerificationCog(commands.Cog):
             "verified_at": discord.utils.utcnow(),
         }
 
+        guild = interaction.guild
+        if not guild:
+            return
+        stranger_role = guild.get_role(STRANGER_ROLE_ID)
+        unsworn_role = guild.get_role(UNSWORN_ROLE_ID)
+        role = guild.get_role(INITIATE_ROLE_ID)
+        if not role or not stranger_role or not unsworn_role:
+            return
+        if profile["guild"] == "Oath":
+            await user.add_roles(role)
+            await user.remove_roles(stranger_role)
+            await user.remove_roles(unsworn_role)
+        else:
+            await user.add_roles(unsworn_role)
+            await user.remove_roles(stranger_role)
+            await user.remove_roles(role)
+
         if old_ign and old_ign != aqw_username:
             if old_ign not in previous_igns:
                 updates["previous_igns"] = firestore.ArrayUnion([old_ign])

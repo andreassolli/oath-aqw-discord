@@ -13,6 +13,7 @@ from config import (
     INITIATE_ROLE_ID,
     OATHSWORN_ROLE_ID,
 )
+from extra_commands.coinflip_accept_view import CoinflipAcceptView
 from extra_commands.memes import (
     m_bigrig,
     m_dryage,
@@ -28,6 +29,7 @@ from extra_commands.memes import (
 )
 from extra_commands.utils import (
     check_missing_badges,
+    coinflip,
     elect_potw,
     has_any_role,
     manual_leaderboard_post,
@@ -343,6 +345,62 @@ class Extra(commands.Cog):
     @app_commands.checks.has_role(BOT_GUY_ROLE_ID)
     async def manual_leaderboard_post_command(self, interaction: discord.Interaction):
         await manual_leaderboard_post(interaction)
+
+    @app_commands.command(
+        name="coinflip",
+        description="Flip a coin, either against the house or challenge someone",
+    )
+    async def coinflip(
+        self,
+        interaction: discord.Interaction,
+        call: Literal["Heads", "Tails"] | None = None,
+        opponent: discord.Member | None = None,
+    ):
+        heads = call == "Heads"
+        if opponent is None:
+            if call is None:
+                await interaction.response.send_message(
+                    "You must choose Heads or Tails when flipping against the house.",
+                    ephemeral=True,
+                )
+                return
+
+            heads = call == "Heads"
+
+            result = await coinflip(fair=False, heads=heads)
+
+            if result == call:
+                msg = f"<:oathcoin:1462999179998531614> Coin landed on **{result.capitalize()}**\nYou chose **{call.capitalize()}**\n\n🏆 You win!"
+            else:
+                msg = f"<:oathcoin:1462999179998531614> Coin landed on **{result.capitalize()}**\nYou chose **{call.capitalize()}**\n\n🏆 House wins!"
+
+            await interaction.response.send_message(msg)
+            return
+
+        if opponent == interaction.user:
+            await interaction.response.send_message(
+                "You can't challenge yourself.",
+                ephemeral=True,
+            )
+            return
+
+        if call is not None:
+            await interaction.response.send_message(
+                "You cannot call when flipping against a player. They will call themselves.",
+                ephemeral=True,
+            )
+            return
+
+        view = CoinflipAcceptView(
+            challenger=interaction.user,
+            opponent=opponent,
+        )
+
+        await interaction.response.send_message(
+            f"{opponent.mention}, {interaction.user.mention} challenged you to a coinflip!\n"
+            f"Do you accept?",
+            view=view,
+        )
 
 
 async def setup(bot: commands.Bot):

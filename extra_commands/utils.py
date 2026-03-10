@@ -1,3 +1,4 @@
+import random
 from datetime import UTC, datetime, timedelta
 from typing import Literal
 
@@ -23,6 +24,17 @@ def normalize_filename(name: str | None) -> str | None:
     if not name:
         return None
     return name.strip().lower()
+
+
+async def coinflip(fair: bool = False, heads: bool = True) -> str:
+    toss = random.randint(1, 100)
+    if fair:
+        return "Heads" if toss <= 50 else "Tails"
+    else:
+        if heads:
+            return "Heads" if toss <= 49 else "Tails"
+        else:
+            return "Tails" if toss <= 49 else "Heads"
 
 
 async def send_winner_embed(
