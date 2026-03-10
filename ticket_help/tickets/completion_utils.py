@@ -121,6 +121,8 @@ async def finalize_ticket(
 
     if final_reward > 0:
         updates["points"] = firestore.Increment(final_reward)
+    if len(claimers) <= 0:
+        final_reward = 0
 
     if requester_doc.exists:
         requester_ref.update(updates)

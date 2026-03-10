@@ -1,0 +1,93 @@
+import discord
+
+from economy.gamba.yanken import rock_paper_scissor
+
+CHOICE_EMOJIS = {
+    "Rock": "🪨",
+    "Paper": "📄",
+    "Scissors": "✂️",
+}
+
+
+class RPSChoiceView(discord.ui.View):
+    def __init__(self, challenger, opponent):
+        super().__init__(timeout=300)
+
+        self.challenger = challenger
+        self.opponent = opponent
+
+        self.choices = {}
+
+    @discord.ui.button(label="🪨 Rock", style=discord.ButtonStyle.primary)
+    async def rock(self, interaction, button):
+        await self.make_choice(interaction, "Rock")
+
+    @discord.ui.button(label="📄 Paper", style=discord.ButtonStyle.primary)
+    async def paper(self, interaction, button):
+        await self.make_choice(interaction, "Paper")
+
+    @discord.ui.button(label="✂️ Scissors", style=discord.ButtonStyle.primary)
+    async def scissor(self, interaction, button):
+        await self.make_choice(interaction, "Scissors")
+
+    async def make_choice(self, interaction, choice):
+
+        if interaction.user not in (self.challenger, self.opponent):
+            await interaction.response.send_message(
+                "You are not part of this game.",
+                ephemeral=True,
+            )
+            return
+
+        self.choices[interaction.user.id] = choice
+
+        await interaction.response.send_message(
+            f"You chose **{choice}**.",
+            ephemeral=True,
+        )
+
+        if len(self.choices) == 2:
+            await self.finish_game(interaction)
+
+    async def finish_game(self, interaction):
+
+        c1 = self.choices[self.challenger.id]
+        c2 = self.choices[self.opponent.id]
+
+        result = await rock_paper_scissor(c1, c2)
+
+        if result == "Draw":
+            winner_text = "It's a draw!"
+        else:
+            winner = self.challenger if result == c1 else self.opponent
+            winner_text = f"🏆 {winner.mention} wins!"
+
+        embed = discord.Embed(
+            title="<:gon:1480922691950088293> Rock Paper Scissors Result",
+            color=discord.Color.green(),
+        )
+
+        embed.add_field(
+            name=self.challenger.display_name,
+            value=f"{CHOICE_EMOJIS[c1]} {c1}",
+        )
+
+        embed.add_field(
+            name=self.opponent.display_name,
+            value=f"{CHOICE_EMOJIS[c2]} {c2}",
+        )
+
+        embed.add_field(
+            name="Outcome",
+            value=winner_text,
+            inline=False,
+        )
+
+        embed.set_thumbnail(
+            url="https://i1.sndcdn.com/artworks-270NfGy2wimgfdqZ-wRTLdg-t1080x1080.jpg"
+        )
+
+        await interaction.message.edit(
+            embed=embed,
+            view=None,
+        )

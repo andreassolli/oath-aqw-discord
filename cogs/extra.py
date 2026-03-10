@@ -2,18 +2,23 @@ from typing import Literal
 
 import discord
 from discord import app_commands
+from discord.abc import Messageable
 from discord.ext import commands
 from google.cloud.firestore import ArrayUnion
 
 from config import (
     ADMIN_ROLE_ID,
     ALLOWED_COMMANDS_CHANNELS,
+    BETA_TESTER_ROLE_ID,
+    BETA_TESTING_CHANNEL_ID,
     BOT_GUY_ROLE_ID,
     DISCORD_MANAGER_ROLE_ID,
     INITIATE_ROLE_ID,
     OATHSWORN_ROLE_ID,
 )
-from extra_commands.coinflip_accept_view import CoinflipAcceptView
+from economy.gamba.coinflip import run_coinflip
+from economy.gamba.doom_view import DoomSpinView
+from economy.gamba.yanken_accept_view import RPSAcceptView
 from extra_commands.memes import (
     m_bigrig,
     m_dryage,
@@ -29,7 +34,6 @@ from extra_commands.memes import (
 )
 from extra_commands.utils import (
     check_missing_badges,
-    coinflip,
     elect_potw,
     has_any_role,
     manual_leaderboard_post,
@@ -37,7 +41,6 @@ from extra_commands.utils import (
 )
 from extra_commands.wordle import (
     ShareWordleView,
-    build_keyboard,
     get_wordle_word,
     guess_word,
 )
@@ -301,7 +304,7 @@ class Extra(commands.Cog):
     Killer - Pay2Lose Enjoyer might enact slave labor and torture friends"""
         await interaction.response.send_message(message)
 
-    @app_commands.command(name="bigrig")
+    @app_commands.command(name="bigrig", nsfw=True)
     @has_any_role(ADMIN_ROLE_ID, DISCORD_MANAGER_ROLE_ID)
     async def bigrig(self, interaction: discord.Interaction):
         await m_bigrig(interaction)
@@ -347,36 +350,73 @@ class Extra(commands.Cog):
         await manual_leaderboard_post(interaction)
 
     @app_commands.command(
-        name="coinflip",
+        name="flip",
         description="Flip a coin, either against the house or challenge someone",
     )
-    async def coinflip(
+    @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
+    async def coinflip_command(
         self,
         interaction: discord.Interaction,
         call: Literal["Heads", "Tails"] | None = None,
         opponent: discord.Member | None = None,
     ):
-        heads = call == "Heads"
-        if opponent is None:
-            if call is None:
-                await interaction.response.send_message(
-                    "You must choose Heads or Tails when flipping against the house.",
-                    ephemeral=True,
-                )
+        channel_id = interaction.channel_id
+        if channel_id and channel_id != BETA_TESTING_CHANNEL_ID:
+            guild = interaction.guild
+            if not guild:
                 return
+            channel = guild.get_channel(BETA_TESTING_CHANNEL_ID)
+            if channel:
+                return await interaction.response.send_message(
+                    f"You have to use this command in {channel.mention}"
+                )
+        await run_coinflip(interaction, call, opponent)
 
-            heads = call == "Heads"
+    @app_commands.command(
+        name="ioda-list",
+        description="Get the link to the IoDA spreadsheet",
+    )
+    async def ioda_list(self, interaction):
+        return await interaction.response.send_message(
+            "https://docs.google.com/document/d/1T4fut_U8Wptopw0coWCU29WCK5arAtGBy5lzlDpwswE/edit?tab=t.0"
+        )
 
-            result = await coinflip(fair=False, heads=heads)
+    @app_commands.command(
+        name="say",
+        description="Make the bot say something in current location",
+    )
+    @app_commands.checks.has_role(BOT_GUY_ROLE_ID)
+    async def say(self, interaction: discord.Interaction, message: str):
 
-            if result == call:
-                msg = f"<:oathcoin:1462999179998531614> Coin landed on **{result.capitalize()}**\nYou chose **{call.capitalize()}**\n\n🏆 You win!"
-            else:
-                msg = f"<:oathcoin:1462999179998531614> Coin landed on **{result.capitalize()}**\nYou chose **{call.capitalize()}**\n\n🏆 House wins!"
+        await interaction.response.defer(ephemeral=True)
 
-            await interaction.response.send_message(msg)
+        channel = interaction.channel
+
+        if not isinstance(channel, Messageable):
             return
 
+        await channel.send(content=message)
+
+    @app_commands.command(
+        name="janken",
+        description="Challenge someone to Rock Paper Scissors",
+    )
+    @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
+    async def rps(
+        self,
+        interaction: discord.Interaction,
+        opponent: discord.Member,
+    ):
+        channel_id = interaction.channel_id
+        if channel_id and channel_id != BETA_TESTING_CHANNEL_ID:
+            guild = interaction.guild
+            if not guild:
+                return
+            channel = guild.get_channel(BETA_TESTING_CHANNEL_ID)
+            if channel:
+                return await interaction.response.send_message(
+                    f"You have to use this command in {channel.mention}"
+                )
         if opponent == interaction.user:
             await interaction.response.send_message(
                 "You can't challenge yourself.",
@@ -384,22 +424,51 @@ class Extra(commands.Cog):
             )
             return
 
-        if call is not None:
-            await interaction.response.send_message(
-                "You cannot call when flipping against a player. They will call themselves.",
-                ephemeral=True,
-            )
-            return
-
-        view = CoinflipAcceptView(
+        view = RPSAcceptView(
             challenger=interaction.user,
             opponent=opponent,
         )
 
+        embed = discord.Embed(
+            title="<:gon:1480922691950088293> Rock Paper Scissors",
+            description=f"{interaction.user.mention} challenged {opponent.mention}!",
+            color=discord.Color.orange(),
+        )
+        embed.set_thumbnail(
+            url="https://static.wikia.nocookie.net/disneythehunchbackofnotredame/images/f/f4/Jan_gu.jpg/revision/latest/scale-to-width-down/284?cb=20140413215313"
+        )
+
         await interaction.response.send_message(
-            f"{opponent.mention}, {interaction.user.mention} challenged you to a coinflip!\n"
-            f"Do you accept?",
+            embed=embed,
             view=view,
+        )
+
+        view.message = await interaction.original_response()
+        return
+
+    @app_commands.command(name="doom", description="Spin the Wheel of Doom")
+    @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
+    async def doom(self, interaction: discord.Interaction):
+
+        await interaction.response.defer(ephemeral=True)
+
+        wheel = discord.File("assets/doom.png", filename="doom.png")
+
+        embed = discord.Embed(
+            title="Wheel of Doom",
+            description="You have 1 spin available, click the button below to spin!",
+            color=discord.Color.red(),
+        )
+
+        embed.set_image(url="attachment://doom.png")
+
+        view = DoomSpinView(user=interaction.user)
+
+        await interaction.followup.send(
+            embed=embed,
+            file=wheel,
+            view=view,
+            ephemeral=True,
         )
 
 

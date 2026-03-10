@@ -134,7 +134,6 @@ async def generate_wordle_board(
                     fill=color,
                 )
     buffer = BytesIO()
-    bg.save("final_profile_card.png")
     bg.save(buffer, format="PNG")
     buffer.seek(0)
 
