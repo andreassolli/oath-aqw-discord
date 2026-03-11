@@ -1,14 +1,16 @@
 import discord
 
 from economy.gamba.coinflip_choice_view import CoinChoiceView
+from firebase_client import db
 
 
 class CoinflipAcceptView(discord.ui.View):
-    def __init__(self, challenger, opponent):
+    def __init__(self, challenger, opponent, wager: int):
         super().__init__(timeout=300)
 
         self.challenger = challenger
         self.opponent = opponent
+        self.wager = wager
 
     @discord.ui.button(label="Accept", style=discord.ButtonStyle.green)
     async def accept(self, interaction: discord.Interaction, button):
@@ -20,15 +22,32 @@ class CoinflipAcceptView(discord.ui.View):
             )
             return
 
+        user_ref = db.collection("users").document(str(self.opponent.id))
+        doc = user_ref.get()
+
+        coins = doc.to_dict().get("coins", 0) if doc else 0
+
+        if coins < self.wager:
+            return await interaction.response.send_message(
+                f"You don't have enough coins to accept this wager ({self.wager}).",
+                ephemeral=True,
+            )
+
         view = CoinChoiceView(
             challenger=self.challenger,
             opponent=self.opponent,
+            wager=self.wager,
         )
 
         embed = discord.Embed(
             title="<:oathcoin:1462999179998531614> Coinflip",
             description=f"{self.opponent.mention}, choose **Heads** or **Tails**.",
             color=discord.Color.gold(),
+        )
+        embed.add_field(
+            name="Wager",
+            value=f"<:oathcoin:1462999179998531614> {self.wager}",
+            inline=False,
         )
 
         embed.add_field(

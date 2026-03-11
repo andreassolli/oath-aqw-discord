@@ -1,14 +1,16 @@
 import discord
 
 from economy.gamba.yanken_choice_view import RPSChoiceView
+from firebase_client import db
 
 
 class RPSAcceptView(discord.ui.View):
-    def __init__(self, challenger, opponent):
+    def __init__(self, challenger, opponent, wager):
         super().__init__(timeout=60)
 
         self.challenger = challenger
         self.opponent = opponent
+        self.wager = wager
         self.message: discord.InteractionMessage | None = None
 
     @discord.ui.button(label="Accept", style=discord.ButtonStyle.green)
@@ -21,14 +23,26 @@ class RPSAcceptView(discord.ui.View):
             )
             return
 
+        user_ref = db.collection("users").document(str(self.opponent.id))
+        doc = user_ref.get()
+
+        coins = doc.to_dict().get("coins", 0) if doc else 0
+
+        if coins < self.wager:
+            return await interaction.response.send_message(
+                f"You don't have enough coins to accept this wager ({self.wager}).",
+                ephemeral=True,
+            )
+
         view = RPSChoiceView(
             challenger=self.challenger,
             opponent=self.opponent,
+            wager=self.wager,
         )
 
         embed = discord.Embed(
             title="<:gon:1480922691950088293> Rock Paper Scissors",
-            description="Both players choose your move.",
+            description=f"Wager: <:oathcoin:1462999179998531614> {self.wager}\nBoth players choose your move.",
             color=discord.Color.orange(),
         )
         embed.set_thumbnail(

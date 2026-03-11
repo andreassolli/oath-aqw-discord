@@ -1,13 +1,16 @@
 from typing import Literal
 
 import discord
+from google.cloud import firestore
 
 from economy.gamba.coinflip_accept_view import CoinflipAcceptView
 from economy.gamba.utils import coinflip
+from firebase_client import db
 
 
 async def run_coinflip(
     interaction: discord.Interaction,
+    wager: int,
     call: Literal["Heads", "Tails"] | None = None,
     opponent: discord.Member | None = None,
 ):
@@ -39,6 +42,11 @@ async def run_coinflip(
             value=call.capitalize(),
             inline=True,
         )
+        embed.add_field(
+            name="Wager",
+            value=f"<:oathcoin:1462999179998531614> {wager}",
+            inline=False,
+        )
 
         embed.add_field(
             name="Result",
@@ -53,6 +61,11 @@ async def run_coinflip(
             else "<:GoobShock:1463149045731299328> House wins!",
             inline=False,
         )
+
+        points = wager if win else -wager
+        user_ref = db.collection("users").document(str(interaction.user.id))
+
+        user_ref.set({"coins": firestore.Increment(points)}, merge=True)
 
         await interaction.response.send_message(embed=embed)
         return
@@ -72,14 +85,18 @@ async def run_coinflip(
         return
 
     view = CoinflipAcceptView(
-        challenger=interaction.user,
-        opponent=opponent,
+        challenger=interaction.user, opponent=opponent, wager=wager
     )
 
     embed = discord.Embed(
         title=f"{tails_coin} Coinflip Challenge",
         description=f"{interaction.user.mention} has challenged {opponent.mention} to a coinflip!",
         color=discord.Color.gold(),
+    )
+    embed.add_field(
+        name="Wager",
+        value=f"<:oathcoin:1462999179998531614> {wager}",
+        inline=False,
     )
 
     embed.add_field(

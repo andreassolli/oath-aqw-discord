@@ -1,6 +1,8 @@
 import discord
+from google.cloud import firestore
 
 from economy.gamba.yanken import rock_paper_scissor
+from firebase_client import db
 
 CHOICE_EMOJIS = {
     "Rock": "🪨",
@@ -10,12 +12,12 @@ CHOICE_EMOJIS = {
 
 
 class RPSChoiceView(discord.ui.View):
-    def __init__(self, challenger, opponent):
+    def __init__(self, challenger, opponent, wager):
         super().__init__(timeout=300)
 
         self.challenger = challenger
         self.opponent = opponent
-
+        self.wager = wager
         self.choices = {}
 
     @discord.ui.button(label="🪨 Rock", style=discord.ButtonStyle.primary)
@@ -59,8 +61,20 @@ class RPSChoiceView(discord.ui.View):
         if result == "Draw":
             winner_text = "It's a draw!"
         else:
-            winner = self.challenger if result == c1 else self.opponent
+            if result == c1:
+                winner = self.challenger
+                loser = self.opponent
+            else:
+                winner = self.opponent
+                loser = self.challenger
+
             winner_text = f"🏆 {winner.mention} wins!"
+
+            winner_ref = db.collection("users").document(str(winner.id))
+            loser_ref = db.collection("users").document(str(loser.id))
+
+            winner_ref.set({"coins": firestore.Increment(self.wager)}, merge=True)
+            loser_ref.set({"coins": firestore.Increment(-self.wager)}, merge=True)
 
         embed = discord.Embed(
             title="<:gon:1480922691950088293> Rock Paper Scissors Result",

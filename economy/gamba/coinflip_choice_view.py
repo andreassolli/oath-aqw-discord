@@ -1,14 +1,17 @@
 import discord
+from google.cloud import firestore
 
 from economy.gamba.utils import coinflip
+from firebase_client import db
 
 
 class CoinChoiceView(discord.ui.View):
-    def __init__(self, challenger, opponent):
+    def __init__(self, challenger, opponent, wager):
         super().__init__(timeout=300)
 
         self.challenger = challenger
         self.opponent = opponent
+        self.wager = wager
 
     @discord.ui.button(label="Heads", style=discord.ButtonStyle.primary)
     async def heads(self, interaction: discord.Interaction, button):
@@ -30,6 +33,13 @@ class CoinChoiceView(discord.ui.View):
 
         challenger_wins = result == opponent_choice
         winner = self.opponent if challenger_wins else self.challenger
+        loser = self.challenger if winner == self.opponent else self.opponent
+
+        winner_ref = db.collection("users").document(str(winner.id))
+        loser_ref = db.collection("users").document(str(loser.id))
+
+        winner_ref.set({"coins": firestore.Increment(self.wager)}, merge=True)
+        loser_ref.set({"coins": firestore.Increment(-self.wager)}, merge=True)
 
         heads_coin = "<:goobCoin:1480895675477524564>"
         tails_coin = "<:oathcoin:1462999179998531614>"
@@ -38,6 +48,11 @@ class CoinChoiceView(discord.ui.View):
         embed = discord.Embed(
             title=f"{tails_coin} Coinflip Result",
             color=discord.Color.gold(),
+        )
+        embed.add_field(
+            name="Wager",
+            value=f"<:oathcoin:1462999179998531614> {self.wager}",
+            inline=False,
         )
         embed.add_field(
             name="Choice",

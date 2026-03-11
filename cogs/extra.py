@@ -4,6 +4,7 @@ import discord
 from discord import app_commands
 from discord.abc import Messageable
 from discord.ext import commands
+from google.cloud import firestore
 from google.cloud.firestore import ArrayUnion
 
 from config import (
@@ -15,9 +16,11 @@ from config import (
     DISCORD_MANAGER_ROLE_ID,
     INITIATE_ROLE_ID,
     OATHSWORN_ROLE_ID,
+    OFFICER_ROLE_ID,
 )
 from economy.gamba.coinflip import run_coinflip
 from economy.gamba.doom_view import DoomSpinView
+from economy.gamba.utils import has_spun_today
 from economy.gamba.yanken_accept_view import RPSAcceptView
 from extra_commands.memes import (
     m_bigrig,
@@ -357,6 +360,7 @@ class Extra(commands.Cog):
     async def coinflip_command(
         self,
         interaction: discord.Interaction,
+        wager: int,
         call: Literal["Heads", "Tails"] | None = None,
         opponent: discord.Member | None = None,
     ):
@@ -370,7 +374,15 @@ class Extra(commands.Cog):
                 return await interaction.response.send_message(
                     f"You have to use this command in {channel.mention}"
                 )
-        await run_coinflip(interaction, call, opponent)
+        doc = db.collection("users").document(str(interaction.user.id)).get()
+        coins = doc.to_dict().get("coins", 0) if doc else 0
+
+        if coins < wager:
+            return await interaction.response.send_message(
+                f"You don't have enough coins to wager {wager}.",
+                ephemeral=True,
+            )
+        await run_coinflip(interaction, wager, call, opponent)
 
     @app_commands.command(
         name="ioda-list",
@@ -405,6 +417,7 @@ class Extra(commands.Cog):
     async def rps(
         self,
         interaction: discord.Interaction,
+        wager: int,
         opponent: discord.Member,
     ):
         channel_id = interaction.channel_id
@@ -423,15 +436,23 @@ class Extra(commands.Cog):
                 ephemeral=True,
             )
             return
+        doc = db.collection("users").document(str(interaction.user.id)).get()
+        coins = doc.to_dict().get("coins", 0) if doc else 0
 
+        if coins < wager:
+            return await interaction.response.send_message(
+                f"You don't have enough coins to wager {wager}.",
+                ephemeral=True,
+            )
         view = RPSAcceptView(
             challenger=interaction.user,
             opponent=opponent,
+            wager=wager,
         )
 
         embed = discord.Embed(
             title="<:gon:1480922691950088293> Rock Paper Scissors",
-            description=f"{interaction.user.mention} challenged {opponent.mention}!",
+            description=f"{interaction.user.mention} challenged {opponent.mention}!\nWager: <:oathcoin:1462999179998531614> {wager}",
             color=discord.Color.orange(),
         )
         embed.set_thumbnail(
@@ -451,24 +472,72 @@ class Extra(commands.Cog):
     async def doom(self, interaction: discord.Interaction):
 
         await interaction.response.defer(ephemeral=True)
+        spun = await has_spun_today(interaction.user.id)
 
-        wheel = discord.File("assets/doom.png", filename="doom.png")
-
+        spins_available = 0 if spun else 1
         embed = discord.Embed(
-            title="Wheel of Doom",
-            description="You have 1 spin available, click the button below to spin!",
+            title="🎡 Wheel of Doom",
+            description=f"You have `{spins_available}` spin available, click the button below to spin!",
             color=discord.Color.red(),
         )
+        embed.set_image(
+            url="https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/main/assets/doom.png"
+        )
 
-        embed.set_image(url="attachment://doom.png")
-
-        view = DoomSpinView(user=interaction.user)
+        view = DoomSpinView(user=interaction.user, spins_available=spins_available)
 
         await interaction.followup.send(
             embed=embed,
-            file=wheel,
             view=view,
             ephemeral=True,
+        )
+
+    @app_commands.command(
+        name="purse", description="Check how many coins you have in your coin purse."
+    )
+    @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
+    async def purse(
+        self, interaction: discord.Interaction, user: discord.Member | None = None
+    ):
+        if user:
+            user_id = user.id
+            user_doc = db.collection("users").document(str(user_id)).get()
+
+            if not user_doc:
+                return await interaction.response.send_message("User not found.")
+
+            user_data = user_doc.to_dict()
+            coins = user_data.get("coins", 0)
+
+            return await interaction.response.send_message(
+                f"{user.display_name} has <:oathcoin:1462999179998531614> {coins} coins."
+            )
+        else:
+            user_id = interaction.user.id
+            user_doc = db.collection("users").document(str(user_id)).get()
+
+            if not user_doc:
+                return await interaction.response.send_message("User not found.")
+
+            user_data = user_doc.to_dict()
+            coins = user_data.get("coins", 0)
+
+            return await interaction.response.send_message(
+                f"You ({interaction.user.display_name}) have <:oathcoin:1462999179998531614> {coins} coins."
+            )
+
+    @app_commands.command(
+        name="purse-adjust", description="Increase or decrease coins in someones purse."
+    )
+    @app_commands.checks.has_role(BOT_GUY_ROLE_ID)
+    async def adjust_coins(
+        self, interaction: discord.Interaction, user: discord.Member, coins: int
+    ):
+        user_ref = db.collection("users").document(str(user.id))
+
+        user_ref.set({"coins": firestore.Increment(coins)}, merge=True)
+        return await interaction.response.send_message(
+            f"{user.display_name}'s points adjusted by {coins}", ephemeral=True
         )
 
 
