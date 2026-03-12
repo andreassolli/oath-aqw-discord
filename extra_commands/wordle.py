@@ -37,13 +37,12 @@ def build_keyboard(letter_states: dict[str, str]) -> str:
 
 
 class ShareWordleView(discord.ui.View):
-    def __init__(self, guesses, guess_count):
+    def __init__(self, guess_count):
         super().__init__(timeout=None)
-        self.guesses = guesses
         self.guess_count = guess_count
 
     @discord.ui.button(label="Share Result", style=discord.ButtonStyle.green)
-    async def share(self, interaction: discord.Interaction, button: discord.ui.Button):
+    async def share(self, interaction: discord.Interaction, button):
         # Generate board image
         board_image = await generate_wordle_share(interaction=interaction)
         file = discord.File(board_image, filename="aqwordle.png")

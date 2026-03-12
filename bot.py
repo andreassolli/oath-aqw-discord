@@ -51,6 +51,8 @@ async def main():
             "cogs.classes",
             "cogs.bans",
             "cogs.extra",
+            "cogs.economy",
+            "cogs.gamba",
         ):
             await bot.load_extension(ext)
         await bot.start(os.environ["DISCORD_TOKEN"])

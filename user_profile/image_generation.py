@@ -75,11 +75,15 @@ async def generate_profile_card(
     completed_words = game_data.get("words_completed", 0)
     rank = sum(1 for _ in users_above) + 1
     wins = data.get("wins", 0)
+    border = data.get("border", "")
 
     avatar = await fetch_avatar(target.display_avatar.url)
     avatar = circle_crop(avatar, 154)
     bg.paste(avatar, (29, 21), avatar)
 
+    if border == "Test Border":
+        test_border = Image.open(ASSETS_DIR / "test_border.png").convert("RGBA")
+        bg.paste(test_border, (1, 1), test_border)
     if is_potw:
         potw_border = Image.open(ASSETS_DIR / "potw_border.webp").convert("RGBA")
         potw_border = potw_border.resize((158, 168), Image.Resampling.LANCZOS)

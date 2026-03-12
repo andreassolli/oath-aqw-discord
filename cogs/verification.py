@@ -187,7 +187,7 @@ class VerificationCog(commands.Cog):
     @app_commands.describe(
         user="The Discord user to approve", username="Their AQW username"
     )
-    @app_commands.checks.has_role(OATHSWORN_ROLE_ID)
+    @app_commands.checks.has_role(OFFICER_ROLE_ID)
     async def join_approve(
         self,
         interaction: discord.Interaction,
@@ -234,7 +234,7 @@ class VerificationCog(commands.Cog):
     @app_commands.describe(
         user="The Discord user to reject", username="Their AQW username"
     )
-    @app_commands.checks.has_role(OATHSWORN_ROLE_ID)
+    @app_commands.checks.has_role(OFFICER_ROLE_ID)
     async def join_reject(
         self,
         interaction: discord.Interaction,

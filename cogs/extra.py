@@ -109,20 +109,19 @@ class Extra(commands.Cog):
             guess_count = data.get("guess_count", 0)
 
             if completed and saved_word == wordle_word:
-                content = (
-                    f"✅ You completed today's AQWordle in {guess_count}/6 guesses."
+                return await interaction.followup.send(
+                    content=f"✅ You completed today's AQWordle in {guess_count}/6 guesses.",
+                    file=file,
+                    ephemeral=True,
+                    view=ShareWordleView(guess_count),
                 )
             else:
-                content = (
-                    f"📊 **Current AQWordle progress — {guess_count}/6 guesses used**"
+                return await interaction.followup.send(
+                    content=f"📊 **Current AQWordle progress — {guess_count}/6 guesses used**",
+                    file=file,
+                    ephemeral=True,
                 )
 
-            await interaction.followup.send(
-                content=content,
-                file=file,
-                ephemeral=True,
-            )
-            return
         # If new word OR no existing data → reset progress
         if saved_word != wordle_word:
             guesses = []
@@ -176,9 +175,6 @@ class Extra(commands.Cog):
                 "letter_states": letter_states,
             }
         )
-
-        description = "\n\n".join(f"{guess}" for guess in guesses)
-
         view = None
         board_image = await generate_wordle_board(interaction)
         file = discord.File(board_image, filename="wordle.png")
@@ -191,10 +187,13 @@ class Extra(commands.Cog):
             )
             return
 
+        db.collection("users").document(str(user_id)).update(
+            {"coins": firestore.Increment(750)}
+        )
         if correct:
-            view = ShareWordleView(guesses, guess_count)
+            view = ShareWordleView(guess_count)
             await interaction.followup.send(
-                content="🎉 You have completed today's Wordle!",
+                content="🎉 You have completed today's Wordle and got <:oathcoin:1462999179998531614> 750!",
                 file=file,
                 view=view,
                 ephemeral=True,
@@ -353,38 +352,6 @@ class Extra(commands.Cog):
         await manual_leaderboard_post(interaction)
 
     @app_commands.command(
-        name="flip",
-        description="Flip a coin, either against the house or challenge someone",
-    )
-    @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
-    async def coinflip_command(
-        self,
-        interaction: discord.Interaction,
-        wager: int,
-        call: Literal["Heads", "Tails"] | None = None,
-        opponent: discord.Member | None = None,
-    ):
-        channel_id = interaction.channel_id
-        if channel_id and channel_id != BETA_TESTING_CHANNEL_ID:
-            guild = interaction.guild
-            if not guild:
-                return
-            channel = guild.get_channel(BETA_TESTING_CHANNEL_ID)
-            if channel:
-                return await interaction.response.send_message(
-                    f"You have to use this command in {channel.mention}"
-                )
-        doc = db.collection("users").document(str(interaction.user.id)).get()
-        coins = doc.to_dict().get("coins", 0) if doc else 0
-
-        if coins < wager:
-            return await interaction.response.send_message(
-                f"You don't have enough coins to wager {wager}.",
-                ephemeral=True,
-            )
-        await run_coinflip(interaction, wager, call, opponent)
-
-    @app_commands.command(
         name="ioda-list",
         description="Get the link to the IoDA spreadsheet",
     )
@@ -408,137 +375,6 @@ class Extra(commands.Cog):
             return
 
         await channel.send(content=message)
-
-    @app_commands.command(
-        name="janken",
-        description="Challenge someone to Rock Paper Scissors",
-    )
-    @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
-    async def rps(
-        self,
-        interaction: discord.Interaction,
-        wager: int,
-        opponent: discord.Member,
-    ):
-        channel_id = interaction.channel_id
-        if channel_id and channel_id != BETA_TESTING_CHANNEL_ID:
-            guild = interaction.guild
-            if not guild:
-                return
-            channel = guild.get_channel(BETA_TESTING_CHANNEL_ID)
-            if channel:
-                return await interaction.response.send_message(
-                    f"You have to use this command in {channel.mention}"
-                )
-        if opponent == interaction.user:
-            await interaction.response.send_message(
-                "You can't challenge yourself.",
-                ephemeral=True,
-            )
-            return
-        doc = db.collection("users").document(str(interaction.user.id)).get()
-        coins = doc.to_dict().get("coins", 0) if doc else 0
-
-        if coins < wager:
-            return await interaction.response.send_message(
-                f"You don't have enough coins to wager {wager}.",
-                ephemeral=True,
-            )
-        view = RPSAcceptView(
-            challenger=interaction.user,
-            opponent=opponent,
-            wager=wager,
-        )
-
-        embed = discord.Embed(
-            title="<:gon:1480922691950088293> Rock Paper Scissors",
-            description=f"{interaction.user.mention} challenged {opponent.mention}!\nWager: <:oathcoin:1462999179998531614> {wager}",
-            color=discord.Color.orange(),
-        )
-        embed.set_thumbnail(
-            url="https://static.wikia.nocookie.net/disneythehunchbackofnotredame/images/f/f4/Jan_gu.jpg/revision/latest/scale-to-width-down/284?cb=20140413215313"
-        )
-
-        await interaction.response.send_message(
-            embed=embed,
-            view=view,
-        )
-
-        view.message = await interaction.original_response()
-        return
-
-    @app_commands.command(name="doom", description="Spin the Wheel of Doom")
-    @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
-    async def doom(self, interaction: discord.Interaction):
-
-        await interaction.response.defer(ephemeral=True)
-        spun = await has_spun_today(interaction.user.id)
-
-        spins_available = 0 if spun else 1
-        embed = discord.Embed(
-            title="🎡 Wheel of Doom",
-            description=f"You have `{spins_available}` spin available, click the button below to spin!",
-            color=discord.Color.red(),
-        )
-        embed.set_image(
-            url="https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/main/assets/doom.png"
-        )
-
-        view = DoomSpinView(user=interaction.user, spins_available=spins_available)
-
-        await interaction.followup.send(
-            embed=embed,
-            view=view,
-            ephemeral=True,
-        )
-
-    @app_commands.command(
-        name="purse", description="Check how many coins you have in your coin purse."
-    )
-    @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
-    async def purse(
-        self, interaction: discord.Interaction, user: discord.Member | None = None
-    ):
-        if user:
-            user_id = user.id
-            user_doc = db.collection("users").document(str(user_id)).get()
-
-            if not user_doc:
-                return await interaction.response.send_message("User not found.")
-
-            user_data = user_doc.to_dict()
-            coins = user_data.get("coins", 0)
-
-            return await interaction.response.send_message(
-                f"{user.display_name} has <:oathcoin:1462999179998531614> {coins} coins."
-            )
-        else:
-            user_id = interaction.user.id
-            user_doc = db.collection("users").document(str(user_id)).get()
-
-            if not user_doc:
-                return await interaction.response.send_message("User not found.")
-
-            user_data = user_doc.to_dict()
-            coins = user_data.get("coins", 0)
-
-            return await interaction.response.send_message(
-                f"You ({interaction.user.display_name}) have <:oathcoin:1462999179998531614> {coins} coins."
-            )
-
-    @app_commands.command(
-        name="purse-adjust", description="Increase or decrease coins in someones purse."
-    )
-    @app_commands.checks.has_role(BOT_GUY_ROLE_ID)
-    async def adjust_coins(
-        self, interaction: discord.Interaction, user: discord.Member, coins: int
-    ):
-        user_ref = db.collection("users").document(str(user.id))
-
-        user_ref.set({"coins": firestore.Increment(coins)}, merge=True)
-        return await interaction.response.send_message(
-            f"{user.display_name}'s points adjusted by {coins}", ephemeral=True
-        )
 
 
 async def setup(bot: commands.Bot):

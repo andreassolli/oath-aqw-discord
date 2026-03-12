@@ -1,12 +1,14 @@
 import discord
+
 from config import (
     ADMIN_ROLE_ID,
     DISCORD_MANAGER_ROLE_ID,
     HELPER_ROLE_ID,
+    MODERATOR_ROLE_ID,
     OATHSWORN_ROLE_ID,
 )
 
-ADMIN_LIKE_ROLES = {ADMIN_ROLE_ID, DISCORD_MANAGER_ROLE_ID}
+ADMIN_LIKE_ROLES = {ADMIN_ROLE_ID, DISCORD_MANAGER_ROLE_ID, MODERATOR_ROLE_ID}
 
 
 def has_admin_role(interaction: discord.Interaction) -> bool:
