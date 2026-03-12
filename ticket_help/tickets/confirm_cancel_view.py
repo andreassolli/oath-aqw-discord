@@ -45,7 +45,7 @@ class ConfirmCancelView(discord.ui.View):
         doc_ref = db.collection("tickets").document(self.ticket_name)
         doc = doc_ref.get()
         if not doc.exists:
-            return await interaction.followup.send(
+            return await interaction.response.send_message(
                 "❌ Ticket data not found.", ephemeral=True
             )
 
@@ -53,7 +53,7 @@ class ConfirmCancelView(discord.ui.View):
 
         # 🔒 Hard guard (prevent double cancel)
         if data.get("status") in ("cancelled", "completed"):
-            return await interaction.followup.send(
+            return await interaction.response.send_message(
                 "⚠️ This ticket is already closed.", ephemeral=True
             )
 
