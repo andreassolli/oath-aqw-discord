@@ -4,14 +4,14 @@ from firebase_client import db
 
 
 async def get_inventory(user_id: str):
-    doc_ref = db.collection("user").document(user_id).get()
+    doc_ref = db.collection("users").document(user_id).get()
     doc_data = doc_ref.to_dict() if doc_ref else {}
     inventory = doc_data.get("inventory", {})
     return inventory
 
 
 async def add_item(user_id: str, item_id: str, type: str):
-    doc_ref = db.collection("user").document(user_id)
+    doc_ref = db.collection("users").document(user_id)
     item = {"id": item_id, "type": type}
 
     doc_ref.update({"inventory": ArrayUnion([item])})
