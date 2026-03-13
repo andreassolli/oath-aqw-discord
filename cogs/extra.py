@@ -76,7 +76,7 @@ class Extra(commands.Cog):
         saved_word = data.get("current_word")
         completed = data.get("completed", False)
         letter_states = data.get("letter_states", {})
-
+        was_completed = data.get("completed", False)
         if completed and saved_word == wordle_word and guess:
             guesses = data.get("guesses", [])
             guess_count = data.get("guess_count", 0)
@@ -187,9 +187,11 @@ class Extra(commands.Cog):
             )
             return
 
-        db.collection("users").document(str(user_id)).update(
-            {"coins": firestore.Increment(750)}
-        )
+        if correct and not was_completed:
+            db.collection("users").document(str(user_id)).update(
+                {"coins": firestore.Increment(750)}
+            )
+
         if correct:
             view = ShareWordleView(guess_count)
             await interaction.followup.send(
