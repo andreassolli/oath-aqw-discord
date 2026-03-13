@@ -86,7 +86,7 @@ class Extra(commands.Cog):
             file = discord.File(board_image, filename="wordle.png")
 
             if won:
-                view = ShareWordleView(guesses, guess_count)
+                view = ShareWordleView(guess_count)
                 await interaction.followup.send(
                     content=f"✅ You've already completed today's AQWordle in {guess_count}/6 guesses.",
                     file=file,
@@ -95,7 +95,7 @@ class Extra(commands.Cog):
                 )
             else:
                 await interaction.followup.send(
-                    content="❌ You did not manage to complete today's Wordle.",
+                    content=f"❌ You did not manage to complete today's Wordle. The word was **{wordle_word}**.",
                     file=file,
                     ephemeral=True,
                 )
@@ -181,7 +181,7 @@ class Extra(commands.Cog):
 
         if not correct and guess_count >= 6:
             await interaction.followup.send(
-                content="❌ You did not manage to complete today's Wordle.",
+                content=f"❌ You did not manage to complete today's Wordle. The word was **{wordle_word}**.",
                 file=file,
                 ephemeral=True,
             )
