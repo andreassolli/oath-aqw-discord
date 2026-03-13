@@ -18,11 +18,6 @@ class BorderSelect(discord.ui.Select):
         view = self.view
         view.selected_border = self.values[0] if self.values else None
 
-        await interaction.response.send_message(
-            f"Selected border: {view.selected_border}",
-            ephemeral=True,
-        )
-
 
 class BackgroundSelect(discord.ui.Select):
     def __init__(self, backgrounds: list[str]):
@@ -38,11 +33,6 @@ class BackgroundSelect(discord.ui.Select):
     async def callback(self, interaction: discord.Interaction):
         view = self.view
         view.selected_background = self.values[0] if self.values else None
-
-        await interaction.response.send_message(
-            f"Selected background: {view.selected_background}",
-            ephemeral=True,
-        )
 
 
 class EquipButton(discord.ui.Button):

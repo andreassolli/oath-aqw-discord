@@ -68,14 +68,13 @@ class Economy(commands.Cog):
     @app_commands.command(name="shop", description="List all the items in the shop.")
     @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
     async def see_shop(self, interaction: discord.Interaction):
-        await interaction.response.defer()
 
         items = await get_shop()
         embed = await shop_embed(items)
 
         view = ShopView(items)
 
-        await interaction.followup.send(
+        await interaction.response.send_message(
             embed=embed,
             view=view,
             ephemeral=True,

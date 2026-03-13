@@ -28,11 +28,6 @@ class ShopSelect(discord.ui.Select):
         view = self.view
         view.selected_item = self.values[0]
 
-        await interaction.response.send_message(
-            f"Selected **{view.selected_item}**.",
-            ephemeral=True,
-        )
-
 
 class BuyButton(discord.ui.Button):
     def __init__(self):
