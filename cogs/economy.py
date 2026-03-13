@@ -15,6 +15,7 @@ from economy.operations import buy_item, get_shop, list_item, unlist_item
 from economy.shop import shop_embed
 from economy.utils import rich_coins
 from firebase_client import db
+from inventory.utils import equip_item, get_inventory, unequip_item
 
 
 class Economy(commands.Cog):
@@ -180,6 +181,66 @@ class Economy(commands.Cog):
         return await interaction.response.send_message(
             f"{interaction.user.display_name} donated <:oathcoin:1462999179998531614>{coins} to {user.display_name}"
         )
+
+    @app_commands.command(
+        name="inventory", description="View the items in your inventory."
+    )
+    @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
+    async def inventory(self, interaction: discord.Interaction):
+
+        user_doc = db.collection("users").document(str(interaction.user.id)).get()
+
+        if not user_doc.exists:
+            return await interaction.response.send_message(
+                "You don't own any items yet.", ephemeral=True
+            )
+
+        data = user_doc.to_dict() or {}
+        inventory = data.get("inventory", [])
+
+        if not inventory:
+            return await interaction.response.send_message(
+                "Your inventory is empty.", ephemeral=True
+            )
+
+        lines = []
+
+        for item in inventory:
+            item_id = item.get("id")
+            item_type = item.get("type")
+
+            equipped = data.get(item_type) == item_id
+            status = "✅ Equipped" if equipped else "—"
+
+            lines.append(f"**{item_id}** ({item_type}) {status}")
+
+        embed = discord.Embed(
+            title=f"{interaction.user.display_name}'s Inventory",
+            description="\n".join(lines),
+            color=discord.Color.magenta(),
+        )
+
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+
+    @app_commands.command(
+        name="equip", description="Equip an item from your inventory."
+    )
+    @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
+    async def equip(self, interaction: discord.Interaction, item: str):
+
+        response = await equip_item(str(interaction.user.id), item)
+
+        await interaction.response.send_message(response, ephemeral=True)
+
+    @app_commands.command(
+        name="unequip", description="Unequip an item from your inventory."
+    )
+    @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
+    async def unequip(self, interaction: discord.Interaction, item: str):
+
+        response = await unequip_item(str(interaction.user.id), item)
+
+        await interaction.response.send_message(response, ephemeral=True)
 
 
 async def setup(bot: commands.Bot):

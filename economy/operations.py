@@ -5,6 +5,7 @@ from google.cloud import firestore
 
 from economy.utils import ShopItem
 from firebase_client import db
+from inventory.utils import add_item
 
 
 async def list_item(name: str, price: int, quantity: int | None = None):
@@ -49,7 +50,8 @@ async def buy_item(name: str, user_id: int):
         return f"You do not have enough coins to buy {name}."
 
     if name == "Test Border":
-        user_ref.update({"coins": firestore.Increment(-price), "border": "Test Border"})
+        user_ref.update({"coins": firestore.Increment(-price)})
+        await add_item(str(user_id), "Test Border", "border")
     else:
         user_ref.update({"coins": firestore.Increment(-price)})
 
