@@ -27,6 +27,7 @@ class ShopSelect(discord.ui.Select):
     async def callback(self, interaction: discord.Interaction):
         view = self.view
         view.selected_item = self.values[0]
+        await interaction.response.defer()
 
 
 class BuyButton(discord.ui.Button):

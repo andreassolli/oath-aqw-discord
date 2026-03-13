@@ -17,6 +17,7 @@ class BorderSelect(discord.ui.Select):
     async def callback(self, interaction: discord.Interaction):
         view = self.view
         view.selected_border = self.values[0] if self.values else None
+        await interaction.response.defer()
 
 
 class BackgroundSelect(discord.ui.Select):
@@ -33,6 +34,7 @@ class BackgroundSelect(discord.ui.Select):
     async def callback(self, interaction: discord.Interaction):
         view = self.view
         view.selected_background = self.values[0] if self.values else None
+        await interaction.response.defer()
 
 
 class EquipButton(discord.ui.Button):
