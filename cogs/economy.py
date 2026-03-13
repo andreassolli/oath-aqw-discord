@@ -13,6 +13,7 @@ from economy.gamba.doom_view import DoomSpinView
 from economy.gamba.utils import has_spun_today
 from economy.operations import buy_item, get_shop, list_item, unlist_item
 from economy.shop import shop_embed
+from economy.shop_view import ShopView
 from economy.utils import rich_coins
 from firebase_client import db
 from inventory.utils import equip_item, get_inventory, unequip_item
@@ -72,7 +73,13 @@ class Economy(commands.Cog):
         items = await get_shop()
         embed = await shop_embed(items)
 
-        await interaction.followup.send(embed=embed, ephemeral=True)
+        view = ShopView(items)
+
+        await interaction.followup.send(
+            embed=embed,
+            view=view,
+            ephemeral=True,
+        )
 
     @app_commands.command(
         name="purse-adjust", description="Increase or decrease coins in someones purse."
