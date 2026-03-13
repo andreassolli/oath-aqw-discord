@@ -16,6 +16,7 @@ from economy.shop import shop_embed
 from economy.utils import rich_coins
 from firebase_client import db
 from inventory.utils import equip_item, get_inventory, unequip_item
+from inventory.view import InventoryView
 
 
 class Economy(commands.Cog):
@@ -220,7 +221,24 @@ class Economy(commands.Cog):
             color=discord.Color.magenta(),
         )
 
-        await interaction.response.send_message(embed=embed, ephemeral=True)
+        borders = []
+        backgrounds = []
+
+        for item in inventory:
+            item_id = item.get("id")
+            item_type = item.get("type")
+
+            if item_type == "border":
+                borders.append(item_id)
+
+            if item_type == "background":
+                backgrounds.append(item_id)
+
+        view = InventoryView(
+            user_id=interaction.user.id, borders=borders, backgrounds=backgrounds
+        )
+
+        await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
 
     @app_commands.command(
         name="equip", description="Equip an item from your inventory."
