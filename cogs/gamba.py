@@ -5,6 +5,7 @@ from discord import app_commands
 from discord.ext import commands
 
 from config import BETA_TESTER_ROLE_ID, BETA_TESTING_CHANNEL_ID
+from economy.gamba.beg import beg
 from economy.gamba.coinflip import run_coinflip
 from economy.gamba.yanken_accept_view import RPSAcceptView
 from firebase_client import db
@@ -103,6 +104,28 @@ class Gamba(commands.Cog):
 
         view.message = await interaction.original_response()
         return
+
+    @app_commands.command(name="beg", description="Beg the other users for some money")
+    @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
+    async def beg_command(self, interaction: discord.Interaction):
+
+        guild = interaction.guild
+        if not guild:
+            return
+
+        user = guild.get_member(interaction.user.id)
+        if not user:
+            return
+
+        embed, view = await beg(user)
+
+        if not embed:
+            return await interaction.response.send_message(view, ephemeral=True)
+
+        await interaction.response.send_message(embed=embed, view=view)
+
+        message = await interaction.original_response()
+        view.message = message
 
 
 async def setup(bot: commands.Bot):
