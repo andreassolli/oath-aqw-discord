@@ -8,7 +8,7 @@ from firebase_client import db
 
 class BegView(discord.ui.View):
     def __init__(self, beggar: discord.Member):
-        super().__init__(timeout=10)
+        super().__init__(timeout=180)
         self.beggar = beggar
         self.donors: set[int] = set()
         self.total = 0
@@ -53,8 +53,7 @@ class BegView(discord.ui.View):
         self.total += 1
 
         await interaction.response.send_message(
-            f"You donated <:oathcoin:1462999179998531614>1 to {self.beggar.display_name}.",
-            ephemeral=True,
+            f"{interaction.user.display_name} donated <:oathcoin:1462999179998531614>1 to {self.beggar.display_name}.",
         )
 
     async def on_timeout(self):
