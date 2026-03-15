@@ -2,6 +2,7 @@ import asyncio
 
 import aiohttp
 
+from economy.shop_generation import generate_shop
 from extra_commands.wordle import choose_new_word
 from extra_commands.wordle_share import generate_wordle_share
 from firebase_client import db
@@ -48,6 +49,7 @@ def get_all_users():
 
 if __name__ == "__main__":
     # get_all_users()
-    choose_new_word()
+    # choose_new_word()
+    asyncio.run(generate_shop())
     # asyncio.run(backfill_ccids())
     # asyncio.run(generate_wordle_share(None, "292040660696039424"))

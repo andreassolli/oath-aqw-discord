@@ -1,6 +1,7 @@
 from typing import List, TypedDict
 
 import discord
+from numpy import quantile
 
 from firebase_client import db
 
@@ -8,6 +9,8 @@ from firebase_client import db
 class ShopItem(TypedDict):
     name: str
     price: int
+    image: str
+    quantity: int
 
 
 def rich_coins(guild: discord.Guild):

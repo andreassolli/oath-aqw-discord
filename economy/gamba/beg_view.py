@@ -8,7 +8,7 @@ from firebase_client import db
 
 class BegView(discord.ui.View):
     def __init__(self, beggar: discord.Member):
-        super().__init__(timeout=180)
+        super().__init__(timeout=60)
         self.beggar = beggar
         self.donors: set[int] = set()
         self.total = 0

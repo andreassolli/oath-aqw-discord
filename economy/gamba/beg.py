@@ -15,6 +15,10 @@ async def beg(user: discord.Member):
     data = doc.to_dict() if doc.exists else {}
 
     last_beg = data.get("last_beg")
+    coins = data.get("coins", 0)
+
+    if coins > 50:
+        return None, "💰 You are too rich to be begging."
 
     if last_beg:
         last_beg = last_beg.replace(tzinfo=None)
