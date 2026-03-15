@@ -242,7 +242,7 @@ class Economy(commands.Cog):
             if item_type == "border":
                 borders.append(item_id)
 
-            if item_type == "background":
+            if item_type == "card":
                 backgrounds.append(item_id)
 
         view = InventoryView(
