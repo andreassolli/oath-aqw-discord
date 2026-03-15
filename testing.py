@@ -50,7 +50,7 @@ def get_all_users():
 
 if __name__ == "__main__":
     # get_all_users()
-    # choose_new_word()
-    asyncio.run(generate_inventory(userId="292040660696039424"))
+    choose_new_word()
+    # asyncio.run(generate_inventory(userId="292040660696039424"))
     # asyncio.run(backfill_ccids())
     # asyncio.run(generate_wordle_share(None, "292040660696039424"))

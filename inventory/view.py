@@ -55,7 +55,7 @@ class EquipButton(discord.ui.Button):
             updates["border"] = view.selected_border
 
         if view.selected_background:
-            updates["background"] = view.selected_background
+            updates["card"] = view.selected_background
 
         if not updates:
             return await interaction.response.send_message(
