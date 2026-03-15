@@ -1,5 +1,5 @@
 import discord
-from discord import app_commands
+from discord import app_commands, user
 from discord.ext import commands
 from google.cloud import firestore
 
@@ -11,6 +11,7 @@ from config import (
 )
 from economy.gamba.doom_view import DoomSpinView
 from economy.gamba.utils import has_spun_today
+from economy.inventory import generate_inventory
 from economy.operations import buy_item, get_shop, list_item, unlist_item
 from economy.shop import shop_embed
 from economy.shop_generation import generate_shop
@@ -215,22 +216,8 @@ class Economy(commands.Cog):
                 "Your inventory is empty.", ephemeral=True
             )
 
-        lines = []
-
-        for item in inventory:
-            item_id = item.get("id")
-            item_type = item.get("type")
-
-            equipped = data.get(item_type) == item_id
-            status = "✅ Equipped" if equipped else "—"
-
-            lines.append(f"**{item_id}** ({item_type}) {status}")
-
-        embed = discord.Embed(
-            title=f"{interaction.user.display_name}'s Inventory",
-            description="\n".join(lines),
-            color=discord.Color.magenta(),
-        )
+        image = await generate_inventory(interaction, str(interaction.user.id))
+        file = discord.File(image, filename="inventory.png")
 
         borders = []
         backgrounds = []
@@ -249,7 +236,11 @@ class Economy(commands.Cog):
             user_id=interaction.user.id, borders=borders, backgrounds=backgrounds
         )
 
-        await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
+        await interaction.followup.send(
+            file=file,
+            view=view,
+            ephemeral=True,
+        )
 
     @app_commands.command(
         name="equip", description="Equip an item from your inventory."

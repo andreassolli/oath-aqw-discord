@@ -2,6 +2,7 @@ import asyncio
 
 import aiohttp
 
+from economy.inventory import generate_inventory
 from economy.shop_generation import generate_shop
 from extra_commands.wordle import choose_new_word
 from extra_commands.wordle_share import generate_wordle_share
@@ -50,6 +51,6 @@ def get_all_users():
 if __name__ == "__main__":
     # get_all_users()
     # choose_new_word()
-    asyncio.run(generate_shop())
+    asyncio.run(generate_inventory(userId="292040660696039424"))
     # asyncio.run(backfill_ccids())
     # asyncio.run(generate_wordle_share(None, "292040660696039424"))

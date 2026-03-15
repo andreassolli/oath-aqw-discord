@@ -39,11 +39,16 @@ async def generate_shop(
 
     draw.text((57, 42), "Shop", font=font_bold, fill="#FFFFFF")
     draw.text((782, 47), f"{coins}", font=font_medium_bold, fill="#FFFFFF")
-
+    draw.text(
+        (57, 688),
+        "Select the items you want to buy below.",
+        font=font_light,
+        fill="#FFFFFF",
+    )
     x = 0
     y = 0
     gapX = 223
-    gapY = 28
+    gapY = 264
     for item in items:
         if x == 4:
             y += 1
