@@ -49,11 +49,8 @@ async def buy_item(name: str, user_id: int):
     if coins < price:
         return f"You do not have enough coins to buy {name}."
 
-    if name == "Test Border":
-        user_ref.update({"coins": firestore.Increment(-price)})
-        await add_item(str(user_id), "Test Border", "border")
-    else:
-        user_ref.update({"coins": firestore.Increment(-price)})
+    user_ref.update({"coins": firestore.Increment(-price)})
+    await add_item(str(user_id), item_doc.get("name", ""), item_doc.get("type", ""))
 
     if quantity != -1:
         item_snap.reference.update({"quantity": firestore.Increment(-1)})
