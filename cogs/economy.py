@@ -200,11 +200,11 @@ class Economy(commands.Cog):
     )
     @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
     async def inventory(self, interaction: discord.Interaction):
-
+        await interaction.response.defer(ephemeral=True)
         user_doc = db.collection("users").document(str(interaction.user.id)).get()
 
         if not user_doc.exists:
-            return await interaction.response.send_message(
+            return await interaction.followup.send(
                 "You don't own any items yet.", ephemeral=True
             )
 
@@ -212,7 +212,7 @@ class Economy(commands.Cog):
         inventory = data.get("inventory", [])
 
         if not inventory:
-            return await interaction.response.send_message(
+            return await interaction.followup.send(
                 "Your inventory is empty.", ephemeral=True
             )
 
