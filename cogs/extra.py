@@ -267,7 +267,7 @@ class Extra(commands.Cog):
             return
 
         db.collection("meta").document("potw_nominees").update(
-            {"nominees": ArrayUnion([player.id])}
+            {"nominees": ArrayUnion([str(player.id)])}
         )
 
         await interaction.response.send_message(
