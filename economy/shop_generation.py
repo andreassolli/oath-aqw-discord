@@ -47,11 +47,12 @@ async def generate_shop(
             y += 1
             x = 0
         item_picture = Image.open(ASSETS_DIR / item["image"]).convert("RGBA")
-        bg.paste(item_picture, (57 + 28 * x, 144 + 28 * y))
+        bg.paste(item_picture, (57 + 28 * x, 144 + 28 * y), item_picture)
         draw.text((57, 298), f"{item['name']}", font=font_small, fill="#FFFFFF")
         coin_picture = Image.open(ASSETS_DIR / "coin.png").convert("RGBA")
-        bg.paste(coin_picture, (57, 328))
-        draw.text((94, 328), f"{item['price']}", font=font_light, fill="#FFFFFF")
+        coin_picture = coin_picture.resize((27, 30), Image.Resampling.LANCZOS)
+        bg.paste(coin_picture, (57, 337), coin_picture)
+        draw.text((88, 334), f"{item['price']}", font=font_light, fill="#FFFFFF")
         quantity = item["quantity"]
         if quantity == -1:
             draw.text((209, 293), f"∞", font=font_big, fill="#FFFFFF")
@@ -62,7 +63,7 @@ async def generate_shop(
 
     buffer = BytesIO()
     bg.save(buffer, format="PNG")
-    bg.save("final_profile_card.png")
+    # bg.save("final_profile_card.png")
     buffer.seek(0)
 
     return buffer

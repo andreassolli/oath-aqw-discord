@@ -13,6 +13,7 @@ from economy.gamba.doom_view import DoomSpinView
 from economy.gamba.utils import has_spun_today
 from economy.operations import buy_item, get_shop, list_item, unlist_item
 from economy.shop import shop_embed
+from economy.shop_generation import generate_shop
 from economy.shop_view import ShopView
 from economy.utils import rich_coins
 from firebase_client import db
@@ -69,13 +70,17 @@ class Economy(commands.Cog):
     @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
     async def see_shop(self, interaction: discord.Interaction):
 
+        await interaction.response.defer(ephemeral=True)
+
         items = await get_shop()
-        embed = await shop_embed(items)
+
+        image = await generate_shop(interaction, str(interaction.user.id))
+        file = discord.File(image, filename="shop.png")
 
         view = ShopView(items)
 
-        await interaction.response.send_message(
-            embed=embed,
+        await interaction.followup.send(
+            file=file,
             view=view,
             ephemeral=True,
         )
