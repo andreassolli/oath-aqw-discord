@@ -87,7 +87,7 @@ async def generate_profile_card(
 
     if border == "Test Border":
         test_border = Image.open(ASSETS_DIR / "test_border.png").convert("RGBA")
-        bg.paste(test_border, (1, 1), test_border)
+        bg.paste(test_border, (0, 0), test_border)
     if is_potw:
         potw_border = Image.open(ASSETS_DIR / "potw_border.webp").convert("RGBA")
         potw_border = potw_border.resize((158, 168), Image.Resampling.LANCZOS)
