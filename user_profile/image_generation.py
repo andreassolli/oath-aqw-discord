@@ -55,8 +55,7 @@ async def generate_profile_card(
     user_id = target.id
     server_id = interaction.guild.id
     mee6 = await fetch_mee6_stats(user_id, server_id)
-    bg = Image.open(ASSETS_DIR / "card.png").convert("RGBA")
-    draw = ImageDraw.Draw(bg)
+
     doc_ref = db.collection("users").document(str(user_id))
 
     doc = cast(Any, doc_ref.get())
@@ -76,7 +75,12 @@ async def generate_profile_card(
     rank = sum(1 for _ in users_above) + 1
     wins = data.get("wins", 0)
     border = data.get("border", "")
-
+    card = data.get("card", "")
+    if card == "Red Card":
+        bg = Image.open(ASSETS_DIR / "red_card.png").convert("RGBA")
+    else:
+        bg = Image.open(ASSETS_DIR / "card.png").convert("RGBA")
+    draw = ImageDraw.Draw(bg)
     avatar = await fetch_avatar(target.display_avatar.url)
     avatar = circle_crop(avatar, 154)
     bg.paste(avatar, (29, 21), avatar)

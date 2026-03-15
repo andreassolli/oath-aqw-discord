@@ -42,22 +42,43 @@ async def generate_shop(
 
     x = 0
     y = 0
+    gapX = 223
+    gapY = 28
     for item in items:
         if x == 4:
             y += 1
             x = 0
         item_picture = Image.open(ASSETS_DIR / item["image"]).convert("RGBA")
-        bg.paste(item_picture, (57 + 28 * x, 144 + 28 * y), item_picture)
-        draw.text((57, 298), f"{item['name']}", font=font_small, fill="#FFFFFF")
+        bg.paste(item_picture, (57 + gapX * x, 144 + gapY * y), item_picture)
+        draw.text(
+            (57 + gapX * x, 298 + gapY * y),
+            f"{item['name']}",
+            font=font_small,
+            fill="#FFFFFF",
+        )
         coin_picture = Image.open(ASSETS_DIR / "coin.png").convert("RGBA")
         coin_picture = coin_picture.resize((27, 30), Image.Resampling.LANCZOS)
-        bg.paste(coin_picture, (57, 337), coin_picture)
-        draw.text((88, 334), f"{item['price']}", font=font_light, fill="#FFFFFF")
+        bg.paste(coin_picture, (57 + gapX * x, 337 + gapY * y), coin_picture)
+        quantity_image = Image.open(ASSETS_DIR / "quantity.png").convert("RGBA")
+        bg.paste(quantity_image, (203 + gapX * x, 300 + gapY * y), quantity_image)
+        draw.text(
+            (88 + gapX * x, 334 + gapY * y),
+            f"{item['price']}",
+            font=font_light,
+            fill="#FFFFFF",
+        )
         quantity = item["quantity"]
         if quantity == -1:
-            draw.text((209, 293), f"∞", font=font_big, fill="#FFFFFF")
+            draw.text(
+                (209 + gapX * x, 293 + gapY * y), f"∞", font=font_big, fill="#FFFFFF"
+            )
         else:
-            draw.text((209, 293), f"{quantity}", font=font_big, fill="#FFFFFF")
+            draw.text(
+                (209 + gapX * x, 293 + gapY * y),
+                f"{quantity}",
+                font=font_big,
+                fill="#FFFFFF",
+            )
 
         x += 1
 
