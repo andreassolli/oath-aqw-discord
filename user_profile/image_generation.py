@@ -85,7 +85,7 @@ async def generate_profile_card(
     draw = ImageDraw.Draw(bg)
     avatar = await fetch_avatar(target.display_avatar.url)
     avatar = circle_crop(avatar, 231)
-    bg.paste(avatar, (29, 21), avatar)
+    bg.paste(avatar, (44, 32), avatar)
 
     # if border == "Test Border":
     #    test_border = Image.open(ASSETS_DIR / "test_border.png").convert("RGBA")
@@ -198,7 +198,7 @@ async def generate_profile_card(
                 x = 0
             badge_img = Image.open(BADGE_TO_IMAGE[badge]).convert("RGBA")
             badge_img = badge_img.resize((51, 51), Image.Resampling.LANCZOS)
-            bg.paste(badge_img, (44 + 66 * x, 336 + 66 * y), badge_img)
+            bg.paste(badge_img, (44 + 64 * x, 336 + 66 * y), badge_img)
             x += 1
     # bg.paste(forge, (29, 224), forge)
     # bg.paste(sword, (73, 224), sword)
