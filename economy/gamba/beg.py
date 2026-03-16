@@ -17,7 +17,7 @@ async def beg(user: discord.Member):
     last_beg = data.get("last_beg")
     coins = data.get("coins", 0)
 
-    if coins > 50:
+    if coins > 100:
         return None, "💰 You are too rich to be begging."
 
     if last_beg:

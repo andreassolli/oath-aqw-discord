@@ -11,6 +11,7 @@ class BegView(discord.ui.View):
         super().__init__(timeout=60)
         self.beggar = beggar
         self.donors: set[int] = set()
+        self.donor_names: set[str] = set()
         self.total = 0
         self.message: discord.Message | None = None
 
@@ -50,11 +51,8 @@ class BegView(discord.ui.View):
         user_ref.update({"coins": firestore.Increment(-1)})
 
         self.donors.add(donor_id)
+        self.donor_names.add(interaction.user.display_name)
         self.total += 1
-
-        await interaction.response.send_message(
-            f"{interaction.user.display_name} donated <:oathcoin:1462999179998531614>1 to {self.beggar.display_name}.",
-        )
 
     async def on_timeout(self):
         for item in self.children:
@@ -63,13 +61,27 @@ class BegView(discord.ui.View):
         if self.message:
             await self.message.edit(view=self)
 
-        self.total += random.randint(1, 6)
+        self.total += random.randint(6, 10)
+        random_odds = random.randint(1, 100)
 
-        beggar_ref = db.collection("users").document(str(self.beggar.id))
-        beggar_ref.update({"coins": firestore.Increment(self.total)})
+        if random_odds == 1:
+            stealer_id = random.choice(list(self.donors))
+            stealer_ref = db.collection("users").document(str(stealer_id))
+            stealer_display_name = await stealer_ref.get()
+            stealer_display_name = stealer_display_name.to_dict().get("name", "unknown")
+            stealer_ref.update({"coins": firestore.Increment(self.total)})
+            if self.message:
+                await self.message.channel.send(
+                    f"<:GoobShock:1463149045731299328> {stealer_display_name} took of with all the coins! "
+                    f"A total of <:oathcoin:1462999179998531614>{self.total} was stolen."
+                )
 
-        if self.message:
-            await self.message.channel.send(
-                f"🙏 {self.beggar.mention} received "
-                f"<:oathcoin:1462999179998531614>{self.total} from generous donors!"
-            )
+        else:
+            beggar_ref = db.collection("users").document(str(self.beggar.id))
+            beggar_ref.update({"coins": firestore.Increment(self.total)})
+            donor_names_string = ", ".join(self.donor_names)
+            if self.message:
+                await self.message.channel.send(
+                    f"<:GoobHeart:1459836996381048863> {self.beggar.mention} received "
+                    f"<:oathcoin:1462999179998531614>{self.total} from {donor_names_string} and a mysterious donor!"
+                )
