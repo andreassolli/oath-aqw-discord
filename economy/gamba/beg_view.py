@@ -53,6 +53,10 @@ class BegView(discord.ui.View):
         self.donors.add(donor_id)
         self.donor_names.add(interaction.user.display_name)
         self.total += 1
+        return await interaction.response.send_message(
+            f"Donated <:oathcoin:1462999179998531614>1 to {self.beggar.display_name}",
+            ephemeral=True,
+        )
 
     async def on_timeout(self):
         for item in self.children:
@@ -64,15 +68,15 @@ class BegView(discord.ui.View):
         self.total += random.randint(6, 10)
         random_odds = random.randint(1, 100)
 
-        if random_odds == 1:
-            stealer_id = random.choice(list(self.donors))
+        if random_odds == 1 and len(self.donors) > 0:
+            random_index = random.randint(0, len(self.donors) - 1)
+            stealer_id = list(self.donors)[random_index]
             stealer_ref = db.collection("users").document(str(stealer_id))
-            stealer_display_name = await stealer_ref.get()
-            stealer_display_name = stealer_display_name.to_dict().get("name", "unknown")
+            stealer_name = list(self.donor_names)[random_index]
             stealer_ref.update({"coins": firestore.Increment(self.total)})
             if self.message:
                 await self.message.channel.send(
-                    f"<:GoobShock:1463149045731299328> {stealer_display_name} took of with all the coins! "
+                    f"<:GoobShock:1463149045731299328> {stealer_name} took of with all the coins! "
                     f"A total of <:oathcoin:1462999179998531614>{self.total} was stolen."
                 )
 
