@@ -95,12 +95,12 @@ async def generate_profile_card(
         potw_border = potw_border.resize((158, 168), Image.Resampling.LANCZOS)
         bg.paste(potw_border, (27, 19), potw_border)
 
-    font_big = ImageFont.truetype(FONTS_DIR / "Urbanist-Regular.ttf", 36)
-    font_bold = ImageFont.truetype(FONTS_DIR / "Urbanist-Bold.ttf", 44)
-    font_light = ImageFont.truetype(FONTS_DIR / "Urbanist-Light.ttf", 16)
-    font_small = ImageFont.truetype(FONTS_DIR / "Urbanist-Regular.ttf", 20)
-    font_xsmall = ImageFont.truetype(FONTS_DIR / "Urbanist-Regular.ttf", 16)
-    font_xsmall_light = ImageFont.truetype(FONTS_DIR / "Urbanist-Light.ttf", 14)
+    font_big = ImageFont.truetype(FONTS_DIR / "Urbanist-Regular.ttf", 54)
+    font_bold = ImageFont.truetype(FONTS_DIR / "Urbanist-Bold.ttf", 66)
+    font_light = ImageFont.truetype(FONTS_DIR / "Urbanist-Light.ttf", 24)
+    font_small = ImageFont.truetype(FONTS_DIR / "Urbanist-Regular.ttf", 30)
+    font_xsmall = ImageFont.truetype(FONTS_DIR / "Urbanist-Regular.ttf", 24)
+    font_xsmall_light = ImageFont.truetype(FONTS_DIR / "Urbanist-Light.ttf", 21)
 
     draw.text((340, 32), target.display_name, font=font_big, fill="#FFFFFF")
     if has_been_potw:
@@ -205,8 +205,8 @@ async def generate_profile_card(
 
     bg.paste(trophy, (525, 423), trophy)
     bg.paste(calendar, (525, 468), calendar)
-    bg.paste(ticket, (242, 423), ticket)
-    bg.paste(medal, (242, 470), medal)
+    bg.paste(ticket, (363, 423), ticket)
+    bg.paste(medal, (363, 470), medal)
     bg.paste(messages, (525, 252), messages)
     bg.paste(dice, (525, 297), dice)
 

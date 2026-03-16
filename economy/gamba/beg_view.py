@@ -84,8 +84,10 @@ class BegView(discord.ui.View):
             beggar_ref = db.collection("users").document(str(self.beggar.id))
             beggar_ref.update({"coins": firestore.Increment(self.total)})
             donor_names_string = ", ".join(self.donor_names)
+            if len(self.donor_names) > 1:
+                donor_names_string += " and "
             if self.message:
                 await self.message.channel.send(
                     f"<:GoobHeart:1459836996381048863> {self.beggar.mention} received "
-                    f"<:oathcoin:1462999179998531614>{self.total} from {donor_names_string} and a mysterious donor!"
+                    f"<:oathcoin:1462999179998531614>{self.total} from {donor_names_string}a mysterious donor!"
                 )
