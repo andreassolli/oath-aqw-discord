@@ -79,17 +79,17 @@ async def generate_profile_card(
     if card == "Red Card":
         bg = Image.open(ASSETS_DIR / "red_card.png").convert("RGBA")
     elif card == "Proxy Card":
-        bg = Image.open(ASSETS_DIR / "old_proxy_card.png").convert("RGBA")
+        bg = Image.open(ASSETS_DIR / "proxy_card.png").convert("RGBA")
     else:
         bg = Image.open(ASSETS_DIR / "card.png").convert("RGBA")
     draw = ImageDraw.Draw(bg)
     avatar = await fetch_avatar(target.display_avatar.url)
-    avatar = circle_crop(avatar, 154)
+    avatar = circle_crop(avatar, 231)
     bg.paste(avatar, (29, 21), avatar)
 
-    if border == "Test Border":
-        test_border = Image.open(ASSETS_DIR / "test_border.png").convert("RGBA")
-        bg.paste(test_border, (0, 0), test_border)
+    # if border == "Test Border":
+    #    test_border = Image.open(ASSETS_DIR / "test_border.png").convert("RGBA")
+    #    bg.paste(test_border, (0, 0), test_border)
     if is_potw:
         potw_border = Image.open(ASSETS_DIR / "potw_border.webp").convert("RGBA")
         potw_border = potw_border.resize((158, 168), Image.Resampling.LANCZOS)
@@ -102,26 +102,26 @@ async def generate_profile_card(
     font_xsmall = ImageFont.truetype(FONTS_DIR / "Urbanist-Regular.ttf", 16)
     font_xsmall_light = ImageFont.truetype(FONTS_DIR / "Urbanist-Light.ttf", 14)
 
-    draw.text((227, 21), target.display_name, font=font_big, fill="#FFFFFF")
+    draw.text((340, 32), target.display_name, font=font_big, fill="#FFFFFF")
     if has_been_potw:
         name = target.display_name
-        name_x = 227
-        name_y = 21
+        name_x = 340
+        name_y = 32
 
         # Measure text width
         bbox = draw.textbbox((0, 0), name, font=font_big)
         text_width = bbox[2] - bbox[0]
 
         # Padding between name and flare
-        padding = 6
+        padding = 9
 
         flare_x = int(name_x + text_width + padding)
-        flare_y = int(name_y + 6)
+        flare_y = int(name_y + padding)
 
         potw_flare = Image.open(ASSETS_DIR / "potw_flare.webp").convert("RGBA")
-        potw_flare = potw_flare.resize((28, 28), Image.Resampling.LANCZOS)
+        potw_flare = potw_flare.resize((42, 42), Image.Resampling.LANCZOS)
         bg.paste(potw_flare, (flare_x, flare_y), potw_flare)
-    draw.text((227, 61), guild, font=font_small, fill="#A0A0AA")
+    draw.text((340, 92), guild, font=font_small, fill="#FFFFFF")
 
     if target.joined_at:
         day = target.joined_at.day
@@ -130,64 +130,64 @@ async def generate_profile_card(
         joined_text = "Joined unknown"
 
     draw.text(
-        (227, 96),
+        (340, 144),
         joined_text,
         font=font_light,
-        fill="#A0A0AA",
+        fill="#FFFFFF",
     )
 
-    draw.text((29, 190), "Badges", font=font_small, fill="#FFFFFF")
+    draw.text((44, 285), "Badges", font=font_small, fill="#FFFFFF")
 
-    draw.text((237, 133), "Stats", font=font_small, fill="#FFFFFF")
+    draw.text((356, 200), "Stats", font=font_small, fill="#FFFFFF")
 
-    draw.text((255, 155), str(mee6["level"]), font=font_bold, fill="#FFFFFF")
+    draw.text((383, 233), str(mee6["level"]), font=font_bold, fill="#FFFFFF")
 
-    draw.text((240, 182), "lvl", font=font_xsmall, fill="#FFFFFF")
+    draw.text((360, 273), "lvl", font=font_xsmall, fill="#FFFFFF")
 
     draw.text(
-        (240, 200),
+        (360, 300),
         f"{mee6['current_xp']} / {mee6['xp_to_level']} xp",
         font=font_xsmall_light,
-        fill="#A0A0AA",
+        fill="#FFFFFF",
     )
 
-    draw.text((375, 165), f"{mee6['messages']} sent", font=font_xsmall, fill="#FFFFFF")
+    draw.text((563, 248), f"{mee6['messages']} sent", font=font_xsmall, fill="#FFFFFF")
 
     draw.text(
-        (375, 195), f"Wordle: {completed_words}", font=font_xsmall, fill="#FFFFFF"
+        (563, 293), f"Wordle: {completed_words}", font=font_xsmall, fill="#FFFFFF"
     )
 
-    draw.text((237, 250), "Tickets", font=font_small, fill="#FFFFFF")
+    draw.text((356, 375), "Tickets", font=font_small, fill="#FFFFFF")
 
-    draw.text((267, 280), f"{tickets_claimed} helped", font=font_xsmall, fill="#FFFFFF")
+    draw.text((401, 420), f"{tickets_claimed} helped", font=font_xsmall, fill="#FFFFFF")
 
-    draw.text((267, 311), f"{points} points", font=font_xsmall, fill="#FFFFFF")
+    draw.text((401, 467), f"{points} points", font=font_xsmall, fill="#FFFFFF")
 
-    draw.text((375, 280), f"{wins} wins", font=font_xsmall, fill="#FFFFFF")
+    draw.text((563, 420), f"{wins} wins", font=font_xsmall, fill="#FFFFFF")
 
     draw.text(
-        (375, 311),
+        (563, 467),
         f"{ordinal(rank)} place",
         font=font_xsmall,
         fill="#FFFFFF",
     )
 
     trophy = Image.open(ASSETS_DIR / "trophy.png").convert("RGBA")
-    trophy = trophy.resize((18, 18), Image.Resampling.LANCZOS)
+    trophy = trophy.resize((27, 27), Image.Resampling.LANCZOS)
     calendar = Image.open(ASSETS_DIR / "calendar.png").convert("RGBA")
-    calendar = calendar.resize((18, 18), Image.Resampling.LANCZOS)
+    calendar = calendar.resize((27, 27), Image.Resampling.LANCZOS)
     ticket = Image.open(ASSETS_DIR / "ticket.png").convert("RGBA")
-    ticket = ticket.resize((18, 18), Image.Resampling.LANCZOS)
+    ticket = ticket.resize((27, 27), Image.Resampling.LANCZOS)
     medal = Image.open(ASSETS_DIR / "medal.png").convert("RGBA")
-    medal = medal.resize((18, 18), Image.Resampling.LANCZOS)
+    medal = medal.resize((27, 27), Image.Resampling.LANCZOS)
     dice = Image.open(ASSETS_DIR / "dice.png").convert("RGBA")
-    dice = dice.resize((18, 18), Image.Resampling.LANCZOS)
+    dice = dice.resize((27, 27), Image.Resampling.LANCZOS)
     messages = Image.open(ASSETS_DIR / "messages.png").convert("RGBA")
-    messages = messages.resize((18, 18), Image.Resampling.LANCZOS)
+    messages = messages.resize((27, 27), Image.Resampling.LANCZOS)
     forge = Image.open(ASSETS_DIR / "forge.png").convert("RGBA")
-    forge = forge.resize((34, 34), Image.Resampling.LANCZOS)
+    forge = forge.resize((51, 51), Image.Resampling.LANCZOS)
     sword = Image.open(ASSETS_DIR / "51.png").convert("RGBA")
-    sword = sword.resize((34, 34), Image.Resampling.LANCZOS)
+    sword = sword.resize((51, 51), Image.Resampling.LANCZOS)
 
     x = 0
     y = 0
@@ -197,18 +197,18 @@ async def generate_profile_card(
                 y += 1
                 x = 0
             badge_img = Image.open(BADGE_TO_IMAGE[badge]).convert("RGBA")
-            badge_img = badge_img.resize((34, 34), Image.Resampling.LANCZOS)
-            bg.paste(badge_img, (29 + 44 * x, 224 + 44 * y), badge_img)
+            badge_img = badge_img.resize((51, 51), Image.Resampling.LANCZOS)
+            bg.paste(badge_img, (44 + 66 * x, 336 + 66 * y), badge_img)
             x += 1
     # bg.paste(forge, (29, 224), forge)
     # bg.paste(sword, (73, 224), sword)
 
-    bg.paste(trophy, (350, 282), trophy)
-    bg.paste(calendar, (350, 312), calendar)
-    bg.paste(ticket, (242, 282), ticket)
-    bg.paste(medal, (242, 313), medal)
-    bg.paste(messages, (350, 168), messages)
-    bg.paste(dice, (350, 198), dice)
+    bg.paste(trophy, (525, 423), trophy)
+    bg.paste(calendar, (525, 468), calendar)
+    bg.paste(ticket, (242, 423), ticket)
+    bg.paste(medal, (242, 470), medal)
+    bg.paste(messages, (525, 252), messages)
+    bg.paste(dice, (525, 297), dice)
 
     buffer = BytesIO()
     bg.save(buffer, format="PNG")
