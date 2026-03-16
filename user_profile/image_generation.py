@@ -78,6 +78,8 @@ async def generate_profile_card(
     card = data.get("card", "")
     if card == "Red Card":
         bg = Image.open(ASSETS_DIR / "red_card.png").convert("RGBA")
+    elif card == "Proxy Card":
+        bg = Image.open(ASSETS_DIR / "old_proxy_card.png").convert("RGBA")
     else:
         bg = Image.open(ASSETS_DIR / "card.png").convert("RGBA")
     draw = ImageDraw.Draw(bg)

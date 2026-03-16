@@ -221,6 +221,8 @@ class Economy(commands.Cog):
 
         borders = []
         backgrounds = []
+        borders.append("None")
+        backgrounds.append("None")
 
         for item in inventory:
             item_id = item.get("id")
