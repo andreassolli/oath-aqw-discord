@@ -4,7 +4,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
-from config import BETA_TESTER_ROLE_ID, BETA_TESTING_CHANNEL_ID
+from config import BETA_TESTER_ROLE_ID, BETA_TESTING_CHANNEL_ID, OFFICER_ROLE_ID
 from economy.gamba.beg import beg
 from economy.gamba.coinflip import run_coinflip
 from economy.gamba.yanken_accept_view import RPSAcceptView
@@ -127,7 +127,10 @@ class Gamba(commands.Cog):
         message = await interaction.original_response()
         view.message = message
 
-    @app_commands.command("slots", description="Gamble your coins in the slots machine")
+    @app_commands.command(
+        name="slots", description="Gamble your coins in the slots machine"
+    )
+    @app_commands.checks.has_role(OFFICER_ROLE_ID)
     async def slots_command(self, interaction: discord.Interaction):
         embed = discord.Embed(
             title="This is a loop, it never ends",
