@@ -15,6 +15,7 @@ def build_ticket_embed(
     server: str,
     total_kills: str,
     drops: list[str] = [],
+    claimer_roles: dict[str, str] | None = None,
 ):
     requester_member = guild.get_member(requester_id)
     requester_mention = (
@@ -22,11 +23,24 @@ def build_ticket_embed(
     )
 
     # Resolve claimer mentions
+    claimer_roles = claimer_roles or {}
+
     if claimers:
-        helpers = "\n".join(
-            guild.get_member(uid).mention if guild.get_member(uid) else f"<@{uid}>"
-            for uid in claimers
-        )
+        helper_lines = []
+
+        for uid in claimers:
+            member = guild.get_member(uid)
+            mention = member.mention if member else f"<@{uid}>"
+
+            role = claimer_roles.get(str(uid))
+
+            # Only apply role formatting in grimchallenge
+            if role and room == "grimchallenge":
+                helper_lines.append(f"**{role}:** {mention}")
+            else:
+                helper_lines.append(mention)
+
+        helpers = "\n".join(helper_lines)
     else:
         helpers = "—"
 

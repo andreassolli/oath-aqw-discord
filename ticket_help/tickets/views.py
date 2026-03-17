@@ -20,6 +20,7 @@ from .embed_utils import build_ticket_embed
 from .ids import get_next_ticket_id
 from .logging import log_ticket_event
 from .points import get_boss_room
+from .role_claim_view import RoleClaimView
 from .utils import clear_active_ticket, get_week_start, set_active_ticket
 
 
@@ -44,7 +45,7 @@ class TicketActionView(discord.ui.View):
 
         try:
             message = await interaction.channel.fetch_message(message_id)
-
+            claimer_roles = ticket_data.get("claimer_roles", {})
             embed = build_ticket_embed(
                 requester_id=ticket_data["user_id"],
                 bosses=ticket_data["bosses"],
@@ -57,6 +58,7 @@ class TicketActionView(discord.ui.View):
                 type=ticket_data["type"],
                 server=ticket_data["server"],
                 total_kills=ticket_data["total_kills"],
+                claimer_roles=claimer_roles,
             )
 
             await message.edit(embed=embed, view=self)
@@ -86,10 +88,20 @@ class TicketActionView(discord.ui.View):
         claimers = data.get("claimers", [])
 
         requester_id = data.get("user_id")
-
         if interaction.user.id in claimers:
             claimers.remove(interaction.user.id)
-            doc_ref.update({"claimers": claimers})
+
+            roles = data.get("claimer_roles", {})
+
+            roles.pop(str(interaction.user.id), None)
+
+            doc_ref.update(
+                {
+                    "claimers": claimers,
+                    "claimer_roles": roles,
+                }
+            )
+
             clear_active_ticket(interaction.user.id, self.ticket_name)
 
             await self._update_ticket_embed(interaction)
@@ -122,6 +134,22 @@ class TicketActionView(discord.ui.View):
         if not has_helper_role(interaction):
             return await interaction.followup.send(
                 "🚫 You are not a helper, become one to claim or unclaim tickets.",
+                ephemeral=True,
+            )
+            # SPECIAL CASE: grimchallenge
+        if self.room == "grimchallenge":
+            roles = data.get("claimer_roles", {})
+
+            view = RoleClaimView(
+                ticket_name=self.ticket_name,
+                user_id=interaction.user.id,
+                parent_view=self,
+                roles=roles,
+            )
+
+            return await interaction.followup.send(
+                "Select your role before claiming:",
+                view=view,
                 ephemeral=True,
             )
 
