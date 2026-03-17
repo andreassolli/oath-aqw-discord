@@ -77,7 +77,7 @@ async def generate_profile_card(
     border = data.get("border", "")
     card = data.get("card", "")
     if card:
-        bg = Image.open(ASSETS_DIR / f"{card['image']}.png").convert("RGBA")
+        bg = Image.open(ASSETS_DIR / f"{card.get('image')}").convert("RGBA")
     else:
         bg = Image.open(ASSETS_DIR / "card.png").convert("RGBA")
     draw = ImageDraw.Draw(bg)
