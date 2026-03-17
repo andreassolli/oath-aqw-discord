@@ -39,9 +39,10 @@ class Economy(commands.Cog):
         price: int,
         image: str,
         display: str,
+        type: str,
         quantity: int | None = None,
     ):
-        await list_item(name, price, quantity, image, display)
+        await list_item(name, price, image, display, type, quantity)
         return await interaction.response.send_message(
             f"Listed {name} for sale in the shop.", ephemeral=True
         )
