@@ -10,9 +10,9 @@ async def get_inventory(user_id: str):
     return inventory
 
 
-async def add_item(user_id: str, item_id: str, type: str):
+async def add_item(user_id: str, item_id: str, type: str, image: str, display: str):
     doc_ref = db.collection("users").document(user_id)
-    item = {"id": item_id, "type": type}
+    item = {"id": item_id, "type": type, "image": image, "display": display}
 
     doc_ref.update({"inventory": ArrayUnion([item])})
 
@@ -34,7 +34,9 @@ async def equip_item(user_id: str, item_id: str):
 
     item_type = item["type"]
 
-    doc_ref.update({item_type: item["id"]})
+    doc_ref.update(
+        {item_type: {"id": item_id, "image": item["image"], "display": item["display"]}}
+    )
 
     return f"Equipped {item['id']}."
 

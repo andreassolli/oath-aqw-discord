@@ -10,6 +10,7 @@ class ShopItem(TypedDict):
     name: str
     price: int
     image: str
+    display: str
     quantity: int
 
 

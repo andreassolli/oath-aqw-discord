@@ -66,7 +66,7 @@ class BegView(discord.ui.View):
             await self.message.edit(view=self)
 
         self.total += random.randint(6, 10)
-        random_odds = random.randint(1, 100)
+        random_odds = random.randint(1, 40)
 
         if random_odds == 1 and len(self.donors) > 0:
             random_index = random.randint(0, len(self.donors) - 1)

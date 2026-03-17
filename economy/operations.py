@@ -8,12 +8,26 @@ from firebase_client import db
 from inventory.utils import add_item
 
 
-async def list_item(name: str, price: int, quantity: int | None = None):
+async def list_item(
+    name: str,
+    price: int,
+    image: str,
+    display: str,
+    type: str,
+    quantity: int | None = None,
+):
     item_id = random.seed()
     if quantity == None:
         quantity = -1
     db.collection("shop_items").document(str(item_id)).set(
-        {"name": name, "price": price, "quantity": quantity}
+        {
+            "name": name,
+            "price": price,
+            "quantity": quantity,
+            "display": display,
+            "image": image,
+            "type": type,
+        }
     )
     return
 
@@ -50,7 +64,13 @@ async def buy_item(name: str, user_id: int):
         return f"You do not have enough coins to buy {name}."
 
     user_ref.update({"coins": firestore.Increment(-price)})
-    await add_item(str(user_id), item_doc.get("name", ""), item_doc.get("type", ""))
+    await add_item(
+        str(user_id),
+        item_doc.get("name", ""),
+        item_doc.get("type", ""),
+        item_doc.get("image", ""),
+        item_doc.get("display", ""),
+    )
 
     if quantity != -1:
         item_snap.reference.update({"quantity": firestore.Increment(-1)})

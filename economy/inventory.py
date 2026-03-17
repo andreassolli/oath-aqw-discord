@@ -28,9 +28,6 @@ async def generate_inventory(
     user_doc = db.collection("users").document(userId).get()
     items = (user_doc.to_dict() or {}).get("inventory", [])
 
-    shop_items = await get_shop()
-    shop_lookup = {item["name"]: item for item in shop_items}
-
     bg = Image.open(ASSETS_DIR / "inventory.png").convert("RGBA")
 
     font_small = ImageFont.truetype(FONTS_DIR / "Urbanist-Regular.ttf", 26)
@@ -62,11 +59,7 @@ async def generate_inventory(
     )
     draw.text((268, 54), f"{len(items)}", font=font_small_bold, fill="#FFFFFF")
     for item in items:
-        shop_item = shop_lookup.get(item["id"])
-        if not shop_item:
-            continue  # skip if item no longer exists in shop
-
-        image_path = ASSETS_DIR / shop_item["image"]
+        image_path = ASSETS_DIR / item["display"]
         item_picture = Image.open(image_path).convert("RGBA")
 
         if x == 4:
