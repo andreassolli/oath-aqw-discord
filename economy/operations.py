@@ -16,10 +16,9 @@ async def list_item(
     type: str,
     quantity: int | None = None,
 ):
-    item_id = random.seed()
     if quantity == None:
         quantity = -1
-    db.collection("shop_items").document(str(item_id)).set(
+    db.collection("shop_items").document(name).set(
         {
             "name": name,
             "price": price,
