@@ -137,7 +137,7 @@ class TicketActionView(discord.ui.View):
                 ephemeral=True,
             )
             # SPECIAL CASE: grimchallenge
-        if self.room == "grimchallenge":
+        if "grimchallenge" in self.room.lower():
             roles = data.get("claimer_roles", {})
 
             view = RoleClaimView(
