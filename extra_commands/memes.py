@@ -124,3 +124,14 @@ async def m_og_pro(interaction: discord.Interaction):
     file = discord.File("assets/og-pro.webp", filename="og-pro.webp")
     embed.set_image(url="attachment://og-pro.webp")
     await interaction.response.send_message(embed=embed, file=file)
+
+
+async def m_yokai(interaction: discord.Interaction):
+    embed = discord.Embed(
+        title="Time to go",
+        description="",
+        color=discord.Color.blue(),
+    )
+    file = discord.File("assets/yokai.png", filename="yokai.png")
+    embed.set_image(url="attachment://yokai.png")
+    await interaction.response.send_message(embed=embed, file=file)
