@@ -53,7 +53,7 @@ async def generate_shop(
         if x == 4:
             y += 1
             x = 0
-        item_picture = Image.open(ASSETS_DIR / item["image"]).convert("RGBA")
+        item_picture = Image.open(ASSETS_DIR / item["display"]).convert("RGBA")
         bg.paste(item_picture, (57 + gapX * x, 144 + gapY * y), item_picture)
         draw.text(
             (57 + gapX * x, 298 + gapY * y),
