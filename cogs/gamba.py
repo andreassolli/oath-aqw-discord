@@ -127,6 +127,17 @@ class Gamba(commands.Cog):
         message = await interaction.original_response()
         view.message = message
 
+    @app_commands.command("slots", description="Gamble your coins in the slots machine")
+    async def slots_command(self, interaction: discord.Interaction):
+        embed = discord.Embed(
+            title="This is a loop, it never ends",
+            description="Just for testing purposes",
+            color=discord.Color.blue(),
+        )
+        file = discord.File("assets/finaly.gif", filename="finaly.gif")
+        embed.set_image(url="attachment://finaly.gif")
+        await interaction.response.send_message(embed=embed, file=file)
+
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(Gamba(bot))

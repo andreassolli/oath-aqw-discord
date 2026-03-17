@@ -7,7 +7,7 @@ class ServerSelect(discord.ui.Select):
         options = [
             discord.SelectOption(
                 label=server["sName"],
-                value=server["sName"].lower(),
+                value=server["sName"],
                 description=f"{server['iCount']}/{server['iMax']} players",
             )
             for server in servers

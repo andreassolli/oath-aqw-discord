@@ -22,5 +22,9 @@ async def fetch_servers():
     async with session.get(url, headers=HEADERS, proxy=PROXY_SERVICE) as resp:
         data = await resp.json()
 
-    # filter only chat-enabled + online servers
-    return [s for s in data if s.get("iChat") != 0 and s.get("bOnline") == 1]
+    # filter only chat-enabled + non-mem + online servers
+    return [
+        s
+        for s in data
+        if s.get("iChat") != 0 and s.get("bOnline") == 1 and s.get("bUpg") != 1
+    ]
