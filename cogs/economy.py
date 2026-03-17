@@ -37,9 +37,11 @@ class Economy(commands.Cog):
         interaction: discord.Interaction,
         name: str,
         price: int,
+        image: str,
+        display: str,
         quantity: int | None = None,
     ):
-        await list_item(name, price, quantity)
+        await list_item(name, price, quantity, image, display)
         return await interaction.response.send_message(
             f"Listed {name} for sale in the shop.", ephemeral=True
         )
