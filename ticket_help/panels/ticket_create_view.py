@@ -7,13 +7,14 @@ from .type_select import TypeSelect
 
 
 class TicketCreateView(discord.ui.View):
-    def __init__(self):
+    def __init__(self, servers: list[dict]):
         super().__init__(timeout=120)
+
         self.selected_type = "daily bosses"
         self.selected_server = ""
 
         self.add_item(TypeSelect())
-        self.add_item(ServerSelect())
+        self.add_item(ServerSelect(servers))  # ✅ pass servers
 
     @discord.ui.button(label="Next", style=discord.ButtonStyle.primary, row=2)
     async def next_step(self, interaction: discord.Interaction, _):

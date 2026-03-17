@@ -1,5 +1,6 @@
 import discord
 
+from .server_fetch import fetch_servers
 from .ticket_create_view import TicketCreateView
 from .ticket_modal import CreateTicketModal
 
@@ -10,8 +11,15 @@ class TicketPanelView(discord.ui.View):
 
     @discord.ui.button(label="🎫 Create Ticket", style=discord.ButtonStyle.primary)
     async def create_ticket(self, interaction: discord.Interaction, _):
-        await interaction.response.send_message(
+
+        await interaction.response.defer(ephemeral=True)
+
+        servers = await fetch_servers()
+
+        view = TicketCreateView(servers)
+
+        await interaction.followup.send(
             "Select the type and server for this ticket:",
-            view=TicketCreateView(),
+            view=view,
             ephemeral=True,
         )
