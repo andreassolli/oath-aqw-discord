@@ -37,3 +37,11 @@ class RoleSelect(discord.ui.Select):
             max_values=1,
             options=options,
         )
+
+    async def callback(self, interaction: discord.Interaction):
+        self.view.selected_role = self.values[0]
+
+        await interaction.response.send_message(
+            f"Selected role: {self.values[0]}",
+            ephemeral=True,
+        )
