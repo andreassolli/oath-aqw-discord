@@ -2,30 +2,22 @@ import discord
 
 
 class ServerSelect(discord.ui.Select):
-    def __init__(self):
-        options_array = [
-            "Artix",
-            "Test",
-            "Yorumi",
-            "Safiria",
-            "Swordhaven",
-            "Yokai",
-            "Alteon",
-            "Sepulchure",
-            "Espada",
-            "Galanoth",
-            "Gravelyn",
-        ]
+    def __init__(self, servers: list[dict]):
+
         options = [
-            discord.SelectOption(label=option, value=option.lower())
-            for option in options_array
+            discord.SelectOption(
+                label=server["sName"],
+                value=server["sName"].lower(),
+                description=f"{server['iCount']}/{server['iMax']} players",
+            )
+            for server in servers
         ]
 
         super().__init__(
             placeholder="Select Server",
             min_values=1,
             max_values=1,
-            options=options,
+            options=options[:25],  # Discord limit
             row=1,
         )
 

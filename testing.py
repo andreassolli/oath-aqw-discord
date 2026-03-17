@@ -134,18 +134,16 @@ def migrate_equipped_items():
     print(f"Done. Updated {updated_count} users.")
 
 
+async def test_fetch_call():
+    async with aiohttp.ClientSession() as session:
+        async with session.get("https://game.aq.com/game/api/data/servers") as response:
+            print(await response.text())
+
+
 if __name__ == "__main__":
     # get_all_users()
     # choose_new_word()
-    asyncio.run(
-        add_item(
-            "345741637487689732",
-            "Glass Card",
-            "card",
-            "glass_card.png",
-            "custom.png",
-        )
-    )
+    asyncio.run(test_fetch_call())
     # asyncio.run(generate_inventory(userId="292040660696039424"))
     # asyncio.run(backfill_ccids())
     # asyncio.run(generate_wordle_share(None, "292040660696039424"))
