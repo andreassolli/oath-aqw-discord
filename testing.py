@@ -49,21 +49,102 @@ def get_all_users():
     print(sorted_users)
 
 
+def migrate_inventory():
+    users_ref = db.collection("users")
+    docs = users_ref.stream()
+
+    updated_count = 0
+
+    for doc in docs:
+        data = doc.to_dict() or {}
+
+        inventory = data.get("inventory")
+        if not inventory:
+            continue
+
+        changed = False
+
+        for item in inventory:
+            item_id = item.get("id")
+
+            if item_id == "Red Card":
+                if item.get("image") != "red_card.png":
+                    item["image"] = "red_card.png"
+                    item["display"] = "red_card_item.png"
+                    changed = True
+
+            elif item_id == "Test Border":
+                if item.get("image") != "test_border.png":
+                    item["image"] = "test_border.png"
+                    item["display"] = "test_border_item.png"
+                    changed = True
+
+        if changed:
+            doc.reference.update({"inventory": inventory})
+            updated_count += 1
+            print(f"Updated user {doc.id}")
+
+    print(f"Done. Updated {updated_count} users.")
+
+
+ITEM_DATA = {
+    "Red Card": {
+        "image": "red_card.png",
+        "display": "red_card_item.png",
+    },
+    "Test Border": {
+        "image": "test_border.png",
+        "display": "test_border_item.png",
+    },
+}
+
+
+def migrate_equipped_items():
+    users_ref = db.collection("users")
+    docs = users_ref.stream()
+
+    updated_count = 0
+
+    for doc in docs:
+        data = doc.to_dict() or {}
+
+        updates = {}
+
+        # Handle border
+        border = data.get("border")
+        if isinstance(border, str) and border in ITEM_DATA:
+            updates["border"] = {
+                "id": border,
+                **ITEM_DATA[border],
+            }
+
+        # Handle card
+        card = data.get("card")
+        if isinstance(card, str) and card in ITEM_DATA:
+            updates["card"] = {
+                "id": card,
+                **ITEM_DATA[card],
+            }
+
+        if updates:
+            doc.reference.update(updates)
+            updated_count += 1
+            print(f"Updated user {doc.id}")
+
+    print(f"Done. Updated {updated_count} users.")
+
+
 if __name__ == "__main__":
     # get_all_users()
     # choose_new_word()
-    add_item(
-        "315691280472473601",
-        "Bionicle Light",
-        "card",
-        "bionicle_light.png",
-        "custom.png",
-    )
-    add_item(
-        "315691280472473601", "Bionicle Dark", "card", "bionicle_dark.png", "custom.png"
-    )
-    add_item(
-        "315691280472473601", "Bionicle Red", "card", "bionicle_red.png", "custom.png"
+    asyncio.run(
+        add_item(
+            "345741637487689732",
+            "Glass Card",
+            "card",
+            "glass_card.png",
+            "custom.png",
+        )
     )
     # asyncio.run(generate_inventory(userId="292040660696039424"))
     # asyncio.run(backfill_ccids())
