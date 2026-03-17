@@ -41,7 +41,4 @@ class RoleSelect(discord.ui.Select):
     async def callback(self, interaction: discord.Interaction):
         self.view.selected_role = self.values[0]
 
-        await interaction.response.send_message(
-            f"Selected role: {self.values[0]}",
-            ephemeral=True,
-        )
+        await interaction.response.defer()

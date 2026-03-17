@@ -35,7 +35,7 @@ def build_ticket_embed(
             role = claimer_roles.get(str(uid))
 
             # Only apply role formatting in grimchallenge
-            if role and room == "grimchallenge":
+            if role and "Grim Challenge" in bosses:
                 helper_lines.append(f"**{role}:** {mention}")
             else:
                 helper_lines.append(mention)
