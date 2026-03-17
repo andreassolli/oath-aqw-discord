@@ -1,6 +1,6 @@
 import discord
 
-from firebase_client import db
+from inventory.utils import equip_item  # adjust import if needed
 
 
 class BorderSelect(discord.ui.Select):
@@ -47,26 +47,28 @@ class EquipButton(discord.ui.Button):
     async def callback(self, interaction: discord.Interaction):
         view = self.view
 
-        user_ref = db.collection("users").document(str(view.user_id))
-
-        updates = {}
-
-        if view.selected_border:
-            updates["border"] = view.selected_border
-
-        if view.selected_background:
-            updates["card"] = view.selected_background
-
-        if not updates:
+        if not view.selected_border and not view.selected_background:
             return await interaction.response.send_message(
                 "Select an item first.",
                 ephemeral=True,
             )
 
-        user_ref.update(updates)
+        responses = []
+
+        # Equip border
+        if view.selected_border:
+            res = await equip_item(str(view.user_id), view.selected_border)
+            if res:
+                responses.append(res)
+
+        # Equip background (card)
+        if view.selected_background:
+            res = await equip_item(str(view.user_id), view.selected_background)
+            if res:
+                responses.append(res)
 
         await interaction.response.send_message(
-            "Items equipped successfully!",
+            "\n".join(responses) if responses else "Nothing equipped.",
             ephemeral=True,
         )
 
