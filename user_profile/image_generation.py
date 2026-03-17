@@ -75,7 +75,7 @@ async def generate_profile_card(
     rank = sum(1 for _ in users_above) + 1
     wins = data.get("wins", 0)
     border = data.get("border", "")
-    card = data.get("card", "")
+    card = data.get("card", {})
     if card:
         bg = Image.open(ASSETS_DIR / f"{card.get('image')}").convert("RGBA")
     else:
