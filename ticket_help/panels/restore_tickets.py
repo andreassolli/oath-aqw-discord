@@ -44,6 +44,7 @@ async def restore_tickets(bot: discord.Client):
             server=data["server"],
             total_kills=str(data.get("total_kills", 1)),
             drops=data.get("drops", []),
+            claimer_roles=data.get("claimer_roles", {}),
         )
 
         # 🔥 Rebuild view from DB state

@@ -11,6 +11,17 @@ OPTIONS = {
     "Fill": "Cover what is left",
 }
 
+ROLE_EMOJIS = {
+    "DPS": "⚔️",
+    "Sub DPS": "🗡️",
+    "Support": "⚖️",
+    "Healer": "⛑️",
+    "Taunter 1": "📜",
+    "Taunter 2": "📜",
+    "Tank": "🛡️",
+    "Fill": "➕",
+}
+
 
 class RoleSelect(discord.ui.Select):
     def __init__(self, roles: dict[str, str]):
@@ -21,7 +32,7 @@ class RoleSelect(discord.ui.Select):
 
         for role, desc in OPTIONS.items():
             option = discord.SelectOption(
-                label=role,
+                label=f"{ROLE_EMOJIS.get(role, '❔')}{role}",
                 value=role,
                 description=desc,
                 emoji="🔒" if role in taken_roles else None,

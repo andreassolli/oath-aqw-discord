@@ -1,5 +1,16 @@
 import discord
 
+ROLE_EMOJIS = {
+    "DPS": "⚔️",
+    "Sub DPS": "🗡️",
+    "Support": "⚖️",
+    "Healer": "⛑️",
+    "Taunter 1": "📜",
+    "Taunter 2": "📜",
+    "Tank": "🛡️",
+    "Fill": "➕",
+}
+
 
 def build_ticket_embed(
     *,
@@ -36,7 +47,9 @@ def build_ticket_embed(
 
             # Only apply role formatting in grimchallenge
             if role and "Grim Challenge" in bosses:
-                helper_lines.append(f"**{role}:** {mention}")
+                helper_lines.append(
+                    f"**{ROLE_EMOJIS.get(role, '❔')}{role}:** {mention}"
+                )
             else:
                 helper_lines.append(mention)
 
