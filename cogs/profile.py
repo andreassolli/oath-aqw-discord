@@ -161,7 +161,10 @@ class Profile(commands.Cog):
             ephemeral=True,
         )
 
-    @app_commands.command(name="test-profile", description="")
+    @app_commands.command(
+        name="test-profile",
+        description="Generate a test profile card",
+    )
     @app_commands.checks.has_role(OFFICER_ROLE_ID)
     async def test_profile(self, interaction: discord.Interaction):
         await interaction.response.defer(thinking=True)
