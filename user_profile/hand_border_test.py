@@ -10,7 +10,7 @@ def apply_hand_overlay(card_buffer: BytesIO) -> BytesIO:
     card_buffer.seek(0)
     card = Image.open(card_buffer).convert("RGBA")
 
-    hand = Image.open(ASSETS_DIR / "hand_test.png").convert("RGBA")
+    hand = Image.open(ASSETS_DIR / "hand_test2.png").convert("RGBA")
 
     # Create canvas = hand size
     canvas = Image.new("RGBA", (card.width, hand.height), (0, 0, 0, 0))
