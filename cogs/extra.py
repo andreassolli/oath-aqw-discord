@@ -45,6 +45,7 @@ from extra_commands.utils import (
 )
 from extra_commands.wordle import (
     ShareWordleView,
+    choose_new_word,
     get_wordle_word,
     guess_word,
 )
@@ -382,6 +383,19 @@ class Extra(commands.Cog):
             return
 
         await channel.send(content=message)
+
+    @app_commands.command(
+        name="new-aqwordle",
+        description="Select new AQWordle word",
+    )
+    @app_commands.checks.has_role(BOT_GUY_ROLE_ID)
+    async def new_aqwordle(self, interaction: discord.Interaction):
+
+        await interaction.response.defer(ephemeral=True)
+
+        choose_new_word()
+
+        return await interaction.followup.send("New AQWordle word selected")
 
 
 async def setup(bot: commands.Bot):
