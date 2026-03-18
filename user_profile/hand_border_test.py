@@ -17,7 +17,7 @@ def apply_hand_overlay(card_buffer: BytesIO) -> BytesIO:
 
     # 🎯 Position card (centered horizontally, slightly up)
     card_x = (hand.width - card.width) // 2
-    card_y = 106
+    card_y = 159
 
     canvas.paste(card, (card_x, card_y), card)
 
