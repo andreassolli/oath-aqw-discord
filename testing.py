@@ -143,7 +143,12 @@ async def test_fetch_call():
 if __name__ == "__main__":
     # get_all_users()
     choose_new_word()
-    # asyncio.run(test_fetch_call())
-    # asyncio.run(generate_inventory(userId="292040660696039424"))
-    # asyncio.run(backfill_ccids())
-    # asyncio.run(generate_wordle_share(None, "292040660696039424"))
+# asyncio.run(
+#    add_item(
+#        "292040660696039424", "Guts Card", "card", "guts_card.png", "custom.png"
+#    )
+# )
+# asyncio.run(test_fetch_call())
+# asyncio.run(generate_inventory(userId="292040660696039424"))
+# asyncio.run(backfill_ccids())
+# asyncio.run(generate_wordle_share(None, "292040660696039424"))
