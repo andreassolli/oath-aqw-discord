@@ -13,11 +13,11 @@ def apply_hand_overlay(card_buffer: BytesIO) -> BytesIO:
     hand = Image.open(ASSETS_DIR / "hand_test.png").convert("RGBA")
 
     # Create canvas = hand size
-    canvas = Image.new("RGBA", hand.size, (0, 0, 0, 0))
+    canvas = Image.new("RGBA", (card.width, hand.height), (0, 0, 0, 0))
 
     # 🎯 Position card (centered horizontally, slightly up)
     card_x = (hand.width - card.width) // 2
-    card_y = int(hand.height * 0.45)
+    card_y = 106
 
     canvas.paste(card, (card_x, card_y), card)
 
