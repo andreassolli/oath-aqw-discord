@@ -5,7 +5,7 @@ from discord import app_commands
 from discord.ext import commands
 from google.cloud.firestore import DocumentSnapshot
 
-from config import ALLOWED_COMMANDS_CHANNELS, DISCORD_MANAGER_ROLE_ID
+from config import ALLOWED_COMMANDS_CHANNELS, DISCORD_MANAGER_ROLE_ID, OFFICER_ROLE_ID
 from firebase_client import db
 from user_profile.badge_panel import setup_verification_panel
 from user_profile.hand_border_test import apply_hand_overlay
@@ -161,38 +161,39 @@ class Profile(commands.Cog):
             ephemeral=True,
         )
 
-        @app_commands.command(name="test-profile", description="")
-        async def test_profile(self, interaction: discord.Interaction):
-            await interaction.response.defer(thinking=True)
+    @app_commands.command(name="test-profile", description="")
+    @app_commands.checks.has_role(OFFICER_ROLE_ID)
+    async def test_profile(self, interaction: discord.Interaction):
+        await interaction.response.defer(thinking=True)
 
-            user = interaction.user
-            guild = interaction.guild
-            if not guild:
-                return
+        user = interaction.user
+        guild = interaction.guild
+        if not guild:
+            return
 
-            member = guild.get_member(user.id)
-            if not member:
-                return
+        member = guild.get_member(user.id)
+        if not member:
+            return
 
-            (
-                image_buffer,
-                badges,
-                is_potw,
-                has_been_potw,
-                name,
-                wins,
-            ) = await generate_profile_card(
-                interaction,
-                target=member,
-            )
+        (
+            image_buffer,
+            badges,
+            is_potw,
+            has_been_potw,
+            name,
+            wins,
+        ) = await generate_profile_card(
+            interaction,
+            target=member,
+        )
 
-            # 👇 APPLY HAND OVERLAY HERE
-            final_buffer = apply_hand_overlay(image_buffer)
+        # 👇 APPLY HAND OVERLAY HERE
+        final_buffer = apply_hand_overlay(image_buffer)
 
-            await interaction.followup.send(
-                file=discord.File(final_buffer, filename="profile.png"),
-                view=ProfileView(badges, is_potw, has_been_potw, name, wins),
-            )
+        await interaction.followup.send(
+            file=discord.File(final_buffer, filename="profile.png"),
+            view=ProfileView(badges, is_potw, has_been_potw, name, wins),
+        )
 
 
 async def setup(bot: commands.Bot):
