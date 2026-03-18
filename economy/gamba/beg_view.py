@@ -84,7 +84,7 @@ class BegView(discord.ui.View):
             beggar_ref = db.collection("users").document(str(self.beggar.id))
             beggar_ref.update({"coins": firestore.Increment(self.total)})
             donor_names_string = ", ".join(self.donor_names)
-            if len(self.donor_names) > 1:
+            if len(self.donor_names) > 0:
                 donor_names_string += " and "
             if self.message:
                 await self.message.channel.send(
