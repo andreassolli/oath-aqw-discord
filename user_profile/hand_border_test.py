@@ -12,17 +12,6 @@ def apply_hand_overlay(card_buffer: BytesIO) -> BytesIO:
 
     hand = Image.open(ASSETS_DIR / "hand_test.png").convert("RGBA")
 
-    # 🔥 Scale card relative to hand size
-    max_width = int(hand.width * 0.75)
-    scale = max_width / card.width
-
-    new_size = (
-        int(card.width * scale),
-        int(card.height * scale),
-    )
-
-    card = card.resize(new_size, Image.Resampling.LANCZOS)
-
     # Create canvas = hand size
     canvas = Image.new("RGBA", hand.size, (0, 0, 0, 0))
 
