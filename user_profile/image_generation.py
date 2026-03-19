@@ -47,7 +47,7 @@ async def generate_profile_card(
     completed_words = game_data.get("words_completed", 0)
     users_above = list(db.collection("users").where("points", ">", points).stream())
     rank = len(users_above) + 1
-    wins = data.get("wins", 0)
+    coins = data.get("coins", 0)
     border = data.get("border", "")
     card = data.get("card", {})
     if card:
@@ -132,7 +132,7 @@ async def generate_profile_card(
 
     draw.text((401, 467), f"{points} points", font=font_xsmall, fill="#FFFFFF")
 
-    draw.text((563, 420), f"{wins} wins", font=font_xsmall, fill="#FFFFFF")
+    draw.text((563, 420), f"{coins}", font=font_xsmall, fill="#FFFFFF")
 
     draw.text(
         (563, 467),
