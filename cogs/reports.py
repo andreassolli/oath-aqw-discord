@@ -65,6 +65,11 @@ class Reports(commands.Cog):
         self.active_reports = {}  # user_id -> thread_id
 
     async def cog_load(self):
+        self.bot.loop.create_task(self.restore_reports())
+
+    async def restore_reports(self):
+        await self.bot.wait_until_ready()
+
         docs = db.collection("reports").stream()
 
         for doc in docs:
@@ -80,31 +85,34 @@ class Reports(commands.Cog):
 
             thread = self.bot.get_channel(thread_id)
             if not thread:
+                print(f"❌ Thread not found: {thread_id}")
                 continue
 
             guild = self.bot.get_guild(data["guild_id"])
             if not guild:
+                print(f"❌ Guild not found: {data['guild_id']}")
                 continue
 
             officer_role = guild.get_role(OFFICER_ROLE_ID)
             if not officer_role:
+                print("❌ Officer role not found")
                 continue
 
-            # 🔁 Send NEW control message every restart
+            print(f"✅ Restoring thread {thread_id}")
+
             msg = await thread.send(
                 f"{officer_role.mention}, bot just restarted, and report still open.\nUse the button below to close it.",
                 view=CloseReportView(self, user_id),
             )
 
-            pins = await thread.pins()
-
-            # Remove old bot control messages (optional logic)
-            for p in pins:
-                if p.author == self.bot.user:
-                    try:
+            # Clean old pins
+            try:
+                pins = await thread.pins()
+                for p in pins:
+                    if p.author == self.bot.user:
                         await p.unpin()
-                    except:
-                        pass
+            except:
+                pass
 
             await msg.pin()
 
