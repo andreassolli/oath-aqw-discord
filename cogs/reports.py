@@ -161,7 +161,12 @@ class Reports(commands.Cog):
 
             files = [await a.to_file() for a in after.attachments]
 
-            await thread.send(f"✏️ **Reporter edited:**\n{after.content}", files=files)
+            await thread.send(
+                f"✏️ **Reporter edited:**\n"
+                f"**Before:** {before.content or '*empty*'}\n"
+                f"**After:** {after.content or '*empty*'}",
+                files=files,
+            )
 
         elif isinstance(after.channel, discord.Thread):
             thread = after.channel
@@ -193,12 +198,17 @@ class Reports(commands.Cog):
             if any(role.id == ADMIN_ROLE_ID for role in after.author.roles):
                 role = "Co-Leader"
             elif any(
-                role.id == {MAPRIL_ROLE_ID, BOT_GUY_ROLE_ID}
+                role.id in {MAPRIL_ROLE_ID, BOT_GUY_ROLE_ID}
                 for role in after.author.roles
             ):
                 role = "Head Officer"
 
-            await user.send(f"✏️ **{role} edited:**\n{after.content}", files=files)
+            await user.send(
+                f"✏️ **{role} edited:**\n"
+                f"**Before:** {before.content or '*empty*'}\n"
+                f"**After:** {after.content or '*empty*'}",
+                files=files,
+            )
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
@@ -306,7 +316,7 @@ class Reports(commands.Cog):
             if any(role.id == ADMIN_ROLE_ID for role in message.author.roles):
                 role = "Co-Leader"
             elif any(
-                role.id == {MAPRIL_ROLE_ID, BOT_GUY_ROLE_ID}
+                role.id in {MAPRIL_ROLE_ID, BOT_GUY_ROLE_ID}
                 for role in message.author.roles
             ):
                 role = "Head Officer"
