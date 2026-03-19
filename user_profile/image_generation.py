@@ -48,6 +48,7 @@ async def generate_profile_card(
     users_above = list(db.collection("users").where("points", ">", points).stream())
     rank = len(users_above) + 1
     coins = data.get("coins", 0)
+    wins = data.get("wins", 0)
     border = data.get("border", "")
     card = data.get("card", {})
     if card:
