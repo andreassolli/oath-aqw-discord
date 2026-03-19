@@ -6,7 +6,7 @@ from discord import app_commands
 
 from config import ALLOWED_COMMANDS_CHANNELS, TICKET_LOG_CHANNEL_ID
 from firebase_client import db, firestore
-from ticket_help.commands.permissions import has_admin_role
+from ticket_help.commands.permissions import has_admin_role, has_oathsworn_role
 from ticket_help.dashboard.updater import update_dashboard
 from ticket_help.tickets.confirm_cancel_view import ConfirmCancelView
 from ticket_help.tickets.confirm_complete_view import ConfirmCompleteView
@@ -154,7 +154,7 @@ async def remove_claimer(
     interaction: discord.Interaction, ticket_name: str, user: discord.Member
 ):
 
-    if not has_admin_role(interaction):
+    if not has_admin_role(interaction) or has_oathsworn_role(interaction):
         return await interaction.response.send_message(
             "🚫 You do not have permission to use this command.", ephemeral=True
         )

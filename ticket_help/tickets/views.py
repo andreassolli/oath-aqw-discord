@@ -327,8 +327,9 @@ class TicketActionView(discord.ui.View):
         requester_id = data.get("user_id")
         is_requester = interaction.user.id == requester_id
         is_admin = has_admin_role(interaction)
+        is_oathsworn = has_oathsworn_role(interaction)
 
-        if not (is_requester or is_admin):
+        if not (is_requester or is_admin or is_oathsworn):
             return await interaction.response.send_message(
                 "🚫 Only the ticket creator or an admin can cancel this ticket.",
                 ephemeral=True,
