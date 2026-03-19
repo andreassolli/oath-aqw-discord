@@ -8,6 +8,10 @@ from config import (
     DISCORD_MANAGER_ROLE_ID,
     GUILD_ID,
     MODERATOR_ROLE_ID,
+    OFFICER_ROLE_ID,
+    REPORT_TAG_ID,
+    SOLVED_TAG_ID,
+    UNSOLVED_TAG_ID,
 )
 from firebase_client import db
 
@@ -29,6 +33,20 @@ class CloseReportView(discord.ui.View):
 
         # Update Firestore
         db.collection("reports").document(str(self.user_id)).update({"open": False})
+
+        # --- TAG HANDLING ---
+        if isinstance(thread.parent, discord.ForumChannel):
+            current_tags = thread.applied_tags
+            new_tags = [tag for tag in current_tags if tag.id != UNSOLVED_TAG_ID]
+
+            # Optional: add solved tag
+            solved_tag = discord.utils.get(
+                thread.parent.available_tags, id=SOLVED_TAG_ID
+            )
+            if solved_tag:
+                new_tags.append(solved_tag)
+
+            await thread.edit(applied_tags=new_tags)
 
         # Lock thread
         await thread.edit(archived=True, locked=True)
@@ -97,9 +115,17 @@ class Reports(commands.Cog):
 
                 if not isinstance(channel, discord.ForumChannel):
                     return
+                report_tag = discord.utils.get(channel.available_tags, id=REPORT_TAG_ID)
+                unsolved_tag = discord.utils.get(
+                    channel.available_tags, id=UNSOLVED_TAG_ID
+                )
+
+                tags = [tag for tag in [report_tag, unsolved_tag] if tag is not None]
 
                 thread_obj = await channel.create_thread(
-                    name=f"Report - {topic}", content=message.content
+                    name=f"Report - {topic}",
+                    content=message.content,
+                    applied_tags=tags,
                 )
 
                 thread = thread_obj.thread
@@ -123,9 +149,11 @@ class Reports(commands.Cog):
                 files = [await a.to_file() for a in message.attachments]
 
                 await thread.send(f"💬 Reporter: {message.content}", files=files)
-
+                officer_role = guild.get_role(OFFICER_ROLE_ID)
+                if not officer_role:
+                    return
                 await thread.send(
-                    "An officer will assist you shortly.",
+                    f"{officer_role.mention}, new report!.",
                     view=CloseReportView(self, user_id),
                 )
 
