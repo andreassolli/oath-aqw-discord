@@ -3,10 +3,11 @@ from discord import app_commands
 from discord.ext import commands
 
 from config import (
+    ADMIN_ROLE_ID,
     BOT_GUY_ROLE_ID,
     COMMUNITY_FEEDBACK_CHANNEL_ID,
-    DISCORD_MANAGER_ROLE_ID,
     GUILD_ID,
+    MAPRIL_ROLE_ID,
     MODERATOR_ROLE_ID,
     OFFICER_ROLE_ID,
     REPORT_TAG_ID,
@@ -14,8 +15,6 @@ from config import (
     UNSOLVED_TAG_ID,
 )
 from firebase_client import db
-
-ALLOWED_ROLES = {BOT_GUY_ROLE_ID, MODERATOR_ROLE_ID, DISCORD_MANAGER_ROLE_ID}
 
 
 class CloseReportView(discord.ui.View):
@@ -70,8 +69,44 @@ class Reports(commands.Cog):
 
         for doc in docs:
             data = doc.to_dict()
-            if data.get("open"):
-                self.active_reports[int(doc.id)] = int(data["thread_id"])
+
+            if not data.get("open"):
+                continue
+
+            user_id = int(doc.id)
+            thread_id = int(data["thread_id"])
+
+            self.active_reports[user_id] = thread_id
+
+            thread = self.bot.get_channel(thread_id)
+            if not thread:
+                continue
+
+            guild = self.bot.get_guild(data["guild_id"])
+            if not guild:
+                continue
+
+            officer_role = guild.get_role(OFFICER_ROLE_ID)
+            if not officer_role:
+                continue
+
+            # 🔁 Send NEW control message every restart
+            msg = await thread.send(
+                f"{officer_role.mention}, bot just restarted, and report still open.\nUse the button below to close it.",
+                view=CloseReportView(self, user_id),
+            )
+
+            pins = await thread.pins()
+
+            # Remove old bot control messages (optional logic)
+            for p in pins:
+                if p.author == self.bot.user:
+                    try:
+                        await p.unpin()
+                    except:
+                        pass
+
+            await msg.pin()
 
     @app_commands.command(name="report", description="Send in a semi-anonymous report.")
     async def report(self, interaction: discord.Interaction, topic: str):
@@ -99,6 +134,71 @@ class Reports(commands.Cog):
             await interaction.response.send_message(
                 "I couldn't DM you. Please enable DMs.", ephemeral=True
             )
+
+    @commands.Cog.listener()
+    async def on_message_edit(self, before: discord.Message, after: discord.Message):
+        if after.author.bot:
+            return
+
+        # Ignore no actual change
+        if before.content == after.content and before.attachments == after.attachments:
+            return
+
+        if isinstance(after.channel, discord.DMChannel):
+            user_id = after.author.id
+
+            doc = db.collection("reports").document(str(user_id)).get()
+            if not doc.exists:
+                return
+
+            report = doc.to_dict()
+            if not report.get("open"):
+                return
+
+            thread = self.bot.get_channel(int(report["thread_id"]))
+            if not thread:
+                return
+
+            files = [await a.to_file() for a in after.attachments]
+
+            await thread.send(f"✏️ **Reporter edited:**\n{after.content}", files=files)
+
+        elif isinstance(after.channel, discord.Thread):
+            thread = after.channel
+
+            doc = db.collection("threads").document(str(thread.id)).get()
+            if not doc.exists:
+                return
+
+            user_id = doc.to_dict()["user_id"]
+
+            doc = db.collection("reports").document(str(user_id)).get()
+            if not doc.exists:
+                return
+
+            report = doc.to_dict()
+            if not report.get("open"):
+                return
+
+            # Restrict to staff
+            if not any(role.id == OFFICER_ROLE_ID for role in after.author.roles):
+                return
+
+            user = self.bot.get_user(int(user_id))
+            if not user:
+                return
+
+            files = [await a.to_file() for a in after.attachments]
+            role = "Officer"
+            if any(role.id == ADMIN_ROLE_ID for role in after.author.roles):
+                role = "Co-Leader"
+            elif any(
+                role.id == {MAPRIL_ROLE_ID, BOT_GUY_ROLE_ID}
+                for role in after.author.roles
+            ):
+                role = "Head Officer"
+
+            await user.send(f"✏️ **{role} edited:**\n{after.content}", files=files)
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
@@ -194,7 +294,7 @@ class Reports(commands.Cog):
             if not report.get("open"):
                 return
 
-            if not any(role.id in ALLOWED_ROLES for role in message.author.roles):
+            if not any(role.id == OFFICER_ROLE_ID for role in message.author.roles):
                 return
 
             user = self.bot.get_user(int(user_id))
@@ -202,8 +302,16 @@ class Reports(commands.Cog):
                 return
 
             files = [await a.to_file() for a in message.attachments]
+            role = "Officer"
+            if any(role.id == ADMIN_ROLE_ID for role in message.author.roles):
+                role = "Co-Leader"
+            elif any(
+                role.id == {MAPRIL_ROLE_ID, BOT_GUY_ROLE_ID}
+                for role in message.author.roles
+            ):
+                role = "Head Officer"
 
-            await user.send(f"💬 Officer: {message.content}", files=files)
+            await user.send(f"💬 {role}: {message.content}", files=files)
 
 
 async def setup(bot: commands.Bot):

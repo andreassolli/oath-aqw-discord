@@ -5,6 +5,7 @@ from discord import app_commands
 from discord.ext import commands
 from google.cloud.firestore import DocumentSnapshot
 
+from assets_caching import initialize_assets
 from config import ALLOWED_COMMANDS_CHANNELS, DISCORD_MANAGER_ROLE_ID, OFFICER_ROLE_ID
 from firebase_client import db
 from user_profile.badge_panel import setup_verification_panel
@@ -22,6 +23,7 @@ MANUAL_BADGES = [
 class Profile(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
+        initialize_assets()
 
     async def badge_autocomplete(
         self,

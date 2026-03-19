@@ -1,3 +1,4 @@
+import asyncio
 import logging
 from io import BytesIO
 from pathlib import Path
@@ -6,46 +7,15 @@ from typing import Any, Dict, cast
 from discord import Member
 from PIL import Image, ImageDraw, ImageFont
 
+from assets_caching import ASSET_CACHE, BADGE_CACHE, FONTS
 from config import POTW_ROLE_ID
 from firebase_client import db
 
 from .mee6_fetcher import fetch_mee6_stats
 from .utils import circle_crop, fetch_avatar, ordinal, sort_badges
 
-log = logging.getLogger(__name__)
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 ASSETS_DIR = BASE_DIR / "assets"
-FONTS_DIR = BASE_DIR / "assets/fonts"
-
-log.warning(f"BASE_DIR = {BASE_DIR}")
-log.warning(f"ASSETS_DIR = {ASSETS_DIR} exists={ASSETS_DIR.exists()}")
-log.warning(f"FONTS_DIR = {FONTS_DIR} exists={FONTS_DIR.exists()}")
-
-BADGE_TO_IMAGE = {
-    "Guild Founder": ASSETS_DIR / "oathfounder.png",
-    "AQW Founder": ASSETS_DIR / "founderaqw.png",
-    "Achievement Badges I": ASSETS_DIR / "aqwbadges1.png",
-    "Achievement Badges II": ASSETS_DIR / "aqwbadges2.png",
-    "Achievement Badges III": ASSETS_DIR / "aqwbadges3.png",
-    "Achievement Badges IV": ASSETS_DIR / "aqwbadges4.png",
-    "Epic Journey I": ASSETS_DIR / "epic1.png",
-    "Epic Journey II": ASSETS_DIR / "epic2.png",
-    "Epic Journey III": ASSETS_DIR / "epic3.png",
-    "Epic Journey IV": ASSETS_DIR / "epic4.png",
-    "Class Collector I": ASSETS_DIR / "class1.png",
-    "Class Collector II": ASSETS_DIR / "class2.png",
-    "Class Collector III": ASSETS_DIR / "class3.png",
-    "Class Collector IV": ASSETS_DIR / "class4.png",
-    "51% Weapons I": ASSETS_DIR / "weapon1.png",
-    "51% Weapons II": ASSETS_DIR / "weapon2.png",
-    "51% Weapons III": ASSETS_DIR / "weapon3.png",
-    "51% Weapons IV": ASSETS_DIR / "weapon4.png",
-    "Whale I": ASSETS_DIR / "whale1.webp",
-    "Whale II": ASSETS_DIR / "whale2.webp",
-    "Whale III": ASSETS_DIR / "whale3.webp",
-    "Whale IV": ASSETS_DIR / "whale4.webp",
-}
 
 
 async def generate_profile_card(
@@ -54,7 +24,11 @@ async def generate_profile_card(
 ) -> tuple[BytesIO, list[str], bool, bool, str, int]:
     user_id = target.id
     server_id = interaction.guild.id
-    mee6 = await fetch_mee6_stats(user_id, server_id)
+
+    mee6_task = fetch_mee6_stats(user_id, server_id)
+    avatar_task = fetch_avatar(target.display_avatar.url)
+
+    mee6, avatar = await asyncio.gather(mee6_task, avatar_task)
 
     doc_ref = db.collection("users").document(str(user_id))
 
@@ -66,22 +40,21 @@ async def generate_profile_card(
     tickets_claimed = data.get("tickets_claimed", 0)
     guild = str(data.get("guild", "No guild"))
     has_been_potw = data.get("has_been_potw", False)
-    users_above = db.collection("users").where("points", ">", points).stream()
     is_potw = any(role.id == POTW_ROLE_ID for role in target.roles)
     game_ref = db.collection("wordle_games").document(str(target.id))
     game_doc = game_ref.get()
     game_data = game_doc.to_dict() if game_doc.exists else {}
     completed_words = game_data.get("words_completed", 0)
-    rank = sum(1 for _ in users_above) + 1
+    users_above = list(db.collection("users").where("points", ">", points).stream())
+    rank = len(users_above) + 1
     wins = data.get("wins", 0)
     border = data.get("border", "")
     card = data.get("card", {})
     if card:
         bg = Image.open(ASSETS_DIR / f"{card.get('image')}").convert("RGBA")
     else:
-        bg = Image.open(ASSETS_DIR / "card.png").convert("RGBA")
+        bg = ASSET_CACHE["default_bg"].copy()
     draw = ImageDraw.Draw(bg)
-    avatar = await fetch_avatar(target.display_avatar.url)
     avatar = circle_crop(avatar, 231)
     bg.paste(avatar, (44, 32), avatar)
 
@@ -89,16 +62,15 @@ async def generate_profile_card(
     #    test_border = Image.open(ASSETS_DIR / "test_border.png").convert("RGBA")
     #    bg.paste(test_border, (0, 0), test_border)
     if is_potw:
-        potw_border = Image.open(ASSETS_DIR / "potw_border.webp").convert("RGBA")
-        potw_border = potw_border.resize((158, 168), Image.Resampling.LANCZOS)
+        potw_border = ASSET_CACHE["potw_border"]
         bg.paste(potw_border, (27, 19), potw_border)
 
-    font_big = ImageFont.truetype(FONTS_DIR / "Urbanist-Regular.ttf", 54)
-    font_bold = ImageFont.truetype(FONTS_DIR / "Urbanist-Bold.ttf", 66)
-    font_light = ImageFont.truetype(FONTS_DIR / "Urbanist-Light.ttf", 24)
-    font_small = ImageFont.truetype(FONTS_DIR / "Urbanist-Regular.ttf", 30)
-    font_xsmall = ImageFont.truetype(FONTS_DIR / "Urbanist-Regular.ttf", 24)
-    font_xsmall_light = ImageFont.truetype(FONTS_DIR / "Urbanist-Light.ttf", 21)
+    font_big = FONTS["big"]
+    font_bold = FONTS["bold"]
+    font_light = FONTS["light"]
+    font_small = FONTS["small"]
+    font_xsmall = FONTS["xsmall"]
+    font_xsmall_light = FONTS["xsmall_light"]
 
     draw.text((340, 32), target.display_name, font=font_big, fill="#FFFFFF")
     if has_been_potw:
@@ -116,8 +88,7 @@ async def generate_profile_card(
         flare_x = int(name_x + text_width + padding)
         flare_y = int(name_y + padding)
 
-        potw_flare = Image.open(ASSETS_DIR / "potw_flare.webp").convert("RGBA")
-        potw_flare = potw_flare.resize((42, 42), Image.Resampling.LANCZOS)
+        potw_flare = ASSET_CACHE["potw_flare"]
         bg.paste(potw_flare, (flare_x, flare_y), potw_flare)
     draw.text((340, 92), guild, font=font_small, fill="#FFFFFF")
 
@@ -170,32 +141,21 @@ async def generate_profile_card(
         fill="#FFFFFF",
     )
 
-    trophy = Image.open(ASSETS_DIR / "trophy.png").convert("RGBA")
-    trophy = trophy.resize((27, 27), Image.Resampling.LANCZOS)
-    calendar = Image.open(ASSETS_DIR / "calendar.png").convert("RGBA")
-    calendar = calendar.resize((27, 27), Image.Resampling.LANCZOS)
-    ticket = Image.open(ASSETS_DIR / "ticket.png").convert("RGBA")
-    ticket = ticket.resize((27, 27), Image.Resampling.LANCZOS)
-    medal = Image.open(ASSETS_DIR / "medal.png").convert("RGBA")
-    medal = medal.resize((27, 27), Image.Resampling.LANCZOS)
-    dice = Image.open(ASSETS_DIR / "dice.png").convert("RGBA")
-    dice = dice.resize((27, 27), Image.Resampling.LANCZOS)
-    messages = Image.open(ASSETS_DIR / "messages.png").convert("RGBA")
-    messages = messages.resize((27, 27), Image.Resampling.LANCZOS)
-    forge = Image.open(ASSETS_DIR / "forge.png").convert("RGBA")
-    forge = forge.resize((51, 51), Image.Resampling.LANCZOS)
-    sword = Image.open(ASSETS_DIR / "51.png").convert("RGBA")
-    sword = sword.resize((51, 51), Image.Resampling.LANCZOS)
+    trophy = ASSET_CACHE["trophy"]
+    calendar = ASSET_CACHE["calendar"]
+    ticket = ASSET_CACHE["ticket"]
+    medal = ASSET_CACHE["medal"]
+    dice = ASSET_CACHE["dice"]
+    messages = ASSET_CACHE["messages"]
 
     x = 0
     y = 0
     for badge in badges:
-        if badge in BADGE_TO_IMAGE:
+        if badge in BADGE_CACHE:
             if x == 4:
                 y += 1
                 x = 0
-            badge_img = Image.open(BADGE_TO_IMAGE[badge]).convert("RGBA")
-            badge_img = badge_img.resize((51, 51), Image.Resampling.LANCZOS)
+            badge_img = BADGE_CACHE[badge]
             bg.paste(badge_img, (44 + 65 * x, 337 + 66 * y), badge_img)
             x += 1
     # bg.paste(forge, (29, 224), forge)

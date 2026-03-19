@@ -390,6 +390,7 @@ class Extra(commands.Cog):
     async def warn(
         self, interaction: discord.Interaction, user: discord.User, message: str
     ):
+        await interaction.response.defer(ephemeral=True)
         guild = interaction.guild
         moderator = interaction.user
         dm = await user.create_dm()
