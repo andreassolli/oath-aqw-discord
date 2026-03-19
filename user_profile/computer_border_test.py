@@ -10,19 +10,19 @@ def apply_computer_border(card_buffer: BytesIO) -> BytesIO:
     card_buffer.seek(0)
     card = Image.open(card_buffer).convert("RGBA")
 
-    hand = Image.open(ASSETS_DIR / "test_computer_border.png").convert("RGBA")
+    computer = Image.open(ASSETS_DIR / "test_computer_border.png").convert("RGBA")
 
     # Create canvas = hand size
-    canvas = Image.new("RGBA", (card.width, hand.height), (0, 0, 0, 0))
+    canvas = Image.new("RGBA", (computer.width, computer.height), (0, 0, 0, 0))
 
     # 🎯 Position card (centered horizontally, slightly up)
-    card_x = (hand.width - card.width) // 2
+    card_x = (computer.width - card.width) // 2
     card_y = 101
 
     canvas.paste(card, (card_x, card_y), card)
 
     # Hand on top
-    canvas.paste(hand, (0, 0), hand)
+    canvas.paste(computer, (0, 0), computer)
 
     out = BytesIO()
     canvas.save(out, format="PNG")
