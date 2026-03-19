@@ -33,11 +33,12 @@ async def m_gld(interaction: discord.Interaction):
 
 async def m_mapril(interaction: discord.Interaction):
     embed = discord.Embed(
-        title="Duffer: official Duffer of Dufferville in st Duffersburg, population Duffer Mapril",
+        title="Official Duffer of Dufferville in St. Duffersburg",
+        description="Population: Duffer Mapril",
         color=discord.Color.purple(),
     )
-    file = discord.File("assets/duffer_mapril.png", filename="duffer_mapril.png")
-    embed.set_image(url="attachment://duffer_mapril.png")
+    file = discord.File("assets/mapril.png", filename="mapril.png")
+    embed.set_image(url="attachment://mapril.png")
     await interaction.response.send_message(embed=embed, file=file)
 
 

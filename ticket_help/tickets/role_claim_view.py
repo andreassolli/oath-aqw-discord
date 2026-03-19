@@ -4,6 +4,17 @@ from firebase_client import db
 
 from .role_select import RoleSelect
 
+OPTIONS = {
+    "DPS": "CSH, GT, Guardian",
+    "Sub DPS": "AF, LC, Arachnomancer",
+    "Support": "Lord of Order",
+    "Healer": "LH, SC, FB, DMoM, GW",
+    "Taunter 1": "Verus DoomKnight",
+    "Taunter 2": "Legion Revenant",
+    "Tank": "ArchPaladin",
+    "Fill": "Cover what is left",
+}
+
 
 class RoleClaimView(discord.ui.View):
     def __init__(
@@ -40,7 +51,6 @@ class ConfirmRoleButton(discord.ui.Button):
         claimers = data.get("claimers", [])
         roles = data.get("claimer_roles", {})
 
-        # ✅ FIX: check AFTER roles is loaded
         if view.selected_role in roles.values():
             return await interaction.response.send_message(
                 "That role is already taken.",
@@ -61,8 +71,8 @@ class ConfirmRoleButton(discord.ui.Button):
         )
 
         await view.parent_view._update_ticket_embed(interaction)
-
+        user = interaction.user
         await interaction.response.send_message(
-            f"✅ You claimed as **{view.selected_role}**",
-            ephemeral=True,
+            f"✅ {user.mention} claimed as **{view.selected_role}** ({OPTIONS.get(view.selected_role)})",
+            ephemeral=False,
         )

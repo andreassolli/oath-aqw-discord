@@ -271,7 +271,7 @@ class Reports(commands.Cog):
                 if not officer_role:
                     return
                 await thread.send(
-                    f"{officer_role.mention}, new report!.",
+                    f"{officer_role.mention}, new report!",
                     view=CloseReportView(self, user_id),
                 )
 
