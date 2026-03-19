@@ -17,6 +17,7 @@ from config import (
     INITIATE_ROLE_ID,
     OATHSWORN_ROLE_ID,
     OFFICER_ROLE_ID,
+    TICKET_LOG_CHANNEL_ID,
 )
 from economy.gamba.coinflip import run_coinflip
 from economy.gamba.doom_view import DoomSpinView
@@ -383,6 +384,29 @@ class Extra(commands.Cog):
             return
 
         await channel.send(content=message)
+
+    @app_commands.command(name="warn", description="Warn a user who oversteps")
+    @app_commands.checks.has_role(OFFICER_ROLE_ID)
+    async def warn(
+        self, interaction: discord.Interaction, user: discord.User, message: str
+    ):
+        guild = interaction.guild
+        moderator = interaction.user
+        dm = await user.create_dm()
+        embed = discord.Embed(title="Warning", description=message)
+        await dm.send(embed=embed)
+        if not guild:
+            return
+        log_channel = guild.get_channel(TICKET_LOG_CHANNEL_ID)
+        log_embed = discord.Embed(
+            title=f"Warning issued for {user.display_name} ({user.mention}), issued by {moderator.display_name} ({moderator.mention})",
+            description=message,
+            color=discord.Color.red(),
+        )
+        if not isinstance(log_channel, discord.TextChannel):
+            return
+        await log_channel.send(embed=log_embed)
+        return await interaction.followup.send(f"Warned {user.mention}", ephemeral=True)
 
     @app_commands.command(
         name="new-aqwordle",

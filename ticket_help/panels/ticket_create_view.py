@@ -19,21 +19,23 @@ class TicketCreateView(discord.ui.View):
     @discord.ui.button(label="Next", style=discord.ButtonStyle.primary, row=2)
     async def next_step(self, interaction: discord.Interaction, _):
 
-        if interaction.user.id == "858339466267721748":
+        await interaction.response.defer()  # 🔥 important
+
+        if interaction.user.id == 858339466267721748:
             await interaction.followup.send(
-                "You are banned from using the ticket system!"
+                "You are banned from using the ticket system!", ephemeral=True
             )
             return
 
         if not self.selected_server:
-            await interaction.response.send_message(
+            await interaction.followup.send(
                 "❌ Please select a server before continuing.",
                 ephemeral=True,
             )
             return
 
         if self.selected_type in {"other bosses", "spamming", "testing", "until drop"}:
-            await interaction.response.send_modal(
+            await interaction.followup.send_modal(
                 CreateTicketModal(
                     ticket_type=self.selected_type,
                     server=self.selected_server,
@@ -46,6 +48,6 @@ class TicketCreateView(discord.ui.View):
             ticket_type=self.selected_type, server=self.selected_server
         )
 
-        await interaction.response.edit_message(
+        await interaction.edit_original_response(
             content="Select all bosses for this ticket:", view=view
         )

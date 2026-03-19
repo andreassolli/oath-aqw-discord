@@ -10,7 +10,7 @@ def apply_computer_border(card_buffer: BytesIO) -> BytesIO:
     card_buffer.seek(0)
     card = Image.open(card_buffer).convert("RGBA")
 
-    computer = Image.open(ASSETS_DIR / "test_computer_border.png").convert("RGBA")
+    computer = Image.open(ASSETS_DIR / "new_computer_test.png").convert("RGBA")
 
     # Create canvas = hand size
     canvas = Image.new("RGBA", (computer.width, computer.height), (0, 0, 0, 0))

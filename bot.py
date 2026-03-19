@@ -14,6 +14,8 @@ _synced = False
 
 intents = discord.Intents.default()
 intents.members = True
+intents.message_content = True
+intents.dm_messages = True
 
 bot = commands.Bot(
     command_prefix=commands.when_mentioned_or("/"),
@@ -53,6 +55,7 @@ async def main():
             "cogs.extra",
             "cogs.economy",
             "cogs.gamba",
+            "cogs.reports",
         ):
             await bot.load_extension(ext)
         await bot.start(os.environ["DISCORD_TOKEN"])
