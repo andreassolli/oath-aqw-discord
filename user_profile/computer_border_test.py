@@ -6,7 +6,7 @@ from PIL import Image
 ASSETS_DIR = Path(__file__).resolve().parent.parent / "assets"
 
 
-def apply_hand_overlay(card_buffer: BytesIO) -> BytesIO:
+def apply_computer_border(card_buffer: BytesIO) -> BytesIO:
     card_buffer.seek(0)
     card = Image.open(card_buffer).convert("RGBA")
 

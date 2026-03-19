@@ -8,7 +8,7 @@ from google.cloud.firestore import DocumentSnapshot
 from config import ALLOWED_COMMANDS_CHANNELS, DISCORD_MANAGER_ROLE_ID, OFFICER_ROLE_ID
 from firebase_client import db
 from user_profile.badge_panel import setup_verification_panel
-from user_profile.hand_border_test import apply_hand_overlay
+from user_profile.computer_border_test import apply_computer_border
 from user_profile.image_generation import generate_profile_card
 from user_profile.profile_view import ProfileView
 
@@ -191,8 +191,7 @@ class Profile(commands.Cog):
         )
 
         # 👇 APPLY HAND OVERLAY HERE
-        final_buffer = apply_hand_overlay(image_buffer)
-
+        final_buffer = apply_computer_border(image_buffer)
         await interaction.followup.send(
             file=discord.File(final_buffer, filename="profile.png"),
             view=ProfileView(badges, is_potw, has_been_potw, name, wins),
