@@ -425,7 +425,8 @@ class Extra(commands.Cog):
         return await interaction.followup.send("New AQWordle word selected")
 
     @app_commands.command(
-        name="promote-role", description="Promote a user to the Experienced Helper role"
+        name="promote-helper",
+        description="Promote a user to the Experienced Helper role",
     )
     @is_oath_or_allowed_user()
     async def add_role(

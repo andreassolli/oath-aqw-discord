@@ -9,13 +9,10 @@ from ticket_help.commands.permissions import (
 
 class SpecialBossButton(discord.ui.Button):
     def __init__(self, ticket_name: str, experienced_only: bool = False):
-        label = (
-            "⚡ Experienced Only: ON"
-            if experienced_only
-            else "⚡ Experienced Only: OFF"
-        )
 
-        super().__init__(label=label, style=discord.ButtonStyle.secondary)
+        super().__init__(
+            label="Toggle Experienced Only", style=discord.ButtonStyle.secondary
+        )
         self.ticket_name = ticket_name
 
     async def callback(self, interaction: discord.Interaction):
