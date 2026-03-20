@@ -14,6 +14,7 @@ from config import (
     BETA_TESTING_CHANNEL_ID,
     BOT_GUY_ROLE_ID,
     DISCORD_MANAGER_ROLE_ID,
+    EXPERIENCED_HELPER_ROLE_ID,
     INITIATE_ROLE_ID,
     OATHSWORN_ROLE_ID,
     OFFICER_ROLE_ID,
@@ -41,6 +42,7 @@ from extra_commands.utils import (
     check_missing_badges,
     elect_potw,
     has_any_role,
+    is_oath_or_allowed_user,
     manual_leaderboard_post,
     send_winner_embed,
 )
@@ -421,6 +423,93 @@ class Extra(commands.Cog):
         choose_new_word()
 
         return await interaction.followup.send("New AQWordle word selected")
+
+    @app_commands.command(
+        name="promote-role", description="Promote a user to the Experienced Helper role"
+    )
+    @is_oath_or_allowed_user()
+    async def add_role(
+        self,
+        interaction: discord.Interaction,
+        user: discord.Member,
+    ):
+        await interaction.response.defer(ephemeral=True)
+
+        role = interaction.guild.get_role(EXPERIENCED_HELPER_ROLE_ID)
+        if not role:
+            return await interaction.followup.send(
+                "❌ Role not found.",
+                ephemeral=True,
+            )
+
+        if role in user.roles:
+            return await interaction.followup.send(
+                f"⚠️ {user.mention} already has {role.mention}.",
+                ephemeral=True,
+            )
+
+        if role >= interaction.guild.me.top_role:
+            return await interaction.followup.send(
+                "❌ I can't manage that role (it's higher than me).",
+                ephemeral=True,
+            )
+
+        try:
+            await user.add_roles(role)
+        except discord.Forbidden:
+            return await interaction.followup.send(
+                "❌ Missing permissions to add role.",
+                ephemeral=True,
+            )
+
+        await interaction.followup.send(
+            f"✅ Added {role.mention} to {user.mention}.",
+            ephemeral=True,
+        )
+
+    @app_commands.command(
+        name="demote-helper",
+        description="Demote a user from the Experienced Helper role",
+    )
+    @is_oath_or_allowed_user()
+    async def remove_role(
+        self,
+        interaction: discord.Interaction,
+        user: discord.Member,
+    ):
+        await interaction.response.defer(ephemeral=True)
+
+        role = interaction.guild.get_role(EXPERIENCED_HELPER_ROLE_ID)
+        if not role:
+            return await interaction.followup.send(
+                "❌ Role not found.",
+                ephemeral=True,
+            )
+
+        if role not in user.roles:
+            return await interaction.followup.send(
+                f"⚠️ {user.mention} does not have {role.mention}.",
+                ephemeral=True,
+            )
+
+        if role >= interaction.guild.me.top_role:
+            return await interaction.followup.send(
+                "❌ I can't manage that role.",
+                ephemeral=True,
+            )
+
+        try:
+            await user.remove_roles(role)
+        except discord.Forbidden:
+            return await interaction.followup.send(
+                "❌ Missing permissions to remove role.",
+                ephemeral=True,
+            )
+
+        await interaction.followup.send(
+            f"✅ Removed {role.mention} from {user.mention}.",
+            ephemeral=True,
+        )
 
 
 async def setup(bot: commands.Bot):

@@ -3,7 +3,12 @@ from datetime import datetime, timedelta
 import discord
 from firebase_admin import firestore
 
-from config import ADMIN_ROLE_ID, HELPER_ROLE_ID, WEEKLY_REQUESTER_CAP
+from config import (
+    ADMIN_ROLE_ID,
+    EXPERIENCED_HELPER_ROLE_ID,
+    HELPER_ROLE_ID,
+    WEEKLY_REQUESTER_CAP,
+)
 from firebase_client import db
 from ticket_help.commands.permissions import (
     has_admin_role,
@@ -17,6 +22,7 @@ from .confirm_cancel_view import ConfirmCancelView
 from .confirm_complete_view import ConfirmCompleteView
 from .embed_logging import build_logging_embed
 from .embed_utils import build_ticket_embed
+from .experienced_helper_button import SpecialBossButton
 from .ids import get_next_ticket_id
 from .logging import log_ticket_event
 from .points import get_boss_room
@@ -31,6 +37,9 @@ class TicketActionView(discord.ui.View):
         self.max_claims = max_claims
         self.room = room
         self.bosses = bosses
+
+        if any(boss in ["Ultra Speaker", "Ultra Gramiel"] for boss in bosses):
+            self.add_item(SpecialBossButton(ticket_name))
 
     async def _update_ticket_embed(self, interaction: discord.Interaction):
         doc_ref = db.collection("tickets").document(self.ticket_name)
@@ -71,10 +80,6 @@ class TicketActionView(discord.ui.View):
         self, interaction: discord.Interaction, button: discord.ui.Button
     ):
         await interaction.response.defer(ephemeral=True)
-        if interaction.user.id == "858339466267721748":
-            return await interaction.followup.send(
-                "You are banned from using the ticket system!"
-            )
 
         doc_ref = db.collection("tickets").document(self.ticket_name)
         doc = doc_ref.get()
@@ -131,12 +136,31 @@ class TicketActionView(discord.ui.View):
                 ephemeral=True,
             )
 
-        if not has_helper_role(interaction):
-            return await interaction.followup.send(
-                "🚫 You are not a helper, become one to claim or unclaim tickets.",
-                ephemeral=True,
-            )
-            # SPECIAL CASE: grimchallenge
+        experienced_only = data.get("experienced_only", False)
+
+        member = interaction.user
+        guild = interaction.guild
+
+        helper_role = guild.get_role(HELPER_ROLE_ID)
+        experienced_role = guild.get_role(EXPERIENCED_HELPER_ROLE_ID)
+
+        has_helper = helper_role in member.roles if helper_role else False
+        has_experienced = (
+            experienced_role in member.roles if experienced_role else False
+        )
+
+        if experienced_only:
+            if not has_experienced:
+                return await interaction.followup.send(
+                    "🚫 Only **Experienced Helpers** can claim this ticket.",
+                    ephemeral=True,
+                )
+        else:
+            if not has_helper:
+                return await interaction.followup.send(
+                    "🚫 You must be a helper to claim this ticket.",
+                    ephemeral=True,
+                )
         if "Grim Challenge" in self.bosses:
             roles = data.get("claimer_roles", {})
 

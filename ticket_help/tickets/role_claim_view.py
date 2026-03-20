@@ -1,6 +1,7 @@
 import discord
 
 from firebase_client import db
+from ticket_help.tickets.grim_guide import GUIDES
 
 from .role_select import RoleSelect
 
@@ -72,7 +73,18 @@ class ConfirmRoleButton(discord.ui.Button):
 
         await view.parent_view._update_ticket_embed(interaction)
         user = interaction.user
+        guide_text = GUIDES.get(
+            view.selected_role, f"No guide found for {view.selected_role}"
+        )
+
+        # 1. Public message (claim)
         await interaction.response.send_message(
-            f"✅ {user.mention} claimed as **{view.selected_role}** ({OPTIONS.get(view.selected_role)})",
+            f"""✅ {user.mention} claimed as **{view.selected_role}** {len(roles)}/7
+        Classes: {OPTIONS.get(view.selected_role)}""",
             ephemeral=False,
+        )
+
+        await interaction.followup.send(
+            f"{guide_text}",
+            ephemeral=True,
         )

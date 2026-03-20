@@ -12,7 +12,9 @@ from config import (
     LEADERBOARD_HISTORY_CHANNEL_ID,
     LORE_CHANNEL_ID,
     OATH_EVENT_CHANNEL_ID,
+    OATHSWORN_ROLE_ID,
     OFFICER_CHANNEL_ID,
+    OG_SAN_ID,
     POTW_ROLE_ID,
     POTW_THREAD_ID,
 )
@@ -447,3 +449,16 @@ async def manual_leaderboard_post(interaction: discord.Interaction):
     )
     if isinstance(channel, discord.Thread):
         await channel.send(embed=embed)
+
+
+def is_oath_or_allowed_user():
+    async def predicate(interaction: discord.Interaction) -> bool:
+
+        # Allow specific user
+        if interaction.user.id == OG_SAN_ID:
+            return True
+
+        # Allow users with OATHSWORN role
+        return any(role.id == OATHSWORN_ROLE_ID for role in interaction.user.roles)
+
+    return app_commands.check(predicate)
