@@ -4,7 +4,6 @@ import random
 import time
 from collections import deque
 from datetime import UTC, datetime
-from tkinter.constants import S
 from urllib.parse import parse_qs, quote
 
 import aiohttp
