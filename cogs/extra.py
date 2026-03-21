@@ -193,15 +193,23 @@ class Extra(commands.Cog):
             )
             return
 
-        if correct and not was_completed:
-            db.collection("users").document(str(user_id)).update(
-                {"coins": firestore.Increment(750)}
-            )
-
         if correct:
+            if guess_count == 1:
+                reward = 800
+            elif guess_count <= 3:
+                reward = 750
+            elif guess_count <= 5:
+                reward = 720
+            else:
+                reward = 675
+            if not was_completed:
+                db.collection("users").document(str(user_id)).update(
+                    {"coins": firestore.Increment(reward)}
+                )
+
             view = ShareWordleView(guess_count)
             await interaction.followup.send(
-                content="🎉 You have completed today's Wordle and got <:oathcoin:1462999179998531614> 750!",
+                content=f"🎉 You have completed today's Wordle and got <:oathcoin:1462999179998531614>{reward}!",
                 file=file,
                 view=view,
                 ephemeral=True,
