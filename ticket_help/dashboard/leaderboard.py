@@ -31,12 +31,12 @@ async def build_leaderboard_embed(guild: discord.Guild):
             prefix = medals[i]
         else:
             prefix = f"`{position:02}`"
-        guild = data.get("guild", "")
-        if guild != "None" and guild != "":
-            if guild == "Oath":
-                guild_str = f"`💠Oath`"
+        aqw_guild = data.get("guild", "")
+        if aqw_guild != "None" and aqw_guild != "":
+            if aqw_guild == "Oath":
+                guild_str = "`💠Oath`"
             else:
-                guild_str = f"`{guild}`"
+                guild_str = f"`{aqw_guild}`"
         else:
             guild_str = ""
         if i == 15:
