@@ -17,6 +17,9 @@ MANUAL_BADGES = [
     "Forge",
     "Forge+",
     "Guild Founder",
+    "Beta Tester1",
+    "Beta Tester2",
+    "Beta Tester3",
 ]
 
 
