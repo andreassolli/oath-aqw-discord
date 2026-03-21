@@ -39,6 +39,8 @@ async def generate_profile_card(
     points = data.get("points", 0)
     tickets_claimed = data.get("tickets_claimed", 0)
     guild = str(data.get("guild", "No guild"))
+    if guild == "None":
+        guild = "No guild"
     has_been_potw = data.get("has_been_potw", False)
     is_potw = any(role.id == POTW_ROLE_ID for role in target.roles)
     game_ref = db.collection("wordle_games").document(str(target.id))

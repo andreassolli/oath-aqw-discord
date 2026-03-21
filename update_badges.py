@@ -467,7 +467,7 @@ async def check_usernames():
     start_time = time.time()
     logger.info("Starting username confirmation process...")
 
-    users = list(db.collection("users").where("verified", "==", False).stream())
+    users = list(db.collection("users").where("verified", "==", True).stream())
     logger.info(f"Fetched {len(users)} users")
 
     semaphore = asyncio.Semaphore(CONCURRENCY_LIMIT)
