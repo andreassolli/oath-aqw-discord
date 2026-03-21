@@ -88,12 +88,24 @@ async def change_roles(
     *,
     is_join_event: bool,
     verified_guild: str | None = None,
+    verified_at_all: bool = True,
 ) -> bool:
     initiate_role = discord.utils.get(member.guild.roles, id=INITIATE_ROLE_ID)
     stranger_role = discord.utils.get(member.guild.roles, id=STRANGER_ROLE_ID)
     unsworn_role = discord.utils.get(member.guild.roles, id=UNSWORN_ROLE_ID)
 
     try:
+        if not verified_at_all:
+            await member.remove_roles(
+                initiate_role,
+                unsworn_role,
+                reason="User isnt verified",
+            )
+            await member.add_roles(
+                stranger_role,
+                reason="User isnt verified",
+            )
+            return True
         # 1️⃣ User joined guild
         if is_join_event:
             await member.remove_roles(
@@ -110,16 +122,6 @@ async def change_roles(
         # 2️⃣ Verified and belongs to Oath
         if verified_guild == "Oath":
             # If they previously had Initiate → scenario 3
-            if initiate_role in member.roles:
-                await member.remove_roles(
-                    initiate_role,
-                    reason="User re-verified but left Oath",
-                )
-                await member.add_roles(
-                    unsworn_role,
-                    reason="User re-verified but not in Oath",
-                )
-                return True
 
             # Normal verification inside guild → scenario 2
             await member.remove_roles(

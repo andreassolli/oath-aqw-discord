@@ -547,6 +547,7 @@ class Extra(commands.Cog):
                         member,
                         is_join_event=False,
                         verified_guild=None,
+                        verified_at_all=False,
                     )
                     updated += 1
                     continue
