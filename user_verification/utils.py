@@ -8,6 +8,7 @@ import discord
 
 from config import (
     CCID_PAGE,
+    HELPER_ROLE_ID,
     INITIATE_ROLE_ID,
     PROXY_SERVICE,
     STRANGER_ROLE_ID,
@@ -93,12 +94,13 @@ async def change_roles(
     initiate_role = discord.utils.get(member.guild.roles, id=INITIATE_ROLE_ID)
     stranger_role = discord.utils.get(member.guild.roles, id=STRANGER_ROLE_ID)
     unsworn_role = discord.utils.get(member.guild.roles, id=UNSWORN_ROLE_ID)
-
+    helper_role = discord.utils.get(member.guild.roles, id=HELPER_ROLE_ID)
     try:
         if not verified_at_all:
             await member.remove_roles(
                 initiate_role,
                 unsworn_role,
+                helper_role,
                 reason="User isnt verified",
             )
             await member.add_roles(
@@ -115,6 +117,7 @@ async def change_roles(
             )
             await member.add_roles(
                 initiate_role,
+                helper_role,
                 reason="User joined Oath",
             )
             return True
@@ -131,6 +134,7 @@ async def change_roles(
             )
             await member.add_roles(
                 initiate_role,
+                helper_role,
                 reason="User verified in Oath",
             )
             return True
@@ -143,6 +147,7 @@ async def change_roles(
         )
         await member.add_roles(
             unsworn_role,
+            helper_role,
             reason="User verified outside Oath",
         )
         return True
