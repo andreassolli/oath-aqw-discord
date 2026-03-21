@@ -54,6 +54,7 @@ from extra_commands.wordle import (
 )
 from extra_commands.wordle_image import generate_wordle_board
 from firebase_client import db
+from user_verification.utils import change_roles
 
 
 class Extra(commands.Cog):
@@ -509,6 +510,60 @@ class Extra(commands.Cog):
 
         await interaction.followup.send(
             f"✅ Removed {role.mention} from {user.mention}.",
+            ephemeral=True,
+        )
+
+    @app_commands.command(name="sync-roles", description="Apply roles from DB")
+    @app_commands.default_permissions(manage_roles=True)
+    @app_commands.checks.has_role(BOT_GUY_ROLE_ID)
+    async def sync_roles(self, interaction: discord.Interaction):
+        await interaction.response.defer(ephemeral=True)
+
+        guild = interaction.guild
+        if not guild:
+            return await interaction.followup.send(
+                "❌ Guild not found.", ephemeral=True
+            )
+
+        users = list(db.collection("users").stream())
+
+        updated = 0
+        skipped = 0
+        failed = 0
+        for user_doc in users:
+            try:
+                data = user_doc.to_dict() or {}
+
+                member = guild.get_member(int(user_doc.id))
+                if not member:
+                    skipped += 1
+                    continue
+
+                verified = data.get("verified", False)
+                guild_name = data.get("guild")
+
+                if not verified:
+                    await change_roles(
+                        member,
+                        is_join_event=False,
+                        verified_guild=None,
+                    )
+                    updated += 1
+                    continue
+
+                await change_roles(
+                    member,
+                    is_join_event=False,
+                    verified_guild=guild_name,
+                )
+
+                updated += 1
+
+            except Exception as e:
+                failed += 1
+
+        await interaction.followup.send(
+            f"✅ Role sync complete\nUpdated: {updated}\nSkipped: {skipped}\nFailed: {failed}",
             ephemeral=True,
         )
 

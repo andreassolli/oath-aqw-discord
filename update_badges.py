@@ -4,7 +4,8 @@ import random
 import time
 from collections import deque
 from datetime import UTC, datetime
-from urllib.parse import quote
+from tkinter.constants import S
+from urllib.parse import parse_qs, quote
 
 import aiohttp
 import discord
@@ -14,12 +15,13 @@ from google.cloud.firestore_v1 import ArrayUnion, FieldFilter
 from config import AQW_BADGES, CCID_PAGE
 from firebase_client import db
 from http_client import get_session
+from user_verification.utils import AQWProfile
 
-CONCURRENCY_LIMIT = 2
+CONCURRENCY_LIMIT = 3
 
 BATCH_SIZE = 400
 MAX_RETRIES = 5
-REQUESTS_PER_SECOND = 0.5
+REQUESTS_PER_SECOND = 0.3
 
 DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1475789852078379018/YCRIfYbFbd256TAlMERpZxXjhDZg4xRc8RV5ejx7HlJo67KQY2PZhSp64ealO2EoQ2Nf"
 DISCORD_WEBHOOK_URL_THREAD = "https://discord.com/api/webhooks/1473686602743287932/vBDGDdXom1PjyH6C9M93NZRNhIuDr9OmFgbm7PD3EdOLhiKCQ3hDOb9UNqRNPFq-4h6y"
@@ -31,6 +33,23 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger(__name__)
+
+
+class SteadyRateLimiter:
+    def __init__(self, rate_per_second: float):
+        self.delay = 1 / rate_per_second
+        self._lock = asyncio.Lock()
+        self._last = 0.0
+
+    async def wait(self):
+        async with self._lock:
+            now = time.monotonic()
+            elapsed = now - self._last
+
+            if elapsed < self.delay:
+                await asyncio.sleep(self.delay - elapsed)
+
+            self._last = time.monotonic()
 
 
 async def send_job_embed(
@@ -143,10 +162,15 @@ class RollingRateLimiter:
             while self.timestamps and now - self.timestamps[0] > self.per_seconds:
                 self.timestamps.popleft()
 
-            # If at limit → wait until oldest expires
+            # If at limit → wait properly
             if len(self.timestamps) >= self.max_requests:
                 sleep_time = self.per_seconds - (now - self.timestamps[0])
-                await asyncio.sleep(sleep_time + random.uniform(0.05, 0.25))
+
+                if sleep_time > 0:
+                    await asyncio.sleep(sleep_time)
+
+            # Add small jitter AFTER proper wait
+            await asyncio.sleep(random.uniform(0.05, 0.15))
 
             self.timestamps.append(time.monotonic())
 
@@ -182,7 +206,9 @@ async def get_total_badges(session, limiter, ccid: str) -> int:
     raise Exception(f"Max retries exceeded for {ccid}")
 
 
-async def check_username(session, limiter, username: str) -> int:
+async def check_username(
+    session, limiter, username: str
+) -> dict[str, str | None] | None:
     url = f"{CCID_PAGE}{username}"
 
     for attempt in range(1, MAX_RETRIES + 1):
@@ -190,6 +216,38 @@ async def check_username(session, limiter, username: str) -> int:
             await limiter.wait()
 
             async with session.get(url) as resp:
+                if resp.status == 200:
+                    text = await resp.text()
+
+                    data = parse_qs(text.lstrip("&"))
+
+                    char_id = data.get("CharID", [None])[0]
+                    if char_id is None:
+                        return None
+
+                    level_field = data.get("intLevel", [""])[0]
+
+                    guild: str | None = None
+
+                    if "---" in level_field:
+                        level_str, guild = level_field.split(" --- ", 1)
+
+                        guild = guild.strip()
+
+                        if guild.endswith(" Guild"):
+                            guild = guild.removesuffix(" Guild")
+
+                        if not guild:
+                            guild = None
+
+                    return {
+                        "ccid": char_id,
+                        "guild": guild,
+                    }
+
+                if resp.status in (404, 403):
+                    return None  # treat as "doesn't exist"
+
                 if resp.status == 429:
                     raise ClientResponseError(
                         resp.request_info,
@@ -198,8 +256,9 @@ async def check_username(session, limiter, username: str) -> int:
                         message="Rate limited",
                     )
 
-                resp.raise_for_status()
-                return resp.status == 200
+                # other weird cases
+                logger.warning(f"Unexpected status {resp.status} for {username}")
+                return None
 
         except ClientResponseError as e:
             if e.status == 429:
@@ -209,7 +268,7 @@ async def check_username(session, limiter, username: str) -> int:
             else:
                 raise
 
-    raise Exception(f"Max retries exceeded for {username}")
+    return None
 
 
 async def process_user(
@@ -253,23 +312,46 @@ async def process_user(
                 if not username:
                     stats["skipped"] += 1
                     return None
-                exists = await check_username(session, limiter, encoded_name)
-                changed = not exists
+                old_aqw_user: dict[str, str | None] = {
+                    "ccid": user_data.get("ccid"),
+                    "guild": user_data.get("guild"),
+                }
+                aqw_user = await check_username(session, limiter, encoded_name)
                 stats["processed"] += 1
-                if changed:
-                    logger.info(f"{username} appears changed")
+
+                # ❌ Case 1: Profile missing
+                if not aqw_user:
+                    logger.info(f"{username} no longer exists")
+
                     stats["failed"] += 1
                     failed_users.append(username)
+
                     return (
                         user_doc.reference,
                         {
                             "verified": False,
+                            "guild": None,
                             "previous_igns": ArrayUnion([username]),
                         },
                     )
-                else:
-                    logger.info(f"{username} has not changed")
 
+                # ✅ Case 2: Guild changed
+                new_guild = aqw_user["guild"]
+                old_guild = user_data.get("guild")
+
+                if new_guild != old_guild:
+                    logger.info(f"{username} guild changed → {old_guild} → {new_guild}")
+
+                    return (
+                        user_doc.reference,
+                        {
+                            "verified": True,
+                            "guild": new_guild,
+                        },
+                    )
+
+                # ✅ Case 3: No change
+                logger.info(f"{username} unchanged")
                 return None
 
         except Exception as e:
@@ -297,13 +379,17 @@ async def update_badges():
             "Chrome/120.0.0.0 Safari/537.36"
         ),
         "Accept": "application/json",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Referer": "https://account.aq.com/",
+        "Connection": "keep-alive",
     }
 
     async with aiohttp.ClientSession(headers=headers) as session:
-        limiter = RollingRateLimiter(max_requests=25, per_seconds=60)
-
+        limiter = SteadyRateLimiter(REQUESTS_PER_SECOND)
         tasks = [
-            process_user(user_doc, semaphore, session, limiter, stats, [""], True)
+            process_user(
+                user_doc, semaphore, session, limiter, stats, failed_users, True
+            )
             for user_doc in users
         ]
 
@@ -382,7 +468,7 @@ async def check_usernames():
     start_time = time.time()
     logger.info("Starting username confirmation process...")
 
-    users = list(db.collection("users").stream())
+    users = list(db.collection("users").where("verified", "==", False).stream())
     logger.info(f"Fetched {len(users)} users")
 
     semaphore = asyncio.Semaphore(CONCURRENCY_LIMIT)
@@ -397,10 +483,13 @@ async def check_usernames():
             "Chrome/120.0.0.0 Safari/537.36"
         ),
         "Accept": "application/json",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Referer": "https://account.aq.com/",
+        "Connection": "keep-alive",
     }
 
     async with aiohttp.ClientSession(headers=headers) as session:
-        limiter = RollingRateLimiter(max_requests=25, per_seconds=60)
+        limiter = SteadyRateLimiter(REQUESTS_PER_SECOND)
 
         tasks = [
             process_user(
@@ -549,6 +638,6 @@ async def post_whale_leaderboard(updated_at: int):
 
 
 if __name__ == "__main__":
-    # asyncio.run(check_usernames())
-    asyncio.run(update_badges())
+    asyncio.run(check_usernames())
+    # asyncio.run(update_badges())
     # asyncio.run(post_whale_leaderboard(1771810402))

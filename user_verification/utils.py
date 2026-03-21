@@ -55,8 +55,14 @@ async def fetch_aqw_profile(username: str) -> AQWProfile | None:
     if "---" in level_field:
         level_str, guild = level_field.split(" --- ", 1)
         level = int(level_str)
-        if len(guild) > 1:
-            guild = guild.split(" ")[0]
+
+        guild = guild.strip()
+
+        if guild.endswith(" Guild"):
+            guild = guild.removesuffix(" Guild")
+
+        if not guild:
+            guild = None
     else:
         level = int(level_field)
 
