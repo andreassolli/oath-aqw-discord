@@ -30,10 +30,17 @@ async def build_leaderboard_embed(guild: discord.Guild):
             prefix = medals[i]
         else:
             prefix = f"`{position:02}`"
-
+        guild = data.get("guild", "")
+        if guild != "None" and guild != "":
+            if guild == "Oath":
+                guild_str = f"`💠Oath`"
+            else:
+                guild_str = f"`{guild}`"
+        else:
+            guild_str = ""
         if i == 15:
             lines.append("\n----------CUTOFF FOR LORE POST----------\n")
-        lines.append(f"{prefix} **{display_name}** — `{points}` points")
+        lines.append(f"{prefix} **{display_name}**{guild_str} — `{points}` points")
 
     if not lines:
         return discord.Embed(
