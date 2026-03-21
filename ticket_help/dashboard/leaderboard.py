@@ -7,6 +7,7 @@ async def build_leaderboard_embed(guild: discord.Guild):
     users = (
         db.collection("users")
         .order_by("points", direction="DESCENDING")
+        .where("verified", "==", True)
         .limit(25)
         .stream()
     )
