@@ -70,14 +70,14 @@ class DoomSpinView(discord.ui.View):
             multiplier = 1.15
             result = result * multiplier
             bonus_text = f"\nThanks to your **<:ascended:1485289045524484126>Ascended** role, you got 15% bonus coins!\nTotal payout: <:oathcoin:1462999179998531614>`{result}`"
-        elif any(role.id == INITIATE_ROLE_ID for role in interaction.user.roles):
-            multiplier = 1.05
-            result = result * multiplier
-            bonus_text = f"\nThanks to your **<:oath:1457451850184917122>Initiate** role, you got 5% bonus coins!\nTotal payout: <:oathcoin:1462999179998531614>`{result}`"
         elif any(role.id == OFFICER_ROLE_ID for role in interaction.user.roles):
             multiplier = 1.1
             result = result * multiplier
             bonus_text = f"\nThanks to your **<:oath2:1457452511635046492>Officer** role, you got 10% bonus coins!\nTotal payout: <:oathcoin:1462999179998531614>`{result}`"
+        elif any(role.id == INITIATE_ROLE_ID for role in interaction.user.roles):
+            multiplier = 1.05
+            result = result * multiplier
+            bonus_text = f"\nThanks to your **<:oath:1457451850184917122>Initiate** role, you got 5% bonus coins!\nTotal payout: <:oathcoin:1462999179998531614>`{result}`"
 
         result_embed = discord.Embed(
             title="🎡 Wheel of Doom",
