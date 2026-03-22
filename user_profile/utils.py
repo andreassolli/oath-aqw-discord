@@ -85,6 +85,10 @@ async def calculate_weapon_count(inventory: list[dict]) -> int:
     if _weapon_name_cache:
         print("Weapon names loaded:", len(_weapon_name_cache))
 
+    for item in inventory:
+        if item["strName"] in name_set:
+            print(item["strName"])
+
     return sum(1 for item in inventory if item["strName"] in name_set)
 
 
