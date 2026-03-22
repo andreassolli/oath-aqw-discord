@@ -74,7 +74,7 @@ async def get_weapon_names() -> set[str]:
     csv_data = StringIO(text)
     reader = csv.DictReader(csv_data)
 
-    _weapon_name_cache = {row["Name"] for row in reader if row.get("Name")}
+    _weapon_name_cache = {row["Name"].lower() for row in reader if row.get("Name")}
 
     return _weapon_name_cache
 
@@ -86,10 +86,10 @@ async def calculate_weapon_count(inventory: list[dict]) -> int:
         print("Weapon names loaded:", len(_weapon_name_cache))
 
     for item in inventory:
-        if item["strName"] in name_set:
+        if item["strName"].lower() in name_set:
             print(item["strName"])
 
-    return sum(1 for item in inventory if item["strName"] in name_set)
+    return sum(1 for item in inventory if item["strName"].lower() in name_set)
 
 
 async def calculate_class_count(inventory: list[dict]) -> int:
