@@ -4,6 +4,7 @@ import random
 import discord
 from google.cloud import firestore
 
+from config import ASCENDED_ROLE_ID, INITIATE_ROLE_ID, OFFICER_ROLE_ID
 from economy.gamba.utils import set_spin_today
 from firebase_client import db
 
@@ -63,10 +64,24 @@ class DoomSpinView(discord.ui.View):
 
         # wait for gif duration
         await asyncio.sleep(4)
+        multiplier = 1
+        bonus_text = ""
+        if any(role.id == ASCENDED_ROLE_ID for role in interaction.user.roles):
+            multiplier = 1.15
+            result = result * multiplier
+            bonus_text = f"\nThanks to your **<:ascended:1485289045524484126>Ascended** role, you got 15% bonus coins!\nTotal payout: <:oathcoin:1462999179998531614>`{result}`"
+        elif any(role.id == INITIATE_ROLE_ID for role in interaction.user.roles):
+            multiplier = 1.05
+            result = result * multiplier
+            bonus_text = f"\nThanks to your **<:oath:1457451850184917122>Initiate** role, you got 5% bonus coins!\nTotal payout: <:oathcoin:1462999179998531614>`{result}`"
+        elif any(role.id == OFFICER_ROLE_ID for role in interaction.user.roles):
+            multiplier = 1.1
+            result = result * multiplier
+            bonus_text = f"\nThanks to your **<:oath2:1457452511635046492>Officer** role, you got 10% bonus coins!\nTotal payout: <:oathcoin:1462999179998531614>`{result}`"
 
         result_embed = discord.Embed(
             title="🎡 Wheel of Doom",
-            description=f"<:oathcoin:1462999179998531614> You won **`{result}` coins!**",
+            description=f"You won <:oathcoin:1462999179998531614>`{result}`!{bonus_text}",
             color=discord.Color.gold(),
         )
         result_embed.set_image(
