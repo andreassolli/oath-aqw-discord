@@ -1,4 +1,5 @@
 import math
+from typing import Literal
 
 import discord
 from discord import app_commands, user
@@ -41,11 +42,11 @@ class Economy(commands.Cog):
         name: str,
         price: int,
         image: str,
-        display: str,
         type: str,
+        currency: Literal["coins", "gems"] = "coins",
         quantity: int | None = None,
     ):
-        await list_item(name, price, image, display, type, quantity)
+        await list_item(name, price, image, currency, type, quantity)
         return await interaction.response.send_message(
             f"Listed {name} for sale in the shop.", ephemeral=True
         )

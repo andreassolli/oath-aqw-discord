@@ -1,4 +1,5 @@
 import asyncio
+import random
 
 import aiohttp
 
@@ -6,7 +7,7 @@ from economy.inventory import generate_inventory
 from economy.shop_generation import generate_shop
 from extra_commands.wordle import choose_new_word
 from extra_commands.wordle_share import generate_wordle_share
-from firebase_client import db
+from firebase_client import db, firestore
 from inventory.utils import add_item
 from request_utils import get_session
 from user_profile.utils import fetch_inventory
@@ -165,10 +166,59 @@ async def test_fetch_call():
     async with aiohttp.ClientSession() as session:
         async with session.get("https://game.aq.com/game/api/data/servers") as response:
             print(await response.text())
+            import random
+
+            from firebase_admin import firestore
+
+            from firebase_client import db
+
+
+def migrate_points_to_gems():
+    users_ref = db.collection("users")
+    docs = users_ref.stream()
+
+    updated_count = 0
+
+    for doc in docs:
+        data = doc.to_dict() or {}
+
+        points = data.get("points", 0)
+        if points <= 0:
+            continue
+
+        # ✅ NEW: track already rewarded points
+        last_awarded = data.get("gems_awarded_points", 0)
+
+        new_points = points - last_awarded
+        chunks = new_points // 15
+
+        if chunks <= 0:
+            continue
+
+        # total gems to award
+        gems_to_add = sum(random.randint(1, 3) for _ in range(chunks))
+
+        # update awarded points safely
+        awarded_points = last_awarded + (chunks * 15)
+
+        doc.reference.update(
+            {
+                "gems": firestore.Increment(gems_to_add),
+                "gems_awarded_points": awarded_points,
+            }
+        )
+
+        updated_count += 1
+        print(
+            f"{doc.id}: +{gems_to_add} gems "
+            f"(points={points}, new={new_points}, tracked={awarded_points})"
+        )
+
+    print(f"Done. Updated {updated_count} users.")
 
 
 if __name__ == "__main__":
-    migrate_test_border_to_doom()
+    #migrate_points_to_gems()
     # get_all_users()
     # choose_new_word()
 # asyncio.run(

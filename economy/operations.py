@@ -1,5 +1,5 @@
 import random
-from typing import List
+from typing import List, Literal
 
 from google.cloud import firestore
 
@@ -12,19 +12,22 @@ async def list_item(
     name: str,
     price: int,
     image: str,
-    display: str,
+    currency: Literal["coins", "gems"],
     type: str,
     quantity: int | None = None,
 ):
     if quantity == None:
         quantity = -1
+    image_path = f"{image}.png"
+    display_path = f"{name}_item.png"
     db.collection("shop_items").document(name).set(
         {
             "name": name,
             "price": price,
             "quantity": quantity,
-            "display": display,
-            "image": image,
+            "display": display_path,
+            "image": image_path,
+            "currency": currency,
             "type": type,
         }
     )
@@ -38,47 +41,41 @@ async def unlist_item(name: str):
         docs[0].reference.delete()
 
 
-async def buy_item(name: str, user_id: int):
+async def buy_item(item: ShopItem, user_id: int):
     user_ref = db.collection("users").document(str(user_id))
     user_doc = user_ref.get()
     user_data = user_doc.to_dict() or {}
     inventory = user_data.get("inventory", [])
-
+    name = item.get("name")
     # check if user already owns the item
     if any(item.get("id") == name for item in inventory):
         return f"You already own {name}."
-    coins = user_data.get("coins", 0)
 
-    item_docs = db.collection("shop_items").where("name", "==", name).limit(1).get()
+    gems = user_data.get("gems", 0)
 
-    if not item_docs:
-        return f"{name} does not exist."
-
-    item_snap = item_docs[0]
-    item_doc = item_snap.to_dict() or {}
-
-    quantity = item_doc.get("quantity", 0)
-    price = item_doc.get("price", 0)
-
+    quantity = item.get("quantity", 0)
+    price = item.get("price", 0)
+    currency = item.get("currency", "coins")
+    money = user_data.get("currency", 0)
     if quantity == 0:
         return f"There are no more {name} available."
 
-    if coins < price:
+    if money < price:
         return f"You do not have enough coins to buy {name}."
 
-    user_ref.update({"coins": firestore.Increment(-price)})
+    user_ref.update({currency: firestore.Increment(-price)})
     await add_item(
         str(user_id),
-        item_doc.get("name", ""),
-        item_doc.get("type", ""),
-        item_doc.get("image", ""),
-        item_doc.get("display", ""),
+        item.get("name", ""),
+        item.get("type", ""),
+        item.get("image", ""),
+        item.get("display", ""),
     )
 
     if quantity != -1:
-        item_snap.reference.update({"quantity": firestore.Increment(-1)})
+        item.reference.update({"quantity": firestore.Increment(-1)})
 
-    return f"Bought 1 of {name}, you now have {coins - price} coins."
+    return f"Bought 1 of {name}, you now have {money - price} {currency}."
 
 
 async def get_shop() -> List[ShopItem]:

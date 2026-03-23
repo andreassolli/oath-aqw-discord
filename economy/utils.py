@@ -12,6 +12,7 @@ class ShopItem(TypedDict):
     image: str
     display: str
     quantity: int
+    currency: str | None
 
 
 def rich_coins(guild: discord.Guild):

@@ -5,6 +5,7 @@ import discord
 from firebase_admin import firestore
 
 from config import WEEKLY_REQUESTER_CAP
+from economy.gems import reward_gems_if_needed
 from firebase_client import db
 from ticket_help.dashboard.updater import update_dashboard
 
@@ -47,8 +48,10 @@ async def finalize_ticket(
         user_ref = db.collection("users").document(str(user_id))
         helper_doc = user_ref.get()
 
-        before = helper_doc.to_dict().get("points", 0) if helper_doc.exists else 0
+        helper_data = helper_doc.to_dict() or {}
+        before = helper_data.get("points", 0)
         after = before + points
+        reward_gems_if_needed(user_ref, helper_data, points)
 
         helper_changes[user_id] = (before, after)
 
@@ -113,6 +116,8 @@ async def finalize_ticket(
 
     remaining = max(0, WEEKLY_REQUESTER_CAP - weekly_points)
     final_reward = min(reward, remaining)
+    user_data = requester_doc.to_dict() if requester_doc.exists else {}
+    reward_gems_if_needed(requester_ref, user_data, final_reward)
 
     updates = {
         "weekly_points": weekly_points + final_reward,

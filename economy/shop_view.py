@@ -14,7 +14,7 @@ class ShopSelect(discord.ui.Select):
         options = [
             discord.SelectOption(
                 label=item["name"],
-                description=f"{item['price']} coins",
+                description=f"{item['price']} {'gems' if item.get('currency', None) == 'gems' else 'coins'}",
                 value=item["name"],
             )
             for item in items
@@ -29,7 +29,12 @@ class ShopSelect(discord.ui.Select):
 
     async def callback(self, interaction: discord.Interaction):
         view = self.view
-        view.selected_item = self.values[0]
+        selected_name = self.values[0]
+
+        # Find full item object
+        item = next((i for i in view.current_items if i["name"] == selected_name), None)
+
+        view.selected_item = item
         await interaction.response.defer()
 
 
@@ -84,9 +89,10 @@ class ShopView(discord.ui.View):
         self.page = 0
         self.min_price = None
         self.max_price = None
-        self.selected_item: str | None = None
+        self.selected_item: ShopItem | None = None
 
         initial_items = paginate_items(items, 0, 8)
+        self.current_items = initial_items
         self.select = ShopSelect(initial_items)
         self.add_item(self.select)
 
@@ -104,7 +110,7 @@ class ShopView(discord.ui.View):
             self.page = total_pages - 1
 
         page_items = paginate_items(filtered, self.page, 8)
-
+        self.current_items = page_items
         if not page_items and self.page > 0:
             self.page -= 1
             page_items = paginate_items(filtered, self.page, 8)
@@ -113,7 +119,7 @@ class ShopView(discord.ui.View):
         self.select.options = [
             discord.SelectOption(
                 label=item["name"],
-                description=f"{item['price']} coins",
+                description=f"{item['price']} {'gems' if item.get('currency', None) == 'gems' else 'coins'}",
                 value=item["name"],
             )
             for item in page_items

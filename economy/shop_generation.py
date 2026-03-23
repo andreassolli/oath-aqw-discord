@@ -38,6 +38,8 @@ async def generate_shop(
     font_xsmall_light = ImageFont.truetype(FONTS_DIR / "Urbanist-Light.ttf", 14)
     coin_picture = Image.open(ASSETS_DIR / "coin.png").convert("RGBA")
     coin_picture = coin_picture.resize((27, 30), Image.Resampling.LANCZOS)
+    gem_picture = Image.open(ASSETS_DIR / "gem.png").convert("RGBA")
+    gem_picture = gem_picture.resize((30, 30), Image.Resampling.LANCZOS)
     quantity_image = Image.open(ASSETS_DIR / "quantity.png").convert("RGBA")
     draw = ImageDraw.Draw(bg)
     draw.text(
@@ -71,7 +73,10 @@ async def generate_shop(
             fill="#FFFFFF",
         )
 
-        bg.paste(coin_picture, (57 + gapX * x, 337 + gapY * y), coin_picture)
+        if item["currency"] == "gems":
+            bg.paste(gem_picture, (57 + gapX * x, 337 + gapY * y), gem_picture)
+        else:
+            bg.paste(coin_picture, (57 + gapX * x, 337 + gapY * y), coin_picture)
         bg.paste(quantity_image, (203 + gapX * x, 300 + gapY * y), quantity_image)
         draw.text(
             (88 + gapX * x, 334 + gapY * y),
