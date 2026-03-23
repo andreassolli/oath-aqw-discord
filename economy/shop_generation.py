@@ -73,7 +73,7 @@ async def generate_shop(
             fill="#FFFFFF",
         )
 
-        if item["currency"] == "gems":
+        if item.get("currency", None) == "gems":
             bg.paste(gem_picture, (57 + gapX * x, 337 + gapY * y), gem_picture)
         else:
             bg.paste(coin_picture, (57 + gapX * x, 337 + gapY * y), coin_picture)
