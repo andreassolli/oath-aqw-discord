@@ -3,9 +3,10 @@ from typing import Dict, List
 
 import discord
 
+from economy.helpers import filter_items, paginate_items
 from economy.operations import buy_item
 from economy.shop_generation import generate_shop
-from economy.utils import ShopItem, filter_items, paginate_items
+from economy.utils import ShopItem
 
 
 class ShopSelect(discord.ui.Select):

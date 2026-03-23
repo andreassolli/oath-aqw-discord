@@ -13,12 +13,13 @@ from config import (
 )
 from economy.gamba.doom_view import DoomSpinView
 from economy.gamba.utils import has_spun_today
+from economy.helpers import paginate_items
 from economy.inventory import generate_inventory
 from economy.operations import buy_item, get_shop, list_item, unlist_item
 from economy.shop import shop_embed
 from economy.shop_generation import generate_shop
 from economy.shop_view import ShopView
-from economy.utils import paginate_items, rich_coins
+from economy.utils import rich_coins
 from firebase_client import db
 from inventory.utils import equip_item, get_inventory, unequip_item
 from inventory.view import InventoryView
