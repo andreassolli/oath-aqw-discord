@@ -8,6 +8,7 @@ from discord import Member
 from PIL import Image, ImageDraw, ImageFont
 
 from economy.operations import get_shop
+from economy.utils import filter_items, paginate_items
 from firebase_client import db
 
 log = logging.getLogger(__name__)
@@ -22,9 +23,14 @@ log.warning(f"FONTS_DIR = {FONTS_DIR} exists={FONTS_DIR.exists()}")
 
 
 async def generate_shop(
-    interaction: discord.Interaction | None = None, userId: str | None = None
+    items: list,
+    userId: str | None = None,
+    page: int = 0,
+    min_price: int | None = None,
+    max_price: int | None = None,
+    total_pages: int = 1,
 ) -> BytesIO:
-    items = await get_shop()
+
     user_doc = db.collection("users").document(userId).get()
     coins = (user_doc.to_dict() or {}).get("coins", 0)
     bg = Image.open(ASSETS_DIR / "shop.png").convert("RGBA")
@@ -35,8 +41,16 @@ async def generate_shop(
     font_small = ImageFont.truetype(FONTS_DIR / "Urbanist-Regular.ttf", 26)
     font_xsmall = ImageFont.truetype(FONTS_DIR / "Urbanist-Regular.ttf", 20)
     font_xsmall_light = ImageFont.truetype(FONTS_DIR / "Urbanist-Light.ttf", 14)
+    coin_picture = Image.open(ASSETS_DIR / "coin.png").convert("RGBA")
+    coin_picture = coin_picture.resize((27, 30), Image.Resampling.LANCZOS)
+    quantity_image = Image.open(ASSETS_DIR / "quantity.png").convert("RGBA")
     draw = ImageDraw.Draw(bg)
-
+    draw.text(
+        (57, 90),
+        f"Page {page + 1} / {total_pages}",
+        font=font_small,
+        fill="#FFFFFF",
+    )
     draw.text((57, 42), "Shop", font=font_bold, fill="#FFFFFF")
     draw.text((782, 47), f"{coins}", font=font_medium_bold, fill="#FFFFFF")
     draw.text(
@@ -61,10 +75,8 @@ async def generate_shop(
             font=font_small,
             fill="#FFFFFF",
         )
-        coin_picture = Image.open(ASSETS_DIR / "coin.png").convert("RGBA")
-        coin_picture = coin_picture.resize((27, 30), Image.Resampling.LANCZOS)
+
         bg.paste(coin_picture, (57 + gapX * x, 337 + gapY * y), coin_picture)
-        quantity_image = Image.open(ASSETS_DIR / "quantity.png").convert("RGBA")
         bg.paste(quantity_image, (203 + gapX * x, 300 + gapY * y), quantity_image)
         draw.text(
             (88 + gapX * x, 334 + gapY * y),

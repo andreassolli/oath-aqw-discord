@@ -1,3 +1,5 @@
+import math
+
 import discord
 from discord import app_commands, user
 from discord.ext import commands
@@ -16,7 +18,7 @@ from economy.operations import buy_item, get_shop, list_item, unlist_item
 from economy.shop import shop_embed
 from economy.shop_generation import generate_shop
 from economy.shop_view import ShopView
-from economy.utils import rich_coins
+from economy.utils import paginate_items, rich_coins
 from firebase_client import db
 from inventory.utils import equip_item, get_inventory, unequip_item
 from inventory.view import InventoryView
@@ -78,10 +80,20 @@ class Economy(commands.Cog):
 
         items = await get_shop()
 
-        image = await generate_shop(interaction, str(interaction.user.id))
+        filtered = items  # no filters initially
+        total_pages = max(1, math.ceil(len(filtered) / 8))
+        page_items = paginate_items(filtered, 0, 8)
+
+        image = await generate_shop(
+            items=page_items,
+            userId=str(interaction.user.id),
+            page=0,
+            total_pages=total_pages,
+        )
+
         file = discord.File(image, filename="shop.png")
 
-        view = ShopView(items)
+        view = ShopView(interaction.user.id, items)
 
         await interaction.followup.send(
             file=file,
