@@ -53,6 +53,7 @@ async def generate_profile_card(
     wins = data.get("wins", 0)
     border = data.get("border", {})
     card = data.get("card", {})
+    gems = data.get("gems", 0)
     if card:
         bg = Image.open(ASSETS_DIR / f"{card.get('image')}").convert("RGBA")
     else:
@@ -134,9 +135,9 @@ async def generate_profile_card(
         (563, 293), f"Wordle: {completed_words}", font=font_xsmall, fill="#FFFFFF"
     )
 
-    draw.text((356, 375), "Tickets", font=font_small, fill="#FFFFFF")
+    draw.text((356, 375), "Misc", font=font_small, fill="#FFFFFF")
 
-    draw.text((401, 420), f"{tickets_claimed} helped", font=font_xsmall, fill="#FFFFFF")
+    draw.text((401, 420), f"{gems}", font=font_xsmall, fill="#FFFFFF")
 
     draw.text((401, 467), f"{points} points", font=font_xsmall, fill="#FFFFFF")
 
@@ -151,7 +152,7 @@ async def generate_profile_card(
 
     trophy = ASSET_CACHE["trophy"]
     calendar = ASSET_CACHE["calendar"]
-    ticket = ASSET_CACHE["ticket"]
+    gem = ASSET_CACHE["gem"]
     medal = ASSET_CACHE["medal"]
     dice = ASSET_CACHE["dice"]
     messages = ASSET_CACHE["messages"]
@@ -171,7 +172,7 @@ async def generate_profile_card(
 
     bg.paste(trophy, (525, 423), trophy)
     bg.paste(calendar, (525, 468), calendar)
-    bg.paste(ticket, (363, 423), ticket)
+    bg.paste(gem, (363, 423), gem)
     bg.paste(medal, (363, 470), medal)
     bg.paste(messages, (525, 252), messages)
     bg.paste(dice, (525, 297), dice)

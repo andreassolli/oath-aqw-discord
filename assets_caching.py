@@ -51,7 +51,7 @@ def initialize_assets():
     # --- UI Assets ---
     ASSET_CACHE["trophy"] = load("coin.png", (27, 27))
     ASSET_CACHE["calendar"] = load("calendar.png", (27, 27))
-    ASSET_CACHE["ticket"] = load("ticket.png", (27, 27))
+    ASSET_CACHE["gem"] = load("gem.png", (27, 27))
     ASSET_CACHE["medal"] = load("medal.png", (27, 27))
     ASSET_CACHE["dice"] = load("dice.png", (27, 27))
     ASSET_CACHE["messages"] = load("messages.png", (27, 27))

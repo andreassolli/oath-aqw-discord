@@ -99,7 +99,7 @@ ITEM_DATA = {
 }
 
 
-def migrate_equipped_items():
+def migrate_test_border_to_doom():
     users_ref = db.collection("users")
     docs = users_ref.stream()
 
@@ -107,25 +107,52 @@ def migrate_equipped_items():
 
     for doc in docs:
         data = doc.to_dict() or {}
-
         updates = {}
 
-        # Handle border
+        # -------------------
+        # Handle equipped border
+        # -------------------
         border = data.get("border")
-        if isinstance(border, str) and border in ITEM_DATA:
+
+        if isinstance(border, dict) and border.get("id") == "Test Border":
             updates["border"] = {
-                "id": border,
-                **ITEM_DATA[border],
+                "id": "Doom Border",
+                "display": "doom_border_item.png",
+                "image": "doom_border.png",
+                "type": "border",
             }
 
-        # Handle card
-        card = data.get("card")
-        if isinstance(card, str) and card in ITEM_DATA:
-            updates["card"] = {
-                "id": card,
-                **ITEM_DATA[card],
-            }
+        # -------------------
+        # Handle inventory
+        # -------------------
+        inventory = data.get("inventory", [])
+        new_inventory = []
+        inventory_changed = False
 
+        for item in inventory:
+            if (
+                isinstance(item, dict)
+                and item.get("id") == "Test Border"
+                and item.get("type") == "border"
+            ):
+                new_inventory.append(
+                    {
+                        "id": "Doom Border",
+                        "display": "doom_border_item.png",
+                        "image": "doom_border.png",
+                        "type": "border",
+                    }
+                )
+                inventory_changed = True
+            else:
+                new_inventory.append(item)
+
+        if inventory_changed:
+            updates["inventory"] = new_inventory
+
+        # -------------------
+        # Apply updates
+        # -------------------
         if updates:
             doc.reference.update(updates)
             updated_count += 1
@@ -141,8 +168,9 @@ async def test_fetch_call():
 
 
 if __name__ == "__main__":
+    migrate_test_border_to_doom()
     # get_all_users()
-    choose_new_word()
+    # choose_new_word()
 # asyncio.run(
 #    add_item(
 #        "292040660696039424", "Guts Card", "card", "guts_card.png", "custom.png"
