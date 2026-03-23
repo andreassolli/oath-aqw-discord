@@ -194,7 +194,7 @@ class Economy(commands.Cog):
         return await interaction.followup.send(embed=embed)
 
     @app_commands.command(name="donate", description="Donate coins to a friend.")
-    @app_commands.checks.has_role(BOT_GUY_ROLE_ID)
+    @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
     async def donate(
         self, interaction: discord.Interaction, user: discord.Member, coins: int
     ):
@@ -202,7 +202,17 @@ class Economy(commands.Cog):
             return await interaction.response.send_message(
                 "Select a number higher than 0."
             )
-
+        user_coins = (
+            db.collection("users")
+            .document(str(interaction.user.id))
+            .get()
+            .to_dict()
+            .get("coins", 0)
+        )
+        if user_coins < coins:
+            return await interaction.response.send_message(
+                "You cannot donate more coins you have."
+            )
         db.collection("users").document(str(interaction.user.id)).update(
             {"coins": firestore.Increment(-coins)}
         )
