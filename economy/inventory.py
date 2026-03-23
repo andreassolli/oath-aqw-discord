@@ -22,11 +22,13 @@ log.warning(f"FONTS_DIR = {FONTS_DIR} exists={FONTS_DIR.exists()}")
 
 
 async def generate_inventory(
-    interaction: discord.Interaction | None = None, userId: str | None = None
+    items: list,
+    userId: str | None = None,
+    page: int = 0,
+    total_pages: int = 1,
 ) -> BytesIO:
 
     user_doc = db.collection("users").document(userId).get()
-    items = (user_doc.to_dict() or {}).get("inventory", [])
 
     bg = Image.open(ASSETS_DIR / "inventory.png").convert("RGBA")
 
@@ -38,6 +40,12 @@ async def generate_inventory(
     draw = ImageDraw.Draw(bg)
 
     draw.text((57, 42), "Inventory", font=font_bold, fill="#FFFFFF")
+    draw.text(
+        (57, 90),
+        f"Page {page + 1} / {total_pages}",
+        font=font_small,
+        fill="#FFFFFF",
+    )
     draw.text(
         (57, 688),
         "Select the items you want to equip below.",

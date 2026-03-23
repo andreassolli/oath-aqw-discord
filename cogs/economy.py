@@ -235,7 +235,15 @@ class Economy(commands.Cog):
                 "Your inventory is empty.", ephemeral=True
             )
 
-        image = await generate_inventory(interaction, str(interaction.user.id))
+        total_pages = max(1, math.ceil(len(inventory) / 8))
+        page_items = paginate_items(inventory, 0, 8)
+
+        image = await generate_inventory(
+            items=page_items,
+            userId=str(interaction.user.id),
+            page=0,
+            total_pages=total_pages,
+        )
         file = discord.File(image, filename="inventory.png")
 
         borders = []
@@ -254,7 +262,8 @@ class Economy(commands.Cog):
                 backgrounds.append(item_id)
 
         view = InventoryView(
-            user_id=interaction.user.id, borders=borders, backgrounds=backgrounds
+            user_id=interaction.user.id,
+            items=inventory,
         )
 
         await interaction.followup.send(

@@ -217,8 +217,36 @@ def migrate_points_to_gems():
     print(f"Done. Updated {updated_count} users.")
 
 
+from firebase_client import db
+
+
+def ensure_currency_fields():
+    users_ref = db.collection("users")
+    docs = users_ref.stream()
+
+    updated_count = 0
+
+    for doc in docs:
+        data = doc.to_dict() or {}
+
+        updates = {}
+
+        if "gems" not in data:
+            updates["gems"] = 0
+
+        if "coins" not in data:
+            updates["coins"] = 0
+
+        if updates:
+            doc.reference.update(updates)
+            updated_count += 1
+            print(f"Updated {doc.id}: {updates}")
+
+    print(f"Done. Updated {updated_count} users.")
+
+
 if __name__ == "__main__":
-    #migrate_points_to_gems()
+    ensure_currency_fields()
     # get_all_users()
     # choose_new_word()
 # asyncio.run(
