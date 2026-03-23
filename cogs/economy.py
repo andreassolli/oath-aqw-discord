@@ -239,6 +239,7 @@ class Economy(commands.Cog):
         page_items = paginate_items(inventory, 0, 8)
 
         image = await generate_inventory(
+            total_items=len(inventory),
             items=page_items,
             userId=str(interaction.user.id),
             page=0,

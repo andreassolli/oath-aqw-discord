@@ -153,6 +153,7 @@ class InventoryView(discord.ui.View):
         self.add_item(NextPageButton())
 
         buffer = await generate_inventory(
+            total_items=len(self.all_items),
             items=page_items,
             userId=str(self.user_id),
             page=self.page,

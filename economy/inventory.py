@@ -22,13 +22,12 @@ log.warning(f"FONTS_DIR = {FONTS_DIR} exists={FONTS_DIR.exists()}")
 
 
 async def generate_inventory(
+    total_items: int,
     items: list,
     userId: str | None = None,
     page: int = 0,
     total_pages: int = 1,
 ) -> BytesIO:
-
-    user_doc = db.collection("users").document(userId).get()
 
     bg = Image.open(ASSETS_DIR / "inventory.png").convert("RGBA")
 
@@ -65,7 +64,7 @@ async def generate_inventory(
         (258, 58),
         quantity_image,
     )
-    draw.text((268, 54), f"{len(items)}", font=font_small_bold, fill="#FFFFFF")
+    draw.text((268, 54), f"{total_items}", font=font_small_bold, fill="#FFFFFF")
     for item in items:
         image_path = ASSETS_DIR / item["display"]
         item_picture = Image.open(image_path).convert("RGBA")
