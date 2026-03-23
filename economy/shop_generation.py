@@ -30,10 +30,11 @@ async def generate_shop(
     coins = (user_doc.to_dict() or {}).get("coins", 0)
     bg = Image.open(ASSETS_DIR / "shop.png").convert("RGBA")
     font_big = ImageFont.truetype(FONTS_DIR / "Urbanist-Regular.ttf", 34)
+    font_not_as_big = ImageFont.truetype(FONTS_DIR / "Urbanist-Regular.ttf", 30)
     font_medium_bold = ImageFont.truetype(FONTS_DIR / "Urbanist-Bold.ttf", 36)
     font_bold = ImageFont.truetype(FONTS_DIR / "Urbanist-Bold.ttf", 44)
     font_light = ImageFont.truetype(FONTS_DIR / "Urbanist-Light.ttf", 26)
-    font_small = ImageFont.truetype(FONTS_DIR / "Urbanist-Regular.ttf", 26)
+    font_small = ImageFont.truetype(FONTS_DIR / "Urbanist-Regular.ttf", 24)
     font_xsmall = ImageFont.truetype(FONTS_DIR / "Urbanist-Regular.ttf", 20)
     font_xsmall_light = ImageFont.truetype(FONTS_DIR / "Urbanist-Light.ttf", 14)
     coin_picture = Image.open(ASSETS_DIR / "coin.png").convert("RGBA")
@@ -91,7 +92,7 @@ async def generate_shop(
             )
         else:
             draw.text(
-                (209 + gapX * x, 293 + gapY * y),
+                (212 + gapX * x, 293 + gapY * y),
                 f"{quantity}",
                 font=font_big,
                 fill="#FFFFFF",
