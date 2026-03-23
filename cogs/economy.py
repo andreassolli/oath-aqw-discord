@@ -135,9 +135,10 @@ class Economy(commands.Cog):
 
             user_data = user_doc.to_dict()
             coins = user_data.get("coins", 0)
+            gems = user_data.get("gems", 0)
 
             return await interaction.response.send_message(
-                f"{user.display_name} has <:oathcoin:1462999179998531614>{coins}."
+                f"{user.display_name} has <:oathcoin:1462999179998531614>{coins} and <:gems:1485660490376937502>{gems}."
             )
         else:
             user_id = interaction.user.id
@@ -148,9 +149,10 @@ class Economy(commands.Cog):
 
             user_data = user_doc.to_dict()
             coins = user_data.get("coins", 0)
+            gems = user_data.get("gems", 0)
 
             return await interaction.response.send_message(
-                f"You ({interaction.user.display_name}) have <:oathcoin:1462999179998531614>{coins}."
+                f"You ({interaction.user.display_name}) have <:oathcoin:1462999179998531614>{coins} and <:gems:1485660490376937502>{gems}."
             )
 
     @app_commands.command(name="doom", description="Spin the Wheel of Doom")

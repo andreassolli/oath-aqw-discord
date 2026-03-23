@@ -19,7 +19,7 @@ async def list_item(
     if quantity == None:
         quantity = -1
     image_path = f"{image}.png"
-    display_path = f"{name}_item.png"
+    display_path = f"{image}_item.png"
     db.collection("shop_items").document(name).set(
         {
             "name": name,
@@ -56,12 +56,12 @@ async def buy_item(item: ShopItem, user_id: int):
     quantity = item.get("quantity", 0)
     price = item.get("price", 0)
     currency = item.get("currency", "coins")
-    money = user_data.get("currency", 0)
+    money = user_data.get(f"{currency}", 0)
     if quantity == 0:
         return f"There are no more {name} available."
 
     if money < price:
-        return f"You do not have enough coins to buy {name}."
+        return f"You do not have enough {currency} to buy {name}."
 
     user_ref.update({currency: firestore.Increment(-price)})
     await add_item(
