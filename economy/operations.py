@@ -46,9 +46,13 @@ async def buy_item(item: ShopItem, user_id: int):
     user_doc = user_ref.get()
     user_data = user_doc.to_dict() or {}
     inventory = user_data.get("inventory", [])
-    item_ref = db.collection("shop_items").document(item.get("name"))
     name = item.get("name")
+    docs = db.collection("shop_items").where("name", "==", name).limit(1).get()
 
+    if not docs:
+        return "Item not found."
+
+    item_ref = docs[0].reference
     # Already owned
     if any(i.get("id") == name for i in inventory):
         return f"You already own {name}."
