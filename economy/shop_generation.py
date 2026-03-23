@@ -1,14 +1,9 @@
 import logging
 from io import BytesIO
 from pathlib import Path
-from typing import Any, Dict, cast
 
-import discord
-from discord import Member
 from PIL import Image, ImageDraw, ImageFont
 
-from economy.operations import get_shop
-from economy.utils import filter_items, paginate_items
 from firebase_client import db
 
 log = logging.getLogger(__name__)
