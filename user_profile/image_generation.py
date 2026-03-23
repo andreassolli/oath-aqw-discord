@@ -51,12 +51,17 @@ async def generate_profile_card(
     rank = len(users_above) + 1
     coins = data.get("coins", 0)
     wins = data.get("wins", 0)
-    border = data.get("border", "")
+    border = data.get("border", {})
     card = data.get("card", {})
     if card:
         bg = Image.open(ASSETS_DIR / f"{card.get('image')}").convert("RGBA")
     else:
         bg = ASSET_CACHE["default_bg"].copy()
+
+    if border:
+        border_img = Image.open(ASSETS_DIR / f"{border.get('image')}").convert("RGBA")
+        bg.paste(border_img, (0, 0), border_img)
+
     draw = ImageDraw.Draw(bg)
     avatar = circle_crop(avatar, 231)
     bg.paste(avatar, (44, 32), avatar)
