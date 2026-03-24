@@ -309,8 +309,9 @@ class Economy(commands.Cog):
     @app_commands.command(
         name="break-rocks", description="Break rocks for a chance to win Chaos Shards."
     )
-    @app_commands.checks.has_role(DISCORD_MANAGER_ROLE_ID)
+    @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
     async def view_rocks(self, interaction: discord.Interaction):
+        await interaction.response.defer(ephemeral=True)
         buffer, rocks = generate_rocks()
 
         file = discord.File(buffer, filename="rocks.png")
@@ -320,9 +321,13 @@ class Economy(commands.Cog):
                 "You don't have enough coins to buy any rocks.", ephemeral=True
             )
             return
+        await interaction.followup.send(
+            f"You paid <:oathcoin:1462999179998531614>425 to break rocks."
+        )
+
         view = RockView(interaction.user, rocks)
 
-        await interaction.response.send_message(file=file, view=view)
+        await interaction.followup.send(file=file, view=view, ephemeral=True)
 
 
 async def setup(bot: commands.Bot):

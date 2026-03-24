@@ -31,7 +31,7 @@ class RockView(discord.ui.View):
                 f"You broke the rock, and found... <:gems:1485660490376937502>{shards}"
             )
 
-        elif rock_type == 7:
+        elif rock_type == 9:
             shards = random.randint(1, 3)
             coins = random.randint(10, 50)
 
