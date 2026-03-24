@@ -3,6 +3,7 @@ from pathlib import Path
 ASSET_CACHE = {}
 BADGE_CACHE = {}
 FONTS = {}
+ROCKS_CACHE = {}
 
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -74,3 +75,14 @@ def initialize_assets():
     FONTS["small"] = ImageFont.truetype(FONTS_DIR / "Urbanist-Regular.ttf", 30)
     FONTS["xsmall"] = ImageFont.truetype(FONTS_DIR / "Urbanist-Regular.ttf", 24)
     FONTS["xsmall_light"] = ImageFont.truetype(FONTS_DIR / "Urbanist-Light.ttf", 21)
+
+    ROCKS_CACHE[1] = load("basic1.png").convert("RGBA")
+    ROCKS_CACHE[2] = load("basic2.png").convert("RGBA")
+    ROCKS_CACHE[3] = load("basic3.png").convert("RGBA")
+    ROCKS_CACHE[4] = load("basic4.png").convert("RGBA")
+    ROCKS_CACHE[5] = load("basic5.png").convert("RGBA")
+    ROCKS_CACHE[6] = load("basic6.png").convert("RGBA")
+    ROCKS_CACHE[7] = load("pink1.png").convert("RGBA")
+    ROCKS_CACHE[8] = load("pink2.png").convert("RGBA")
+    ROCKS_CACHE[9] = load("gold1.png").convert("RGBA")
+    ROCKS_CACHE[0] = load("dust1.png").convert("RGBA")

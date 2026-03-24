@@ -3,6 +3,7 @@ import random
 
 import aiohttp
 
+from economy.generate_rocks import generate_rocks
 from economy.inventory import generate_inventory
 from economy.shop_generation import generate_shop
 from extra_commands.wordle import choose_new_word
@@ -246,7 +247,7 @@ def ensure_currency_fields():
 
 
 if __name__ == "__main__":
-    ensure_currency_fields()
+    generate_rocks()
     # get_all_users()
     # choose_new_word()
 # asyncio.run(

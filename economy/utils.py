@@ -3,6 +3,7 @@ from typing import List, TypedDict
 import discord
 from numpy import quantile
 
+from config import DISCORD_MANAGER_ROLE_ID
 from firebase_client import db
 
 
@@ -16,21 +17,30 @@ class ShopItem(TypedDict):
 
 
 def rich_coins(guild: discord.Guild):
+
     users = (
         db.collection("users")
         .order_by("coins", direction="DESCENDING")
-        .limit(15)
+        .limit(50)  # 👈 fetch more
         .stream()
     )
 
     medals = ["🥇", "🥈", "🥉"]
     lines = []
+    position = 0
 
-    for i, doc in enumerate(users):
+    for doc in users:
+        if len(lines) >= 15:
+            break
+
         data = doc.to_dict() or {}
-
-        position = i + 1
         member = guild.get_member(int(doc.id))
+
+        # ❌ Skip if user has manager role
+        if member and any(role.id == DISCORD_MANAGER_ROLE_ID for role in member.roles):
+            continue
+
+        position += 1
 
         display_name = (
             member.display_name if member else data.get("aqw_username", "Unknown User")
@@ -38,8 +48,8 @@ def rich_coins(guild: discord.Guild):
 
         coins = data.get("coins", 0)
 
-        if i < 3:
-            prefix = medals[i]
+        if position <= 3:
+            prefix = medals[position - 1]
         else:
             prefix = f"`{position:02}`"
 
@@ -54,10 +64,8 @@ def rich_coins(guild: discord.Guild):
             color=discord.Color.gold(),
         )
 
-    embed = discord.Embed(
+    return discord.Embed(
         title="<:oathcoin:1462999179998531614> Top 15 Richest",
         description="\n".join(lines),
         color=discord.Color.gold(),
     )
-
-    return embed

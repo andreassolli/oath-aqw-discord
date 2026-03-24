@@ -14,9 +14,12 @@ from config import (
 )
 from economy.gamba.doom_view import DoomSpinView
 from economy.gamba.utils import has_spun_today
+from economy.generate_rocks import generate_rocks
 from economy.helpers import paginate_items
 from economy.inventory import generate_inventory
 from economy.operations import buy_item, get_shop, list_item, unlist_item
+from economy.rock_breaking import buy_rock_break
+from economy.rocks_view import RockView
 from economy.shop import shop_embed
 from economy.shop_generation import generate_shop
 from economy.shop_view import ShopView
@@ -302,6 +305,24 @@ class Economy(commands.Cog):
         response = await unequip_item(str(interaction.user.id), item)
 
         await interaction.response.send_message(response, ephemeral=True)
+
+    @app_commands.command(
+        name="break-rocks", description="Break rocks for a chance to win Chaos Shards."
+    )
+    @app_commands.checks.has_role(DISCORD_MANAGER_ROLE_ID)
+    async def view_rocks(self, interaction: discord.Interaction):
+        buffer, rocks = generate_rocks()
+
+        file = discord.File(buffer, filename="rocks.png")
+        can_buy = buy_rock_break(interaction.user)
+        if not can_buy:
+            await interaction.response.send_message(
+                "You don't have enough coins to buy any rocks.", ephemeral=True
+            )
+            return
+        view = RockView(interaction.user, rocks)
+
+        await interaction.response.send_message(file=file, view=view)
 
 
 async def setup(bot: commands.Bot):

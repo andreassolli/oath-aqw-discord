@@ -14,7 +14,7 @@ class ShopSelect(discord.ui.Select):
         options = [
             discord.SelectOption(
                 label=item["name"],
-                description=f"{item['price']} {'gems' if item.get('currency', None) == 'gems' else 'coins'}",
+                description=f"{item['price']} {'Chaos Shards' if item.get('currency', None) == 'gems' else 'Coins'}",
                 value=item["name"],
             )
             for item in items
@@ -119,7 +119,7 @@ class ShopView(discord.ui.View):
         self.select.options = [
             discord.SelectOption(
                 label=item["name"],
-                description=f"{item['price']} {'gems' if item.get('currency', None) == 'gems' else 'coins'}",
+                description=f"{item['price']} {'Chaos Shards' if item.get('currency', None) == 'gems' else 'Coins'}",
                 value=item["name"],
             )
             for item in page_items

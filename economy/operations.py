@@ -65,6 +65,7 @@ async def buy_item(item: ShopItem, user_id: int):
     # Normalize currency (IMPORTANT)
     if currency == "gem":
         currency = "gems"
+    currency_str = "Chaos Shards" if currency == "gems" else "Coins"
 
     money = user_data.get(currency, 0)
 
@@ -72,7 +73,7 @@ async def buy_item(item: ShopItem, user_id: int):
         return f"There are no more {name} available."
 
     if money < price:
-        return f"You do not have enough {currency} to buy {name}."
+        return f"You do not have enough {currency_str} to buy {name}."
 
     # Deduct currency
     user_ref.update({currency: firestore.Increment(-price)})
@@ -89,7 +90,7 @@ async def buy_item(item: ShopItem, user_id: int):
     if quantity != -1:
         item_ref.update({"quantity": firestore.Increment(-1)})
 
-    return f"Bought 1 of {name}, you now have {money - price} {currency}."
+    return f"Bought 1 of {name}, you now have {money - price} {currency_str}."
 
 
 async def get_shop() -> List[ShopItem]:
