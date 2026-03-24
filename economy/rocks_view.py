@@ -1,4 +1,5 @@
 import random
+from errno import EPERM
 
 import discord
 from google.cloud.firestore import Increment
@@ -55,9 +56,8 @@ class RockView(discord.ui.View):
         for child in self.children:
             child.disabled = True
 
-        await interaction.response.send_message(
-            content=result, view=self, ephemeral=True
-        )
+        await interaction.response.edit_message(view=self)
+        await interaction.response.send_message(content=result, ephemeral=True)
 
     @discord.ui.button(label="Left", style=discord.ButtonStyle.primary)
     async def left(self, interaction: discord.Interaction, button: discord.ui.Button):

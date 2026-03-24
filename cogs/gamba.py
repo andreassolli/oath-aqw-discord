@@ -38,17 +38,11 @@ class Gamba(commands.Cog):
                 return await interaction.response.send_message(
                     f"You have to use this command in {channel.mention}"
                 )
-        doc = db.collection("users").document(str(interaction.user.id)).get()
-        coins = doc.to_dict().get("coins", 0) if doc else 0
         success, error = lock_coins(interaction.user.id, wager)
 
         if not success:
             return await interaction.response.send_message(error, ephemeral=True)
-        if coins < wager:
-            return await interaction.response.send_message(
-                f"You don't have enough coins to wager {wager}.",
-                ephemeral=True,
-            )
+
         await run_coinflip(interaction, wager, call, opponent)
 
     @app_commands.command(

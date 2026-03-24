@@ -4,7 +4,7 @@ import discord
 from google.cloud import firestore
 
 from economy.gamba.coinflip_accept_view import CoinflipAcceptView
-from economy.gamba.utils import coinflip
+from economy.gamba.utils import coinflip, unlock_coins
 from firebase_client import db
 
 
@@ -64,6 +64,8 @@ async def run_coinflip(
 
         points = wager if win else -wager
         user_ref = db.collection("users").document(str(interaction.user.id))
+
+        unlock_coins(interaction.user.id, wager)
 
         user_ref.set({"coins": firestore.Increment(points)}, merge=True)
 

@@ -346,13 +346,13 @@ class Extra(commands.Cog):
     async def goon_greed(self, interaction: discord.Interaction):
         await m_goon_greed(interaction)
 
-    @app_commands.command(name="og-pro")
-    async def og_pro(self, interaction: discord.Interaction):
-        await m_og_pro(interaction)
+    # @app_commands.command(name="og-pro")
+    # async def og_pro(self, interaction: discord.Interaction):
+    #    await m_og_pro(interaction)
 
-    @app_commands.command(name="yokai")
-    async def yokai(self, interaction: discord.Interaction):
-        await m_yokai(interaction)
+    # @app_commands.command(name="yokai")
+    # async def yokai(self, interaction: discord.Interaction):
+    #    await m_yokai(interaction)
 
     @app_commands.command(name="announce-event-winner")
     @has_any_role(ADMIN_ROLE_ID, DISCORD_MANAGER_ROLE_ID)

@@ -1,7 +1,7 @@
 import discord
 from google.cloud import firestore
 
-from economy.gamba.utils import coinflip
+from economy.gamba.utils import coinflip, unlock_coins
 from firebase_client import db
 
 
@@ -38,6 +38,11 @@ class CoinChoiceView(discord.ui.View):
         winner_ref = db.collection("users").document(str(winner.id))
         loser_ref = db.collection("users").document(str(loser.id))
 
+        # unlock both players FIRST
+        unlock_coins(self.challenger.id, self.wager)
+        unlock_coins(self.opponent.id, self.wager)
+
+        # then apply results
         winner_ref.set({"coins": firestore.Increment(self.wager)}, merge=True)
         loser_ref.set({"coins": firestore.Increment(-self.wager)}, merge=True)
 
