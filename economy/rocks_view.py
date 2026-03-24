@@ -20,7 +20,7 @@ class RockView(discord.ui.View):
         user_ref = db.collection("users").document(str(self.user.id))
 
         if rock_type == 10:
-            result = "You broke the rock, and found...\n💨 Just dust..."
+            result = "You broke the rock, and found... 💨 Just dust..."
 
         elif rock_type <= 6:
             shards = random.randint(1, 3)
@@ -28,7 +28,7 @@ class RockView(discord.ui.View):
             user_ref.update({"gems": Increment(shards)})
 
             result = (
-                f"You broke the rock, and found...\n<:gems:1485660490376937502>{shards}"
+                f"You broke the rock, and found... <:gems:1485660490376937502>{shards}"
             )
 
         elif rock_type == 7:
@@ -38,7 +38,7 @@ class RockView(discord.ui.View):
             user_ref.update({"gems": Increment(shards), "coins": Increment(coins)})
 
             result = (
-                f"You broke the rock, and found...\n"
+                f"You broke the rock, and found... "
                 f"<:gems:1485660490376937502>{shards} "
                 f"and <:oathcoin:1462999179998531614>{coins}"
             )
@@ -49,13 +49,15 @@ class RockView(discord.ui.View):
             user_ref.update({"gems": Increment(shards)})
 
             result = (
-                f"You broke the rock, and found...\n<:gems:1485660490376937502>{shards}"
+                f"You broke the rock, and found... <:gems:1485660490376937502>{shards}"
             )
 
         for child in self.children:
             child.disabled = True
 
-        await interaction.response.edit_message(content=result, view=self)
+        await interaction.response.send_message(
+            content=result, view=self, ephemeral=True
+        )
 
     @discord.ui.button(label="Left", style=discord.ButtonStyle.primary)
     async def left(self, interaction: discord.Interaction, button: discord.ui.Button):

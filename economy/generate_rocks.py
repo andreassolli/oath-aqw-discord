@@ -14,9 +14,9 @@ def generate_rocks():
 
     three_rocks = [random.choice(list(ROCKS_CACHE.items())) for _ in range(3)]
 
-    bg.paste(three_rocks[0][1], (90, 90), three_rocks[0][1])
-    bg.paste(three_rocks[1][1], (405, 90), three_rocks[1][1])
-    bg.paste(three_rocks[2][1], (620, 90), three_rocks[2][1])
+    bg.paste(three_rocks[0][1], (90, 54), three_rocks[0][1])
+    bg.paste(three_rocks[1][1], (405, 54), three_rocks[1][1])
+    bg.paste(three_rocks[2][1], (710, 54), three_rocks[2][1])
 
     buffer = BytesIO()
     bg.save(buffer, format="PNG")
