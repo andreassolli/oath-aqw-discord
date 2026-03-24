@@ -34,7 +34,7 @@ class RockConfirmView(discord.ui.View):
         for child in self.children:
             child.disabled = True
 
-        set_broken(self.user.id)
+        await set_broken(self.user.id)
 
         await interaction.response.edit_message(
             content=f"You paid <:oathcoin:1462999179998531614>{self.price} to break rocks.",

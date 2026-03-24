@@ -43,7 +43,7 @@ class DoomSpinView(discord.ui.View):
         self.spinning = True
         button.disabled = True
         # pick result immediately
-        result = random.randint(400, 500)
+        result = random.randint(250, 350)
         await set_spin_today(interaction.user.id)
         embed = discord.Embed(
             title="🎡 Wheel of Doom",

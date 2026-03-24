@@ -165,7 +165,7 @@ class Economy(commands.Cog):
     async def doom(self, interaction: discord.Interaction):
 
         await interaction.response.defer(ephemeral=True)
-        has_spun, cooldown = await has_spun_today(user.id)
+        has_spun, cooldown = await has_spun_today(interaction.user.id)
 
         if has_spun:
             return await interaction.response.send_message(

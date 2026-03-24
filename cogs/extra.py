@@ -195,13 +195,13 @@ class Extra(commands.Cog):
 
         if correct:
             if guess_count == 1:
-                reward = 800
+                reward = 550
             elif guess_count <= 3:
-                reward = 750
+                reward = 500
             elif guess_count <= 5:
-                reward = 720
+                reward = 470
             else:
-                reward = 675
+                reward = 435
             if not was_completed:
                 db.collection("users").document(str(user_id)).update(
                     {"coins": firestore.Increment(reward)}
