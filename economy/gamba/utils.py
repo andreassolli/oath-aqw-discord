@@ -27,16 +27,20 @@ async def has_spun_today(user_id: int) -> tuple[bool, timedelta | None]:
     if not last_spin:
         return False, None
 
+    if last_spin.tzinfo is None:
+        last_spin = last_spin.replace(tzinfo=timezone.utc)
+
     now = datetime.now(timezone.utc)
 
-    # next reset = next midnight UTC
+    today_start = datetime.combine(now.date(), datetime.min.time(), tzinfo=timezone.utc)
+
     next_reset = datetime.combine(
         now.date() + timedelta(days=1),
         datetime.min.time(),
         tzinfo=timezone.utc,
     )
 
-    if last_spin.date() == now.date():
+    if last_spin >= today_start:
         remaining = next_reset - now
         return True, remaining
 
