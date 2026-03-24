@@ -168,7 +168,7 @@ class Economy(commands.Cog):
         has_spun, cooldown = await has_spun_today(interaction.user.id)
 
         if has_spun:
-            return await interaction.response.send_message(
+            return await interaction.followup.send(
                 f"⏳ You already spun today. Try again in {format_time(cooldown)}",
                 ephemeral=True,
             )
