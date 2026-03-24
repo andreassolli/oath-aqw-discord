@@ -15,12 +15,12 @@ from config import (
 )
 from economy.confirm_rocks import RockConfirmView
 from economy.gamba.doom_view import DoomSpinView
-from economy.gamba.utils import has_spun_today
+from economy.gamba.utils import format_time, has_spun_today
 from economy.generate_rocks import generate_rocks
 from economy.helpers import paginate_items
 from economy.inventory import generate_inventory
 from economy.operations import buy_item, get_shop, list_item, unlist_item
-from economy.rock_breaking import buy_rock_break
+from economy.rock_breaking import get_break_cooldown
 from economy.rocks_view import RockView
 from economy.shop import shop_embed
 from economy.shop_generation import generate_shop
@@ -165,9 +165,14 @@ class Economy(commands.Cog):
     async def doom(self, interaction: discord.Interaction):
 
         await interaction.response.defer(ephemeral=True)
-        spun = await has_spun_today(interaction.user.id)
+        has_spun, cooldown = await has_spun_today(user.id)
 
-        spins_available = 0 if spun else 1
+        if has_spun:
+            return await interaction.response.send_message(
+                f"⏳ You already spun today. Try again in {format_time(cooldown)}",
+                ephemeral=True,
+            )
+        spins_available = 0 if has_spun else 1
         embed = discord.Embed(
             title="🎡 Wheel of Doom",
             description=f"You have `{spins_available}` spin available, click the button below to spin!",
@@ -313,7 +318,15 @@ class Economy(commands.Cog):
     )
     @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
     async def view_rocks(self, interaction: discord.Interaction):
-        price = random.randint(400, 450)
+        cooldown = await get_break_cooldown(interaction.user.id)
+
+        if cooldown is not None:
+            return await interaction.response.send_message(
+                f"⏳ You can break rocks again in {format_time(cooldown)}",
+                ephemeral=True,
+            )
+
+        price = random.randint(600, 800)
 
         view = RockConfirmView(interaction.user, price)
 

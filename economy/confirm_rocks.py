@@ -6,10 +6,10 @@ from economy.rocks_view import RockView
 
 
 class RockConfirmView(discord.ui.View):
-    def __init__(self, user: discord.User, amount: int):
+    def __init__(self, user: discord.User, price: int):
         super().__init__(timeout=60)
         self.user = user
-        self.amount = amount
+        self.price = price
 
     async def interaction_check(self, interaction: discord.Interaction):
         return interaction.user.id == self.user.id
@@ -18,7 +18,7 @@ class RockConfirmView(discord.ui.View):
     async def confirm(
         self, interaction: discord.Interaction, button: discord.ui.Button
     ):
-        can_buy = buy_rock_break(self.user, self.amount)
+        can_buy = buy_rock_break(self.user, self.price)
 
         if not can_buy:
             return await interaction.response.send_message(
@@ -35,7 +35,7 @@ class RockConfirmView(discord.ui.View):
             child.disabled = True
 
         await interaction.response.edit_message(
-            content=f"You paid <:oathcoin:1462999179998531614>{self.amount} to break rocks.",
+            content=f"You paid <:oathcoin:1462999179998531614>{self.price} to break rocks.",
             view=self,
         )
 

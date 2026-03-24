@@ -68,13 +68,13 @@ class DoomSpinView(discord.ui.View):
         bonus_text = ""
         new_result = result
         if any(role.id == ASCENDED_ROLE_ID for role in interaction.user.roles):
-            multiplier = 1.15
-            new_result = int(result * multiplier)
-            bonus_text = f"\nThanks to your **<:ascended:1485289045524484126>Ascended** role, you got 15% bonus coins!\nTotal payout: <:oathcoin:1462999179998531614>`{new_result}`"
-        elif any(role.id == OFFICER_ROLE_ID for role in interaction.user.roles):
             multiplier = 1.1
             new_result = int(result * multiplier)
-            bonus_text = f"\nThanks to your **<:oath2:1457452511635046492>Officer** role, you got 10% bonus coins!\nTotal payout: <:oathcoin:1462999179998531614>`{new_result}`"
+            bonus_text = f"\nThanks to your **<:ascended:1485289045524484126>Ascended** role, you got 10% bonus coins!\nTotal payout: <:oathcoin:1462999179998531614>`{new_result}`"
+        elif any(role.id == OFFICER_ROLE_ID for role in interaction.user.roles):
+            multiplier = 1.07
+            new_result = int(result * multiplier)
+            bonus_text = f"\nThanks to your **<:oath2:1457452511635046492>Officer** role, you got 7% bonus coins!\nTotal payout: <:oathcoin:1462999179998531614>`{new_result}`"
         elif any(role.id == INITIATE_ROLE_ID for role in interaction.user.roles):
             multiplier = 1.05
             new_result = int(result * multiplier)

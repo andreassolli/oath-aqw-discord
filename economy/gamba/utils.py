@@ -1,5 +1,5 @@
 import random
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 from google.cloud.firestore import Increment
 
@@ -17,19 +17,30 @@ async def coinflip(fair: bool = False, heads: bool = True) -> str:
             return "Tails" if toss <= 49 else "Heads"
 
 
-async def has_spun_today(user_id: int) -> bool:
+async def has_spun_today(user_id: int) -> tuple[bool, timedelta | None]:
     doc = db.collection("users").document(str(user_id)).get()
 
     if not doc.exists:
-        return False
+        return False, None
 
     last_spin = doc.to_dict().get("last_spin")
     if not last_spin:
-        return False
+        return False, None
 
     now = datetime.now(timezone.utc)
 
-    return last_spin.date() == now.date()
+    # next reset = next midnight UTC
+    next_reset = datetime.combine(
+        now.date() + timedelta(days=1),
+        datetime.min.time(),
+        tzinfo=timezone.utc,
+    )
+
+    if last_spin.date() == now.date():
+        remaining = next_reset - now
+        return True, remaining
+
+    return False, None
 
 
 async def set_spin_today(user_id: int):
@@ -62,3 +73,12 @@ def unlock_coins(user_id: int, amount: int):
     user_ref = db.collection("users").document(str(user_id))
 
     user_ref.update({"locked_coins": Increment(-amount)})
+
+
+def format_time(td: timedelta) -> str:
+    total_seconds = int(td.total_seconds())
+
+    hours = total_seconds // 3600
+    minutes = (total_seconds % 3600) // 60
+
+    return f"{hours}h {minutes}m"
