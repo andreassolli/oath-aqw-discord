@@ -1,6 +1,8 @@
 import random
 from datetime import datetime, timezone
 
+from google.cloud.firestore import Increment
+
 from firebase_client import db
 
 
@@ -34,3 +36,29 @@ async def set_spin_today(user_id: int):
     db.collection("users").document(str(user_id)).set(
         {"last_spin": datetime.now(timezone.utc)}, merge=True
     )
+
+
+def lock_coins(user_id: int, amount: int) -> tuple[bool, str | None]:
+    user_ref = db.collection("users").document(str(user_id))
+
+    doc = user_ref.get()
+    data = doc.to_dict() or {}
+
+    coins = data.get("coins", 0)
+    locked = data.get("locked_coins", 0)
+
+    available = coins - locked
+
+    if available < amount:
+        return False, "Not enough available coins."
+
+    user_ref.update({"locked_coins": Increment(amount)})
+
+    return True, None
+
+
+def unlock_coins(user_id: int, amount: int):
+
+    user_ref = db.collection("users").document(str(user_id))
+
+    user_ref.update({"locked_coins": Increment(-amount)})

@@ -7,6 +7,7 @@ from discord.ext import commands
 from config import BETA_TESTER_ROLE_ID, BETA_TESTING_CHANNEL_ID, OFFICER_ROLE_ID
 from economy.gamba.beg import beg
 from economy.gamba.coinflip import run_coinflip
+from economy.gamba.utils import lock_coins
 from economy.gamba.yanken_accept_view import RPSAcceptView
 from firebase_client import db
 
@@ -39,7 +40,10 @@ class Gamba(commands.Cog):
                 )
         doc = db.collection("users").document(str(interaction.user.id)).get()
         coins = doc.to_dict().get("coins", 0) if doc else 0
+        success, error = lock_coins(interaction.user.id, wager)
 
+        if not success:
+            return await interaction.response.send_message(error, ephemeral=True)
         if coins < wager:
             return await interaction.response.send_message(
                 f"You don't have enough coins to wager {wager}.",
@@ -76,7 +80,10 @@ class Gamba(commands.Cog):
             return
         doc = db.collection("users").document(str(interaction.user.id)).get()
         coins = doc.to_dict().get("coins", 0) if doc else 0
+        success, error = lock_coins(interaction.user.id, wager)
 
+        if not success:
+            return await interaction.response.send_message(error, ephemeral=True)
         if coins < wager:
             return await interaction.response.send_message(
                 f"You don't have enough coins to wager {wager}.",
