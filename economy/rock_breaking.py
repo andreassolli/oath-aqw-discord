@@ -32,7 +32,11 @@ async def get_break_cooldown(user_id: int):
     if not last_break:
         return None
 
+    if last_break.tzinfo is None:
+        last_break = last_break.replace(tzinfo=timezone.utc)
+
     now = datetime.now(timezone.utc)
+
     remaining = timedelta(hours=4) - (now - last_break)
 
     if remaining.total_seconds() <= 0:
