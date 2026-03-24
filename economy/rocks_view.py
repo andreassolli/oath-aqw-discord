@@ -57,7 +57,7 @@ class RockView(discord.ui.View):
             child.disabled = True
 
         await interaction.response.edit_message(view=self)
-        await interaction.response.send_message(content=result, ephemeral=True)
+        await interaction.followup.send(content=result, ephemeral=True)
 
     @discord.ui.button(label="Left", style=discord.ButtonStyle.primary)
     async def left(self, interaction: discord.Interaction, button: discord.ui.Button):
