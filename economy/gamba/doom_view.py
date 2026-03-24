@@ -7,6 +7,7 @@ from google.cloud import firestore
 from config import ASCENDED_ROLE_ID, INITIATE_ROLE_ID, OFFICER_ROLE_ID
 from economy.gamba.utils import set_spin_today
 from firebase_client import db
+from inventory.utils import add_item
 
 
 class DoomSpinView(discord.ui.View):
@@ -43,6 +44,17 @@ class DoomSpinView(discord.ui.View):
         self.spinning = True
         button.disabled = True
         # pick result immediately
+        drop = random.randint(1, 20)
+        drop_text = ""
+        if drop == 1:
+            await add_item(
+                str(interaction.user.id),
+                "Doom Card",
+                "card",
+                "doom_card.png",
+                "doom_card_item.png",
+            )
+            drop_text = "\n\nYou also won the **Secret Rare** Doom Card! It has been added to your inventory."
         result = random.randint(250, 350)
         await set_spin_today(interaction.user.id)
         embed = discord.Embed(
@@ -82,7 +94,7 @@ class DoomSpinView(discord.ui.View):
 
         result_embed = discord.Embed(
             title="🎡 Wheel of Doom",
-            description=f"You won <:oathcoin:1462999179998531614>`{result}`!{bonus_text}",
+            description=f"You won <:oathcoin:1462999179998531614>`{result}`!{bonus_text}{drop_text}",
             color=discord.Color.gold(),
         )
         result_embed.set_image(
