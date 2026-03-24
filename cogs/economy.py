@@ -1,4 +1,5 @@
 import math
+import random
 from typing import Literal
 
 import discord
@@ -12,6 +13,7 @@ from config import (
     DISCORD_MANAGER_ROLE_ID,
     MODERATOR_ROLE_ID,
 )
+from economy.confirm_rocks import RockConfirmView
 from economy.gamba.doom_view import DoomSpinView
 from economy.gamba.utils import has_spun_today
 from economy.generate_rocks import generate_rocks
@@ -311,23 +313,15 @@ class Economy(commands.Cog):
     )
     @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
     async def view_rocks(self, interaction: discord.Interaction):
-        await interaction.response.defer(ephemeral=True)
-        buffer, rocks = generate_rocks()
+        price = random.randint(400, 450)
 
-        file = discord.File(buffer, filename="rocks.png")
-        can_buy = buy_rock_break(interaction.user)
-        if not can_buy:
-            await interaction.response.send_message(
-                "You don't have enough coins to buy any rocks.", ephemeral=True
-            )
-            return
-        await interaction.followup.send(
-            f"You paid <:oathcoin:1462999179998531614>425 to break rocks."
+        view = RockConfirmView(interaction.user, price)
+
+        await interaction.response.send_message(
+            f"Spend <:oathcoin:1462999179998531614>{price} to break rocks?",
+            view=view,
+            ephemeral=True,
         )
-
-        view = RockView(interaction.user, rocks)
-
-        await interaction.followup.send(file=file, view=view, ephemeral=True)
 
 
 async def setup(bot: commands.Bot):

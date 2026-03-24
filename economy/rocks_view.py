@@ -1,5 +1,4 @@
 import random
-from errno import EPERM
 
 import discord
 from google.cloud.firestore import Increment
@@ -8,7 +7,7 @@ from firebase_client import db
 
 
 class RockView(discord.ui.View):
-    def __init__(self, user: discord.Member, rocks: list[int]):
+    def __init__(self, user: discord.User, rocks: list[int]):
         super().__init__(timeout=120)
         self.user = user
         self.rocks = rocks
