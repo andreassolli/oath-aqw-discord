@@ -37,7 +37,7 @@ class FirstModal(discord.ui.Modal, title="Part 1 - Ultra Speaker"):
         max_length=1000,
     )
     q3 = discord.ui.TextInput(
-        label="Maximize APs Seal & Broken Seal, and Regeneration",
+        label="Maximize APs debuffs, and Regeneration",
         placeholder="How do you maximize APs Seal & Broken Seal debuff, and what's the issue if Speaker regenerates?",
         style=discord.TextStyle.paragraph,
         max_length=1000,
@@ -88,7 +88,7 @@ class SecondModal(discord.ui.Modal, title="Step 2 - Ultra Gramiel"):
         max_length=1000,
     )
     q8 = discord.ui.TextInput(
-        label="Legion Revenant Enhancements & What to Avoid",
+        label="Legion Revenant Enhancements & Avoid",
         placeholder="What enhancements do you need to have for Legion Revenant, and what do you have to avoid doing?",
         style=discord.TextStyle.paragraph,
         max_length=1000,
