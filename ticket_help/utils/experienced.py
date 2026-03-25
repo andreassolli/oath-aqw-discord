@@ -25,19 +25,34 @@ QUESTIONS_STEP2 = [
 # ---------------- MODAL 1 ---------------- #
 class FirstModal(discord.ui.Modal, title="Part 1 - Ultra Speaker"):
     q1 = discord.ui.TextInput(
-        label="What essential classes do you want for killing Speaker, and why would you do a 3 man over 4 man taunt?"
+        label="Classes & Taunt Strategy",
+        placeholder="What essential classes do you want for killing Speaker, and why would you do a 3 man over 4 man taunt?",
+        style=discord.TextStyle.paragraph,
+        max_length=1000,
     )
     q2 = discord.ui.TextInput(
-        label="Why do we have to rotate who takes the zone, and why can there only be one at a time?"
+        label="Zone Rotation",
+        placeholder="Why do we have to rotate who takes the zone, and why can there only be one at a time?",
+        style=discord.TextStyle.paragraph,
+        max_length=1000,
     )
     q3 = discord.ui.TextInput(
-        label="How do you maximize ArchPaladins Seal and Broken Seal debuff, and what is the issue if Speaker regenerates the Health?"
+        label="Maximizing ArchPaladins Seal & Broken Seal, and Regeneration",
+        placeholder="How do you maximize ArchPaladins Seal and Broken Seal debuff, and what is the issue if Speaker regenerates the Health?",
+        style=discord.TextStyle.paragraph,
+        max_length=1000,
     )
     q4 = discord.ui.TextInput(
-        label="What do you have to avoid when taunting as Lord of Order, and how do you avoid it?"
+        label="Taunting as Lord of Order",
+        placeholder="What do you have to avoid when taunting as Lord of Order, and how do you avoid it?",
+        style=discord.TextStyle.paragraph,
+        max_length=1000,
     )
     q5 = discord.ui.TextInput(
-        label="Why do you have to save skill 5 as Lord of Order, and how do you avoid running out of mana?"
+        label="Mana Issues and Saving Skill 5 as Lord of Order",
+        placeholder="Why do you have to save skill 5 as Lord of Order, and how do you avoid running out of mana?",
+        style=discord.TextStyle.paragraph,
+        max_length=1000,
     )
 
     async def on_submit(self, interaction: discord.Interaction):
@@ -61,19 +76,34 @@ class FirstModal(discord.ui.Modal, title="Part 1 - Ultra Speaker"):
 # ---------------- MODAL 2 ---------------- #
 class SecondModal(discord.ui.Modal, title="Step 2 - Ultra Gramiel"):
     q6 = discord.ui.TextInput(
-        label="How and when do we taunt when fighting Ultra Gramiel, and how long should you wait after Phase 1 to taunt?"
+        label="Taunting Pattern",
+        placeholder="How and when do we taunt when fighting Ultra Gramiel, and how long should you wait after Phase 1 to taunt?",
+        style=discord.TextStyle.paragraph,
+        max_length=1000,
     )
     q7 = discord.ui.TextInput(
-        label="How do you end up with haste debuff during the 1st phase?"
+        label="Haste Debuff, Phase 1",
+        placeholder="How do you end up with haste debuff during the 1st phase?",
+        style=discord.TextStyle.paragraph,
+        max_length=1000,
     )
     q8 = discord.ui.TextInput(
-        label="What enhancements do you need to have for Legion Revenant, and what do you have to avoid doing?"
+        label="Legion Revenant Enhancements & What to Avoid",
+        placeholder="What enhancements do you need to have for Legion Revenant, and what do you have to avoid doing?",
+        style=discord.TextStyle.paragraph,
+        max_length=1000,
     )
     q9 = discord.ui.TextInput(
-        label="How do you loop the taunts in second phase, and ideally what order should each class taunt?"
+        label="Taunting Pattern, Phase 2",
+        placeholder="How do you loop the taunts in second phase, and ideally what order should each class taunt?",
+        style=discord.TextStyle.paragraph,
+        max_length=1000,
     )
     q10 = discord.ui.TextInput(
-        label="If the text about 'Death's Door' appears before 'All servants of the 'Liberator' must die!', what should you do?"
+        label="Death's Door & Liberator Servants",
+        placeholder="If the text about 'Death's Door' appears before 'All servants of the 'Liberator' must die!', what should you do?",
+        style=discord.TextStyle.paragraph,
+        max_length=1000,
     )
 
     async def on_submit(self, interaction: discord.Interaction):
