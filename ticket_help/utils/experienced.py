@@ -5,14 +5,40 @@ from config import TICKET_INSPECTORS_CHANNEL_ID
 # Temporary storage
 user_responses = {}
 
+QUESTIONS_STEP1 = [
+    "What essential classes do you want for killing Speaker, and why would you do a 3 man over 4 man taunt?",
+    "Why do we have to rotate who takes the zone, and why can there only be one at a time?",
+    "How do you maximize ArchPaladins Seal and Broken Seal debuff, and what is the issue if Speaker regenerates the Health?",
+    "What do you have to avoid when taunting as Lord of Order, and how do you avoid it?",
+    "Why do you have to save skill 5 as Lord of Order, and how do you avoid running out of mana?",
+]
+
+QUESTIONS_STEP2 = [
+    "How and when do we taunt when fighting Ultra Gramiel, and how long should you wait after Phase 1 to taunt?",
+    "How do you end up with haste debuff during the 1st phase?",
+    "What enhancements do you need to have for Legion Revenant, and what do you have to avoid doing?",
+    "How do you loop the taunts in second phase, and ideally what order should each class taunt?",
+    "If the text about 'Death's Door' appears before 'All servants of the 'Liberator' must die!', what should you do?",
+]
+
 
 # ---------------- MODAL 1 ---------------- #
-class FirstModal(discord.ui.Modal, title="Step 1 - Questions"):
-    q1 = discord.ui.TextInput(label="Question 1")
-    q2 = discord.ui.TextInput(label="Question 2")
-    q3 = discord.ui.TextInput(label="Question 3")
-    q4 = discord.ui.TextInput(label="Question 4")
-    q5 = discord.ui.TextInput(label="Question 5")
+class FirstModal(discord.ui.Modal, title="Part 1 - Ultra Speaker"):
+    q1 = discord.ui.TextInput(
+        label="What essential classes do you want for killing Speaker, and why would you do a 3 man over 4 man taunt?"
+    )
+    q2 = discord.ui.TextInput(
+        label="Why do we have to rotate who takes the zone, and why can there only be one at a time?"
+    )
+    q3 = discord.ui.TextInput(
+        label="How do you maximize ArchPaladins Seal and Broken Seal debuff, and what is the issue if Speaker regenerates the Health?"
+    )
+    q4 = discord.ui.TextInput(
+        label="What do you have to avoid when taunting as Lord of Order, and how do you avoid it?"
+    )
+    q5 = discord.ui.TextInput(
+        label="Why do you have to save skill 5 as Lord of Order, and how do you avoid running out of mana?"
+    )
 
     async def on_submit(self, interaction: discord.Interaction):
         user_responses[interaction.user.id] = {
@@ -26,19 +52,29 @@ class FirstModal(discord.ui.Modal, title="Step 1 - Questions"):
         }
 
         await interaction.response.send_message(
-            "Step 1 completed. Click below to continue.",
+            "Part 1 - Ultra Speaker completed. Click below for the second and final part, Ultra Gramiel.",
             view=NextStepView(),
             ephemeral=True,
         )
 
 
 # ---------------- MODAL 2 ---------------- #
-class SecondModal(discord.ui.Modal, title="Step 2 - More Questions"):
-    q6 = discord.ui.TextInput(label="Question 6")
-    q7 = discord.ui.TextInput(label="Question 7")
-    q8 = discord.ui.TextInput(label="Question 8")
-    q9 = discord.ui.TextInput(label="Question 9")
-    q10 = discord.ui.TextInput(label="Question 10")
+class SecondModal(discord.ui.Modal, title="Step 2 - Ultra Gramiel"):
+    q6 = discord.ui.TextInput(
+        label="How and when do we taunt when fighting Ultra Gramiel, and how long should you wait after Phase 1 to taunt?"
+    )
+    q7 = discord.ui.TextInput(
+        label="How do you end up with haste debuff during the 1st phase?"
+    )
+    q8 = discord.ui.TextInput(
+        label="What enhancements do you need to have for Legion Revenant, and what do you have to avoid doing?"
+    )
+    q9 = discord.ui.TextInput(
+        label="How do you loop the taunts in second phase, and ideally what order should each class taunt?"
+    )
+    q10 = discord.ui.TextInput(
+        label="If the text about 'Death's Door' appears before 'All servants of the 'Liberator' must die!', what should you do?"
+    )
 
     async def on_submit(self, interaction: discord.Interaction):
         data = user_responses.get(interaction.user.id, {})
@@ -58,18 +94,20 @@ class SecondModal(discord.ui.Modal, title="Step 2 - More Questions"):
             return
         # Create thread
         thread = await channel.create_thread(
-            name=f"Submission from {interaction.user}",
+            name=f"Application from {interaction.user.display_name}",
             type=discord.ChannelType.public_thread,
         )
 
         # Format message
-        content = "**Submission Results**\n\n"
+        content = "**Application to become an Experienced Helper**\n\n"
 
-        for i, ans in enumerate(data["step1"], start=1):
-            content += f"**Q{i}:** {ans}\n"
+        # Step 1
+        for q, ans in zip(QUESTIONS_STEP1, data["step1"]):
+            content += f"**{q}**\n{ans}\n\n"
 
-        for i, ans in enumerate(data["step2"], start=6):
-            content += f"**Q{i}:** {ans}\n"
+        # Step 2
+        for q, ans in zip(QUESTIONS_STEP2, data["step2"]):
+            content += f"**{q}**\n{ans}\n\n"
 
         await thread.send(content)
 
@@ -77,19 +115,34 @@ class SecondModal(discord.ui.Modal, title="Step 2 - More Questions"):
         user_responses.pop(interaction.user.id, None)
 
         await interaction.response.send_message(
-            "✅ Submission complete! Thread created.", ephemeral=True
+            "✅ Submission complete! A Ticket Inspector will review your application.",
+            ephemeral=True,
         )
 
 
 # ---------------- BUTTON VIEWS ---------------- #
 class StartView(discord.ui.View):
-    @discord.ui.button(label="Start Form", style=discord.ButtonStyle.primary)
+    def __init__(self):
+        super().__init__(timeout=None)
+
+    @discord.ui.button(
+        label="Start application",
+        style=discord.ButtonStyle.primary,
+        custom_id="start_application_button",  # REQUIRED
+    )
     async def start(self, interaction: discord.Interaction, button: discord.ui.Button):
         await interaction.response.send_modal(FirstModal())
 
 
 class NextStepView(discord.ui.View):
-    @discord.ui.button(label="Next", style=discord.ButtonStyle.success)
+    def __init__(self):
+        super().__init__(timeout=None)
+
+    @discord.ui.button(
+        label="Part 2",
+        style=discord.ButtonStyle.success,
+        custom_id="application_part2_button",
+    )
     async def next_step(
         self, interaction: discord.Interaction, button: discord.ui.Button
     ):

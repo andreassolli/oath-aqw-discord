@@ -577,12 +577,6 @@ class Extra(commands.Cog):
             ephemeral=True,
         )
 
-    @app_commands.command(name="exp-test", description="Testing")
-    async def exp_test(self, interaction: discord.Interaction):
-        await interaction.response.send_message(
-            "exp-test command executed", view=StartView(), ephemeral=True
-        )
-
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(Extra(bot))

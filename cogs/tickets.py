@@ -14,12 +14,13 @@ from ticket_help.commands.admin import (
     set_boss_points,
     set_user_points,
 )
+from ticket_help.utils.experienced_panel import setup_application_panel
 
 
 class Tickets(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-        self._started: bool = False  # ✅ type-safe, cog-local state
+        self._started: bool = False
 
     async def cog_load(self):
         """Register slash commands when the cog is loaded."""
@@ -44,6 +45,8 @@ class Tickets(commands.Cog):
             return
 
         self._started = True
+        await self.bot.wait_until_ready()
+        await setup_application_panel(self.bot)
         await setup_ticket_system(self.bot)
 
 
