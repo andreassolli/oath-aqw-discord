@@ -6,19 +6,19 @@ from config import TICKET_INSPECTORS_CHANNEL_ID
 user_responses = {}
 
 QUESTIONS_STEP1 = [
-    "What essential classes do you want for killing Speaker, and why would you do a 3 man over 4 man taunt?",
-    "Why do we have to rotate who takes the zone, and why can there only be one at a time?",
-    "How do you maximize ArchPaladins Seal and Broken Seal debuff, and what is the issue if Speaker regenerates the Health?",
-    "What do you have to avoid when taunting as Lord of Order, and how do you avoid it?",
-    "Why do you have to save skill 5 as Lord of Order, and how do you avoid running out of mana?",
+    "Q1: What essential classes do you want for killing Speaker, and why would you do a 3 man over 4 man taunt?",
+    "Q2: Why do we have to rotate who takes the zone, and why can there only be one at a time?",
+    "Q3: How do you maximize ArchPaladins Seal and Broken Seal debuff, and what is the issue if Speaker regenerates the Health?",
+    "Q4: What do you have to avoid when taunting as Lord of Order, and how do you avoid it?",
+    "Q5: Why do you have to save skill 5 as Lord of Order, and how do you avoid running out of mana?",
 ]
 
 QUESTIONS_STEP2 = [
-    "How and when do we taunt when fighting Ultra Gramiel, and how long should you wait after Phase 1 to taunt?",
-    "How do you end up with haste debuff during the 1st phase?",
-    "What enhancements do you need to have for Legion Revenant, and what do you have to avoid doing?",
-    "How do you loop the taunts in second phase, and ideally what order should each class taunt?",
-    "If the text about 'Death's Door' appears before 'All servants of the 'Liberator' must die!', what should you do?",
+    "Q6: How and when do we taunt when fighting Ultra Gramiel, and how long should you wait after Phase 1 to taunt?",
+    "Q7: How do you end up with haste debuff during the 1st phase?",
+    "Q8: What enhancements do you need to have for Legion Revenant, and what do you have to avoid doing?",
+    "Q9: How do you loop the taunts in second phase, and ideally what order should each class taunt?",
+    "Q10: If the text about 'Death's Door' appears before 'All servants of the 'Liberator' must die!', what should you do?",
 ]
 
 
