@@ -26,7 +26,7 @@ QUESTIONS_STEP2 = [
 class FirstModal(discord.ui.Modal, title="Part 1 - Ultra Speaker"):
     q1 = discord.ui.TextInput(
         label="Classes & Taunt Strategy",
-        placeholder="What essential classes do you want for killing Speaker, and why would you do a 3 man over 4 man taunt?",
+        placeholder="What essential classes do you want for Speaker, and why do a 3 man over 4 man taunt?",
         style=discord.TextStyle.paragraph,
         max_length=1000,
     )
@@ -37,8 +37,8 @@ class FirstModal(discord.ui.Modal, title="Part 1 - Ultra Speaker"):
         max_length=1000,
     )
     q3 = discord.ui.TextInput(
-        label="Maximizing ArchPaladins Seal & Broken Seal, and Regeneration",
-        placeholder="How do you maximize ArchPaladins Seal and Broken Seal debuff, and what is the issue if Speaker regenerates the Health?",
+        label="Maximize APs Seal & Broken Seal, and Regeneration",
+        placeholder="How do you maximize APs Seal & Broken Seal debuff, and what's the issue if Speaker regenerates?",
         style=discord.TextStyle.paragraph,
         max_length=1000,
     )
@@ -49,8 +49,8 @@ class FirstModal(discord.ui.Modal, title="Part 1 - Ultra Speaker"):
         max_length=1000,
     )
     q5 = discord.ui.TextInput(
-        label="Mana Issues and Saving Skill 5 as Lord of Order",
-        placeholder="Why do you have to save skill 5 as Lord of Order, and how do you avoid running out of mana?",
+        label="Mana Issues and skill 5, Lord of Order",
+        placeholder="Why do you have to save skill 5 as Lord of Order, and how do you avoid mana issues?",
         style=discord.TextStyle.paragraph,
         max_length=1000,
     )
@@ -77,7 +77,7 @@ class FirstModal(discord.ui.Modal, title="Part 1 - Ultra Speaker"):
 class SecondModal(discord.ui.Modal, title="Step 2 - Ultra Gramiel"):
     q6 = discord.ui.TextInput(
         label="Taunting Pattern",
-        placeholder="How and when do we taunt when fighting Ultra Gramiel, and how long should you wait after Phase 1 to taunt?",
+        placeholder="How and when to taunt against Ultra Gramiel, and how long should you wait after Phase 1 to taunt?",
         style=discord.TextStyle.paragraph,
         max_length=1000,
     )
@@ -101,7 +101,7 @@ class SecondModal(discord.ui.Modal, title="Step 2 - Ultra Gramiel"):
     )
     q10 = discord.ui.TextInput(
         label="Death's Door & Liberator Servants",
-        placeholder="If the text about 'Death's Door' appears before 'All servants of the 'Liberator' must die!', what should you do?",
+        placeholder="If the text about 'Death's Door' appears before 'Liberator' text, what should you do?",
         style=discord.TextStyle.paragraph,
         max_length=1000,
     )
