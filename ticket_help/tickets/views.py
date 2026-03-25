@@ -16,6 +16,8 @@ from ticket_help.commands.permissions import (
     has_oathsworn_role,
 )
 from ticket_help.dashboard.updater import update_dashboard
+from ticket_help.panels.change_server_view import ServerSelectView
+from ticket_help.panels.server_fetch import fetch_servers
 
 from .completion_utils import finalize_ticket
 from .confirm_cancel_view import ConfirmCancelView
@@ -366,4 +368,36 @@ class TicketActionView(discord.ui.View):
             "This action cannot be undone.",
             ephemeral=True,
             view=view,
+        )
+
+    @discord.ui.button(label="🌐 Change Server", style=discord.ButtonStyle.secondary)
+    async def change_server(self, interaction: discord.Interaction, _):
+        doc_ref = db.collection("tickets").document(self.ticket_name)
+        doc = doc_ref.get()
+
+        if not doc.exists:
+            return await interaction.response.send_message(
+                "❌ Ticket data not found.", ephemeral=True
+            )
+
+        data = doc.to_dict()
+
+        requester_id = data.get("user_id")
+        is_requester = interaction.user.id == requester_id
+        is_admin = has_admin_role(interaction)
+        is_oathsworn = has_oathsworn_role(interaction)
+
+        # 🔒 SAME PERMISSIONS AS COMPLETE/CANCEL
+        if not (is_requester or is_admin or is_oathsworn):
+            return await interaction.response.send_message(
+                "🚫 Only the ticket creator or an admin can change the server.",
+                ephemeral=True,
+            )
+
+        servers = await fetch_servers()
+
+        view = ServerSelectView(self.ticket_name, servers, parent_view=self)
+
+        await interaction.response.send_message(
+            "🌐 Select a new server:", view=view, ephemeral=True
         )

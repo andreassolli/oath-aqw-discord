@@ -21,9 +21,10 @@ async def setup_application_panel(client: discord.Client):
     embed = discord.Embed(
         title="Experienced Helper Application",
         description=(
-            "Click the button below to start your application.\n\n"
+            "Are you experienced with ultras, and want to apply to become an Experienced Helper?\nClick the button below to start your application.\n\n"
             "📝 You will need to answer **10 questions** in total about **Ultra Speaker** and **Ultra Gramiel**, divided into 2 parts.\n"
-            "⚠️ Make sure to answer carefully.\nA ticket inspector will review your application and contact you for a trial if needed."
+            "⚠️ Make sure to answer carefully.\nA ticket inspector will review your application and contact you for a trial if needed.\n\n"
+            "*Experienced Helpers are able to help if 'Experienced Only' is toggled on by the requester. (Only for **Gramiel and Speaker** for now)*"
         ),
         color=discord.Color.blurple(),
     )

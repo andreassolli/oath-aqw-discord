@@ -14,7 +14,7 @@ class TicketCreateView(discord.ui.View):
         self.selected_server = ""
 
         self.add_item(TypeSelect())
-        self.add_item(ServerSelect(servers))  # ✅ pass servers
+        self.add_item(ServerSelect(servers))
 
     @discord.ui.button(label="Next", style=discord.ButtonStyle.primary, row=2)
     async def next_step(self, interaction: discord.Interaction, _):

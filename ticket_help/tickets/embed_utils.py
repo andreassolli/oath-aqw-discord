@@ -29,9 +29,17 @@ def build_ticket_embed(
     claimer_roles: dict[str, str] | None = None,
 ):
     requester_member = guild.get_member(requester_id)
-    requester_mention = (
-        requester_member.mention if requester_member else f"<@{requester_id}>"
-    )
+    user_role = "Fill"
+    if "Grim Challenge" in bosses:
+        requester_mention = (
+            f"**{ROLE_EMOJIS.get(user_role, '❔')}{user_role}:** {requester_member.mention}"
+            if requester_member
+            else f"**{ROLE_EMOJIS.get(user_role, '❔')}{user_role}:** <@{requester_id}>"
+        )
+    else:
+        requester_mention = (
+            requester_member.mention if requester_member else f"<@{requester_id}>"
+        )
 
     # Resolve claimer mentions
     claimer_roles = claimer_roles or {}
