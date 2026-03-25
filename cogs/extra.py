@@ -54,6 +54,7 @@ from extra_commands.wordle import (
 )
 from extra_commands.wordle_image import generate_wordle_board
 from firebase_client import db
+from ticket_help.utils.experienced import StartView
 from user_verification.utils import change_roles
 
 
@@ -574,6 +575,12 @@ class Extra(commands.Cog):
         await interaction.followup.send(
             f"✅ Role sync complete\nUpdated: {updated}\nSkipped: {skipped}\nFailed: {failed}",
             ephemeral=True,
+        )
+
+    @app_commands.command(name="exp-test", description="Testing")
+    async def exp_test(self, interaction: discord.Interaction):
+        await interaction.response.send_message(
+            "exp-test command executed", view=StartView(), ephemeral=True
         )
 
 
