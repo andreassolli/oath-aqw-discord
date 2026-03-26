@@ -1,7 +1,6 @@
 from typing import List, TypedDict
 
 import discord
-from numpy import quantile
 
 from config import DISCORD_MANAGER_ROLE_ID
 from firebase_client import db

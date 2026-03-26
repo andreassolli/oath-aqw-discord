@@ -40,11 +40,13 @@ from extra_commands.memes import (
 )
 from extra_commands.utils import (
     check_missing_badges,
+    count_messages,
     elect_potw,
     has_any_role,
     is_oath_or_allowed_user,
     manual_leaderboard_post,
     send_winner_embed,
+    update_message_counts,
 )
 from extra_commands.wordle import (
     ShareWordleView,
@@ -621,6 +623,21 @@ class Extra(commands.Cog):
         )
 
         await interaction.followup.send(embed=embed, ephemeral=True)
+
+    @app_commands.command(name="scan-messages")
+    @app_commands.default_permissions(administrator=True)
+    async def scan_messages(self, interaction: discord.Interaction):
+        await interaction.response.defer(ephemeral=True)
+
+        channel = interaction.channel
+        counts = await count_messages(channel)
+
+        update_message_counts(counts)
+
+        await interaction.followup.send(
+            f"✅ Processed {len(counts)} users.",
+            ephemeral=True,
+        )
 
 
 async def setup(bot: commands.Bot):

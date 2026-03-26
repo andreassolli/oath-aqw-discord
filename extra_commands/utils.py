@@ -1,4 +1,5 @@
 import random
+from collections import defaultdict
 from datetime import UTC, datetime, timedelta
 from typing import Literal
 
@@ -462,3 +463,44 @@ def is_oath_or_allowed_user():
         return any(role.id == OATHSWORN_ROLE_ID for role in interaction.user.roles)
 
     return app_commands.check(predicate)
+
+
+async def count_messages(channel: discord.TextChannel):
+    counts = defaultdict(int)
+
+    async for message in channel.history(limit=None):
+        if message.author.bot:
+            continue
+
+        counts[str(message.author.id)] += 1
+
+    return counts
+
+
+def update_message_counts(counts: dict):
+    batch = db.batch()
+    batch_size = 0
+
+    for user_id, count in counts.items():
+        ref = db.collection("users").document(user_id)
+
+        batch.set(
+            ref,
+            {"message_count": count},
+            merge=True,
+        )
+
+        batch_size += 1
+
+        if batch_size == 400:
+            batch.commit()
+            batch = db.batch()
+            batch_size = 0
+
+    if batch_size > 0:
+        batch.commit()
+
+
+async def process_channel(channel: discord.TextChannel):
+    counts = await count_messages(channel)
+    update_message_counts(counts)
