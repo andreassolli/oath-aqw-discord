@@ -127,8 +127,10 @@ class TicketActionView(discord.ui.View):
 
         user_ref = db.collection("users").document(str(interaction.user.id))
         user_doc = user_ref.get()
-
-        if user_doc.exists and user_doc.to_dict().get("active_ticket"):
+        active_ticket = (
+            user_doc.to_dict().get("active_ticket") if user_doc.exists else None
+        )
+        if user_doc.exists and active_ticket and active_ticket != self.ticket_name:
             return await interaction.followup.send(
                 "🚫 You are already helping on another ticket.", ephemeral=True
             )
