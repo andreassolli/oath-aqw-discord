@@ -22,10 +22,6 @@ BATCH_SIZE = 400
 MAX_RETRIES = 5
 REQUESTS_PER_SECOND = 0.3
 
-DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1475789852078379018/YCRIfYbFbd256TAlMERpZxXjhDZg4xRc8RV5ejx7HlJo67KQY2PZhSp64ealO2EoQ2Nf"
-DISCORD_WEBHOOK_URL_THREAD = "https://discord.com/api/webhooks/1473686602743287932/vBDGDdXom1PjyH6C9M93NZRNhIuDr9OmFgbm7PD3EdOLhiKCQ3hDOb9UNqRNPFq-4h6y"
-THREAD_ID = 1473460056602447995
-
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s | %(levelname)s | %(message)s",

@@ -91,7 +91,7 @@ class ConfirmRoleButton(discord.ui.Button):
             )
         else:
             await interaction.response.send_message(
-                f"""✅ {user.mention} claimed as **{view.selected_role}** {len(roles) + 1}/7
+                f"""✅ {user.mention} claimed as **{view.selected_role}** {len(claimers) + 1}/7
             Classes: {OPTIONS.get(view.selected_role)}""",
                 ephemeral=False,
             )
