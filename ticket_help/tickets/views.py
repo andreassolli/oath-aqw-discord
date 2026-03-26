@@ -222,12 +222,12 @@ class TicketActionView(discord.ui.View):
             room_list = [r.strip() for r in rooms.split(",")]
 
             for room in room_list:
-                lines.append(f"/join {room}-{self.room}")
+                lines.append(f"`/join {room}-{self.room}`")
 
         rooms_text = "\n".join(lines)
 
         await interaction.response.send_message(
-            f"📋 **Room codes:**\n```{rooms_text}```", ephemeral=True
+            f"📋 **Room codes:**\n{rooms_text}", ephemeral=True
         )
 
     @discord.ui.button(label="🎉 Complete Ticket", style=discord.ButtonStyle.primary)
