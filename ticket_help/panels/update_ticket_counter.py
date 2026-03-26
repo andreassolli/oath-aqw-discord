@@ -11,7 +11,7 @@ async def update_ticket(client: discord.Client):
         print("❌ Ticket channel not found.")
         return
 
-    embed = await build_ticket_counter(channel.guild)
+    embed = await build_ticket_counter()
 
     async for msg in channel.history(limit=10):
         if (
