@@ -224,7 +224,7 @@ class TicketActionView(discord.ui.View):
             for room in room_list:
                 lines.append(f"```/join {room}-{self.room}```")
 
-        rooms_text = "".join(lines)
+        rooms_text = "\n".join(lines)
 
         await interaction.response.send_message(
             f"📋 **Room codes:**\n{rooms_text}", ephemeral=True
