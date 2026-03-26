@@ -2,7 +2,6 @@ import discord
 
 from .server_fetch import fetch_servers
 from .ticket_create_view import TicketCreateView
-from .ticket_modal import CreateTicketModal
 
 
 class TicketPanelView(discord.ui.View):

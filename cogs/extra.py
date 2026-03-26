@@ -339,6 +339,7 @@ class Extra(commands.Cog):
         )
 
     @app_commands.command(name="gld")
+    @app_commands.default_permissions(administrator=True)
     @has_any_role(ADMIN_ROLE_ID, DISCORD_MANAGER_ROLE_ID)
     async def glad(self, interaction: discord.Interaction):
         await m_gld(interaction)
@@ -368,6 +369,7 @@ class Extra(commands.Cog):
         await send_winner_embed(interaction, user, title, message, where)
 
     @app_commands.command(name="manual-leaderboard-post")
+    @app_commands.default_permissions(administrator=True)
     @app_commands.checks.has_role(BOT_GUY_ROLE_ID)
     async def manual_leaderboard_post_command(self, interaction: discord.Interaction):
         await manual_leaderboard_post(interaction)
@@ -385,6 +387,7 @@ class Extra(commands.Cog):
         name="say",
         description="Make the bot say something in current location",
     )
+    @app_commands.default_permissions(administrator=True)
     @app_commands.checks.has_role(BOT_GUY_ROLE_ID)
     async def say(self, interaction: discord.Interaction, message: str):
 
@@ -397,42 +400,30 @@ class Extra(commands.Cog):
 
         await channel.send(content=message)
 
-    @app_commands.command(name="warn", description="Warn a user who oversteps")
-    @app_commands.checks.has_role(OFFICER_ROLE_ID)
-    async def warn(
-        self, interaction: discord.Interaction, user: discord.User, message: str
-    ):
-        await interaction.response.defer(ephemeral=True)
-        guild = interaction.guild
-        moderator = interaction.user
-        dm = await user.create_dm()
-        embed = discord.Embed(title="Warning", description=message)
-        await dm.send(embed=embed)
-        if not guild:
-            return
-        log_channel = guild.get_channel(TICKET_LOG_CHANNEL_ID)
-        log_embed = discord.Embed(
-            title=f"Warning issued for {user.display_name} ({user.mention}), issued by {moderator.display_name} ({moderator.mention})",
-            description=message,
-            color=discord.Color.red(),
-        )
-        if not isinstance(log_channel, discord.TextChannel):
-            return
-        await log_channel.send(embed=log_embed)
-        return await interaction.followup.send(f"Warned {user.mention}", ephemeral=True)
-
-    @app_commands.command(
-        name="new-aqwordle",
-        description="Select new AQWordle word",
-    )
-    @app_commands.checks.has_role(BOT_GUY_ROLE_ID)
-    async def new_aqwordle(self, interaction: discord.Interaction):
-
-        await interaction.response.defer(ephemeral=True)
-
-        choose_new_word()
-
-        return await interaction.followup.send("New AQWordle word selected")
+    # @app_commands.command(name="warn", description="Warn a user who oversteps")
+    # @app_commands.default_permissions(manage=True)
+    # @app_commands.checks.has_role(OFFICER_ROLE_ID)
+    # async def warn(
+    #    self, interaction: discord.Interaction, user: discord.User, message: str
+    # ):
+    #    await interaction.response.defer(ephemeral=True)
+    #    guild = interaction.guild
+    #    moderator = interaction.user
+    #    dm = await user.create_dm()
+    #    embed = discord.Embed(title="Warning", description=message)
+    #    await dm.send(embed=embed)
+    #    if not guild:
+    #        return
+    #    log_channel = guild.get_channel(TICKET_LOG_CHANNEL_ID)
+    #    log_embed = discord.Embed(
+    #        title=f"Warning issued for {user.display_name} ({user.mention}), issued by {moderator.display_name} ({moderator.mention})",
+    #        description=message,
+    #        color=discord.Color.red(),
+    #    )
+    #    if not isinstance(log_channel, discord.TextChannel):
+    #        return
+    #    await log_channel.send(embed=log_embed)
+    #    return await interaction.followup.send(f"Warned {user.mention}", ephemeral=True)
 
     @app_commands.command(
         name="promote-helper",

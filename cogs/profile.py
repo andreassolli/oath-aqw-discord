@@ -119,6 +119,7 @@ class Profile(commands.Cog):
         user="User you want to grant the badge to",
         badge="Badge name to grant",
     )
+    @app_commands.default_permissions(administrator=True)
     @app_commands.autocomplete(badge=badge_autocomplete)
     @app_commands.checks.has_role(DISCORD_MANAGER_ROLE_ID)
     async def grant_badge(

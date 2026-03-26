@@ -1,5 +1,3 @@
-from urllib.parse import parse_qs
-
 from config import PROXY_SERVICE
 from http_client import get_session
 

@@ -1,5 +1,3 @@
-import re
-
 from firebase_client import db
 
 DEFAULT_POINTS = 1

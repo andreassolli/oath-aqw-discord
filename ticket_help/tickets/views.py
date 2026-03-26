@@ -4,32 +4,25 @@ import discord
 from firebase_admin import firestore
 
 from config import (
-    ADMIN_ROLE_ID,
     EXPERIENCED_HELPER_ROLE_ID,
     HELPER_ROLE_ID,
-    WEEKLY_REQUESTER_CAP,
 )
 from firebase_client import db
 from ticket_help.commands.permissions import (
     has_admin_role,
-    has_helper_role,
     has_oathsworn_role,
 )
-from ticket_help.dashboard.updater import update_dashboard
 from ticket_help.panels.change_server_view import ServerSelectView
 from ticket_help.panels.server_fetch import fetch_servers
 
 from .completion_utils import finalize_ticket
 from .confirm_cancel_view import ConfirmCancelView
 from .confirm_complete_view import ConfirmCompleteView
-from .embed_logging import build_logging_embed
 from .embed_utils import build_ticket_embed
 from .experienced_helper_button import SpecialBossButton
-from .ids import get_next_ticket_id
-from .logging import log_ticket_event
 from .points import get_boss_room
 from .role_claim_view import RoleClaimView
-from .utils import clear_active_ticket, get_week_start, set_active_ticket
+from .utils import clear_active_ticket, set_active_ticket
 
 
 class TicketActionView(discord.ui.View):

@@ -32,6 +32,7 @@ class TicketCreateView(discord.ui.View):
                     ticket_type=self.selected_type,
                     server=self.selected_server,
                     bosses=[],
+                    username=interaction.user.display_name,
                 )
             )
             return

@@ -24,6 +24,7 @@ class Admin(commands.Cog):
         name="reload",
         description="Reload a cog",
     )
+    @app_commands.default_permissions(administrator=True)
     @app_commands.describe(cog="Name of the cog (e.g. profile, tickets, admin)")
     @is_owner()
     async def reload(self, interaction: discord.Interaction, cog: str):

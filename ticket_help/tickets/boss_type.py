@@ -1,6 +1,6 @@
 from firebase_client import db
 
-from .points import get_boss_room  # import from points.py
+from .points import get_boss_room
 
 
 def get_bosses_for_type(ticket_type: str) -> list[dict[str, str]]:

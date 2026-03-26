@@ -146,6 +146,7 @@ class VerificationCog(commands.Cog):
     @app_commands.command(
         name="sync-nicknames", description="Sync nicknames for all verified users"
     )
+    @app_commands.default_permissions(administrator=True)
     @app_commands.checks.has_role(DISCORD_MANAGER_ROLE_ID)
     async def sync_nicknames(self, interaction: discord.Interaction):
         await interaction.response.defer(ephemeral=True)
@@ -278,6 +279,7 @@ class VerificationCog(commands.Cog):
         name="mass-verify",
         description="Force verify all users based on their nicknames",
     )
+    @app_commands.default_permissions(administrator=True)
     @app_commands.checks.has_role(DISCORD_MANAGER_ROLE_ID)
     async def mass_verify(self, interaction: discord.Interaction):
         await interaction.response.defer(ephemeral=True)
@@ -401,6 +403,7 @@ class VerificationCog(commands.Cog):
     @app_commands.describe(
         user="The Discord user to verify", username="Their AQW username"
     )
+    @app_commands.default_permissions(administrator=True)
     @app_commands.checks.has_role(DISCORD_MANAGER_ROLE_ID)
     async def force_verify(
         self,

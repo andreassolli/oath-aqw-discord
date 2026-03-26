@@ -58,7 +58,7 @@ class ConfirmRoleButton(discord.ui.Button):
         claimers = data.get("claimers", [])
         roles = data.get("claimer_roles", {})
 
-        if view.selected_role in roles.values():
+        if view.selected_role in roles.values() and view.selected_role != "Fill":
             return await interaction.response.send_message(
                 "That role is already taken.",
                 ephemeral=True,
@@ -91,7 +91,7 @@ class ConfirmRoleButton(discord.ui.Button):
             )
         else:
             await interaction.response.send_message(
-                f"""✅ {user.mention} claimed as **{view.selected_role}** {len(roles)}/7
+                f"""✅ {user.mention} claimed as **{view.selected_role}** {len(roles) + 1}/7
             Classes: {OPTIONS.get(view.selected_role)}""",
                 ephemeral=False,
             )

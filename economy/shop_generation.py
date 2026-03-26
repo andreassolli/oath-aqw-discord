@@ -28,6 +28,7 @@ async def generate_shop(
 
     user_doc = db.collection("users").document(userId).get()
     coins = (user_doc.to_dict() or {}).get("coins", 0)
+    gems = (user_doc.to_dict() or {}).get("gems", 0)
     bg = Image.open(ASSETS_DIR / "shop.png").convert("RGBA")
     font_big = ImageFont.truetype(FONTS_DIR / "Urbanist-Regular.ttf", 34)
     font_not_as_big = ImageFont.truetype(FONTS_DIR / "Urbanist-Regular.ttf", 30)

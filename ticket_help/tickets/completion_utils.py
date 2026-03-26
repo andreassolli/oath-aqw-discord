@@ -8,6 +8,7 @@ from config import WEEKLY_REQUESTER_CAP
 from economy.gems import reward_gems_if_needed
 from firebase_client import db
 from ticket_help.dashboard.updater import update_dashboard
+from ticket_help.panels.update_ticket_counter import update_ticket
 
 from .embed_logging import build_logging_embed
 from .logging import log_ticket_event
@@ -183,7 +184,7 @@ async def finalize_ticket(
     )
 
     await log_ticket_event(interaction.client, embed=embed)
-    await update_dashboard(interaction.client)
+    await update_ticket(interaction.client)
 
     await interaction.followup.send("🎉 Ticket completed.", ephemeral=True)
 

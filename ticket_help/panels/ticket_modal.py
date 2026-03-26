@@ -4,19 +4,15 @@ import discord
 from firebase_admin import firestore
 
 from config import (
-    ADMIN_ROLE_ID,
     GUIDE_CHANNEL_ID,
-    HELPER_ROLE_ID,
     TICKET_CATEGORY_ID,
     percentage_points,
     spam_points,
 )
 from firebase_client import db
-from ticket_help.tickets.confirm_complete_view import ConfirmCompleteView
 from ticket_help.tickets.embed_utils import build_ticket_embed
 from ticket_help.tickets.ids import get_next_ticket_id
 from ticket_help.tickets.utils import (
-    clear_active_ticket,
     find_guide_threads,
     set_active_ticket,
 )
@@ -25,7 +21,7 @@ from ticket_help.utils.ticket import get_overwrites
 
 
 class CreateTicketModal(discord.ui.Modal):
-    def __init__(self, ticket_type: str, server: str, bosses: list[str]):
+    def __init__(self, ticket_type: str, server: str, bosses: list[str], username: str):
         super().__init__(title=f"Create {ticket_type.capitalize()} Ticket")
 
         self.type = ticket_type
@@ -35,7 +31,9 @@ class CreateTicketModal(discord.ui.Modal):
 
         self.bosses_input: discord.ui.TextInput | None = None
 
-        self.username = discord.ui.TextInput(label="Username", required=True)
+        self.username = discord.ui.TextInput(
+            label="Username", default=username, required=True
+        )
 
         # if self.type in {"other bosses", "spamming", "testing"}:
         #    self.room_input = discord.ui.TextInput(
@@ -285,7 +283,13 @@ class CreateTicketModal(discord.ui.Modal):
                 for boss, thread in guide_threads.items():
                     lines.append(f"• **{boss}** → {thread.mention}")
 
-                await channel.send("📘 **Relevant Guides**\n" + "\n".join(lines))
+                embed = discord.Embed(
+                    title="📘 **Relevant Guides**",
+                    description="\n".join(lines),
+                    color=discord.Color.teal(),
+                )
+
+                await channel.send(embed=embed)
 
             db.collection("tickets").document(ticket_name).update(
                 {"message_id": message.id}

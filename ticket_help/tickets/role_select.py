@@ -35,7 +35,7 @@ class RoleSelect(discord.ui.Select):
                 label=f"{ROLE_EMOJIS.get(role, '❔')}{role}",
                 value=role,
                 description=desc,
-                emoji="🔒" if role in taken_roles else None,
+                emoji="🔒" if role in taken_roles and role != "Fill" else None,
             )
 
             (taken if role in taken_roles else available).append(option)
