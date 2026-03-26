@@ -568,6 +568,60 @@ class Extra(commands.Cog):
             ephemeral=True,
         )
 
+    @app_commands.command(
+        name="compare-role-db",
+        description="Compare role members with database users",
+    )
+    @app_commands.default_permissions(administrator=True)
+    @app_commands.checks.has_role(BOT_GUY_ROLE_ID)
+    async def compare_role_db(
+        self,
+        interaction: discord.Interaction,
+        role: discord.Role,
+    ):
+        await interaction.response.defer(ephemeral=True)
+
+        guild = interaction.guild
+        if not guild:
+            return await interaction.followup.send(
+                "❌ Guild not found.", ephemeral=True
+            )
+
+        role_members = role.members
+        role_ids = {member.id for member in role_members}
+
+        db_users = list(
+            db.collection("users").where("qualified_helper", "==", True).stream()
+        )
+        db_ids = {int(doc.id) for doc in db_users if doc.id.isdigit()}
+
+        in_role_not_db = role_ids - db_ids
+        in_db_not_role = db_ids - role_ids
+
+        in_db_not_role = {uid for uid in in_db_not_role if guild.get_member(uid)}
+
+        def format_users(user_ids):
+            return "\n".join(f"<@{uid}>" for uid in list(user_ids)[:20]) or "None"
+
+        embed = discord.Embed(
+            title="🔍 Role ↔ DB Comparison",
+            color=discord.Color.blurple(),
+        )
+
+        embed.add_field(
+            name=f"👥 In role but NOT in DB ({len(in_role_not_db)})",
+            value=format_users(in_role_not_db),
+            inline=False,
+        )
+
+        embed.add_field(
+            name=f"📄 In DB but missing role ({len(in_db_not_role)})",
+            value=format_users(in_db_not_role),
+            inline=False,
+        )
+
+        await interaction.followup.send(embed=embed, ephemeral=True)
+
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(Extra(bot))
