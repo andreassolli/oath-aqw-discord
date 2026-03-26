@@ -32,5 +32,6 @@ class BossMultiSelectView(discord.ui.View):
                 ticket_type=self.ticket_type,
                 server=self.server,
                 bosses=self.selected_bosses,
+                username=interaction.user.display_name,
             )
         )
