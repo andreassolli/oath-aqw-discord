@@ -222,7 +222,7 @@ class TicketActionView(discord.ui.View):
             room_list = [r.strip() for r in rooms.split(",")]
 
             for room in room_list:
-                lines.append(f"`/join {room}-{self.room}`")
+                lines.append(f"```/join {room}-{self.room}```")
 
         rooms_text = "\n".join(lines)
 
