@@ -11,24 +11,21 @@ async def process_count_message(message):
     last_number = state.get("last_number", 0)
     last_user = state.get("last_user")
 
-    # ❌ Not a number
     if not message.content.isdigit():
         return False
 
     number = int(message.content)
 
-    # ❌ Wrong number
     if number != last_number + 1:
         return False
 
-    # ❌ Same user twice
-    if last_user == message.author.id:
+    if last_user == str(message.author.id):
         return False
 
     state_ref.set(
         {
             "last_number": number,
-            "last_user": message.author.id,
+            "last_user": str(message.author.id),
         },
         merge=True,
     )
