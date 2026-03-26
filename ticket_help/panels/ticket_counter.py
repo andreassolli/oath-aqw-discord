@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import discord
 
 from firebase_client import db
@@ -17,10 +19,11 @@ async def build_ticket_counter():
             f"🏅 `{total_points}` points given out."
         ),
         color=discord.Color.dark_gold(),
+        timestamp=datetime.utcnow(),
     )
 
     embed.set_footer(
-        text="A huge thank you to each and everyone of you who made this possible!"
+        text="A huge thank you to each and every one of you who made this possible!"
     )
 
     return embed
