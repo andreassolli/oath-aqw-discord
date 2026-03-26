@@ -95,6 +95,7 @@ class TicketActionView(discord.ui.View):
         claimers = data.get("claimers", [])
 
         requester_id = data.get("user_id")
+        is_requester = interaction.user.id == requester_id
         if interaction.user.id in claimers:
             claimers.remove(interaction.user.id)
 
@@ -132,7 +133,7 @@ class TicketActionView(discord.ui.View):
                 "🚫 You are already helping on another ticket.", ephemeral=True
             )
 
-        if interaction.user.id == requester_id:
+        if is_requester and "Grim Challenge" not in self.bosses:
             return await interaction.followup.send(
                 "🚫 Ticket creator cannot claim their own ticket.",
                 ephemeral=True,
@@ -171,6 +172,7 @@ class TicketActionView(discord.ui.View):
                 user_id=interaction.user.id,
                 parent_view=self,
                 roles=roles,
+                is_requester=is_requester,
             )
 
             return await interaction.followup.send(

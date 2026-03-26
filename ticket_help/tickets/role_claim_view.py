@@ -19,12 +19,18 @@ OPTIONS = {
 
 class RoleClaimView(discord.ui.View):
     def __init__(
-        self, ticket_name: str, user_id: int, parent_view, roles: dict[str, str]
+        self,
+        ticket_name: str,
+        user_id: int,
+        parent_view,
+        roles: dict[str, str],
+        is_requester: bool = False,
     ):
         super().__init__(timeout=60)
 
         self.ticket_name = ticket_name
         self.user_id = user_id
+        self.is_requester = is_requester
         self.parent_view = parent_view
         self.selected_role: str | None = None
 
@@ -59,7 +65,7 @@ class ConfirmRoleButton(discord.ui.Button):
             )
 
         # add user
-        if view.user_id not in claimers:
+        if view.user_id not in claimers and not view.is_requester:
             claimers.append(view.user_id)
 
         roles[str(view.user_id)] = view.selected_role
@@ -77,12 +83,18 @@ class ConfirmRoleButton(discord.ui.Button):
             view.selected_role, f"No guide found for {view.selected_role}"
         )
 
-        # 1. Public message (claim)
-        await interaction.response.send_message(
-            f"""✅ {user.mention} claimed as **{view.selected_role}** {len(roles)}/7
-        Classes: {OPTIONS.get(view.selected_role)}""",
-            ephemeral=False,
-        )
+        if view.is_requester:
+            await interaction.response.send_message(
+                f"""✅ Requester: {user.mention} swapped role to **{view.selected_role}**
+            Classes: {OPTIONS.get(view.selected_role)}""",
+                ephemeral=False,
+            )
+        else:
+            await interaction.response.send_message(
+                f"""✅ {user.mention} claimed as **{view.selected_role}** {len(roles)}/7
+            Classes: {OPTIONS.get(view.selected_role)}""",
+                ephemeral=False,
+            )
 
         await interaction.followup.send(
             f"{guide_text}",

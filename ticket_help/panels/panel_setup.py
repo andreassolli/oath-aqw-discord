@@ -12,8 +12,12 @@ async def setup_ticket_panel(client: discord.Client):
         print("❌ Ticket panel channel not found. Check TICKET_CHANNEL_ID.")
         return
 
-    async for msg in channel.history(limit=3):
-        if msg.author == client.user:
+    async for msg in channel.history(limit=5):
+        if (
+            msg.author == client.user
+            and msg.embeds
+            and msg.embeds[0].title == "🎫 Need help?"
+        ):
             await msg.delete()
 
     embed = discord.Embed(

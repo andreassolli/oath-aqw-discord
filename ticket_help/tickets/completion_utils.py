@@ -26,10 +26,10 @@ async def finalize_ticket(
         return
 
     doc_ref = db.collection("tickets").document(ticket_name)
+    ticket_stats_ref = db.collection("meta").document("ticket_stats")
 
     requester_id = ticket_data["user_id"]
     points = ticket_data.get("points", 1)
-
     # 🔒 Lock ticket immediately
     doc_ref.update(
         {
@@ -40,6 +40,7 @@ async def finalize_ticket(
     )
 
     claimers = [uid for uid in ticket_data.get("claimers", []) if uid != requester_id]
+    total_points = points * len(ticket_data.get("claimers", []))
 
     helper_changes: Dict[int, Tuple[int, int]] = {}
     helper_displays: Dict[int, str] = {}
@@ -173,6 +174,13 @@ async def finalize_ticket(
     )
 
     doc_ref.update({"status": "completed"})
+    total_points += final_reward
+    ticket_stats_ref.update(
+        {
+            "total_completed": firestore.Increment(1),
+            "total_points": firestore.Increment(total_points),
+        }
+    )
 
     await log_ticket_event(interaction.client, embed=embed)
     await update_dashboard(interaction.client)
