@@ -187,6 +187,29 @@ class TicketActionView(discord.ui.View):
             f"({len(claimers) + 1}/{self.max_claims + 1})"
         )
 
+        lines = []
+        for boss in self.bosses:
+            custom_tickets = {"spamming", "testing", "until drop"}
+            if data.get("type") in custom_tickets:
+                rooms = boss
+            else:
+                rooms = get_boss_room(boss)
+
+            if not rooms:
+                continue
+
+            # Split multiple rooms by comma
+            room_list = [r.strip() for r in rooms.split(",")]
+
+            for room in room_list:
+                lines.append(f"```/join {room}-{self.room}```")
+
+        rooms_text = "".join(lines)
+
+        await interaction.followup.send(
+            f"📋 **Room codes:**\n{rooms_text}", ephemeral=True
+        )
+
     @discord.ui.button(label="📋 Get room codes", style=discord.ButtonStyle.secondary)
     async def copy_room(self, interaction: discord.Interaction, _):
         doc_ref = db.collection("tickets").document(self.ticket_name)

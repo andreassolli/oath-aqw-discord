@@ -31,7 +31,7 @@ async def finalize_ticket(
 
     requester_id = ticket_data["user_id"]
     points = ticket_data.get("points", 1)
-    # 🔒 Lock ticket immediately
+
     doc_ref.update(
         {
             "status": "completing",
