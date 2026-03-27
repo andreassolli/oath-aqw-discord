@@ -15,7 +15,7 @@ async def build_ticket_counter():
     embed = discord.Embed(
         title="Ticket stats since January 27th, 2026",
         description=(
-            f"🔖 `{total_completed}` tickets completed.\n"
+            f"🎫 `{total_completed}` tickets completed.\n"
             f"🏅 `{total_points}` points given out."
         ),
         color=discord.Color.dark_gold(),
@@ -23,7 +23,7 @@ async def build_ticket_counter():
     )
 
     embed.set_footer(
-        text="A huge thank you to each and every one of you who made this possible!"
+        text="A huge thank you to each and every one of you who made this possible!❤️"
     )
 
     return embed

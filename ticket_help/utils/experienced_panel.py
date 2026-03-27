@@ -1,14 +1,14 @@
 import discord
 
-from config import TICKET_INSPECTORS_CHANNEL_ID
+from config import ROLES_CHANNEL_ID
 from ticket_help.utils.experienced import StartView
 
 
 async def setup_application_panel(client: discord.Client):
-    channel = client.get_channel(TICKET_INSPECTORS_CHANNEL_ID)
+    channel = client.get_channel(ROLES_CHANNEL_ID)
 
     if channel is None:
-        channel = await client.fetch_channel(TICKET_INSPECTORS_CHANNEL_ID)
+        channel = await client.fetch_channel(ROLES_CHANNEL_ID)
 
     if not isinstance(channel, discord.TextChannel):
         return
@@ -27,6 +27,9 @@ async def setup_application_panel(client: discord.Client):
             "*Experienced Helpers are able to help if 'Experienced Only' is toggled on by the requester. (Only for **Gramiel and Speaker** for now)*"
         ),
         color=discord.Color.blurple(),
+    )
+    embed.set_footer(
+        text="You need to be qualified to apply; 51% dmg weapon, LoO & AP, Scroll of Enrage, any potion, all in inventory."
     )
 
     await channel.send(embed=embed, view=StartView())

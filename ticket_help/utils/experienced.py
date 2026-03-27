@@ -1,24 +1,29 @@
+from datetime import datetime, timedelta
+
+import aiohttp
 import discord
 
 from config import TICKET_INSPECTORS_CHANNEL_ID
+from firebase_client import db
+from ticket_help.utils.qualify_helper import SteadyRateLimiter, verify_helper
 
 # Temporary storage
 user_responses = {}
 
 QUESTIONS_STEP1 = [
-    "Q1: What essential classes do you want for killing Speaker, and why would you do a 3 man over 4 man taunt?",
-    "Q2: Why do we have to rotate who takes the zone, and why can there only be one at a time?",
-    "Q3: How do you maximize ArchPaladins Seal and Broken Seal debuff, and what is the issue if Speaker regenerates the Health?",
-    "Q4: What do you have to avoid when taunting as Lord of Order, and how do you avoid it?",
-    "Q5: Why do you have to save skill 5 as Lord of Order, and how do you avoid running out of mana?",
+    "Q1: Classes & Taunt Strategy\nWhat essential classes do you want for Speaker, and why do a 3 man over 4 man taunt?",
+    "Q2: Zone Rotation\nWhy do we have to rotate who takes the zone, and why can there only be one at a time?",
+    "Q3: Maximize APs debuffs, and Regeneration\nHow do you maximize APs Seal & Broken Seal debuff, and how do you avoid Speaker regenerating?",
+    "Q4: Taunting as Lord of Order\nWhat do you have to do when taunting as LoO to avoid being stuck in the zone?",
+    "Q5: Mana Issues and skill 5, Lord of Order\nWhy do you have to save skill 5 as Lord of Order, and how do you avoid mana issues?",
 ]
 
 QUESTIONS_STEP2 = [
-    "Q6: How and when do we taunt when fighting Ultra Gramiel, and how long should you wait after Phase 1 to taunt?",
-    "Q7: How do you end up with haste debuff during the 1st phase?",
-    "Q8: What enhancements do you need to have for Legion Revenant, and what do you have to avoid doing?",
-    "Q9: How do you loop the taunts in second phase, and ideally what order should each class taunt?",
-    "Q10: If the text about 'Death's Door' appears before 'All servants of the 'Liberator' must die!', what should you do?",
+    "Q6: Taunting Pattern\nHow and when to taunt against Ultra Gramiel, and how long should you wait after Phase 1 to taunt?",
+    "Q7: Haste Debuff, Phase 1\nHow do you end up with haste debuff during the 1st phase?",
+    "Q8: Legion Revenant Enhancements & Avoid\nWhat enhancements do you need to have for Legion Revenant, and what do you have to avoid doing?",
+    "Q9: Taunting Pattern, Phase 2\nHow do you loop the taunts in second phase, and ideally what order should each class taunt?",
+    "Q10: Death's Door & Liberator Servants\nIf the text about 'Death's Door' appears before 'Liberator' text, what should you do?",
 ]
 
 
@@ -141,6 +146,13 @@ class SecondModal(discord.ui.Modal, title="Step 2 - Ultra Gramiel"):
 
         await thread.send(content)
 
+        db.collection("users").document(str(interaction.user.id)).set(
+            {
+                "last_application_at": discord.utils.utcnow(),
+            },
+            merge=True,
+        )
+
         # Cleanup
         user_responses.pop(interaction.user.id, None)
 
@@ -150,7 +162,6 @@ class SecondModal(discord.ui.Modal, title="Step 2 - Ultra Gramiel"):
         )
 
 
-# ---------------- BUTTON VIEWS ---------------- #
 class StartView(discord.ui.View):
     def __init__(self):
         super().__init__(timeout=None)
@@ -158,10 +169,66 @@ class StartView(discord.ui.View):
     @discord.ui.button(
         label="Start application",
         style=discord.ButtonStyle.primary,
-        custom_id="start_application_button",  # REQUIRED
+        custom_id="start_application_button",
     )
     async def start(self, interaction: discord.Interaction, button: discord.ui.Button):
-        await interaction.response.send_modal(FirstModal())
+
+        user_ref = db.collection("users").document(str(interaction.user.id))
+        doc = user_ref.get()
+        data = doc.to_dict() or {}
+
+        last_app = data.get("last_application_at")
+        if last_app:
+            now = discord.utils.utcnow()
+            if now - last_app < timedelta(days=3):
+                remaining = timedelta(days=3) - (now - last_app)
+                hours = remaining.seconds // 3600
+                minutes = (remaining.seconds % 3600) // 60
+                return await interaction.response.send_message(
+                    f"⏳ Wait {remaining.days}d {hours}h {minutes}m...",
+                    ephemeral=True,
+                )
+
+        if data.get("qualified_helper"):
+            return await interaction.response.send_modal(FirstModal())
+
+        ccid = data.get("ccid")
+        if not ccid:
+            return await interaction.response.send_message(
+                "❌ You must verify first.",
+                ephemeral=True,
+            )
+
+        async with aiohttp.ClientSession() as session:
+            limiter = SteadyRateLimiter(0.3)
+            result = await verify_helper(session, limiter, ccid)
+
+        if result["qualified"]:
+            user_ref.set({"qualified_helper": True}, merge=True)
+            return await interaction.response.send_modal(FirstModal())
+
+        missing = []
+        if not result["weapon"]:
+            missing.append(
+                "❌ Missing any 51% damage Weapon<:swordaqw:1487004634307629056>"
+            )
+        if not result["classes"]:
+            missing.append(
+                "❌ Missing Lord of Order and/or ArchPaladin<:classbadge:1471256107057156117>"
+            )
+        if not result["taunt"]:
+            missing.append(
+                "❌ Missing Scroll of Enrage<:scrollaqw:1487000863867277432>"
+            )
+        if not result["potion"]:
+            missing.append("❌ Missing Potions<:potion:1457810711706341544>")
+        if not result["blade of awe"]:
+            missing.append("❌ Missing Awe Enhancements<:swordaqw:1487004634307629056>")
+
+        await interaction.response.send_message(
+            "❌ You are not qualified to apply yet:\n" + "\n".join(missing),
+            ephemeral=True,
+        )
 
 
 class NextStepView(discord.ui.View):

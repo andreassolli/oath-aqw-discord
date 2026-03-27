@@ -26,7 +26,12 @@ class TicketCreateView(discord.ui.View):
             )
             return
 
-        if self.selected_type in {"other bosses", "spamming", "testing", "until drop"}:
+        if self.selected_type in {
+            "other bosses",
+            "spamming",
+            "testing",
+            "until drop",
+        }:
             await interaction.response.send_modal(
                 CreateTicketModal(
                     ticket_type=self.selected_type,
