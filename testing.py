@@ -247,8 +247,27 @@ def ensure_currency_fields():
     print(f"Done. Updated {updated_count} users.")
 
 
+async def find_users_with_doom_card():
+    users = db.collection("users").stream()
+
+    found = []
+
+    for doc in users:
+        data = doc.to_dict()
+
+        inventory = data.get("inventory") or []  # ✅ FIX
+
+        if any(item.get("id") == "Doom Card" for item in inventory):
+            name = data.get("aqw_username")
+            found.append((doc.id, name))
+
+    print(f"Found {len(found)} users with Doom Card.\nUsers: {found}")
+    return found
+
+
 if __name__ == "__main__":
     asyncio.run(generate_test_card())
+    asyncio.run(find_users_with_doom_card())
     # get_all_users()
     # choose_new_word()
 # asyncio.run(

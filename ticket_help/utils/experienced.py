@@ -240,4 +240,11 @@ class NextStepView(discord.ui.View):
     async def next_step(
         self, interaction: discord.Interaction, button: discord.ui.Button
     ):
+        # Disable button
+        button.disabled = True
+
+        self.stop()  # optional, prevents further interaction handling
+
         await interaction.response.send_modal(SecondModal())
+
+        await interaction.message.edit(view=self)
