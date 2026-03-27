@@ -112,6 +112,7 @@ class SecondModal(discord.ui.Modal, title="Step 2 - Ultra Gramiel"):
     )
 
     async def on_submit(self, interaction: discord.Interaction):
+        await interaction.response.defer(ephemeral=True)
         data = user_responses.get(interaction.user.id, {})
 
         data["step2"] = [
@@ -153,7 +154,7 @@ class SecondModal(discord.ui.Modal, title="Step 2 - Ultra Gramiel"):
         # Cleanup
         user_responses.pop(interaction.user.id, None)
 
-        await interaction.response.send_message(
+        await interaction.followup.send(
             "✅ Submission complete! A Ticket Inspector will review your application.",
             ephemeral=True,
         )
