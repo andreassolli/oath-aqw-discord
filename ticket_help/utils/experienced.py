@@ -43,13 +43,13 @@ class FirstModal(discord.ui.Modal, title="Part 1 - Ultra Speaker"):
     )
     q3 = discord.ui.TextInput(
         label="Q3: Maximize APs debuffs, and Regeneration",
-        placeholder="How do you maximize APs Seal & Broken Seal debuff, and what's the issue if Speaker regenerates?",
+        placeholder="How do you maximize APs Seal & Broken Seal debuff, and how do you avoid Speaker regenerating?",
         style=discord.TextStyle.paragraph,
         max_length=1000,
     )
     q4 = discord.ui.TextInput(
         label="Q4: Taunting as Lord of Order",
-        placeholder="What do you have to avoid when taunting as Lord of Order, and how do you avoid it?",
+        placeholder="What do you have to do when taunting as LoO to avoid being stuck in the zone?",
         style=discord.TextStyle.paragraph,
         max_length=1000,
     )
