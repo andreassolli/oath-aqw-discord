@@ -124,25 +124,37 @@ class SecondModal(discord.ui.Modal, title="Step 2 - Ultra Gramiel"):
         ]
         guild = interaction.guild
         if not guild:
-            return
+            return await interaction.followup.send(
+                "❌ Something went wrong (no server).",
+                ephemeral=True,
+            )
         channel = guild.get_channel(TICKET_INSPECTORS_CHANNEL_ID)
+
         if not channel or not isinstance(channel, discord.TextChannel):
-            return
+            return await interaction.followup.send(
+                "❌ Application channel not found.",
+                ephemeral=True,
+            )
         # Create thread
-        thread = await channel.create_thread(
-            name=f"Application from {interaction.user.display_name}",
-            type=discord.ChannelType.public_thread,
-        )
+        try:
+            thread = await channel.create_thread(
+                name=f"Application from {interaction.user.display_name}",
+                type=discord.ChannelType.public_thread,
+            )
 
-        # Format message
-        header = f"**{interaction.user.display_name}'s application**"
-        await thread.send(header)
+            await thread.send(f"**{interaction.user.display_name}'s application**")
 
-        for q, ans in zip(QUESTIONS_STEP1, data["step1"]):
-            await thread.send(f"**{q}**\n{ans}")
+            for q, ans in zip(QUESTIONS_STEP1, data["step1"]):
+                await thread.send(f"**{q}**\n{ans}")
 
-        for q, ans in zip(QUESTIONS_STEP2, data["step2"]):
-            await thread.send(f"**{q}**\n{ans}")
+            for q, ans in zip(QUESTIONS_STEP2, data["step2"]):
+                await thread.send(f"**{q}**\n{ans}")
+
+        except Exception as e:
+            return await interaction.followup.send(
+                f"❌ Failed to create application: {e}",
+                ephemeral=True,
+            )
 
         db.collection("users").document(str(interaction.user.id)).set(
             {
