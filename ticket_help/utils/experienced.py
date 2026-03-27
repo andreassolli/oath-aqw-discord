@@ -134,17 +134,14 @@ class SecondModal(discord.ui.Modal, title="Step 2 - Ultra Gramiel"):
         )
 
         # Format message
-        content = f"**{interaction.user.display_name}s application to become an Experienced Helper**\n\n"
+        header = f"**{interaction.user.display_name}'s application**"
+        await thread.send(header)
 
-        # Step 1
         for q, ans in zip(QUESTIONS_STEP1, data["step1"]):
-            content += f"**{q}**\n{ans}\n\n"
+            await thread.send(f"**{q}**\n{ans}")
 
-        # Step 2
         for q, ans in zip(QUESTIONS_STEP2, data["step2"]):
-            content += f"**{q}**\n{ans}\n\n"
-
-        await thread.send(content)
+            await thread.send(f"**{q}**\n{ans}")
 
         db.collection("users").document(str(interaction.user.id)).set(
             {
