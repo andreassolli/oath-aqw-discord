@@ -17,7 +17,7 @@ from config import (
     EXPERIENCED_HELPER_ROLE_ID,
     INITIATE_ROLE_ID,
     OATHSWORN_ROLE_ID,
-    OFFICER_ROLE_ID,
+    TICKET_INSPECTOR_ROLE_ID,
     TICKET_LOG_CHANNEL_ID,
 )
 from economy.gamba.coinflip import run_coinflip
@@ -431,11 +431,12 @@ class Extra(commands.Cog):
         name="promote-helper",
         description="Promote a user to the Experienced Helper role",
     )
-    @is_oath_or_allowed_user()
+    @app_commands.checks.has_role(TICKET_INSPECTOR_ROLE_ID)
     async def add_role(
         self,
         interaction: discord.Interaction,
         user: discord.Member,
+        reason: Literal["Passed Trial", "Questions + Experience", "Experience only"],
     ):
         await interaction.response.defer(ephemeral=True)
 
@@ -470,16 +471,36 @@ class Extra(commands.Cog):
             f"✅ Added {role.mention} to {user.mention}.",
             ephemeral=True,
         )
+        log_channel = interaction.guild.get_channel(TICKET_LOG_CHANNEL_ID)
+
+        if log_channel:
+            embed = discord.Embed(
+                title="🟢 Helper Promoted",
+                color=discord.Color.green(),
+                timestamp=discord.utils.utcnow(),
+            )
+
+            embed.add_field(
+                name="User", value=f"{user.mention} ({user.display_name})", inline=True
+            )
+            embed.add_field(
+                name="Promoted By",
+                value=f"{interaction.user.mention} ({interaction.user.display_name})",
+                inline=True,
+            )
+            embed.add_field(name="Reason", value=reason, inline=False)
+
+            embed.set_footer(text=f"User ID: {user.id}")
+
+            await log_channel.send(embed=embed)
 
     @app_commands.command(
         name="demote-helper",
         description="Demote a user from the Experienced Helper role",
     )
-    @is_oath_or_allowed_user()
+    @app_commands.checks.has_role(TICKET_INSPECTOR_ROLE_ID)
     async def remove_role(
-        self,
-        interaction: discord.Interaction,
-        user: discord.Member,
+        self, interaction: discord.Interaction, user: discord.Member, reason: str
     ):
         await interaction.response.defer(ephemeral=True)
 
@@ -514,6 +535,28 @@ class Extra(commands.Cog):
             f"✅ Removed {role.mention} from {user.mention}.",
             ephemeral=True,
         )
+
+        log_channel = interaction.guild.get_channel(TICKET_LOG_CHANNEL_ID)
+        if log_channel:
+            embed = discord.Embed(
+                title="🔴 Helper Demoted",
+                color=discord.Color.red(),
+                timestamp=discord.utils.utcnow(),
+            )
+
+            embed.add_field(
+                name="User", value=f"{user.mention} ({user.display_name})", inline=True
+            )
+            embed.add_field(
+                name="Demoted By",
+                value=f"{interaction.user.mention} ({interaction.user.display_name})",
+                inline=True,
+            )
+            embed.add_field(name="Reason", value=reason, inline=False)
+
+            embed.set_footer(text=f"User ID: {user.id}")
+
+            await log_channel.send(embed=embed)
 
     @app_commands.command(name="sync-roles", description="Apply roles from DB")
     @app_commands.default_permissions(manage_roles=True)
