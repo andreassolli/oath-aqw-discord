@@ -53,7 +53,11 @@ class EquipButton(discord.ui.Button):
     async def callback(self, interaction: discord.Interaction):
         view = self.view
 
-        if not view.selected_border and not view.selected_background:
+        if (
+            not view.selected_border
+            and not view.selected_background
+            and not view.selected_role
+        ):
             return await interaction.response.send_message(
                 "Select an item first.",
                 ephemeral=True,
