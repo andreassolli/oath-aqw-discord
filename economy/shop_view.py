@@ -66,7 +66,7 @@ class ShopSelect(discord.ui.Select):
         item = next((i for i in view.current_items if i["name"] == selected_name), None)
 
         view.selected_item = item
-        self.selected_rarities: set[str] | None = None
+
         await interaction.response.defer()
 
 
@@ -122,7 +122,7 @@ class ShopView(discord.ui.View):
         self.min_price = None
         self.max_price = None
         self.selected_item: ShopItem | None = None
-
+        self.selected_rarities: set[str] | None = None
         initial_items = paginate_items(items, 0, 8)
         self.current_items = initial_items
         self.select = ShopSelect(initial_items)
@@ -157,14 +157,28 @@ class ShopView(discord.ui.View):
             page_items = paginate_items(filtered, self.page, 8)
 
         # Update dropdown
-        self.select.options = [
-            discord.SelectOption(
-                label=item["name"],
-                description=f"{item['price']} {'Chaos Shards' if item.get('currency', None) == 'gems' else 'Coins'}",
-                value=item["name"],
-            )
-            for item in page_items
-        ]
+        # Rebuild UI (THIS is where selection persistence happens)
+        self.clear_items()
+
+        # --- Rarity Select (with defaults) ---
+        all_rarities = sorted({item.get("rarity", "common") for item in self.all_items})
+        rarity_select = RaritySelect(all_rarities)
+
+        if self.selected_rarities:
+            for option in rarity_select.options:
+                if option.value in self.selected_rarities:
+                    option.default = True
+
+        self.add_item(rarity_select)
+
+        # --- Item Select ---
+        self.select = ShopSelect(page_items)
+        self.add_item(self.select)
+
+        # --- Buttons ---
+        self.add_item(BuyButton())
+        self.add_item(PrevPageButton())
+        self.add_item(NextPageButton())
 
         # Generate image
         buffer = await generate_shop(

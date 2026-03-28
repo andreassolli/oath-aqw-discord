@@ -4,9 +4,33 @@ import discord
 
 from economy.helpers import paginate_items
 from economy.inventory import generate_inventory
+from economy.shop_view import RARITY_EMOJIS
 from firebase_client import db
 from inventory.utils import equip_item  # adjust import if needed
 from user_profile.image_utils import ROLES_COLOR_MAP
+
+
+class RaritySelect(discord.ui.Select):
+    def __init__(self, rarities: list[str]):
+        options = [
+            discord.SelectOption(
+                label=f"{RARITY_EMOJIS.get(r, '')} {r.capitalize()}", value=r
+            )
+            for r in rarities
+        ]
+
+        super().__init__(
+            placeholder="Filter by rarity",
+            min_values=0,
+            max_values=len(options),
+            options=options,
+        )
+
+    async def callback(self, interaction: discord.Interaction):
+        view: InventoryView = self.view
+        view.selected_rarities = set(self.values) if self.values else None
+        view.page = 0
+        await view.update(interaction)
 
 
 class BorderSelect(discord.ui.Select):
@@ -148,7 +172,12 @@ class InventoryView(discord.ui.View):
         self.selected_background: str | None = None
         self.selected_role: str | None = None
         self.per_page = 8
+        self.selected_rarities: set[str] | None = None
 
+        # store equipped for reuse
+        self.equipped_border = equipped_border
+        self.equipped_background = equipped_card
+        self.equipped_role = equipped_role
         page_items = paginate_items(items, 0, self.per_page)
         self.current_items = page_items
 
@@ -163,7 +192,6 @@ class InventoryView(discord.ui.View):
         backgrounds = ["None"]
         roles = ["None"]
 
-        # Inventory items
         for item in items:
             if item.get("type") == "border":
                 borders.append(item["id"])
@@ -172,28 +200,45 @@ class InventoryView(discord.ui.View):
 
         if interaction:
             member = interaction.user
-
             user_role_names = {role.name for role in member.roles}
 
             for role_name in ROLES_COLOR_MAP.keys():
                 if role_name in user_role_names:
                     roles.append(role_name)
 
+        all_rarities = sorted({item.get("rarity", "common") for item in self.all_items})
+        rarity_select = RaritySelect(all_rarities)
+
+        if self.selected_rarities:
+            for option in rarity_select.options:
+                if option.value in self.selected_rarities:
+                    option.default = True
+
+        self.add_item(rarity_select)
+
+        # existing selects
         if borders:
-            self.add_item(BorderSelect(borders, equipped_border))
+            self.add_item(BorderSelect(borders, self.equipped_border))
         if backgrounds:
-            self.add_item(BackgroundSelect(backgrounds, equipped_background))
+            self.add_item(BackgroundSelect(backgrounds, self.equipped_background))
         if roles:
-            self.add_item(RoleSelect(roles, equipped_role))
+            self.add_item(RoleSelect(roles, self.equipped_role))
 
     async def update(self, interaction: discord.Interaction):
+        filtered = self.all_items
 
-        total_pages = max(1, math.ceil(len(self.all_items) / self.per_page))
+        if self.selected_rarities:
+            filtered = [
+                item
+                for item in filtered
+                if item.get("rarity", "common") in self.selected_rarities
+            ]
+        total_pages = max(1, math.ceil(len(filtered) / self.per_page))
 
         if self.page >= total_pages:
             self.page = total_pages - 1
 
-        page_items = paginate_items(self.all_items, self.page, self.per_page)
+        page_items = paginate_items(filtered, self.page, self.per_page)
         self.current_items = page_items
 
         # rebuild UI
