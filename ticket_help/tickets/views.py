@@ -343,6 +343,9 @@ class TicketActionView(discord.ui.View):
                 )
 
         helper_role = interaction.guild.get_role(HELPER_ROLE_ID)
+        if data.get("experienced_only"):
+            helper_role = interaction.guild.get_role(EXPERIENCED_HELPER_ROLE_ID)
+
         if not helper_role:
             return await interaction.response.send_message(
                 "❌ Helper role not found.", ephemeral=True

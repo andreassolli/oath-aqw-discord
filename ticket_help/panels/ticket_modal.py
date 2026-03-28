@@ -209,6 +209,17 @@ class CreateTicketModal(discord.ui.Modal):
             channel_name = f"「🔖」ticket-{ticket_id:03d}"
             ticket_name = f"ticket-{ticket_id:03d}"
             category = interaction.guild.get_channel(TICKET_CATEGORY_ID)
+            experienced_only = False
+            if (
+                len(bosses) <= 3
+                and "Ultra Gramiel" in bosses
+                and "Ultra Speaker" in bosses
+            ):
+                experienced_only = True
+            elif len(bosses) <= 2 and (
+                "Ultra Gramiel" in bosses or "Ultra Speaker" in bosses
+            ):
+                experienced_only = True
 
             overwrites = get_overwrites(interaction)
 
@@ -237,6 +248,7 @@ class CreateTicketModal(discord.ui.Modal):
                     "reminder_sent": False,
                     "auto_closed": False,
                     "total_kills": total_kills_value,
+                    "experienced_only": experienced_only,
                 }
             )
 

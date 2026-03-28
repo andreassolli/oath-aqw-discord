@@ -37,7 +37,6 @@ class SpecialBossButton(discord.ui.Button):
                 ephemeral=True,
             )
 
-        # 🔁 Toggle value
         current = data.get("experienced_only", False)
         new_value = not current
 
