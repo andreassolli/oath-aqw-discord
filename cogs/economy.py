@@ -285,6 +285,7 @@ class Economy(commands.Cog):
         view = InventoryView(
             user_id=interaction.user.id,
             items=inventory,
+            interaction=interaction,
         )
 
         await interaction.followup.send(
