@@ -8,8 +8,9 @@ from discord import Member
 from PIL import Image, ImageDraw, ImageFont
 
 from assets_caching import ASSET_CACHE, BADGE_CACHE, FONTS
-from config import POTW_ROLE_ID
+from config import AQW_BADGES, POTW_ROLE_ID
 from firebase_client import db
+from user_profile.image_utils import draw_gradient_text
 
 from .mee6_fetcher import fetch_mee6_stats
 from .utils import circle_crop, fetch_avatar, ordinal, sort_badges
@@ -46,14 +47,23 @@ async def generate_profile_card(
     game_ref = db.collection("wordle_games").document(str(target.id))
     game_doc = game_ref.get()
     game_data = game_doc.to_dict() if game_doc.exists else {}
+    total_guesses = game_data.get("total_guesses", 0)
+    games_played = game_data.get("games_played", 0)
+    if games_played > 0:
+        avg_guesses = round(total_guesses / games_played, 2)
+    else:
+        avg_guesses = 0
+    avg_display = f"{avg_guesses}" if games_played > 0 else "—"
     completed_words = game_data.get("words_completed", 0)
     users_above = list(db.collection("users").where("points", ">", points).stream())
     rank = len(users_above) + 1
+    counting_score = data.get("counting_score", 0)
     coins = data.get("coins", 0)
     wins = data.get("wins", 0)
     border = data.get("border", {})
     card = data.get("card", {})
     gems = data.get("gems", 0)
+    role = data.get("highlighted_role", "None")
     if card:
         bg = Image.open(ASSETS_DIR / f"{card.get('image')}").convert("RGBA")
     else:
@@ -64,12 +74,9 @@ async def generate_profile_card(
         bg.paste(border_img, (0, 0), border_img)
 
     draw = ImageDraw.Draw(bg)
-    avatar = circle_crop(avatar, 231)
-    bg.paste(avatar, (44, 32), avatar)
+    avatar = circle_crop(avatar, 218)
+    bg.paste(avatar, (43, 37), avatar)
 
-    # if border == "Test Border":
-    #    test_border = Image.open(ASSETS_DIR / "test_border.png").convert("RGBA")
-    #    bg.paste(test_border, (0, 0), test_border)
     if is_potw:
         potw_border = ASSET_CACHE["potw_border"]
         bg.paste(potw_border, (27, 19), potw_border)
@@ -80,11 +87,13 @@ async def generate_profile_card(
     font_small = FONTS["small"]
     font_xsmall = FONTS["xsmall"]
     font_xsmall_light = FONTS["xsmall_light"]
+    font_small_bold = FONTS["small_bold"]
+    font_xsmall_bold = FONTS["xsmall_bold"]
 
-    draw.text((340, 32), target.display_name, font=font_big, fill="#FFFFFF")
+    draw.text((302, 32), target.display_name, font=font_big, fill="#FFFFFF")
     if has_been_potw:
         name = target.display_name
-        name_x = 340
+        name_x = 302
         name_y = 32
 
         # Measure text width
@@ -99,7 +108,7 @@ async def generate_profile_card(
 
         potw_flare = ASSET_CACHE["potw_flare"]
         bg.paste(potw_flare, (flare_x, flare_y), potw_flare)
-    draw.text((340, 92), guild, font=font_small, fill="#FFFFFF")
+    draw.text((302, 92), guild, font=font_small, fill="#FFFFFF")
 
     if target.joined_at:
         day = target.joined_at.day
@@ -108,74 +117,86 @@ async def generate_profile_card(
         joined_text = "Joined unknown"
 
     draw.text(
-        (340, 144),
+        (302, 144),
         joined_text,
-        font=font_light,
+        font=font_xsmall,
         fill="#FFFFFF",
     )
 
-    draw.text((44, 285), "Badges", font=font_small, fill="#FFFFFF")
-
-    draw.text((356, 200), "Stats", font=font_small, fill="#FFFFFF")
-
-    draw.text((383, 233), str(mee6["level"]), font=font_bold, fill="#FFFFFF")
-
-    draw.text((360, 273), "lvl", font=font_xsmall, fill="#FFFFFF")
-
     draw.text(
-        (360, 300),
+        (312, 242),
         f"{mee6['current_xp']} / {mee6['xp_to_level']} xp",
         font=font_xsmall_light,
         fill="#FFFFFF",
     )
+    draw_gradient_text(bg, (467, 196), "@", font_small_bold, role)
+    draw_gradient_text(
+        bg,
+        (500, 197),
+        role,
+        font_xsmall_bold,
+    )
+    draw.text((335, 175), str(mee6["level"]), font=font_bold, fill="#FFFFFF")
 
-    draw.text((563, 248), f"{mee6['messages']} sent", font=font_xsmall, fill="#FFFFFF")
+    draw.text((312, 215), "lvl", font=font_xsmall, fill="#FFFFFF")
 
     draw.text(
-        (563, 293), f"Wordle: {completed_words}", font=font_xsmall, fill="#FFFFFF"
+        (500, 232), f"{mee6['messages']} messages", font=font_xsmall, fill="#FFFFFF"
     )
 
-    draw.text((356, 375), "Misc", font=font_small, fill="#FFFFFF")
+    draw.text((346, 387), f"{counting_score} counts", font=font_xsmall, fill="#FFFFFF")
 
-    draw.text((401, 420), f"{gems}", font=font_xsmall, fill="#FFFFFF")
+    draw.text((535, 305), f"{gems}", font=font_xsmall, fill="#FFFFFF")
 
-    draw.text((401, 467), f"{points} points", font=font_xsmall, fill="#FFFFFF")
+    draw.text((346, 428), f"{points} points", font=font_xsmall, fill="#FFFFFF")
+    draw.text((346, 346), f"{completed_words} words", font=font_xsmall, fill="#FFFFFF")
 
-    draw.text((563, 420), f"{coins}", font=font_xsmall, fill="#FFFFFF")
+    draw.text((346, 305), f"{coins}", font=font_xsmall, fill="#FFFFFF")
+    draw.text((535, 346), f"{avg_display}", font=font_xsmall, fill="#FFFFFF")
+    draw.text((346, 469), f"{wins} wins", font=font_xsmall, fill="#FFFFFF")
+    draw.text(
+        (535, 428), f"{tickets_claimed} tickets", font=font_xsmall, fill="#FFFFFF"
+    )
 
     draw.text(
-        (563, 467),
+        (535, 469),
         f"{ordinal(rank)} place",
         font=font_xsmall,
         fill="#FFFFFF",
     )
 
     trophy = ASSET_CACHE["trophy"]
-    calendar = ASSET_CACHE["calendar"]
+    coin = ASSET_CACHE["coin"]
     gem = ASSET_CACHE["gem"]
     medal = ASSET_CACHE["medal"]
     dice = ASSET_CACHE["dice"]
     messages = ASSET_CACHE["messages"]
+    aqwordle = ASSET_CACHE["aqwordle"]
+    ticket = ASSET_CACHE["ticket"]
+    podium = ASSET_CACHE["podium"]
+    average = ASSET_CACHE["average"]
 
     x = 0
     y = 0
     for badge in badges:
         if badge in BADGE_CACHE:
-            if x == 4:
+            if x == 3:
                 y += 1
                 x = 0
             badge_img = BADGE_CACHE[badge]
-            bg.paste(badge_img, (44 + 65 * x, 337 + 66 * y), badge_img)
+            bg.paste(badge_img, (36 + 81 * x, 291 + 81 * y), badge_img)
             x += 1
-    # bg.paste(forge, (29, 224), forge)
-    # bg.paste(sword, (73, 224), sword)
 
-    bg.paste(trophy, (525, 423), trophy)
-    bg.paste(calendar, (525, 468), calendar)
-    bg.paste(gem, (363, 423), gem)
-    bg.paste(medal, (363, 470), medal)
-    bg.paste(messages, (525, 252), messages)
-    bg.paste(dice, (525, 297), dice)
+    bg.paste(coin, (312, 308), coin)
+    bg.paste(podium, (495, 469), podium)
+    bg.paste(gem, (497, 308), gem)
+    bg.paste(medal, (311, 431), medal)
+    bg.paste(ticket, (498, 430), ticket)
+    bg.paste(messages, (468, 235), messages)
+    bg.paste(dice, (313, 391), dice)
+    bg.paste(aqwordle, (311, 349), aqwordle)
+    bg.paste(average, (497, 349), average)
+    bg.paste(trophy, (313, 474), trophy)
 
     buffer = BytesIO()
     bg.save(buffer, format="PNG")

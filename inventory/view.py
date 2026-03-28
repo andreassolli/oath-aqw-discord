@@ -4,7 +4,9 @@ import discord
 
 from economy.helpers import paginate_items
 from economy.inventory import generate_inventory
+from firebase_client import db
 from inventory.utils import equip_item  # adjust import if needed
+from user_profile.image_utils import ROLES_COLOR_MAP
 
 
 class BorderSelect(discord.ui.Select):
@@ -71,6 +73,13 @@ class EquipButton(discord.ui.Button):
             if res:
                 responses.append(res)
 
+        # Equip role
+        if view.selected_role:
+            db.collection("users").document(str(view.user_id)).update(
+                {"highlighted_role": view.selected_role}
+            )
+            responses.append(f"Equipped role: {view.selected_role}")
+
         await interaction.response.send_message(
             "\n".join(responses) if responses else "Nothing equipped.",
             ephemeral=True,
@@ -98,8 +107,25 @@ class PrevPageButton(discord.ui.Button):
         await view.update(interaction)
 
 
+class RoleSelect(discord.ui.Select):
+    def __init__(self, roles: list[str]):
+        options = [discord.SelectOption(label=r, value=r) for r in roles]
+
+        super().__init__(
+            placeholder="Select a role",
+            min_values=0,
+            max_values=1,
+            options=options,
+        )
+
+    async def callback(self, interaction: discord.Interaction):
+        view = self.view
+        view.selected_role = self.values[0] if self.values else None
+        await interaction.response.defer()
+
+
 class InventoryView(discord.ui.View):
-    def __init__(self, user_id: int, items: list):
+    def __init__(self, user_id: int, items: list, interaction: discord.Interaction):
         super().__init__(timeout=120)
 
         self.user_id = user_id
@@ -108,32 +134,46 @@ class InventoryView(discord.ui.View):
 
         self.selected_border: str | None = None
         self.selected_background: str | None = None
-
+        self.selected_role: str | None = None
         self.per_page = 8
 
         page_items = paginate_items(items, 0, self.per_page)
         self.current_items = page_items
 
-        self._build_selects(page_items)
+        self._build_selects(page_items, interaction)
 
         self.add_item(EquipButton())
         self.add_item(PrevPageButton())
         self.add_item(NextPageButton())
 
-    def _build_selects(self, items):
+    def _build_selects(self, items, interaction: discord.Interaction):
         borders = ["None"]
         backgrounds = ["None"]
+        roles = ["None"]
 
+        # Inventory items
         for item in items:
             if item.get("type") == "border":
                 borders.append(item["id"])
             if item.get("type") == "card":
                 backgrounds.append(item["id"])
 
+        # 🔥 Role filtering
+        if interaction:
+            member = interaction.user
+
+            user_role_names = {role.name for role in member.roles}
+
+            for role_name in ROLES_COLOR_MAP.keys():
+                if role_name in user_role_names:
+                    roles.append(role_name)
+
         if borders:
             self.add_item(BorderSelect(borders))
         if backgrounds:
             self.add_item(BackgroundSelect(backgrounds))
+        if roles:
+            self.add_item(RoleSelect(roles))
 
     async def update(self, interaction: discord.Interaction):
 
@@ -147,7 +187,7 @@ class InventoryView(discord.ui.View):
 
         # rebuild UI
         self.clear_items()
-        self._build_selects(page_items)
+        self._build_selects(page_items, interaction)
         self.add_item(EquipButton())
         self.add_item(PrevPageButton())
         self.add_item(NextPageButton())

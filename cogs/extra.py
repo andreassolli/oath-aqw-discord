@@ -5,6 +5,7 @@ from discord import app_commands
 from discord.abc import Messageable
 from discord.ext import commands
 from google.cloud import firestore
+from google.cloud import firestore as gc_firestore
 from google.cloud.firestore import ArrayUnion
 
 from config import (
@@ -189,6 +190,14 @@ class Extra(commands.Cog):
         file = discord.File(board_image, filename="wordle.png")
 
         if not correct and guess_count >= 6:
+            if not was_completed:
+                game_ref.update(
+                    {
+                        "total_guesses": gc_firestore.Increment(7),
+                        "games_played": gc_firestore.Increment(1),
+                    }
+                )
+
             await interaction.followup.send(
                 content=f"❌ You did not manage to complete today's Wordle. The word was **{wordle_word}**.",
                 file=file,
@@ -205,9 +214,17 @@ class Extra(commands.Cog):
                 reward = 470
             else:
                 reward = 435
+
             if not was_completed:
                 db.collection("users").document(str(user_id)).update(
                     {"coins": firestore.Increment(reward)}
+                )
+
+                game_ref.update(
+                    {
+                        "total_guesses": gc_firestore.Increment(guess_count),
+                        "games_played": gc_firestore.Increment(1),
+                    }
                 )
 
             view = ShareWordleView(guess_count)

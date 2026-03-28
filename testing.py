@@ -2,6 +2,7 @@ import asyncio
 import random
 
 import aiohttp
+from google.cloud import firestore as gc_firestore
 
 from economy.generate_rocks import generate_rocks
 from economy.inventory import generate_inventory
@@ -219,9 +220,6 @@ def migrate_points_to_gems():
     print(f"Done. Updated {updated_count} users.")
 
 
-from firebase_client import db
-
-
 def ensure_currency_fields():
     users_ref = db.collection("users")
     docs = users_ref.stream()
@@ -265,9 +263,113 @@ async def find_users_with_doom_card():
     return found
 
 
+def migrate_counting_score():
+    users_ref = db.collection("users")
+
+    BATCH_LIMIT = 500
+    batch = db.batch()
+    operation_count = 0
+    updated_count = 0
+
+    docs = users_ref.stream()
+
+    for doc in docs:
+        data = doc.to_dict() or {}
+        doc_ref = doc.reference  # safer
+
+        # Skip if field doesn't exist
+        if "message_count" not in data:
+            continue
+
+        message_count = data.get("message_count") or 0
+        counting_score = data.get("counting_score") or 0
+
+        # Ensure integers (prevents crashes if corrupted data)
+        try:
+            message_count = int(message_count)
+            counting_score = int(counting_score)
+        except (ValueError, TypeError):
+            print(f"Skipping {doc.id} invalid data")
+            continue
+
+        # Skip unnecessary updates
+        if message_count == 0:
+            batch.update(doc_ref, {"message_count": gc_firestore.DELETE_FIELD})
+        else:
+            new_score = counting_score + message_count
+
+            batch.update(
+                doc_ref,
+                {
+                    "counting_score": new_score,
+                    "message_count": gc_firestore.DELETE_FIELD,
+                },
+            )
+
+        operation_count += 1
+        updated_count += 1
+
+        print(f"{doc.id}: {counting_score} + {message_count} → updated")
+
+        # Commit batch safely
+        if operation_count >= BATCH_LIMIT:
+            batch.commit()
+            batch = db.batch()
+            operation_count = 0
+
+    # Final commit
+    if operation_count > 0:
+        batch.commit()
+
+    print(f"Migration complete ✅ Updated {updated_count} users")
+
+
+def backfill_wordle_stats():
+    games_ref = db.collection("wordle_games")
+    docs = games_ref.stream()
+
+    updated = 0
+
+    for doc in docs:
+        data = doc.to_dict() or {}
+        doc_ref = doc.reference
+
+        # Skip if already migrated (IMPORTANT)
+        if data.get("stats_recorded"):
+            continue
+
+        if not data.get("completed"):
+            continue
+
+        guess_count = data.get("guess_count", 0)
+        won = data.get("won", False)
+
+        try:
+            guess_count = int(guess_count)
+        except (ValueError, TypeError):
+            print(f"Skipping {doc.id} بسبب invalid data")
+            continue
+
+        guesses_used = guess_count if won else 7
+
+        doc_ref.update(
+            {
+                "total_guesses": guesses_used,
+                "games_played": 1,
+                "stats_recorded": True,  # ✅ prevents double counting
+            }
+        )
+
+        updated += 1
+        print(f"{doc.id}: initialized with {guesses_used} guesses")
+
+    print(f"Done. Updated {updated} users.")
+
+
 if __name__ == "__main__":
     asyncio.run(generate_test_card())
-    asyncio.run(find_users_with_doom_card())
+    # backfill_wordle_stats()
+    # asyncio.run(find_users_with_doom_card())
     # get_all_users()
     # choose_new_word()
 # asyncio.run(
