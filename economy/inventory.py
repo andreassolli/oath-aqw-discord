@@ -72,7 +72,7 @@ async def generate_inventory(
         rarity = item.get("rarity", "common")
         rarity_image = RARITY_CACHE.get(rarity, None)
         if rarity_image:
-            bg.paste(rarity_image, (203 + gapX * x, 337 + gapY * y), rarity_image)
+            bg.paste(rarity_image, (207 + gapX * x, 337 + gapY * y), rarity_image)
         if x == 4:
             y += 1
             x = 0

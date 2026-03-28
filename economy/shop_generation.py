@@ -71,7 +71,7 @@ async def generate_shop(
         rarity = item.get("rarity", "common")
         rarity_image = RARITY_CACHE.get(rarity, None)
         if rarity_image:
-            bg.paste(rarity_image, (203 + gapX * x, 337 + gapY * y), rarity_image)
+            bg.paste(rarity_image, (207 + gapX * x, 337 + gapY * y), rarity_image)
         item_picture = Image.open(ASSETS_DIR / item["display"]).convert("RGBA")
         bg.paste(item_picture, (57 + gapX * x, 144 + gapY * y), item_picture)
         draw.text(

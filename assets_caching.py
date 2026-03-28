@@ -95,8 +95,8 @@ def initialize_assets():
     ROCKS_CACHE[9] = load("gold1.png", ROCK_SIZE)
     ROCKS_CACHE[0] = load("dusty1.png", ROCK_SIZE)
 
-    RARITY_CACHE["common"] = load("common.png", (28, 28))
-    RARITY_CACHE["uncommon"] = load("uncommon.png", (28, 28))
-    RARITY_CACHE["rare"] = load("rare.png", (28, 28))
-    RARITY_CACHE["epic"] = load("epic.png", (28, 28))
-    RARITY_CACHE["legendary"] = load("legendary.png", (28, 28))
+    RARITY_CACHE["common"] = load("common.png", (26, 26))
+    RARITY_CACHE["uncommon"] = load("uncommon.png", (26, 26))
+    RARITY_CACHE["rare"] = load("rare.png", (26, 26))
+    RARITY_CACHE["epic"] = load("epic.png", (26, 26))
+    RARITY_CACHE["legendary"] = load("legendary.png", (26, 26))
