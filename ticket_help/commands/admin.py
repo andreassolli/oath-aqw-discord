@@ -154,7 +154,7 @@ async def remove_claimer(
     interaction: discord.Interaction, ticket_name: str, user: discord.Member
 ):
 
-    if not has_admin_role(interaction) or not has_oathsworn_role(interaction):
+    if not has_admin_role(interaction) and not has_oathsworn_role(interaction):
         return await interaction.response.send_message(
             "🚫 You do not have permission to use this command.", ephemeral=True
         )
