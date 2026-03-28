@@ -86,8 +86,9 @@ class Economy(commands.Cog):
         await interaction.response.defer(ephemeral=True)
 
         items = await get_shop()
+        owned_items = await get_inventory(str(interaction.user.id))
+        filtered = [item for item in items if item not in owned_items]
 
-        filtered = items  # no filters initially
         total_pages = max(1, math.ceil(len(filtered) / 8))
         page_items = paginate_items(filtered, 0, 8)
 

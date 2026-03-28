@@ -4,7 +4,7 @@ ASSET_CACHE = {}
 BADGE_CACHE = {}
 FONTS = {}
 ROCKS_CACHE = {}
-
+RARITY_CACHE = {}
 
 BASE_DIR = Path(__file__).resolve().parent
 ASSETS_DIR = BASE_DIR / "assets"
@@ -94,3 +94,9 @@ def initialize_assets():
     ROCKS_CACHE[8] = load("pink2.png", ROCK_SIZE)
     ROCKS_CACHE[9] = load("gold1.png", ROCK_SIZE)
     ROCKS_CACHE[0] = load("dusty1.png", ROCK_SIZE)
+
+    RARITY_CACHE["common"] = load("common.png", (28, 28))
+    RARITY_CACHE["uncommon"] = load("uncommon.png", (28, 28))
+    RARITY_CACHE["rare"] = load("rare.png", (28, 28))
+    RARITY_CACHE["epic"] = load("epic.png", (28, 28))
+    RARITY_CACHE["legendary"] = load("legendary.png", (28, 28))

@@ -7,6 +7,7 @@ import discord
 from discord import Member
 from PIL import Image, ImageDraw, ImageFont
 
+from assets_caching import RARITY_CACHE
 from economy.operations import get_shop
 from firebase_client import db
 
@@ -40,7 +41,7 @@ async def generate_inventory(
 
     draw.text((57, 42), "Inventory", font=font_bold, fill="#FFFFFF")
     draw.text(
-        (57, 90),
+        (782, 688),
         f"Page {page + 1} / {total_pages}",
         font=font_small,
         fill="#FFFFFF",
@@ -68,7 +69,10 @@ async def generate_inventory(
     for item in items:
         image_path = ASSETS_DIR / item["display"]
         item_picture = Image.open(image_path).convert("RGBA")
-
+        rarity = item.get("rarity", "common")
+        rarity_image = RARITY_CACHE.get(rarity, None)
+        if rarity_image:
+            bg.paste(rarity_image, (203 + gapX * x, 337 + gapY * y), rarity_image)
         if x == 4:
             y += 1
             x = 0

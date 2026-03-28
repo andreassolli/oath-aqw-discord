@@ -4,6 +4,7 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
+from assets_caching import RARITY_CACHE
 from firebase_client import db
 
 log = logging.getLogger(__name__)
@@ -43,9 +44,10 @@ async def generate_shop(
     gem_picture = Image.open(ASSETS_DIR / "gem.png").convert("RGBA")
     gem_picture = gem_picture.resize((30, 30), Image.Resampling.LANCZOS)
     quantity_image = Image.open(ASSETS_DIR / "quantity.png").convert("RGBA")
+
     draw = ImageDraw.Draw(bg)
     draw.text(
-        (57, 90),
+        (782, 688),
         f"Page {page + 1} / {total_pages}",
         font=font_small,
         fill="#FFFFFF",
@@ -66,6 +68,10 @@ async def generate_shop(
         if x == 4:
             y += 1
             x = 0
+        rarity = item.get("rarity", "common")
+        rarity_image = RARITY_CACHE.get(rarity, None)
+        if rarity_image:
+            bg.paste(rarity_image, (203 + gapX * x, 337 + gapY * y), rarity_image)
         item_picture = Image.open(ASSETS_DIR / item["display"]).convert("RGBA")
         bg.paste(item_picture, (57 + gapX * x, 144 + gapY * y), item_picture)
         draw.text(
