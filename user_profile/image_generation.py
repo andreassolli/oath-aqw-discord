@@ -27,7 +27,8 @@ async def generate_profile_card(
     server_id = interaction.guild.id
 
     mee6_task = fetch_mee6_stats(user_id, server_id)
-    avatar_task = fetch_avatar(target.display_avatar.url)
+    avatar_url = target.display_avatar.replace(format="png", size=256).url
+    avatar_task = fetch_avatar(avatar_url)
 
     mee6, avatar = await asyncio.gather(mee6_task, avatar_task)
 
