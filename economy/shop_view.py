@@ -8,6 +8,37 @@ from economy.operations import buy_item
 from economy.shop_generation import generate_shop
 from economy.utils import ShopItem
 
+RARITY_EMOJIS = {
+    "common": "🟢",
+    "uncommon": "🔵",
+    "rare": "🟣",
+    "epic": "🔴",
+    "legendary": "🟠",
+}
+
+
+class RaritySelect(discord.ui.Select):
+    def __init__(self, rarities: list[str]):
+        options = [
+            discord.SelectOption(
+                label=f"{RARITY_EMOJIS.get(r, '🟢')} {r.capitalize()}", value=r
+            )
+            for r in rarities
+        ]
+
+        super().__init__(
+            placeholder="Filter by rarity",
+            min_values=0,  # allow clearing filter
+            max_values=len(options),  # multi-select
+            options=options,
+        )
+
+    async def callback(self, interaction: discord.Interaction):
+        view: ShopView = self.view
+        view.selected_rarities = set(self.values) if self.values else None
+        view.page = 0  # reset page when filtering
+        await view.update(interaction)
+
 
 class ShopSelect(discord.ui.Select):
     def __init__(self, items: List[ShopItem]):
@@ -35,6 +66,7 @@ class ShopSelect(discord.ui.Select):
         item = next((i for i in view.current_items if i["name"] == selected_name), None)
 
         view.selected_item = item
+        self.selected_rarities: set[str] | None = None
         await interaction.response.defer()
 
 
@@ -95,7 +127,9 @@ class ShopView(discord.ui.View):
         self.current_items = initial_items
         self.select = ShopSelect(initial_items)
         self.add_item(self.select)
+        all_rarities = sorted({item.get("rarity", "common") for item in items})
 
+        self.add_item(RaritySelect(all_rarities))
         self.add_item(BuyButton())
         self.add_item(PrevPageButton())
         self.add_item(NextPageButton())
@@ -103,6 +137,13 @@ class ShopView(discord.ui.View):
     async def update(self, interaction: discord.Interaction):
 
         filtered = filter_items(self.all_items, self.min_price, self.max_price)
+
+        if self.selected_rarities:
+            filtered = [
+                item
+                for item in filtered
+                if item.get("rarity", "common") in self.selected_rarities
+            ]
         total_pages = max(1, math.ceil(len(filtered) / 8))
 
         # Clamp page
