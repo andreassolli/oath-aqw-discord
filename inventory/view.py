@@ -34,11 +34,11 @@ class RaritySelect(discord.ui.Select):
 
 
 class BorderSelect(discord.ui.Select):
-    def __init__(self, borders: list[str], equipped_border: str | None):
+    def __init__(self, borders: list[str], equipped_border: dict[str, str] | None):
         options = [discord.SelectOption(label=b, value=b) for b in borders]
 
         super().__init__(
-            placeholder=equipped_border or "Select a border",
+            placeholder=equipped_border.get("id", "Select a border"),
             min_values=0,
             max_values=1,
             options=options,
@@ -51,11 +51,13 @@ class BorderSelect(discord.ui.Select):
 
 
 class BackgroundSelect(discord.ui.Select):
-    def __init__(self, backgrounds: list[str], equipped_background: str | None):
+    def __init__(
+        self, backgrounds: list[str], equipped_background: dict[str, str] | None
+    ):
         options = [discord.SelectOption(label=b, value=b) for b in backgrounds]
 
         super().__init__(
-            placeholder=equipped_background or "Select a background",
+            placeholder=equipped_background.get("id", "Select a background"),
             min_values=0,
             max_values=1,
             options=options,
