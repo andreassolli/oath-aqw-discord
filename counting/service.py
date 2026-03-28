@@ -1,3 +1,6 @@
+import random
+
+import discord
 from google.cloud import firestore
 
 from firebase_client import db
@@ -30,11 +33,33 @@ async def process_count_message(message):
         merge=True,
     )
 
-    db.collection("users").document(str(message.author.id)).set(
+    user_ref = db.collection("users").document(str(message.author.id))
+
+    user_ref.set(
         {
             "counting_score": firestore.Increment(1),
         },
         merge=True,
     )
+
+    if number % 10 == 0:
+        coins = random.randint(20, 30)
+
+        # Add coins to user
+        user_ref.set(
+            {
+                "coins": firestore.Increment(coins),
+            },
+            merge=True,
+        )
+
+        # Create embed
+        embed = discord.Embed(
+            title="🎉 Checkpoint reached!",
+            description=f"{message.author.mention} reached checkpoint **{number}** and found **<:oathcoin:1462999179998531614>{coins}!**",
+            color=discord.Color.gold(),
+        )
+
+        await message.channel.send(embed=embed)
 
     return True
