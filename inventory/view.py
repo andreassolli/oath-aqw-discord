@@ -10,11 +10,11 @@ from user_profile.image_utils import ROLES_COLOR_MAP
 
 
 class BorderSelect(discord.ui.Select):
-    def __init__(self, borders: list[str]):
+    def __init__(self, borders: list[str], equipped_border: str | None):
         options = [discord.SelectOption(label=b, value=b) for b in borders]
 
         super().__init__(
-            placeholder="Select a border",
+            placeholder=equipped_border or "Select a border",
             min_values=0,
             max_values=1,
             options=options,
@@ -27,11 +27,11 @@ class BorderSelect(discord.ui.Select):
 
 
 class BackgroundSelect(discord.ui.Select):
-    def __init__(self, backgrounds: list[str]):
+    def __init__(self, backgrounds: list[str], equipped_background: str | None):
         options = [discord.SelectOption(label=b, value=b) for b in backgrounds]
 
         super().__init__(
-            placeholder="Select a background",
+            placeholder=equipped_background or "Select a background",
             min_values=0,
             max_values=1,
             options=options,
@@ -112,11 +112,11 @@ class PrevPageButton(discord.ui.Button):
 
 
 class RoleSelect(discord.ui.Select):
-    def __init__(self, roles: list[str]):
+    def __init__(self, roles: list[str], equipped_role: str | None):
         options = [discord.SelectOption(label=r, value=r) for r in roles]
 
         super().__init__(
-            placeholder="Select a role",
+            placeholder=equipped_role or "Select a role",
             min_values=0,
             max_values=1,
             options=options,
@@ -129,7 +129,15 @@ class RoleSelect(discord.ui.Select):
 
 
 class InventoryView(discord.ui.View):
-    def __init__(self, user_id: int, items: list, interaction: discord.Interaction):
+    def __init__(
+        self,
+        user_id: int,
+        items: list,
+        interaction: discord.Interaction,
+        equipped_card: str | None,
+        equipped_border: str | None,
+        equipped_role: str | None,
+    ):
         super().__init__(timeout=120)
 
         self.user_id = user_id
@@ -162,7 +170,6 @@ class InventoryView(discord.ui.View):
             if item.get("type") == "card":
                 backgrounds.append(item["id"])
 
-        # 🔥 Role filtering
         if interaction:
             member = interaction.user
 
@@ -173,11 +180,11 @@ class InventoryView(discord.ui.View):
                     roles.append(role_name)
 
         if borders:
-            self.add_item(BorderSelect(borders))
+            self.add_item(BorderSelect(borders, equipped_border))
         if backgrounds:
-            self.add_item(BackgroundSelect(backgrounds))
+            self.add_item(BackgroundSelect(backgrounds, equipped_background))
         if roles:
-            self.add_item(RoleSelect(roles))
+            self.add_item(RoleSelect(roles, equipped_role))
 
     async def update(self, interaction: discord.Interaction):
 

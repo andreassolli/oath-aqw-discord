@@ -87,9 +87,9 @@ class Economy(commands.Cog):
 
         items = await get_shop()
         owned_items = await get_inventory(str(interaction.user.id))
-        owned_ids = {item.get("id") for item in owned_items}
+        owned_ids = {item.get("image") for item in owned_items}
 
-        filtered = [item for item in items if item.get("id") not in owned_ids]
+        filtered = [item for item in items if item.get("image") not in owned_ids]
 
         total_pages = max(1, math.ceil(len(filtered) / 8))
         page_items = paginate_items(filtered, 0, 8)
@@ -252,6 +252,9 @@ class Economy(commands.Cog):
 
         data = user_doc.to_dict() or {}
         inventory = data.get("inventory", [])
+        equipped_card = data.get("card", None)
+        equipped_border = data.get("border", None)
+        equipped_role = data.get("highlighted_role", None)
 
         if not inventory:
             return await interaction.followup.send(
@@ -289,6 +292,9 @@ class Economy(commands.Cog):
             user_id=interaction.user.id,
             items=inventory,
             interaction=interaction,
+            equipped_card=equipped_card,
+            equipped_border=equipped_border,
+            equipped_role=equipped_role,
         )
 
         await interaction.followup.send(
