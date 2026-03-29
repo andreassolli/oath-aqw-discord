@@ -72,7 +72,7 @@ def initialize_assets():
     for name, path in BADGE_TO_IMAGE.items():
         img = Image.open(path).convert("RGBA")
         img = img.resize((70, 70), Image.Resampling.LANCZOS)
-        img = rounded_crop(img, 69, 18)
+        img = rounded_crop(img, 69, 14)
         BADGE_CACHE[name] = img
 
     # --- Fonts ---
