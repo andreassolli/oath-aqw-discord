@@ -197,9 +197,9 @@ class Profile(commands.Cog):
             gold_card=True,
         )
 
-        final_buffer = apply_computer_border(image_buffer)
+        # final_buffer = apply_computer_border(image_buffer)
         await interaction.followup.send(
-            file=discord.File(final_buffer, filename="profile.png"),
+            file=discord.File(image_buffer, filename="profile.png"),
             view=ProfileView(
                 badges, is_potw, has_been_potw, name, wins, show_beta=True
             ),
