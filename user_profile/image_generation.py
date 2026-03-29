@@ -106,7 +106,31 @@ async def generate_profile_card(
     font_xsmall_light = FONTS["xsmall_light"]
     font_small_bold = FONTS["small_bold"]
     font_xsmall_bold = FONTS["xsmall_bold"]
-
+    if gold_card:
+        draw.text(
+            (304, 34),
+            target.display_name,
+            font=font_big,
+            fill=color,
+            stroke_fill=outline_color,
+            stroke_width=outline_width,
+        )
+        draw.text(
+            (304, 146),
+            joined_text,
+            font=font_xsmall,
+            fill=color,
+            stroke_fill=outline_color,
+            stroke_width=outline_width,
+        )
+        draw.text(
+            (304, 94),
+            guild,
+            font=font_small,
+            fill=color,
+            stroke_fill=outline_color,
+            stroke_width=outline_width,
+        )
     draw.text(
         (302, 32),
         target.display_name,
@@ -140,32 +164,6 @@ async def generate_profile_card(
         stroke_fill=outline_color,
         stroke_width=outline_width,
     )
-
-    if gold_card:
-        draw.text(
-            (304, 34),
-            target.display_name,
-            font=font_big,
-            fill=color,
-            stroke_fill=outline_color,
-            stroke_width=outline_width,
-        )
-        draw.text(
-            (304, 146),
-            joined_text,
-            font=font_xsmall,
-            fill=color,
-            stroke_fill=outline_color,
-            stroke_width=outline_width,
-        )
-        draw.text(
-            (304, 94),
-            guild,
-            font=font_small,
-            fill=color,
-            stroke_fill=outline_color,
-            stroke_width=outline_width,
-        )
 
     draw.text(
         (302, 144),
