@@ -731,7 +731,7 @@ class Extra(commands.Cog):
 
             batch.set(
                 ref,
-                {"participated_in_beta": True},
+                {"participated_in_beta": False},
                 merge=True,
             )
             updated += 1

@@ -189,6 +189,7 @@ async def finalize_ticket(
     await log_ticket_event(interaction.client, embed=embed)
     await asyncio.sleep(0.5)
     await update_ticket(interaction.client)
+    await update_dashboard(interaction.client)
 
     await interaction.followup.send("🗑️ Deleting channel...", ephemeral=True)
 

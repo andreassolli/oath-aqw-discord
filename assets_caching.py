@@ -12,9 +12,9 @@ FONTS_DIR = BASE_DIR / "assets/fonts"
 
 
 BADGE_TO_IMAGE = {
-    "Beta Tester1": ASSETS_DIR / "beta_tester1.png",
-    "Beta Tester2": ASSETS_DIR / "beta_tester2.png",
-    "Beta Tester3": ASSETS_DIR / "beta_tester3.png",
+    "Beta Tester White": ASSETS_DIR / "beta_white.png",
+    "Beta Tester Black": ASSETS_DIR / "beta_black.png",
+    "Beta Tester Green": ASSETS_DIR / "beta_green.png",
     "Guild Founder": ASSETS_DIR / "oathfounder.png",
     "AQW Founder": ASSETS_DIR / "founderaqw.png",
     "Achievement Badges I": ASSETS_DIR / "aqwbadges1.png",

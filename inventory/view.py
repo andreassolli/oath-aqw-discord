@@ -38,7 +38,9 @@ class BorderSelect(discord.ui.Select):
         options = [discord.SelectOption(label=b, value=b) for b in borders]
 
         super().__init__(
-            placeholder=equipped_border.get("id", "Select a border"),
+            placeholder=equipped_border.get("id", "Select a border")
+            if equipped_border
+            else "Select a border",
             min_values=0,
             max_values=1,
             options=options,
@@ -57,7 +59,9 @@ class BackgroundSelect(discord.ui.Select):
         options = [discord.SelectOption(label=b, value=b) for b in backgrounds]
 
         super().__init__(
-            placeholder=equipped_background.get("id", "Select a background"),
+            placeholder=equipped_background.get("id", "Select a background")
+            if equipped_background
+            else "Select a background",
             min_values=0,
             max_values=1,
             options=options,
