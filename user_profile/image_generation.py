@@ -67,6 +67,8 @@ async def generate_profile_card(
     gems = data.get("gems", 0)
     role = data.get("highlighted_role", "None")
     color = "#FFFFFF"
+    outline_color = "#FFFFFF"
+    outline_width = 0
     if card:
         bg = Image.open(ASSETS_DIR / f"{card.get('image')}").convert("RGBA")
     else:
@@ -74,7 +76,9 @@ async def generate_profile_card(
 
     if gold_card:
         bg = Image.open(ASSETS_DIR / "gold_signature_card.png").convert("RGBA")
-        color = "#8A550A"
+        color = "#F7A90D"
+        outline_color = "#583400"
+        outline_width = 2
     if border and not gold_card:
         border_img = Image.open(ASSETS_DIR / f"{border.get('image')}").convert("RGBA")
         bg.paste(border_img, (0, 0), border_img)
@@ -96,7 +100,14 @@ async def generate_profile_card(
     font_small_bold = FONTS["small_bold"]
     font_xsmall_bold = FONTS["xsmall_bold"]
 
-    draw.text((302, 32), target.display_name, font=font_big, fill=color)
+    draw.text(
+        (302, 32),
+        target.display_name,
+        font=font_big,
+        fill=color,
+        outline_color=outline_color,
+        outline_width=outline_width,
+    )
     if has_been_potw:
         name = target.display_name
         name_x = 302
@@ -114,7 +125,14 @@ async def generate_profile_card(
 
         potw_flare = ASSET_CACHE["potw_flare"]
         bg.paste(potw_flare, (flare_x, flare_y), potw_flare)
-    draw.text((302, 92), guild, font=font_small, fill=color)
+    draw.text(
+        (302, 92),
+        guild,
+        font=font_small,
+        fill=color,
+        outline_color=outline_color,
+        outline_width=outline_width,
+    )
 
     if target.joined_at:
         day = target.joined_at.day
@@ -127,6 +145,8 @@ async def generate_profile_card(
         joined_text,
         font=font_xsmall,
         fill=color,
+        outline_color=outline_color,
+        outline_width=outline_width,
     )
 
     draw.text(
@@ -134,6 +154,8 @@ async def generate_profile_card(
         f"{mee6['current_xp']} / {mee6['xp_to_level']} xp",
         font=font_xsmall_light,
         fill=color,
+        outline_color=outline_color,
+        outline_width=outline_width,
     )
     draw_gradient_text(bg, (467, 196), "@", font_small_bold, role)
     draw_gradient_text(
@@ -142,29 +164,108 @@ async def generate_profile_card(
         role,
         font_xsmall_bold,
     )
-    draw.text((335, 175), str(mee6["level"]), font=font_bold, fill=color)
+    draw.text(
+        (335, 175),
+        str(mee6["level"]),
+        font=font_bold,
+        fill=color,
+        outline_color=outline_color,
+        outline_width=outline_width,
+    )
 
-    draw.text((312, 215), "lvl", font=font_xsmall, fill=color)
+    draw.text(
+        (312, 215),
+        "lvl",
+        font=font_xsmall,
+        fill=color,
+        outline_color=outline_color,
+        outline_width=outline_width,
+    )
 
-    draw.text((500, 232), f"{mee6['messages']} messages", font=font_xsmall, fill=color)
+    draw.text(
+        (500, 232),
+        f"{mee6['messages']} messages",
+        font=font_xsmall,
+        fill=color,
+        outline_color=outline_color,
+        outline_width=outline_width,
+    )
 
-    draw.text((346, 387), f"{counting_score} counts", font=font_xsmall, fill=color)
+    draw.text(
+        (346, 387),
+        f"{counting_score} counts",
+        font=font_xsmall,
+        fill=color,
+        outline_color=outline_color,
+        outline_width=outline_width,
+    )
 
-    draw.text((535, 305), f"{gems}", font=font_xsmall, fill=color)
+    draw.text(
+        (535, 305),
+        f"{gems}",
+        font=font_xsmall,
+        fill=color,
+        outline_color=outline_color,
+        outline_width=outline_width,
+    )
 
-    draw.text((346, 428), f"{points} points", font=font_xsmall, fill=color)
-    draw.text((346, 346), f"{completed_words} words", font=font_xsmall, fill=color)
+    draw.text(
+        (346, 428),
+        f"{points} points",
+        font=font_xsmall,
+        fill=color,
+        outline_color=outline_color,
+        outline_width=outline_width,
+    )
+    draw.text(
+        (346, 346),
+        f"{completed_words} words",
+        font=font_xsmall,
+        fill=color,
+        outline_color=outline_color,
+        outline_width=outline_width,
+    )
 
-    draw.text((346, 305), f"{coins}", font=font_xsmall, fill=color)
-    draw.text((535, 346), f"{avg_display}", font=font_xsmall, fill=color)
-    draw.text((346, 469), f"{wins} wins", font=font_xsmall, fill=color)
-    draw.text((535, 428), f"{tickets_claimed} tickets", font=font_xsmall, fill=color)
+    draw.text(
+        (346, 305),
+        f"{coins}",
+        font=font_xsmall,
+        fill=color,
+        outline_color=outline_color,
+        outline_width=outline_width,
+    )
+    draw.text(
+        (535, 346),
+        f"{avg_display}",
+        font=font_xsmall,
+        fill=color,
+        outline_color=outline_color,
+        outline_width=outline_width,
+    )
+    draw.text(
+        (346, 469),
+        f"{wins} wins",
+        font=font_xsmall,
+        fill=color,
+        outline_color=outline_color,
+        outline_width=outline_width,
+    )
+    draw.text(
+        (535, 428),
+        f"{tickets_claimed} tickets",
+        font=font_xsmall,
+        fill=color,
+        outline_color=outline_color,
+        outline_width=outline_width,
+    )
 
     draw.text(
         (535, 469),
         f"{ordinal(rank)} place",
         font=font_xsmall,
         fill=color,
+        outline_color=outline_color,
+        outline_width=outline_width,
     )
 
     trophy = ASSET_CACHE["trophy"]
