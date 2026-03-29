@@ -76,9 +76,9 @@ async def generate_profile_card(
 
     if gold_card:
         bg = Image.open(ASSETS_DIR / "gold_signature_card.png").convert("RGBA")
-        color = "#F7A90D"
+        color = "#583400"
         outline_color = "#583400"
-        outline_width = 1
+        outline_width = 0
     if border and not gold_card:
         border_img = Image.open(ASSETS_DIR / f"{border.get('image')}").convert("RGBA")
         bg.paste(border_img, (0, 0), border_img)
