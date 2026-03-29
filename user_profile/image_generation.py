@@ -72,8 +72,8 @@ async def generate_profile_card(
         bg = ASSET_CACHE["default_bg"].copy()
 
     if gold_card:
-        bg = Image.open(ASSETS_DIR / "gold_card_signature.png").convert("RGBA")
-    if border:
+        bg = Image.open(ASSETS_DIR / "gold_signature_card.png").convert("RGBA")
+    if border and not gold_card:
         border_img = Image.open(ASSETS_DIR / f"{border.get('image')}").convert("RGBA")
         bg.paste(border_img, (0, 0), border_img)
 
