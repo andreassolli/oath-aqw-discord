@@ -734,7 +734,7 @@ class Extra(commands.Cog):
                 {"participated_in_beta": True},
                 merge=True,
             )
-
+            updated += 1
             count += 1
 
             if count % 500 == 0:

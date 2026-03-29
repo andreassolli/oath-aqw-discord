@@ -22,6 +22,7 @@ ASSETS_DIR = BASE_DIR / "assets"
 async def generate_profile_card(
     interaction,
     target: Member,
+    gold_card: bool = False,
 ) -> tuple[BytesIO, list[str], bool, bool, str, int]:
     user_id = target.id
     server_id = interaction.guild.id
@@ -70,6 +71,8 @@ async def generate_profile_card(
     else:
         bg = ASSET_CACHE["default_bg"].copy()
 
+    if gold_card:
+        bg = Image.open(ASSETS_DIR / "gold_card_signature.png").convert("RGBA")
     if border:
         border_img = Image.open(ASSETS_DIR / f"{border.get('image')}").convert("RGBA")
         bg.paste(border_img, (0, 0), border_img)

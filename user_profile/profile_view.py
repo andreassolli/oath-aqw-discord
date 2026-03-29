@@ -1,5 +1,7 @@
 import discord
 
+from firebase_client import db
+
 BADGE_EMOJIS = {
     "51% Weapons I": "<:weaponbadge:1471256072772915374>",
     "51% Weapons II": "<:weaponbadge:1471256072772915374>",
@@ -59,6 +61,7 @@ class ProfileView(discord.ui.View):
         has_been_potw: bool = False,
         name: str = "",
         wins: int = 0,
+        show_beta: bool = False,
     ):
         super().__init__(timeout=None)
         self.badges = badges  # store badge info on the view
@@ -66,6 +69,34 @@ class ProfileView(discord.ui.View):
         self.has_been_potw = has_been_potw
         self.name = name
         self.wins = wins
+        if not show_beta:
+            self.remove_item(self.view_participants)
+
+    @discord.ui.button(label="🌐", style=discord.ButtonStyle.secondary)
+    async def view_participants(self, interaction: discord.Interaction, _):
+
+        participants = (
+            db.collection("users").where("participated_in_beta", "==", True).stream()
+        )
+
+        participants = [p.to_dict() or {} for p in participants]
+
+        if not participants:
+            await interaction.response.send_message(
+                "No participants yet.",
+                ephemeral=True,
+            )
+            return
+
+        beta_list = "\n".join(
+            f"{p.get('aqw_username') or p.get('username') or 'Unknown'}"
+            for p in participants[:100]
+        )
+
+        await interaction.response.send_message(
+            f"**<:oathbeta:1487777899938320496>Everyone who participated in the beta, we appreciate all `{len(participants)}` of you!**\n{beta_list}",
+            ephemeral=True,
+        )
 
     @discord.ui.button(label="View badges🎖️", style=discord.ButtonStyle.primary)
     async def view_badges(
