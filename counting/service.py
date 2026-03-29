@@ -91,7 +91,7 @@ async def process_count_message(message):
         embed = discord.Embed(
             title="🎉 Checkpoint reached!",
             description=(
-                f"{message.author.mention} reached has counted **{score}** times, "
+                f"{message.author.mention} has counted **{score}** times, "
                 f"and received **<:oathcoin:1462999179998531614>{coins}!**"
             ),
             color=discord.Color.gold(),
