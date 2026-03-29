@@ -82,8 +82,7 @@ async def generate_profile_card(
 
     if gold_card:
         bg = Image.open(ASSETS_DIR / "gold_signature_card.png").convert("RGBA")
-        color = "#583400"
-        outline_color = "#FFFFFF"
+        outline_color = "#583400"
         outline_width = 0
 
     if border and not gold_card:
@@ -111,7 +110,7 @@ async def generate_profile_card(
             (304, 34),
             target.display_name,
             font=font_big,
-            fill=color,
+            fill=outline_color,
             stroke_fill=outline_color,
             stroke_width=outline_width,
         )
@@ -119,7 +118,7 @@ async def generate_profile_card(
             (304, 146),
             joined_text,
             font=font_xsmall,
-            fill=color,
+            fill=outline_color,
             stroke_fill=outline_color,
             stroke_width=outline_width,
         )
@@ -127,7 +126,7 @@ async def generate_profile_card(
             (304, 94),
             guild,
             font=font_small,
-            fill=color,
+            fill=outline_color,
             stroke_fill=outline_color,
             stroke_width=outline_width,
         )
@@ -135,7 +134,7 @@ async def generate_profile_card(
         (302, 32),
         target.display_name,
         font=font_big,
-        fill=outline_color,
+        fill=color,
         stroke_fill=outline_color,
         stroke_width=outline_width,
     )
@@ -160,7 +159,7 @@ async def generate_profile_card(
         (302, 92),
         guild,
         font=font_small,
-        fill=outline_color,
+        fill=color,
         stroke_fill=outline_color,
         stroke_width=outline_width,
     )
@@ -169,7 +168,7 @@ async def generate_profile_card(
         (302, 144),
         joined_text,
         font=font_xsmall,
-        fill=outline_color,
+        fill=color,
         stroke_fill=outline_color,
         stroke_width=outline_width,
     )
