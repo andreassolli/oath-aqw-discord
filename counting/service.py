@@ -40,9 +40,8 @@ async def process_count_message(message):
     )
     if number % 100 == 0 and len(recent_users) > 0:
         total_reward = 200
-        split = total_reward // len(recent_users)
-
         rewarded_users = set(recent_users)
+        split = total_reward // len(rewarded_users)
 
         for uid in rewarded_users:
             db.collection("users").document(uid).set(
@@ -59,7 +58,7 @@ async def process_count_message(message):
             description=(
                 f"🎉 We reached **{number}**!\n\n"
                 f"The last contributors {mentions}\n"
-                f"each receive **<:oathcoin:1462999179998531614>{split} coins!**"
+                f"each receive **<:oathcoin:1462999179998531614>{split}!**"
             ),
             color=discord.Color.green(),
         )
@@ -92,8 +91,8 @@ async def process_count_message(message):
         embed = discord.Embed(
             title="🎉 Checkpoint reached!",
             description=(
-                f"{message.author.mention} reached checkmark **{score}** "
-                f"and found **<:oathcoin:1462999179998531614>{coins}!**"
+                f"{message.author.mention} reached has counted **{score}** times, "
+                f"and received **<:oathcoin:1462999179998531614>{coins}!**"
             ),
             color=discord.Color.gold(),
         )

@@ -1,3 +1,4 @@
+import asyncio
 from datetime import datetime
 from typing import Dict, Tuple
 
@@ -21,7 +22,9 @@ async def finalize_ticket(
     ticket_name: str,
     ticket_data: dict,
 ) -> None:
-
+    await interaction.followup.send(
+        "🎉 Ticket completed, adding points.", ephemeral=True
+    )
     guild = interaction.guild
     if guild is None:
         return
@@ -184,9 +187,10 @@ async def finalize_ticket(
     )
 
     await log_ticket_event(interaction.client, embed=embed)
+    await asyncio.sleep(0.5)
     await update_ticket(interaction.client)
 
-    await interaction.followup.send("🎉 Ticket completed.", ephemeral=True)
+    await interaction.followup.send("🗑️ Deleting channel...", ephemeral=True)
 
     if interaction.channel:
         await interaction.channel.delete()

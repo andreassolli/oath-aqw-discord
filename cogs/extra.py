@@ -700,6 +700,55 @@ class Extra(commands.Cog):
             ephemeral=True,
         )
 
+    @app_commands.command(
+        name="mark-beta-users",
+        description="Mark all users with a role as beta participants",
+    )
+    @app_commands.default_permissions(administrator=True)
+    @app_commands.checks.has_role(BOT_GUY_ROLE_ID)
+    async def mark_beta_users(
+        self,
+        interaction: discord.Interaction,
+        role: discord.Role,
+    ):
+        await interaction.response.defer(ephemeral=True)
+
+        guild = interaction.guild
+        if not guild:
+            return await interaction.followup.send(
+                "❌ Guild not found.", ephemeral=True
+            )
+
+        role_members = role.members
+
+        updated = 0
+
+        batch = db.batch()
+        count = 0
+
+        for member in role_members:
+            ref = db.collection("users").document(str(member.id))
+
+            batch.set(
+                ref,
+                {"participated_in_beta": True},
+                merge=True,
+            )
+
+            count += 1
+
+            if count % 500 == 0:
+                batch.commit()
+                batch = db.batch()
+
+        # Commit remaining
+        batch.commit()
+
+        await interaction.followup.send(
+            f"✅ Marked **{updated} users** as beta participants.",
+            ephemeral=True,
+        )
+
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(Extra(bot))
