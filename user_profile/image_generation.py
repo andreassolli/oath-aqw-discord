@@ -105,8 +105,8 @@ async def generate_profile_card(
         target.display_name,
         font=font_big,
         fill=color,
-        outline_color=outline_color,
-        outline_width=outline_width,
+        stroke_fill=outline_color,
+        stroke_width=outline_width,
     )
     if has_been_potw:
         name = target.display_name
@@ -130,8 +130,8 @@ async def generate_profile_card(
         guild,
         font=font_small,
         fill=color,
-        outline_color=outline_color,
-        outline_width=outline_width,
+        stroke_fill=outline_color,
+        stroke_width=outline_width,
     )
 
     if target.joined_at:
@@ -145,8 +145,8 @@ async def generate_profile_card(
         joined_text,
         font=font_xsmall,
         fill=color,
-        outline_color=outline_color,
-        outline_width=outline_width,
+        stroke_fill=outline_color,
+        stroke_width=outline_width,
     )
 
     draw.text(
@@ -154,8 +154,8 @@ async def generate_profile_card(
         f"{mee6['current_xp']} / {mee6['xp_to_level']} xp",
         font=font_xsmall_light,
         fill=color,
-        outline_color=outline_color,
-        outline_width=outline_width,
+        stroke_fill=outline_color,
+        stroke_width=outline_width,
     )
     draw_gradient_text(bg, (467, 196), "@", font_small_bold, role)
     draw_gradient_text(
@@ -169,8 +169,8 @@ async def generate_profile_card(
         str(mee6["level"]),
         font=font_bold,
         fill=color,
-        outline_color=outline_color,
-        outline_width=outline_width,
+        stroke_fill=outline_color,
+        stroke_width=outline_width,
     )
 
     draw.text(
@@ -178,8 +178,8 @@ async def generate_profile_card(
         "lvl",
         font=font_xsmall,
         fill=color,
-        outline_color=outline_color,
-        outline_width=outline_width,
+        stroke_fill=outline_color,
+        stroke_width=outline_width,
     )
 
     draw.text(
@@ -187,8 +187,8 @@ async def generate_profile_card(
         f"{mee6['messages']} messages",
         font=font_xsmall,
         fill=color,
-        outline_color=outline_color,
-        outline_width=outline_width,
+        stroke_fill=outline_color,
+        stroke_width=outline_width,
     )
 
     draw.text(
@@ -196,8 +196,8 @@ async def generate_profile_card(
         f"{counting_score} counts",
         font=font_xsmall,
         fill=color,
-        outline_color=outline_color,
-        outline_width=outline_width,
+        stroke_fill=outline_color,
+        stroke_width=outline_width,
     )
 
     draw.text(
@@ -205,8 +205,8 @@ async def generate_profile_card(
         f"{gems}",
         font=font_xsmall,
         fill=color,
-        outline_color=outline_color,
-        outline_width=outline_width,
+        stroke_fill=outline_color,
+        stroke_width=outline_width,
     )
 
     draw.text(
@@ -214,16 +214,16 @@ async def generate_profile_card(
         f"{points} points",
         font=font_xsmall,
         fill=color,
-        outline_color=outline_color,
-        outline_width=outline_width,
+        stroke_fill=outline_color,
+        stroke_width=outline_width,
     )
     draw.text(
         (346, 346),
         f"{completed_words} words",
         font=font_xsmall,
         fill=color,
-        outline_color=outline_color,
-        outline_width=outline_width,
+        stroke_fill=outline_color,
+        stroke_width=outline_width,
     )
 
     draw.text(
@@ -231,32 +231,32 @@ async def generate_profile_card(
         f"{coins}",
         font=font_xsmall,
         fill=color,
-        outline_color=outline_color,
-        outline_width=outline_width,
+        stroke_fill=outline_color,
+        stroke_width=outline_width,
     )
     draw.text(
         (535, 346),
         f"{avg_display}",
         font=font_xsmall,
         fill=color,
-        outline_color=outline_color,
-        outline_width=outline_width,
+        stroke_fill=outline_color,
+        stroke_width=outline_width,
     )
     draw.text(
         (346, 469),
         f"{wins} wins",
         font=font_xsmall,
         fill=color,
-        outline_color=outline_color,
-        outline_width=outline_width,
+        stroke_fill=outline_color,
+        stroke_width=outline_width,
     )
     draw.text(
         (535, 428),
         f"{tickets_claimed} tickets",
         font=font_xsmall,
         fill=color,
-        outline_color=outline_color,
-        outline_width=outline_width,
+        stroke_fill=outline_color,
+        stroke_width=outline_width,
     )
 
     draw.text(
@@ -264,8 +264,8 @@ async def generate_profile_card(
         f"{ordinal(rank)} place",
         font=font_xsmall,
         fill=color,
-        outline_color=outline_color,
-        outline_width=outline_width,
+        stroke_fill=outline_color,
+        stroke_width=outline_width,
     )
 
     trophy = ASSET_CACHE["trophy"]
