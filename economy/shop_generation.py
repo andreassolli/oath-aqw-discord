@@ -42,7 +42,7 @@ async def generate_shop(
     coin_picture = Image.open(ASSETS_DIR / "coin.png").convert("RGBA")
     coin_picture = coin_picture.resize((27, 30), Image.Resampling.LANCZOS)
     gem_picture = Image.open(ASSETS_DIR / "gem.png").convert("RGBA")
-    gem_picture = gem_picture.resize((30, 30), Image.Resampling.LANCZOS)
+    gem_picture = gem_picture.resize((35, 35), Image.Resampling.LANCZOS)
     quantity_image = Image.open(ASSETS_DIR / "quantity.png").convert("RGBA")
 
     draw = ImageDraw.Draw(bg)
@@ -53,8 +53,8 @@ async def generate_shop(
         fill="#FFFFFF",
     )
     draw.text((57, 42), "Shop", font=font_bold, fill="#FFFFFF")
-    draw.text((732, 47), f"{coins}", font=font_medium_bold, fill="#FFFFFF")
-    bg.paste(gem_picture, (780, 47), gem_picture)
+    draw.text((663, 47), f"{coins}", font=font_medium_bold, fill="#FFFFFF")
+    bg.paste(gem_picture, (780, 50), gem_picture)
     draw.text((800, 47), f"{gems}", font=font_medium_bold, fill="#FFFFFF")
     draw.text(
         (57, 688),
@@ -73,7 +73,7 @@ async def generate_shop(
         rarity = item.get("rarity", "common")
         rarity_image = RARITY_CACHE.get(rarity, None)
         if rarity_image:
-            bg.paste(rarity_image, (207 + gapX * x, 293 + gapY * y), rarity_image)
+            bg.paste(rarity_image, (207 + gapX * x, 297 + gapY * y), rarity_image)
         item_picture = Image.open(ASSETS_DIR / item["display"]).convert("RGBA")
         bg.paste(item_picture, (57 + gapX * x, 144 + gapY * y), item_picture)
         draw.text(
@@ -97,11 +97,11 @@ async def generate_shop(
         quantity = item["quantity"]
         if quantity == -1:
             draw.text(
-                (209 + gapX * x, 337 + gapY * y), f"∞", font=font_big, fill="#FFFFFF"
+                (209 + gapX * x, 334 + gapY * y), f"∞", font=font_big, fill="#FFFFFF"
             )
         else:
             draw.text(
-                (212 + gapX * x, 337 + gapY * y),
+                (212 + gapX * x, 334 + gapY * y),
                 f"{quantity}",
                 font=font_big,
                 fill="#FFFFFF",
