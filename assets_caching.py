@@ -71,9 +71,8 @@ def initialize_assets():
     # --- Badges ---
     for name, path in BADGE_TO_IMAGE.items():
         img = Image.open(path).convert("RGBA")
-        img = img.resize((69, 69), Image.Resampling.LANCZOS)
-        if "Beta" in name:
-            img = rounded_crop(img, 69, 10)
+        img = img.resize((70, 70), Image.Resampling.LANCZOS)
+        img = rounded_crop(img, 69, 18)
         BADGE_CACHE[name] = img
 
     # --- Fonts ---
