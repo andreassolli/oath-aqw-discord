@@ -41,7 +41,7 @@ async def generate_inventory(
 
     draw.text((57, 42), "Inventory", font=font_bold, fill="#FFFFFF")
     draw.text(
-        (927, 688),
+        (827, 688),
         f"Page {page + 1} / {total_pages}",
         font=font_small,
         fill="#FFFFFF",

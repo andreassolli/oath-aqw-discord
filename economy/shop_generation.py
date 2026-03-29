@@ -48,7 +48,7 @@ async def generate_shop(
 
     draw = ImageDraw.Draw(bg)
     draw.text(
-        (927, 688),
+        (827, 688),
         f"Page {page + 1} / {total_pages}",
         font=font_small,
         fill="#FFFFFF",
