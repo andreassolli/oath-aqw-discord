@@ -17,7 +17,7 @@ async def update_ticket(client: discord.Client):
         if (
             msg.author == client.user
             and msg.embeds
-            and msg.embeds[0].title == "Ticket stats since January 27th, 2026"
+            and msg.embeds[0].title == "Ticket stats since January 26th, 2026"
         ):
             await msg.edit(embed=embed)
             return
