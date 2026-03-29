@@ -42,7 +42,8 @@ async def generate_wordle_share(interaction: discord.Interaction) -> BytesIO:
     game_ref = db.collection("wordle_games").document(userId)
     game_doc = game_ref.get()
     game_data = game_doc.to_dict() if game_doc.exists else {}
-    avatar = await fetch_avatar(interaction.user.display_avatar.url)
+    avatar_url = interaction.user.display_avatar.replace(format="png", size=256).url
+    avatar = await fetch_avatar(avatar_url)
     avatar = circle_crop(avatar, 231)
     bg.paste(avatar, (30, 25), avatar)
     guesses = game_data.get("guesses", [])

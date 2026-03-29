@@ -183,7 +183,8 @@ class Extra(commands.Cog):
                 "completed": correct or guess_count >= 6,
                 "won": correct,
                 "letter_states": letter_states,
-            }
+            },
+            merge=True,
         )
         view = None
         board_image = await generate_wordle_board(interaction)
