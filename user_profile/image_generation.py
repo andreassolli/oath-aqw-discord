@@ -41,9 +41,9 @@ async def generate_profile_card(
     badges = sort_badges(data.get("badges", []))
     points = data.get("points", 0)
     tickets_claimed = data.get("tickets_claimed", 0)
-    guild = str(data.get("guild", "No guild"))
+    guild = str(data.get("guild", ""))
     if guild == "None":
-        guild = "No guild"
+        guild = ""
     has_been_potw = data.get("has_been_potw", False)
     is_potw = any(role.id == POTW_ROLE_ID for role in target.roles)
     game_ref = db.collection("wordle_games").document(str(target.id))
@@ -66,6 +66,7 @@ async def generate_profile_card(
     card = data.get("card", {})
     gems = data.get("gems", 0)
     role = data.get("highlighted_role", "None")
+    color = "#FFFFFF"
     if card:
         bg = Image.open(ASSETS_DIR / f"{card.get('image')}").convert("RGBA")
     else:
@@ -73,6 +74,7 @@ async def generate_profile_card(
 
     if gold_card:
         bg = Image.open(ASSETS_DIR / "gold_signature_card.png").convert("RGBA")
+        color = "#8A550A"
     if border and not gold_card:
         border_img = Image.open(ASSETS_DIR / f"{border.get('image')}").convert("RGBA")
         bg.paste(border_img, (0, 0), border_img)
@@ -94,7 +96,7 @@ async def generate_profile_card(
     font_small_bold = FONTS["small_bold"]
     font_xsmall_bold = FONTS["xsmall_bold"]
 
-    draw.text((302, 32), target.display_name, font=font_big, fill="#FFFFFF")
+    draw.text((302, 32), target.display_name, font=font_big, fill=color)
     if has_been_potw:
         name = target.display_name
         name_x = 302
@@ -112,7 +114,7 @@ async def generate_profile_card(
 
         potw_flare = ASSET_CACHE["potw_flare"]
         bg.paste(potw_flare, (flare_x, flare_y), potw_flare)
-    draw.text((302, 92), guild, font=font_small, fill="#FFFFFF")
+    draw.text((302, 92), guild, font=font_small, fill=color)
 
     if target.joined_at:
         day = target.joined_at.day
@@ -124,14 +126,14 @@ async def generate_profile_card(
         (302, 144),
         joined_text,
         font=font_xsmall,
-        fill="#FFFFFF",
+        fill=color,
     )
 
     draw.text(
         (312, 242),
         f"{mee6['current_xp']} / {mee6['xp_to_level']} xp",
         font=font_xsmall_light,
-        fill="#FFFFFF",
+        fill=color,
     )
     draw_gradient_text(bg, (467, 196), "@", font_small_bold, role)
     draw_gradient_text(
@@ -140,33 +142,29 @@ async def generate_profile_card(
         role,
         font_xsmall_bold,
     )
-    draw.text((335, 175), str(mee6["level"]), font=font_bold, fill="#FFFFFF")
+    draw.text((335, 175), str(mee6["level"]), font=font_bold, fill=color)
 
-    draw.text((312, 215), "lvl", font=font_xsmall, fill="#FFFFFF")
+    draw.text((312, 215), "lvl", font=font_xsmall, fill=color)
 
-    draw.text(
-        (500, 232), f"{mee6['messages']} messages", font=font_xsmall, fill="#FFFFFF"
-    )
+    draw.text((500, 232), f"{mee6['messages']} messages", font=font_xsmall, fill=color)
 
-    draw.text((346, 387), f"{counting_score} counts", font=font_xsmall, fill="#FFFFFF")
+    draw.text((346, 387), f"{counting_score} counts", font=font_xsmall, fill=color)
 
-    draw.text((535, 305), f"{gems}", font=font_xsmall, fill="#FFFFFF")
+    draw.text((535, 305), f"{gems}", font=font_xsmall, fill=color)
 
-    draw.text((346, 428), f"{points} points", font=font_xsmall, fill="#FFFFFF")
-    draw.text((346, 346), f"{completed_words} words", font=font_xsmall, fill="#FFFFFF")
+    draw.text((346, 428), f"{points} points", font=font_xsmall, fill=color)
+    draw.text((346, 346), f"{completed_words} words", font=font_xsmall, fill=color)
 
-    draw.text((346, 305), f"{coins}", font=font_xsmall, fill="#FFFFFF")
-    draw.text((535, 346), f"{avg_display}", font=font_xsmall, fill="#FFFFFF")
-    draw.text((346, 469), f"{wins} wins", font=font_xsmall, fill="#FFFFFF")
-    draw.text(
-        (535, 428), f"{tickets_claimed} tickets", font=font_xsmall, fill="#FFFFFF"
-    )
+    draw.text((346, 305), f"{coins}", font=font_xsmall, fill=color)
+    draw.text((535, 346), f"{avg_display}", font=font_xsmall, fill=color)
+    draw.text((346, 469), f"{wins} wins", font=font_xsmall, fill=color)
+    draw.text((535, 428), f"{tickets_claimed} tickets", font=font_xsmall, fill=color)
 
     draw.text(
         (535, 469),
         f"{ordinal(rank)} place",
         font=font_xsmall,
-        fill="#FFFFFF",
+        fill=color,
     )
 
     trophy = ASSET_CACHE["trophy"]
