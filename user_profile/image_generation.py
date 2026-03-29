@@ -69,6 +69,12 @@ async def generate_profile_card(
     color = "#FFFFFF"
     outline_color = "#FFFFFF"
     outline_width = 0
+    if target.joined_at:
+        day = target.joined_at.day
+        joined_text = f"Joined {day}. {target.joined_at.strftime('%b %Y')}"
+    else:
+        joined_text = "Joined unknown"
+
     if card:
         bg = Image.open(ASSETS_DIR / f"{card.get('image')}").convert("RGBA")
     else:
@@ -77,8 +83,9 @@ async def generate_profile_card(
     if gold_card:
         bg = Image.open(ASSETS_DIR / "gold_signature_card.png").convert("RGBA")
         color = "#583400"
-        outline_color = "#583400"
+        outline_color = "#FFFFFF"
         outline_width = 0
+
     if border and not gold_card:
         border_img = Image.open(ASSETS_DIR / f"{border.get('image')}").convert("RGBA")
         bg.paste(border_img, (0, 0), border_img)
@@ -104,7 +111,7 @@ async def generate_profile_card(
         (302, 32),
         target.display_name,
         font=font_big,
-        fill=color,
+        fill=outline_color,
         stroke_fill=outline_color,
         stroke_width=outline_width,
     )
@@ -129,22 +136,42 @@ async def generate_profile_card(
         (302, 92),
         guild,
         font=font_small,
-        fill=color,
+        fill=outline_color,
         stroke_fill=outline_color,
         stroke_width=outline_width,
     )
 
-    if target.joined_at:
-        day = target.joined_at.day
-        joined_text = f"Joined {day}. {target.joined_at.strftime('%b %Y')}"
-    else:
-        joined_text = "Joined unknown"
+    if gold_card:
+        draw.text(
+            (304, 34),
+            target.display_name,
+            font=font_big,
+            fill=color,
+            stroke_fill=outline_color,
+            stroke_width=outline_width,
+        )
+        draw.text(
+            (304, 146),
+            joined_text,
+            font=font_xsmall,
+            fill=color,
+            stroke_fill=outline_color,
+            stroke_width=outline_width,
+        )
+        draw.text(
+            (304, 94),
+            guild,
+            font=font_small,
+            fill=color,
+            stroke_fill=outline_color,
+            stroke_width=outline_width,
+        )
 
     draw.text(
         (302, 144),
         joined_text,
         font=font_xsmall,
-        fill=color,
+        fill=outline_color,
         stroke_fill=outline_color,
         stroke_width=outline_width,
     )
