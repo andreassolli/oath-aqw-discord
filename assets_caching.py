@@ -1,5 +1,7 @@
 from pathlib import Path
 
+from user_profile.utils import rounded_crop
+
 ASSET_CACHE = {}
 BADGE_CACHE = {}
 FONTS = {}
@@ -70,6 +72,8 @@ def initialize_assets():
     for name, path in BADGE_TO_IMAGE.items():
         img = Image.open(path).convert("RGBA")
         img = img.resize((69, 69), Image.Resampling.LANCZOS)
+        if "Beta" in name:
+            img = rounded_crop(img, 69, 10)
         BADGE_CACHE[name] = img
 
     # --- Fonts ---

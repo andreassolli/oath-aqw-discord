@@ -56,6 +56,19 @@ def circle_crop(img, size):
     return img
 
 
+def rounded_crop(img, size, radius):
+    img = img.resize((size, size))
+
+    mask = Image.new("L", (size, size), 0)
+    draw = ImageDraw.Draw(mask)
+
+    # Draw rounded rectangle instead of circle
+    draw.rounded_rectangle((0, 0, size, size), radius=radius, fill=255)
+
+    img.putalpha(mask)
+    return img
+
+
 async def get_weapon_names() -> set[str]:
     global _weapon_name_cache
 
