@@ -13,7 +13,7 @@ async def build_ticket_counter():
     total_points = ticket_stats_doc.get("total_points", 0)
 
     embed = discord.Embed(
-        title="Ticket stats since January 27th, 2026",
+        title="Ticket stats since January 26th, 2026",
         description=(
             f"🎫 `{total_completed}` tickets completed.\n"
             f"🏅 `{total_points}` points given out."

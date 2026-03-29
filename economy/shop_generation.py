@@ -48,7 +48,7 @@ async def generate_shop(
 
     draw = ImageDraw.Draw(bg)
     draw.text(
-        (1167, 688),
+        (927, 688),
         f"Page {page + 1} / {total_pages}",
         font=font_small,
         fill="#FFFFFF",
@@ -56,7 +56,7 @@ async def generate_shop(
     draw.text((57, 42), "Shop", font=font_bold, fill="#FFFFFF")
     draw.text((663, 47), f"{coins}", font=font_medium_bold, fill="#FFFFFF")
     bg.paste(gem_picture_inv, (780, 50), gem_picture_inv)
-    draw.text((817, 47), f"{gems}", font=font_medium_bold, fill="#FFFFFF")
+    draw.text((822, 47), f"{gems}", font=font_medium_bold, fill="#FFFFFF")
     draw.text(
         (57, 688),
         "Select the items you want to buy below.",
