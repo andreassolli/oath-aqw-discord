@@ -3,6 +3,8 @@ import random
 import discord
 from google.cloud.firestore import Increment
 
+from assets_caching import ROCKS_CACHE
+from economy.generate_rocks import generate_rocks_from_ids
 from firebase_client import db
 
 
@@ -52,10 +54,25 @@ class RockView(discord.ui.View):
                 f"You broke the rock, and found... <:gems:1485660490376937502>{shards}"
             )
 
+        # Replace the chosen rock with 10–15
+        if rock_type == 9:
+            self.rocks[index] = 16
+        else:
+            replacement_pool = [k for k in ROCKS_CACHE if 10 <= k <= 15]
+            self.rocks[index] = random.choice(replacement_pool)
+
+        # Generate updated image
+        buffer = generate_rocks_from_ids(self.rocks)
+        file = discord.File(buffer, filename="rocks.png")
+
+        # Disable buttons (you already do this)
         for child in self.children:
             child.disabled = True
 
-        await interaction.response.edit_message(view=self)
+        # Edit original message WITH new image
+        await interaction.response.edit_message(attachments=[file], view=self)
+
+        # Send result message
         await interaction.followup.send(content=result, ephemeral=True)
 
     @discord.ui.button(label="Left", style=discord.ButtonStyle.primary)
