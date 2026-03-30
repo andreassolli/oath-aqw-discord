@@ -15,7 +15,7 @@ def generate_rocks():
     valid_rocks = [(k, v) for k, v in ROCKS_CACHE.items() if 1 <= k <= 9]
     three_rocks = random.sample(valid_rocks, 3)
 
-    positions = [(84, 83), (404, 83), (724, 83)]
+    positions = [(84, 83), (354, 83), (624, 83)]
 
     for i, (rock_id, rock_img) in enumerate(three_rocks):
         bg.paste(rock_img, positions[i], rock_img)

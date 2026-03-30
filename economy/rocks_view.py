@@ -70,10 +70,12 @@ class RockView(discord.ui.View):
             child.disabled = True
 
         # Edit original message WITH new image
-        await interaction.response.edit_message(attachments=[file], view=self)
+        await interaction.response.edit_message(
+            content=result, attachments=[file], view=self
+        )
 
         # Send result message
-        await interaction.followup.send(content=result, ephemeral=True)
+        # await interaction.followup.send(content=result, ephemeral=True)
 
     @discord.ui.button(label="Left", style=discord.ButtonStyle.primary)
     async def left(self, interaction: discord.Interaction, button: discord.ui.Button):
