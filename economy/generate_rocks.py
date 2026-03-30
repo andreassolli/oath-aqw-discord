@@ -13,7 +13,7 @@ def generate_rocks():
     bg = Image.open(ASSETS_DIR / "rock_background.png").convert("RGBA")
 
     valid_rocks = [(k, v) for k, v in ROCKS_CACHE.items() if 1 <= k <= 9]
-    three_rocks = [random.choice(valid_rocks) for _ in range(3)]
+    three_rocks = [random.sample(valid_rocks) for _ in range(3)]
 
     positions = [(84, 83), (404, 83), (724, 83)]
 

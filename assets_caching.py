@@ -85,7 +85,7 @@ def initialize_assets():
     FONTS["xsmall_bold"] = ImageFont.truetype(FONTS_DIR / "Urbanist-Bold.ttf", 24)
     FONTS["xsmall_light"] = ImageFont.truetype(FONTS_DIR / "Urbanist-Light.ttf", 21)
 
-    ROCK_SIZE = (225, 225)
+    ROCK_SIZE = (150, 150)
 
     ROCKS_CACHE[1] = load("rock1.png", ROCK_SIZE)
     ROCKS_CACHE[2] = load("rock2.png", ROCK_SIZE)
