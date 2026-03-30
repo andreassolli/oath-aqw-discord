@@ -30,7 +30,7 @@ def generate_rocks():
 def generate_rocks_from_ids(rock_ids: list[int]):
     bg = Image.open(ASSETS_DIR / "rock_background.png").convert("RGBA")
 
-    positions = [(84, 83), (404, 83), (724, 83)]
+    positions = [(84, 83), (354, 83), (624, 83)]
 
     for i, rock_id in enumerate(rock_ids):
         rock_img = ROCKS_CACHE[rock_id]

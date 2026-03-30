@@ -1,5 +1,6 @@
 import math
 import random
+from datetime import datetime, timedelta
 from typing import Literal
 
 import discord
@@ -344,6 +345,70 @@ class Economy(commands.Cog):
             f"Spend <:oathcoin:1462999179998531614>{price} to break rocks?",
             view=view,
             ephemeral=True,
+        )
+
+    @app_commands.command(name="steal", description="Steal coins from someone.")
+    @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
+    async def steal(self, interaction: discord.Interaction, target: discord.Member):
+        if target.id == interaction.user.id:
+            return await interaction.response.send_message(
+                "You can't steal from yourself.", ephemeral=True
+            )
+        user_ref = db.collection("users").document(str(interaction.user.id))
+        doc = user_ref.get()
+        data = doc.to_dict() if doc.exists else {}
+
+        last_steal = data.get("last_steal")
+
+        if last_steal:
+            last_steal = last_steal.replace(tzinfo=None)
+            remaining = timedelta(minutes=20) - (datetime.utcnow() - last_steal)
+
+            if remaining.total_seconds() > 0:
+                mins, secs = divmod(int(remaining.total_seconds()), 60)
+                return await interaction.response.send_message(
+                    f"⏳ You can steal again in {mins}m {secs}s.", ephemeral=True
+                )
+
+        target_ref = db.collection("users").document(str(target.id))
+        target_doc = target_ref.get()
+        target_data = target_doc.to_dict() if target_doc.exists else {}
+        last_stolen_from = target_data.get("last_stolen_from")
+        if last_stolen_from:
+            last_stolen_from = last_stolen_from.replace(tzinfo=None)
+            remaining = timedelta(minutes=20) - (datetime.utcnow() - last_stolen_from)
+
+            if remaining.total_seconds() > 0:
+                mins, secs = divmod(int(remaining.total_seconds()), 60)
+                return await interaction.response.send_message(
+                    f"⏳ This person cannot be stolen from again for another {mins}m {secs}s.",
+                    ephemeral=True,
+                )
+
+        target_coins = target_data.get("coins", 0)
+        if target_coins <= 0:
+            return await interaction.response.send_message(
+                "You cannot steal coins from someone who has none.", ephemeral=True
+            )
+
+        max_steal = min(target_coins, 50)
+        coins = random.randint(5, max_steal)
+        not_dropped = random.randint(coins - 5, coins)
+        dropped = coins - not_dropped
+        user_ref.update({"coins": firestore.Increment(not_dropped)})
+        target_ref.update({"coins": firestore.Increment(-coins)})
+        user_ref.set(
+            {"last_steal": firestore.SERVER_TIMESTAMP},
+            merge=True,
+        )
+
+        target_ref.set(
+            {"last_stolen_from": firestore.SERVER_TIMESTAMP},
+            merge=True,
+        )
+
+        return await interaction.response.send_message(
+            f"{interaction.user.display_name} stole <:oathcoin:1462999179998531614>{coins} from {target.display_name}, but they dropped <:oathcoin:1462999179998531614>{dropped} in the process!"
         )
 
 
