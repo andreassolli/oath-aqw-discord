@@ -199,46 +199,45 @@ class StartView(discord.ui.View):
                     ephemeral=True,
                 )
 
-        if data.get("qualified_helper"):
-            return await interaction.response.send_modal(FirstModal())
+        return await interaction.response.send_modal(FirstModal())
 
-        ccid = data.get("ccid")
-        if not ccid:
-            return await interaction.response.send_message(
-                "❌ You must verify first.",
-                ephemeral=True,
-            )
+        # ccid = data.get("ccid")
+        # if not ccid:
+        #    return await interaction.response.send_message(
+        #        "❌ You must verify first.",
+        #        ephemeral=True,
+        #    )
 
-        async with aiohttp.ClientSession() as session:
-            limiter = SteadyRateLimiter(0.3)
-            result = await verify_helper(session, limiter, ccid)
+        # async with aiohttp.ClientSession() as session:
+        #    limiter = SteadyRateLimiter(0.3)
+        #    result = await verify_helper(session, limiter, ccid)
 
-        if result["qualified"]:
-            user_ref.set({"qualified_helper": True}, merge=True)
-            return await interaction.response.send_modal(FirstModal())
+        # if result["qualified"]:
+        #    user_ref.set({"qualified_helper": True}, merge=True)
+        #    return await interaction.response.send_modal(FirstModal())
 
-        missing = []
-        if not result["weapon"]:
-            missing.append(
-                "❌ Missing any 51% damage Weapon<:swordaqw:1487004634307629056>"
-            )
-        if not result["classes"]:
-            missing.append(
-                "❌ Missing Lord of Order and/or ArchPaladin<:classbadge:1471256107057156117>"
-            )
-        if not result["taunt"]:
-            missing.append(
-                "❌ Missing Scroll of Enrage<:scrollaqw:1487000863867277432>"
-            )
-        if not result["potion"]:
-            missing.append("❌ Missing Potions<:potion:1457810711706341544>")
-        if not result["blade of awe"]:
-            missing.append("❌ Missing Awe Enhancements<:swordaqw:1487004634307629056>")
+        # missing = []
+        # if not result["weapon"]:
+        #     missing.append(
+        #         "❌ Missing any 51% damage Weapon<:swordaqw:1487004634307629056>"
+        #     )
+        # if not result["classes"]:
+        #     missing.append(
+        #         "❌ Missing Lord of Order and/or ArchPaladin<:classbadge:1471256107057156117>"
+        #     )
+        # if not result["taunt"]:
+        #     missing.append(
+        #         "❌ Missing Scroll of Enrage<:scrollaqw:1487000863867277432>"
+        #     )
+        # if not result["potion"]:
+        #     missing.append("❌ Missing Potions<:potion:1457810711706341544>")
+        # if not result["blade of awe"]:
+        #    missing.append("❌ Missing Awe Enhancements<:swordaqw:1487004634307629056>")
 
-        await interaction.response.send_message(
-            "❌ You are not qualified to apply yet:\n" + "\n".join(missing),
-            ephemeral=True,
-        )
+        # await interaction.response.send_message(
+        #     "❌ You are not qualified to apply yet:\n" + "\n".join(missing),
+        #     ephemeral=True,
+        # )
 
 
 class NextStepView(discord.ui.View):

@@ -29,7 +29,7 @@ async def setup_application_panel(client: discord.Client):
         color=discord.Color.blurple(),
     )
     embed.set_footer(
-        text="You need to be qualified to apply; 51% dmg weapon, LoO & AP, Scroll of Enrage, any potion, all in inventory."
+        text="You need to be qualified to apply; 51% dmg weapon, LoO & AP, Scroll of Enrage, any potion."
     )
 
     await channel.send(embed=embed, view=StartView())
