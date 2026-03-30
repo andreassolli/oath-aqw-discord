@@ -304,7 +304,7 @@ class CreateTicketModal(discord.ui.Modal):
             if experienced_only:
                 embed = discord.Embed(
                     title="⚠️ Experienced Only",
-                    description="This ticket has experienced-only toggled on, only experienced helpers can claim and will be pinged.\nTo turn this off click the 'Toggle Experienced Only' button.",
+                    description="This ticket has experienced-only toggled on. Only experienced helpers can claim and will be pinged.\nTo turn this off click the 'Toggle Experienced Only' button.\nGet the role here: https://discord.com/channels/1455651278590972019/1455651281006756046",
                     color=discord.Color.red(),
                 )
                 await channel.send(embed=embed)
