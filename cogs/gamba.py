@@ -38,6 +38,11 @@ class Gamba(commands.Cog):
                 return await interaction.response.send_message(
                     f"You have to use this command in {channel.mention}"
                 )
+        if wager <= 0:
+            return await interaction.response.send_message(
+                "You cannot wager a negative amount.",
+                ephemeral=True,
+            )
         success, error = lock_coins(interaction.user.id, wager)
 
         if not success:
@@ -66,6 +71,11 @@ class Gamba(commands.Cog):
                 return await interaction.response.send_message(
                     f"You have to use this command in {channel.mention}"
                 )
+        if wager <= 0:
+            return await interaction.response.send_message(
+                "You cannot wager a negative amount.",
+                ephemeral=True,
+            )
         if opponent == interaction.user:
             await interaction.response.send_message(
                 "You can't challenge yourself.",

@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 import aiohttp
 import discord
 
-from config import TICKET_INSPECTORS_CHANNEL_ID
+from config import TICKET_INSPECTOR_ROLE_ID, TICKET_INSPECTORS_CHANNEL_ID
 from firebase_client import db
 from ticket_help.utils.qualify_helper import SteadyRateLimiter, verify_helper
 
@@ -138,17 +138,21 @@ class SecondModal(discord.ui.Modal, title="Step 2 - Ultra Gramiel"):
         # Create thread
         try:
             thread = await channel.create_thread(
-                name=f"Application from {interaction.user.display_name}",
+                name=f"📩 **Application from {interaction.user.mention}**",
                 type=discord.ChannelType.public_thread,
             )
 
-            await thread.send(f"**{interaction.user.display_name}'s application**")
+            await thread.send(f"**{interaction.user.mention}'s application**")
 
             for q, ans in zip(QUESTIONS_STEP1, data["step1"]):
                 await thread.send(f"**{q}**\n{ans}")
 
             for q, ans in zip(QUESTIONS_STEP2, data["step2"]):
                 await thread.send(f"**{q}**\n{ans}")
+
+            role = guild.get_role(TICKET_INSPECTOR_ROLE_ID)
+            if role and isinstance(channel, discord.TextChannel):
+                await channel.send(f"📮 {role.mention}, new application!")
 
         except Exception as e:
             return await interaction.followup.send(

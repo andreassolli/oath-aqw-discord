@@ -7,6 +7,7 @@ from discord.ext import commands
 from config import APPLICATION_ID
 from http_client import close_session
 from startup import run_startup_tasks
+from utils import unlock_all_coins
 
 logging.basicConfig(level=logging.INFO)
 

@@ -26,8 +26,7 @@ async def setup_ticket_panel(client: discord.Client):
         color=discord.Color.blurple(),
     )
 
-    embed.set_image(
-        url="https://www.artix.com/media/6577/wallpaper_yokaidragons2_pc.png"
-    )
+    file = discord.File("assets/create_ticket.png", filename="create_ticket.png")
+    embed.set_image(url="attachment://create_ticket.png")
 
-    await channel.send(embed=embed, view=TicketPanelView())
+    await channel.send(file=file, embed=embed, view=TicketPanelView())
