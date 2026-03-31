@@ -414,8 +414,10 @@ class Economy(commands.Cog):
         coins = random.randint(5, max_steal)
         not_dropped = random.randint(coins - 5, coins)
         dropped = coins - not_dropped
-        user_ref.update({"coins": firestore.Increment(not_dropped)})
-        target_ref.update({"coins": firestore.Increment(-coins)})
+        target_ref.update({"coins": firestore.Increment(coins)})
+        user_ref.update({"coins": firestore.Increment(-coins)})
+        # user_ref.update({"coins": firestore.Increment(not_dropped)})
+        # target_ref.update({"coins": firestore.Increment(-coins)})
         user_ref.set(
             {"last_steal": firestore.SERVER_TIMESTAMP},
             merge=True,
@@ -427,7 +429,8 @@ class Economy(commands.Cog):
         )
 
         return await interaction.response.send_message(
-            f"{interaction.user.display_name} stole <:oathcoin:1462999179998531614>{coins} from {target.display_name}, but they dropped <:oathcoin:1462999179998531614>{dropped} in the process!"
+            f"{interaction.user.display_name} donated <:oathcoin:1462999179998531614>{coins} to {target.display_name}!"
+            # f"{interaction.user.display_name} stole <:oathcoin:1462999179998531614>{coins} from {target.display_name}, but they dropped <:oathcoin:1462999179998531614>{dropped} in the process!"
         )
 
 
