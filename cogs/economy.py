@@ -53,9 +53,18 @@ class Economy(commands.Cog):
         quantity: int | None = None,
         priority: int | None = None,
         invisible: bool = False,
+        rarity: Literal["common", "uncommon", "rare", "epic", "legendary"] = "common",
     ):
         await list_item(
-            name, coin_price, shard_price, image, type, quantity, priority, invisible
+            name,
+            coin_price,
+            shard_price,
+            image,
+            type,
+            quantity,
+            priority,
+            invisible,
+            rarity,
         )
         return await interaction.response.send_message(
             f"Listed {name} for sale in the shop.", ephemeral=True

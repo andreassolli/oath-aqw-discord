@@ -17,6 +17,7 @@ async def list_item(
     quantity: int | None = None,
     priority: int | None = None,
     invisible: bool = False,
+    rarity: Literal["common", "uncommon", "rare", "epic", "legendary"] = "common",
 ):
     if quantity is None:
         quantity = -1
@@ -50,6 +51,7 @@ async def list_item(
             "type": type,
             "priority": priority,
             "invisible": invisible,
+            "rarity": rarity,
         }
     )
 

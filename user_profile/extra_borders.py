@@ -10,7 +10,7 @@ def apply_extra_border(card_buffer: BytesIO, border: str) -> BytesIO:
     card_buffer.seek(0)
     card = Image.open(card_buffer).convert("RGBA")
 
-    border_image = Image.open(ASSETS_DIR / f"{border}.png").convert("RGBA")
+    border_image = Image.open(ASSETS_DIR / f"{border}").convert("RGBA")
 
     # Create canvas = hand size
     canvas = Image.new("RGBA", (border_image.width, border_image.height), (0, 0, 0, 0))
