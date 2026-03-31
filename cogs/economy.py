@@ -123,7 +123,7 @@ class Economy(commands.Cog):
 
         file = discord.File(image, filename="shop.png")
 
-        view = ShopView(interaction.user.id, filtered)
+        view = ShopView(interaction.user.id, sorted_filtered)
 
         await interaction.followup.send(
             file=file,
