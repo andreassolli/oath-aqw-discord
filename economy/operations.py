@@ -16,6 +16,7 @@ async def list_item(
     type: str,
     quantity: int | None = None,
     priority: int | None = None,
+    invisible: bool = False,
 ):
     if quantity is None:
         quantity = -1
@@ -48,6 +49,7 @@ async def list_item(
             "image": image_path,
             "type": type,
             "priority": priority,
+            "invisible": invisible,
         }
     )
 
