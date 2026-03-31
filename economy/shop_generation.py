@@ -103,7 +103,7 @@ async def generate_shop(
 
         # Shards
         if has_shards:
-            offset = 140 if has_coins else 57
+            offset = 164 if has_coins else 57
 
             bg.paste(
                 gem_picture_buy,
@@ -117,7 +117,7 @@ async def generate_shop(
                 fill="#FFFFFF",
             )
 
-        bg.paste(quantity_image, (203 + gapX * x, 192 + gapY * y), quantity_image)
+        bg.paste(quantity_image, (203 + gapX * x, 144 + gapY * y), quantity_image)
         first_price = coin_price if coin_price != 0 else shard_price
         draw.text(
             (88 + gapX * x, 334 + gapY * y),
@@ -128,11 +128,11 @@ async def generate_shop(
         quantity = item["quantity"]
         if quantity == -1:
             draw.text(
-                (209 + gapX * x, 186 + gapY * y), f"∞", font=font_big, fill="#FFFFFF"
+                (209 + gapX * x, 138 + gapY * y), f"∞", font=font_big, fill="#FFFFFF"
             )
         else:
             draw.text(
-                (212 + gapX * x, 182 + gapY * y),
+                (212 + gapX * x, 134 + gapY * y),
                 f"{quantity}",
                 font=font_big,
                 fill="#FFFFFF",
