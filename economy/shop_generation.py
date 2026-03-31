@@ -103,7 +103,7 @@ async def generate_shop(
 
         # Shards
         if has_shards:
-            offset = 164 if has_coins else 57
+            offset = 180 if has_coins else 57
 
             bg.paste(
                 gem_picture_buy,

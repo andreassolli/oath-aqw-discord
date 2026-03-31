@@ -10,6 +10,7 @@ from PIL import Image, ImageDraw, ImageFont
 from assets_caching import ASSET_CACHE, BADGE_CACHE, FONTS
 from config import AQW_BADGES, POTW_ROLE_ID
 from firebase_client import db
+from user_profile.extra_borders import apply_extra_border
 from user_profile.image_utils import draw_gradient_text
 
 from .mee6_fetcher import fetch_mee6_stats
@@ -17,6 +18,8 @@ from .utils import circle_crop, fetch_avatar, ordinal, sort_badges
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 ASSETS_DIR = BASE_DIR / "assets"
+
+EXTRA_BORDERS = {"Wanted Poster"}
 
 
 async def generate_profile_card(
@@ -85,7 +88,7 @@ async def generate_profile_card(
         outline_color = "#583400"
         outline_width = 0
 
-    if border and not gold_card:
+    if border and not gold_card and not border.get("id") in EXTRA_BORDERS:
         border_img = Image.open(ASSETS_DIR / f"{border.get('image')}").convert("RGBA")
         bg.paste(border_img, (0, 0), border_img)
 
@@ -328,5 +331,7 @@ async def generate_profile_card(
     buffer = BytesIO()
     bg.save(buffer, format="PNG")
     buffer.seek(0)
+    if border and border.get("id") in EXTRA_BORDERS:
+        buffer = apply_extra_border(buffer, border["image"])
 
     return buffer, badges, is_potw, has_been_potw, target.display_name, wins

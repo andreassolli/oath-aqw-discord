@@ -12,6 +12,7 @@ from extra_commands.wordle_share import generate_wordle_share
 from firebase_client import db, firestore
 from inventory.utils import add_item
 from request_utils import get_session
+from user_profile.computer_border_test import apply_computer_border
 from user_profile.image_test import generate_test_card
 from user_profile.utils import fetch_inventory
 from user_verification.utils import fetch_aqw_profile
@@ -417,7 +418,7 @@ def migrate_shop_prices():
 
 if __name__ == "__main__":
     asyncio.run(generate_test_card())
-    migrate_shop_prices()
+    # migrate_shop_prices()
     # backfill_wordle_stats()
     # asyncio.run(find_users_with_doom_card())
     # get_all_users()

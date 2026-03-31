@@ -6,23 +6,22 @@ from PIL import Image
 ASSETS_DIR = Path(__file__).resolve().parent.parent / "assets"
 
 
-def apply_computer_border(card_buffer: BytesIO) -> BytesIO:
+def apply_extra_border(card_buffer: BytesIO, border: str) -> BytesIO:
     card_buffer.seek(0)
     card = Image.open(card_buffer).convert("RGBA")
 
-    computer = Image.open(ASSETS_DIR / "new_computer_test.png").convert("RGBA")
+    border_image = Image.open(ASSETS_DIR / f"{border}.png").convert("RGBA")
 
     # Create canvas = hand size
-    canvas = Image.new("RGBA", (computer.width, computer.height), (0, 0, 0, 0))
+    canvas = Image.new("RGBA", (border_image.width, border_image.height), (0, 0, 0, 0))
 
-    # 🎯 Position card (centered horizontally, slightly up)
-    card_x = (computer.width - card.width) // 2
+    card_x = (border_image.width - card.width) // 2
     card_y = 101
 
     canvas.paste(card, (card_x, card_y), card)
 
     # Hand on top
-    canvas.paste(computer, (0, 0), computer)
+    canvas.paste(border_image, (0, 0), border_image)
 
     out = BytesIO()
     canvas.save(out, format="PNG")

@@ -9,6 +9,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 from config import POTW_ROLE_ID
 from firebase_client import db
+from user_profile.computer_border_test import apply_computer_border
 from user_profile.image_utils import draw_gradient_text
 
 from .utils import circle_crop, fetch_avatar, ordinal, sort_badges
@@ -236,8 +237,12 @@ async def generate_test_card(
     bg.paste(trophy, (313, 474), trophy)
 
     buffer = BytesIO()
+
     bg.save(buffer, format="PNG")
-    bg.save("test_image.png", format="PNG")
+    image_buffer = apply_computer_border(buffer)
+
+    image = Image.open(image_buffer)
+    image.save("test_image.png", format="PNG")
     buffer.seek(0)
 
     return buffer, badges, False, has_been_potw, "Proxy", wins

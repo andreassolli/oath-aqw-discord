@@ -79,12 +79,22 @@ class Economy(commands.Cog):
     async def see_shop(self, interaction: discord.Interaction):
 
         await interaction.response.defer(ephemeral=True)
-
+        has_discord_manager_role = any(
+            role.id == DISCORD_MANAGER_ROLE_ID for role in interaction.user.roles
+        )
         items = await get_shop()
         owned_items = await get_inventory(str(interaction.user.id))
         owned_ids = {item.get("image") for item in owned_items}
 
-        filtered = [item for item in items if item.get("image") not in owned_ids]
+        if has_discord_manager_role:
+            filtered = [item for item in items if item.get("image") not in owned_ids]
+        else:
+            filtered = [
+                item
+                for item in items
+                if item.get("image") not in owned_ids
+                and not item.get("invisible", False)
+            ]
         sorted_filtered = sorted(
             filtered, key=lambda x: x.get("priority", 0), reverse=True
         )
