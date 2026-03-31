@@ -118,6 +118,7 @@ async def buy_item(item: ShopItem, user_id: int):
         item.get("type", ""),
         item.get("image", ""),
         item.get("display", ""),
+        item.get("rarity", "common"),
     )
 
     parts = []

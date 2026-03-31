@@ -10,9 +10,17 @@ async def get_inventory(user_id: str):
     return inventory
 
 
-async def add_item(user_id: str, item_id: str, type: str, image: str, display: str):
+async def add_item(
+    user_id: str, item_id: str, type: str, image: str, display: str, rarity: str
+):
     doc_ref = db.collection("users").document(user_id)
-    item = {"id": item_id, "type": type, "image": image, "display": display}
+    item = {
+        "id": item_id,
+        "type": type,
+        "image": image,
+        "display": display,
+        "rarity": rarity,
+    }
 
     doc_ref.update({"inventory": ArrayUnion([item])})
 
