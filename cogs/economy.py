@@ -46,10 +46,10 @@ class Economy(commands.Cog):
         self,
         interaction: discord.Interaction,
         name: str,
-        coin_price: int = 0,
-        shard_price: int = 0,
         image: str,
         type: str,
+        coin_price: int = 0,
+        shard_price: int = 0,
         quantity: int | None = None,
         priority: int | None = None,
     ):
