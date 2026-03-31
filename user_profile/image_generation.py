@@ -95,7 +95,7 @@ async def generate_profile_card(
 
     if is_potw:
         potw_border = ASSET_CACHE["potw_border"]
-        bg.paste(potw_border, (27, 19), potw_border)
+        bg.paste(potw_border, (39, 32), potw_border)
 
     font_big = FONTS["big"]
     font_bold = FONTS["bold"]

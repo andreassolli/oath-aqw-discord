@@ -81,7 +81,7 @@ async def generate_test_card(
     guild = str(data.get("guild", "No guild"))
     if guild == "None":
         guild = "No guild"
-    has_been_potw = data.get("has_been_potw", False)
+    has_been_potw = data.get("has_been_potw", True)
     # is_potw = any(role.id == POTW_ROLE_ID for role in target.roles)
     game_ref = db.collection("wordle_games").document(str(292040660696039424))
     game_doc = game_ref.get()
@@ -102,7 +102,7 @@ async def generate_test_card(
     border = data.get("border", {})
     card = data.get("card", {})
     gems = data.get("gems", 0)
-    bg = Image.open(ASSETS_DIR / f"test_card2.png").convert("RGBA")
+    bg = Image.open(ASSETS_DIR / f"default.png").convert("RGBA")
     role = data.get("highlighted_role", "None")
 
     # if border:
@@ -117,9 +117,9 @@ async def generate_test_card(
     # if border == "Test Border":
     #    test_border = Image.open(ASSETS_DIR / "test_border.png").convert("RGBA")
     #    bg.paste(test_border, (0, 0), test_border)
-    # if is_potw:
-    #    potw_border = ASSET_CACHE["potw_border"]
-    #    bg.paste(potw_border, (27, 19), potw_border)
+
+    potw_border = load_asset("potw_border.webp", (226, 241))
+    bg.paste(potw_border, (39, 32), potw_border)
 
     font_big = load_font("Urbanist-Regular.ttf", 54)
     font_bold = load_font("Urbanist-Bold.ttf", 66)
