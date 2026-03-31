@@ -366,8 +366,58 @@ def backfill_wordle_stats():
     print(f"Done. Updated {updated} users.")
 
 
+def migrate_shop_prices():
+    items_ref = db.collection("shop_items")
+    docs = items_ref.stream()
+
+    batch = db.batch()
+    count = 0
+
+    for doc in docs:
+        data = doc.to_dict()
+        ref = doc.reference
+
+        price = data.get("price", 0)
+        currency = data.get("currency", "coins")
+
+        # Normalize currency
+        if currency == "gem":
+            currency = "gems"
+
+        # Convert to new format
+        coin_price = 0
+        shard_price = 0
+
+        if currency == "coins":
+            coin_price = price
+        elif currency == "gems":
+            shard_price = price
+
+        # Prepare update
+        update_data = {
+            "coin_price": coin_price,
+            "shard_price": shard_price,
+            "price": gc_firestore.DELETE_FIELD,
+            "currency": gc_firestore.DELETE_FIELD,
+        }
+
+        batch.update(ref, update_data)
+        count += 1
+
+        # Firestore batch limit
+        if count % 500 == 0:
+            batch.commit()
+            batch = db.batch()
+
+    if count % 500 != 0:
+        batch.commit()
+
+    print(f"Migrated {count} shop items.")
+
+
 if __name__ == "__main__":
     asyncio.run(generate_test_card())
+    migrate_shop_prices()
     # backfill_wordle_stats()
     # asyncio.run(find_users_with_doom_card())
     # get_all_users()

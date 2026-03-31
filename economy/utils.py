@@ -8,11 +8,11 @@ from firebase_client import db
 
 class ShopItem(TypedDict):
     name: str
-    price: int
+    shard_price: int
+    coin_price: int
     image: str
     display: str
     quantity: int
-    currency: str | None
 
 
 def rich_coins(guild: discord.Guild):

@@ -46,13 +46,14 @@ class Economy(commands.Cog):
         self,
         interaction: discord.Interaction,
         name: str,
-        price: int,
+        coin_price: int = 0,
+        shard_price: int = 0,
         image: str,
         type: str,
-        currency: Literal["coins", "gems"] = "coins",
         quantity: int | None = None,
+        priority: int | None = None,
     ):
-        await list_item(name, price, image, currency, type, quantity)
+        await list_item(name, coin_price, shard_price, image, type, quantity, priority)
         return await interaction.response.send_message(
             f"Listed {name} for sale in the shop.", ephemeral=True
         )
@@ -73,13 +74,6 @@ class Economy(commands.Cog):
             f"Removed {name} from the shop.", ephemeral=True
         )
 
-    @app_commands.command(name="buy", description="Buy an item from the shop.")
-    @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
-    async def buy_item(self, interaction: discord.Interaction, item: str):
-        user = interaction.user.id
-        response = await buy_item(item, user)
-        return await interaction.response.send_message(response, ephemeral=True)
-
     @app_commands.command(name="shop", description="List all the items in the shop.")
     @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
     async def see_shop(self, interaction: discord.Interaction):
@@ -91,9 +85,12 @@ class Economy(commands.Cog):
         owned_ids = {item.get("image") for item in owned_items}
 
         filtered = [item for item in items if item.get("image") not in owned_ids]
+        sorted_filtered = sorted(
+            filtered, key=lambda x: x.get("priority", 0), reverse=True
+        )
 
-        total_pages = max(1, math.ceil(len(filtered) / 8))
-        page_items = paginate_items(filtered, 0, 8)
+        total_pages = max(1, math.ceil(len(sorted_filtered) / 8))
+        page_items = paginate_items(sorted_filtered, 0, 8)
 
         image = await generate_shop(
             items=page_items,

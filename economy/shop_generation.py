@@ -84,25 +84,55 @@ async def generate_shop(
             fill="#FFFFFF",
         )
 
-        if item.get("currency", None) == "gems":
-            bg.paste(gem_picture_buy, (57 + gapX * x, 337 + gapY * y), gem_picture_buy)
-        else:
+        shard_price = item.get("shard_price", 0)
+        coin_price = item.get("coin_price", 0)
+        has_coins = coin_price > 0
+        has_shards = shard_price > 0
+        has_coins = coin_price > 0
+        has_shards = shard_price > 0
+
+        # Coins
+        if has_coins:
             bg.paste(coin_picture, (57 + gapX * x, 337 + gapY * y), coin_picture)
-        bg.paste(quantity_image, (203 + gapX * x, 334 + gapY * y), quantity_image)
+            draw.text(
+                (88 + gapX * x, 334 + gapY * y),
+                f"{coin_price}",
+                font=font_light,
+                fill="#FFFFFF",
+            )
+
+        # Shards
+        if has_shards:
+            offset = 140 if has_coins else 57
+
+            bg.paste(
+                gem_picture_buy,
+                (offset + gapX * x, 334 + gapY * y),
+                gem_picture_buy,
+            )
+            draw.text(
+                (offset + 30 + gapX * x, 334 + gapY * y),
+                f"{shard_price}",
+                font=font_light,
+                fill="#FFFFFF",
+            )
+
+        bg.paste(quantity_image, (203 + gapX * x, 192 + gapY * y), quantity_image)
+        first_price = coin_price if coin_price != 0 else shard_price
         draw.text(
             (88 + gapX * x, 334 + gapY * y),
-            f"{item['price']}",
+            f"{first_price}",
             font=font_light,
             fill="#FFFFFF",
         )
         quantity = item["quantity"]
         if quantity == -1:
             draw.text(
-                (209 + gapX * x, 328 + gapY * y), f"∞", font=font_big, fill="#FFFFFF"
+                (209 + gapX * x, 186 + gapY * y), f"∞", font=font_big, fill="#FFFFFF"
             )
         else:
             draw.text(
-                (212 + gapX * x, 326 + gapY * y),
+                (212 + gapX * x, 182 + gapY * y),
                 f"{quantity}",
                 font=font_big,
                 fill="#FFFFFF",

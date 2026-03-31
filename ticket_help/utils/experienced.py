@@ -138,11 +138,11 @@ class SecondModal(discord.ui.Modal, title="Step 2 - Ultra Gramiel"):
         # Create thread
         try:
             thread = await channel.create_thread(
-                name=f"📩 **Application from {interaction.user.mention}**",
+                name=f"📩 Application from {interaction.user.display_name}",
                 type=discord.ChannelType.public_thread,
             )
 
-            await thread.send(f"**{interaction.user.mention}'s application**")
+            await thread.send(f"📩 **Application from {interaction.user.mention}**")
 
             for q, ans in zip(QUESTIONS_STEP1, data["step1"]):
                 await thread.send(f"**{q}**\n{ans}")

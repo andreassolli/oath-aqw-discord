@@ -45,7 +45,13 @@ class ShopSelect(discord.ui.Select):
         options = [
             discord.SelectOption(
                 label=item["name"],
-                description=f"{item['price']} {'Chaos Shards' if item.get('currency', None) == 'gems' else 'Coins'}",
+                description=(
+                    f"{item['coin_price']} Coins"
+                    if item["coin_price"] > 0 and item["shard_price"] == 0
+                    else f"{item['shard_price']} Shards"
+                    if item["coin_price"] == 0 and item["shard_price"] > 0
+                    else f"{item['coin_price']} Coins, {item['shard_price']} Shards"
+                ),
                 value=item["name"],
             )
             for item in items

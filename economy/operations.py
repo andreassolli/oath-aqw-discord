@@ -10,27 +10,47 @@ from inventory.utils import add_item
 
 async def list_item(
     name: str,
-    price: int,
+    coin_price: int,
+    shard_price: int,
     image: str,
-    currency: Literal["coins", "gems"],
     type: str,
     quantity: int | None = None,
+    priority: int | None = None,
 ):
-    if quantity == None:
+    if quantity is None:
         quantity = -1
+
+    # If no priority provided -> auto assign highest + 1
+    if priority is None:
+        docs = (
+            db.collection("shop_items")
+            .order_by("priority", direction="DESCENDING")
+            .limit(1)
+            .stream()
+        )
+
+        highest = 0
+        for doc in docs:
+            highest = doc.to_dict().get("priority", 0)
+
+        priority = highest + 1
+
     image_path = f"{image}.png"
     display_path = f"{image}_item.png"
+
     db.collection("shop_items").document(name).set(
         {
             "name": name,
-            "price": price,
+            "coin_price": coin_price,
+            "shard_price": shard_price,
             "quantity": quantity,
             "display": display_path,
             "image": image_path,
-            "currency": currency,
             "type": type,
+            "priority": priority,
         }
     )
+
     return
 
 
@@ -58,25 +78,35 @@ async def buy_item(item: ShopItem, user_id: int):
         return f"You already own {name}."
 
     quantity = item.get("quantity", 0)
-    price = item.get("price", 0)
+    coin_price = item.get("coin_price", 0)
+    shard_price = item.get("shard_price", 0)
 
-    currency = item.get("currency", "coins")
+    user_coins = user_data.get("coins", 0)
+    user_shards = user_data.get("gems", 0)
 
-    # Normalize currency (IMPORTANT)
-    if currency == "gem":
-        currency = "gems"
-    currency_str = "Chaos Shards" if currency == "gems" else "Coins"
-
-    money = user_data.get(currency, 0)
-
+    # No stock
     if quantity == 0:
         return f"There are no more {name} available."
 
-    if money < price:
-        return f"You do not have enough {currency_str} to buy {name}."
+    # Not enough coins
+    if coin_price > 0 and user_coins < coin_price:
+        return f"You do not have enough Coins to buy {name}."
+
+    # Not enough shards
+    if shard_price > 0 and user_shards < shard_price:
+        return f"You do not have enough Chaos Shards to buy {name}."
 
     # Deduct currency
-    user_ref.update({currency: firestore.Increment(-price)})
+    updates = {}
+
+    if coin_price > 0:
+        updates["coins"] = firestore.Increment(-coin_price)
+
+    if shard_price > 0:
+        updates["gems"] = firestore.Increment(-shard_price)
+
+    if updates:
+        user_ref.update(updates)
 
     await add_item(
         str(user_id),
@@ -86,11 +116,20 @@ async def buy_item(item: ShopItem, user_id: int):
         item.get("display", ""),
     )
 
+    parts = []
+
+    if coin_price > 0:
+        parts.append(f"{coin_price} Coins")
+
+    if shard_price > 0:
+        parts.append(f"{shard_price} Chaos Shards")
+
+    price_str = " and ".join(parts)
     # Update stock
     if quantity != -1:
         item_ref.update({"quantity": firestore.Increment(-1)})
 
-    return f"Bought 1 of {name}, you now have {money - price} {currency_str}."
+    return f"Bought 1 of {name} for {price_str}."
 
 
 async def get_shop() -> List[ShopItem]:
