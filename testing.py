@@ -12,7 +12,6 @@ from extra_commands.wordle_share import generate_wordle_share
 from firebase_client import db, firestore
 from inventory.utils import add_item
 from request_utils import get_session
-from user_profile.computer_border_test import apply_computer_border
 from user_profile.image_test import generate_test_card
 from user_profile.utils import fetch_inventory
 from user_verification.utils import fetch_aqw_profile

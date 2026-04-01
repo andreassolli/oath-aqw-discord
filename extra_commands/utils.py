@@ -403,47 +403,44 @@ async def manual_leaderboard_post(interaction: discord.Interaction):
     if channel is None:
         channel = await guild.fetch_channel(LEADERBOARD_HISTORY_CHANNEL_ID)
     users = {
-        "Kid_": 1634,
-        "Aidest": 1223,
-        "Paboloso": 1192,
-        "Fird": 1051,
-        "OG San": 856,
-        "dkj": 717,
-        "Juns": 600,
-        "Erza Scarlet143": 455,
-        "bookworm": 411,
-        "NEGGS": 375,
-        "Samishi": 275,
-        "iucy": 256,
-        "Muhr So": 193,
-        "Proxy": 193,
-        "notification": 156,
-        "ZPO": 142,
-        "roldz04": 110,
-        "Plana": 98,
-        "Solaxy": 93,
-        "Alvii": 93,
-        "Greed": 74,
-        "Galyxtria": 72,
-        "Vurn": 71,
-        "Shutaina": 69,
-        "Silence_Dead": 66,
+        "OG San": 1700,
+        "Aidest": 946,
+        "Paboloso": 763,
+        "Fird": 611,
+        "notification": 519,
+        "Kid_": 342,
+        "Z e ta": 287,
+        "Lil_girl0": 271,
+        "cyore": 256,
+        "Juns": 218,
+        "bookworm": 192,
+        "NEGGS": 132,
+        "dkj": 129,
+        "Veritus": 129,
+        "Proxy": 127,
     }
     medals = ["🥇", "🥈", "🥉"]
     lines = []
 
     for i, (display_name, points) in enumerate(users.items()):
         position = i + 1
+        guild = "💠 Oath"
+        if display_name == "Veritus":
+            guild = "On Gouache"
+        elif display_name == "NEGGS":
+            guild = "Vanaheim"
+        elif display_name == "cyore":
+            guild = "LunchBox"
 
         if i < 3:
             prefix = medals[i]
         else:
             prefix = f"`{position:02}`"
 
-        lines.append(f"{prefix} **{display_name}** — `{points}` points")
+        lines.append(f"{prefix} **{display_name}** `{guild}` — `{points}` points")
 
     embed = discord.Embed(
-        title="🏆 Leaderboard for February 2026 (Top 25)",
+        title="🏆 Leaderboard for March 2026 (Top 15)",
         description="\n".join(lines),
         color=discord.Color.gold(),
         timestamp=datetime.now(UTC),
