@@ -122,7 +122,7 @@ class ProfileView(discord.ui.View):
     async def view_participants(self, interaction: discord.Interaction, _):
 
         participants = (
-            db.collection("users").where("beta_participant", "==", True).stream()
+            db.collection("users").where("participated_in_beta", "==", True).stream()
         )
 
         participants = [p.to_dict() or {} for p in participants]
