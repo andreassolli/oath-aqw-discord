@@ -17,7 +17,7 @@ ROLES_COLOR_MAP = {
     "Arbiter": ["b2eb80", "80daeb"],
     "Oathist": ["80ebc2", "80ebc2"],
     "Cornerstone": ["b2eb80", "b2eb80"],
-    "Beta Tester": ["", ""],
+    "Beta Tester": ["ffffff", "aa3b3b"],
     "Ticket Inspector": ["9d5100", "febe58"],
     "Ticket Officer": ["f684da", "80daeb"],
 }

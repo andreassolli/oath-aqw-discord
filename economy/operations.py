@@ -130,7 +130,6 @@ async def buy_item(item: ShopItem, user_id: int):
         user_ref.update({"badges": ArrayUnion([BETA_BADGES[name]])})
 
         name = "Beta Card"
-        rarity = "rare"
 
     await add_item(
         str(user_id),
