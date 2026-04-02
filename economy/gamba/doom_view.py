@@ -53,6 +53,7 @@ class DoomSpinView(discord.ui.View):
                 "card",
                 "doom_card.png",
                 "doom_card_item.png",
+                "legendary",
             )
             drop_text = "\n\nYou also won the **Secret Rare** Doom Card! It has been added to your inventory."
         result = random.randint(250, 350)

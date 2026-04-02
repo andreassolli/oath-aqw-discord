@@ -114,7 +114,7 @@ async def buy_item(item: ShopItem, user_id: int):
         user_ref.update(updates)
 
     if name == "I was here!":
-        await user_ref.update({"beta_participant": True})
+        user_ref.update({"beta_participant": True})
 
     BETA_BADGES = {
         "Beta Card W": "Beta Tester White",
