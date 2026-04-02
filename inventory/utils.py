@@ -13,6 +13,7 @@ async def get_inventory(user_id: str):
 async def add_item(
     user_id: str, item_id: str, type: str, image: str, display: str, rarity: str
 ):
+
     doc_ref = db.collection("users").document(user_id)
     item = {
         "id": item_id,
@@ -22,7 +23,13 @@ async def add_item(
         "rarity": rarity,
     }
 
-    doc_ref.update({"inventory": ArrayUnion([item])})
+    doc = doc_ref.get()
+    inventory = doc.to_dict().get("inventory", [])
+
+    inventory = [i for i in inventory if i["id"] != item_id]
+    inventory.append(item)
+
+    doc_ref.update({"inventory": inventory})
 
 
 async def equip_item(user_id: str, item_id: str):

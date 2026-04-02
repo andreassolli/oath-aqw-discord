@@ -97,6 +97,23 @@ class Economy(commands.Cog):
         items = await get_shop()
         owned_items = await get_inventory(str(interaction.user.id))
         owned_ids = {item.get("image") for item in owned_items}
+        SPECIAL_ITEM = "gold_signature_card"
+        REQUIRED_ITEM = "gold_card.png"
+        BETA_CARDS = [
+            "beta_green_card.png",
+            "beta_white_card.png",
+            "beta_black_card.png",
+        ]
+
+        owned_item_ids = {item.get("id") for item in owned_items}
+
+        for item in items:
+            if item.get("id") == SPECIAL_ITEM:
+                if REQUIRED_ITEM in owned_item_ids:
+                    item["coin_price"] = 500
+            if item.get("id") in BETA_CARDS:
+                if any(beta in owned_item_ids for beta in BETA_CARDS):
+                    item["coin_price"] = 0
 
         if has_discord_manager_role:
             filtered = [item for item in items if item.get("image") not in owned_ids]
