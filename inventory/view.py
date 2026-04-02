@@ -6,7 +6,7 @@ from economy.helpers import paginate_items
 from economy.inventory import generate_inventory
 from economy.shop_view import RARITY_EMOJIS
 from firebase_client import db
-from inventory.utils import equip_item  # adjust import if needed
+from inventory.utils import equip_item, unequip_item
 from user_profile.image_utils import ROLES_COLOR_MAP
 
 
@@ -97,13 +97,19 @@ class EquipButton(discord.ui.Button):
 
         # Equip border
         if view.selected_border:
-            res = await equip_item(str(view.user_id), view.selected_border)
+            if view.selected_border == "None":
+                res = await unequip_item(str(view.user_id), "border")
+            else:
+                res = await equip_item(str(view.user_id), view.selected_border)
             if res:
                 responses.append(res)
 
         # Equip background (card)
         if view.selected_background:
-            res = await equip_item(str(view.user_id), view.selected_background)
+            if view.selected_background == "None":
+                res = await unequip_item(str(view.user_id), "background")
+            else:
+                res = await equip_item(str(view.user_id), view.selected_background)
             if res:
                 responses.append(res)
 

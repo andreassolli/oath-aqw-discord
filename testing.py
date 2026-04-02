@@ -12,7 +12,8 @@ from extra_commands.wordle_share import generate_wordle_share
 from firebase_client import db, firestore
 from inventory.utils import add_item
 from request_utils import get_session
-from user_profile.image_test import generate_test_card
+
+# from user_profile.image_test import generate_test_card
 from user_profile.utils import fetch_inventory
 from user_verification.utils import fetch_aqw_profile
 
@@ -415,8 +416,39 @@ def migrate_shop_prices():
     print(f"Migrated {count} shop items.")
 
 
+def reset_coins():
+    users_ref = db.collection("users")
+    docs = users_ref.stream()
+
+    batch = db.batch()
+    count = 0
+
+    for doc in docs:
+        ref = doc.reference
+
+        # Prepare update
+        update_data = {
+            "gems": 0,
+            "coins": 0,
+        }
+
+        batch.update(ref, update_data)
+        count += 1
+
+        # Firestore batch limit
+        if count % 500 == 0:
+            batch.commit()
+            batch = db.batch()
+
+    if count % 500 != 0:
+        batch.commit()
+
+    print(f"Done. Updated {count} users.")
+
+
 if __name__ == "__main__":
-    asyncio.run(generate_test_card())
+    # asyncio.run(generate_test_card())
+    reset_coins()
     # migrate_shop_prices()
     # backfill_wordle_stats()
     # asyncio.run(find_users_with_doom_card())

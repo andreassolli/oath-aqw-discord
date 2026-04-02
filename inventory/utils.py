@@ -49,21 +49,13 @@ async def equip_item(user_id: str, item_id: str):
     return f"Equipped {item['id']}."
 
 
-async def unequip_item(user_id: str, item_id: str):
+async def unequip_item(user_id: str, type: str):
     doc_ref = db.collection("users").document(user_id)
 
     doc = doc_ref.get()
     if not doc:
         return
 
-    data = doc.to_dict() or {}
-    inventory = data.get("inventory", [])
+    doc_ref.update({type: None})
 
-    item = next((i for i in inventory if i["id"] == item_id), None)
-
-    if not item:
-        return "Item not found."
-
-    doc_ref.update({item["type"]: None})
-
-    return f"{item_id} unequipped."
+    return f"{type} unequipped."
