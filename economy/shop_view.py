@@ -11,8 +11,8 @@ from economy.utils import ShopItem
 RARITY_EMOJIS = {
     "common": "🟢",
     "uncommon": "🔵",
-    "rare": "🟣",
-    "epic": "🔴",
+    "rare": "🔴",
+    "epic": "🟣",
     "legendary": "🟠",
 }
 
