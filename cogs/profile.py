@@ -93,6 +93,7 @@ class Profile(commands.Cog):
                 has_been_potw,
                 name,
                 wins,
+                gold_card,
             ) = await generate_profile_card(
                 interaction,
                 target=member,
@@ -100,7 +101,9 @@ class Profile(commands.Cog):
 
             await interaction.followup.send(
                 file=discord.File(image_buffer, filename="profile.png"),
-                view=ProfileView(badges, is_potw, has_been_potw, name, wins),
+                view=ProfileView(
+                    badges, is_potw, has_been_potw, name, wins, show_beta=gold_card
+                ),
             )
 
         except Exception as e:

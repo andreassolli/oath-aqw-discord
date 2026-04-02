@@ -26,7 +26,7 @@ async def generate_profile_card(
     interaction,
     target: Member,
     gold_card: bool = False,
-) -> tuple[BytesIO, list[str], bool, bool, str, int]:
+) -> tuple[BytesIO, list[str], bool, bool, str, int, bool]:
     user_id = target.id
     server_id = interaction.guild.id
 
@@ -335,4 +335,4 @@ async def generate_profile_card(
     if border and border.get("id") in EXTRA_BORDERS:
         buffer = apply_extra_border(buffer, border["image"])
 
-    return buffer, badges, is_potw, has_been_potw, target.display_name, wins
+    return buffer, badges, is_potw, has_been_potw, target.display_name, wins, gold_card
