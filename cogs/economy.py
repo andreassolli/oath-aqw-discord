@@ -105,10 +105,10 @@ class Economy(commands.Cog):
             "beta_black_card.png",
         ]
         for item in items:
-            if item.get("id") == SPECIAL_ITEM:
+            if item.get("image") == SPECIAL_ITEM:
                 if REQUIRED_ITEM in owned_ids:
                     item["coin_price"] = 500
-            if item.get("id") in BETA_CARDS:
+            if item.get("image") in BETA_CARDS:
                 if any(beta in owned_ids for beta in BETA_CARDS):
                     item["coin_price"] = 0
 
