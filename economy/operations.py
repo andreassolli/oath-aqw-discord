@@ -112,6 +112,9 @@ async def buy_item(item: ShopItem, user_id: int):
     if updates:
         user_ref.update(updates)
 
+    if name == "I was here!":
+        await user_ref.update({"beta_participant": True})
+
     await add_item(
         str(user_id),
         name,
