@@ -104,15 +104,12 @@ class Economy(commands.Cog):
             "beta_white_card.png",
             "beta_black_card.png",
         ]
-
-        owned_item_ids = {item.get("id") for item in owned_items}
-
         for item in items:
             if item.get("id") == SPECIAL_ITEM:
-                if REQUIRED_ITEM in owned_item_ids:
+                if REQUIRED_ITEM in owned_ids:
                     item["coin_price"] = 500
             if item.get("id") in BETA_CARDS:
-                if any(beta in owned_item_ids for beta in BETA_CARDS):
+                if any(beta in owned_ids for beta in BETA_CARDS):
                     item["coin_price"] = 0
 
         if has_discord_manager_role:
