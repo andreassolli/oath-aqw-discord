@@ -2,6 +2,7 @@ import random
 from typing import List, Literal
 
 from google.cloud import firestore
+from google.cloud.firestore_v1 import ArrayRemove, ArrayUnion
 
 from economy.utils import ShopItem
 from firebase_client import db
@@ -114,6 +115,21 @@ async def buy_item(item: ShopItem, user_id: int):
 
     if name == "I was here!":
         await user_ref.update({"beta_participant": True})
+
+    BETA_BADGES = {
+        "Beta Card W": "Beta Tester White",
+        "Beta Card B": "Beta Tester Black",
+        "Beta Card G": "Beta Tester Green",
+    }
+
+    if name in BETA_BADGES:
+        # Remove ALL beta badges (values of dict)
+        user_ref.update({"badges": ArrayRemove(list(BETA_BADGES.values()))})
+
+        # Add the new one
+        user_ref.update({"badges": ArrayUnion([BETA_BADGES[name]])})
+
+        name = "Beta Card"
 
     await add_item(
         str(user_id),
