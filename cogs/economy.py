@@ -425,6 +425,7 @@ class Economy(commands.Cog):
             )
 
         max_steal = max(target_coins * 0.03, 15)
+        max_steal = min(max_steal, 150)
         coins = random.randint(5, max_steal)
         not_dropped = random.randint(coins - 5, coins)
         dropped = coins - not_dropped
