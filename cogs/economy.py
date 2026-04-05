@@ -409,7 +409,7 @@ class Economy(commands.Cog):
         last_stolen_from = target_data.get("last_stolen_from")
         if last_stolen_from:
             last_stolen_from = last_stolen_from.replace(tzinfo=None)
-            remaining = timedelta(minutes=20) - (datetime.utcnow() - last_stolen_from)
+            remaining = timedelta(minutes=30) - (datetime.utcnow() - last_stolen_from)
 
             if remaining.total_seconds() > 0:
                 mins, secs = divmod(int(remaining.total_seconds()), 60)
@@ -424,7 +424,7 @@ class Economy(commands.Cog):
                 "You cannot steal coins from someone who has none.", ephemeral=True
             )
 
-        max_steal = min(target_coins, 50)
+        max_steal = max(target_coins * 0.03, 15)
         coins = random.randint(5, max_steal)
         not_dropped = random.randint(coins - 5, coins)
         dropped = coins - not_dropped
