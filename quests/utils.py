@@ -52,9 +52,9 @@ async def check_for_quest_completion(user_id: int) -> str:
     coins_to_reward = 0
     completed_text = []
     missing_items = []
-
+    inventory_set = {(i["strName"], i["strType"]) for i in inventory}
     for quest_id, required_items in quests.items():
-        if quest_id in quests_completed or len(required_items) == 0:
+        if quest_id in quests_completed or not required_items:
             continue
 
         if items_in_inventory(required_items, inventory):
@@ -63,7 +63,9 @@ async def check_for_quest_completion(user_id: int) -> str:
             completed_text.append(f"<:queststart:1491012167170920560>{quest_id}")
             continue
 
-        missing_items.append(item for item in required_items if item not in inventory)
+        for item in required_items:
+            if (item["strName"], item["strType"]) not in inventory_set:
+                missing_items.append(f"{item['strName']} ({item['strType']})")
 
     if not completed_now:
         return "❌ Missing items to complete quest: " + ", ".join(missing_items)
