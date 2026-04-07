@@ -1,6 +1,7 @@
 from dataclasses import MISSING
 
-from cogs.extra import gc_firestore
+from google.cloud import firestore as gc_firestore
+
 from firebase_client import db
 from user_profile.utils import fetch_inventory
 
