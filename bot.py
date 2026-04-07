@@ -58,6 +58,8 @@ async def main():
             "cogs.gamba",
             "cogs.reports",
             "cogs.counting",
+            "cogs.forge",
+            "cogs.bosses",
         ):
             await bot.load_extension(ext)
         await bot.start(os.environ["DISCORD_TOKEN"])
