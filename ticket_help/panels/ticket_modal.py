@@ -19,6 +19,22 @@ from ticket_help.tickets.utils import (
 from ticket_help.tickets.views import TicketActionView
 from ticket_help.utils.ticket import get_overwrites
 
+CORRECT_BOSS_ORDER = [
+    "Ultra Dage",
+    "Champion Drakath",
+    "Ultra Drago",
+    "Ultra Darkon",
+    "Ultra Nulgath",
+    "Ultra Speaker",
+    "Ultra Gramiel",
+]
+
+BOSS_ORDER_MAP = {boss: i for i, boss in enumerate(CORRECT_BOSS_ORDER)}
+
+
+def sort_bosses(bosses: list[str]) -> list[str]:
+    return sorted(bosses, key=lambda b: BOSS_ORDER_MAP.get(b, len(BOSS_ORDER_MAP)))
+
 
 class CreateTicketModal(discord.ui.Modal):
     def __init__(self, ticket_type: str, server: str, bosses: list[str], username: str):
@@ -27,7 +43,7 @@ class CreateTicketModal(discord.ui.Modal):
         self.type = ticket_type
         self.server = server
 
-        self._preset_bosses = bosses
+        self._preset_bosses = sort_bosses(bosses)
 
         self.bosses_input: discord.ui.TextInput | None = None
         username = username if username else ""
