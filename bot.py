@@ -60,6 +60,7 @@ async def main():
             "cogs.counting",
             "cogs.forge",
             "cogs.bosses",
+            "cogs.quests",
         ):
             await bot.load_extension(ext)
         await bot.start(os.environ["DISCORD_TOKEN"])
