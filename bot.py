@@ -33,6 +33,8 @@ async def on_ready():
         await bot.tree.sync()
         _synced = True
 
+    await bot.wait_until_ready()
+    await asyncio.sleep(2)
     await run_startup_tasks(bot)
 
     if bot.user:
