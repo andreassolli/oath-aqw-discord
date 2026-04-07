@@ -439,7 +439,7 @@ class Forge(commands.Cog):
         )
 
     @forge.command(
-        name="Hearty", description="Look up Hearty Forge Enhancement for Helm"
+        name="hearty", description="Look up Hearty Forge Enhancement for Helm"
     )
     async def hearty(self, interaction: discord.Interaction):
         await interaction.response.send_message("""""")
