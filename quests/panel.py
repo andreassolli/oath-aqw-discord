@@ -10,6 +10,7 @@ EMOTE_TYPE_MAP = {
     "Polearm": "<:spearaqw:1487000575290642553>",
     "Axe": "<:axeaqw:1487000523268947988>",
     "Class": "<:classbadge:1471256107057156117>",
+    "Dagger": "<:daggeraqw:1487000631653961779>",
     "Whip": "🌀",
     "Gun": "🔫",
     "HandGun": "🔫",
