@@ -5,8 +5,8 @@ from user_profile.utils import fetch_inventory
 
 async def get_quests() -> dict:
     quest_refs = {
-        "quest_1": db.collection("weekly-quests").document("quest_1"),
-        "quest_2": db.collection("weekly-quests").document("quest_2"),
+        "quest_1": db.collection("weekly-quests").document("quest1"),
+        "quest_2": db.collection("weekly-quests").document("quest2"),
     }
 
     quests = {}
