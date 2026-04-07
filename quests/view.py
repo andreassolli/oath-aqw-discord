@@ -14,7 +14,6 @@ class QuestCheckButton(Button):
         )
 
     async def callback(self, interaction: discord.Interaction):
-
         await interaction.response.defer(ephemeral=True)
 
         if not interaction.guild:
@@ -22,11 +21,7 @@ class QuestCheckButton(Button):
                 "This can only be used in a server.", ephemeral=True
             )
 
-        beta_tester_role = interaction.guild.get_role(BETA_TESTER_ROLE_ID)
-
-        user_roles = interaction.user.roles
-
-        if beta_tester_role not in user_roles:
+        if not any(role.id == BETA_TESTER_ROLE_ID for role in interaction.user.roles):
             return await interaction.followup.send(
                 "You are not a beta tester.", ephemeral=True
             )

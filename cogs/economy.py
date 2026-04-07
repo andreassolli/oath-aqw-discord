@@ -424,7 +424,7 @@ class Economy(commands.Cog):
                 "You cannot steal coins from someone who has none.", ephemeral=True
             )
 
-        max_steal = max(target_coins * 0.03, 15)
+        max_steal = int(max(target_coins * 0.03, 15))
         max_steal = min(max_steal, 150)
         coins = random.randint(5, max_steal)
         not_dropped = random.randint(coins - 5, coins)

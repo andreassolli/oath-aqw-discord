@@ -5,9 +5,10 @@ from discord import app_commands
 from discord.ext import commands
 
 from firebase_client import db
+from quests.setup_quests import setup_quests
 
 
-class Forge(commands.Cog):
+class Quests(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
@@ -49,6 +50,7 @@ class Forge(commands.Cog):
         db.collection("weekly-quests").document(f"quest{quest}").collection(
             "items"
         ).add({"name": item_name, "type": item_type})
+        await setup_quests()
         await interaction.response.send_message(
             f"Added {item_name} to quest {quest}.", ephemeral=True
         )
@@ -108,6 +110,7 @@ class Forge(commands.Cog):
                     f"Removed {item_name} from quest {quest}.", ephemeral=True
                 )
                 return
+        await setup_quests()
         await interaction.response.send_message(
             f"Quest {quest} has no item named {item_name}.", ephemeral=True
         )
@@ -136,10 +139,12 @@ class Forge(commands.Cog):
             db.collection("weekly-quests").document(f"quest{quest}").collection(
                 "items"
             ).document(item.id).delete()
+
+        await setup_quests()
         await interaction.response.send_message(
             f"Cleared all items from quest {quest}.", ephemeral=True
         )
 
 
 async def setup(bot: commands.Bot):
-    await bot.add_cog(Forge(bot))
+    await bot.add_cog(Quests(bot))
