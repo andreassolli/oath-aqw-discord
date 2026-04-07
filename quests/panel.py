@@ -4,7 +4,7 @@ from quests.utils import get_quests
 
 EMOTE_TYPE_MAP = {
     "Helm": "<:helmaqw:1487000474014974054>",
-    "Armor": "<:armorqw:1487000474014974054>",
+    "Armor": "<:armoraqw:1487000736087670936>",
     "Weapon": "<:swordaqw:1487004634307629056>",
     "Cape": "<:cloakaqw:1457810628168253522>",
     "Polearm": "<:spearaqw:1487000575290642553>",
