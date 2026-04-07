@@ -1,6 +1,7 @@
 import discord
 from discord.ui import Button, View
 
+from config import BETA_TESTER_ROLE_ID
 from quests.utils import check_for_quest_completion
 
 
@@ -13,7 +14,22 @@ class QuestCheckButton(Button):
         )
 
     async def callback(self, interaction: discord.Interaction):
-        interaction.response.defer(ephemeral=True)
+
+        await interaction.response.defer(ephemeral=True)
+
+        if not interaction.guild:
+            return await interaction.followup.send(
+                "This can only be used in a server.", ephemeral=True
+            )
+
+        beta_tester_role = interaction.guild.get_role(BETA_TESTER_ROLE_ID)
+
+        user_roles = interaction.user.roles
+
+        if beta_tester_role not in user_roles:
+            return await interaction.followup.send(
+                "You are not a beta tester.", ephemeral=True
+            )
         user_id = interaction.user.id
 
         result = await check_for_quest_completion(user_id)
