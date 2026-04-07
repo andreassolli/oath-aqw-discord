@@ -131,7 +131,8 @@ class Forge(commands.Cog):
     )
     async def vainglory(self, interaction: discord.Interaction):
         await interaction.response.send_message(
-            dedent("""<:cloakaqw:1457810628168253522> **Vainglory**
+            dedent("""\
+                <:cloakaqw:1457810628168253522> **Vainglory**
         > +15% Damage Boost
         > -50% Healing Intake
         - 📝 Must have completed the previous quest.
@@ -215,7 +216,8 @@ class Forge(commands.Cog):
     )
     async def sword(self, interaction: discord.Interaction):
         await interaction.response.send_message(
-            dedent("""\<:swordaqw:1487004634307629056>**Forge**
+            dedent("""\
+        <:swordaqw:1487004634307629056>**Forge**
         - 📝 Finished Mobius part of 13th Lord of Chaos
         - 📝 Blacksmith Rep rank 4
         - 📝 Level 30
@@ -230,7 +232,8 @@ class Forge(commands.Cog):
     )
     async def lacerate(self, interaction: discord.Interaction):
         await interaction.response.send_message(
-            dedent("""\<:swordaqw:1487004634307629056>**Lacerate**
+            dedent("""\
+        <:swordaqw:1487004634307629056>**Lacerate**
         > 100% chance to activate on the second skill (2 second cooldown ⌛️).
         > Deals 80% Physical Damage.
         > Always hits and crits.
