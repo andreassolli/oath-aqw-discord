@@ -442,7 +442,26 @@ class Forge(commands.Cog):
         name="hearty", description="Look up Hearty Forge Enhancement for Helm"
     )
     async def hearty(self, interaction: discord.Interaction):
-        await interaction.response.send_message("""""")
+        await interaction.response.send_message(
+            dedent("""\<:helmaqw:1487000474014974054> **Hearty**
+        > Gives more HP.
+        - 📝 Must have completed the ['The Gaol of Eternal Torment and Misery'](http://aqwwiki.wikidot.com/undead-cashfear-s-quests#GaolCell)
+        - 📝 Rank 7 Grimskull Trolling to purchase these enhancements.
+        **Prerequisites:**
+        * <:queststart:1491012167170920560> Smite the boulder!:
+          * 📝Must have Smite (Level 60) in your inventory.
+          * ⚡️Boulder Smited `x1` (Click on the blue arrow on Room 2)
+         * <:queststart:1491012167170920560> Strike the boulder!:
+           * 📝Must have completed the previous quest.
+           * 📝Must have [Scythe of Azalith](http://aqwwiki.wikidot.com/scythe-of-azalith) in your inventory (💰Merge , 📍 `/join infernalarena`)
+           * 💥 Boulder Struck (Click on the blue arrow on Room 2)
+        * <:queststart:1491012167170920560> Smash the boulder!:
+          * 📝Must have completed the previous quest.
+          * 📝Must have J6's Hammer in your inventory. (💰 6 Gold, 📍J6's Secret Hideout Map - 525X, 275Y)
+          * 🪨 Boulder Smashed (Click on the blue arrow on Room 2)
+        * The Gaol of Eternal Torment and Misery:
+          *  ✅ Grimskull's Gaol Cleared""")
+        )
 
 
 async def setup(bot: commands.Bot):
