@@ -1,3 +1,5 @@
+from dataclasses import MISSING
+
 from cogs.extra import gc_firestore
 from firebase_client import db
 from user_profile.utils import fetch_inventory
@@ -47,6 +49,8 @@ async def check_for_quest_completion(user_id: int) -> str:
     completed_now = []
     inventory = await fetch_inventory(ccid)
     coins_to_reward = 0
+    completed_text = []
+    missing_items = []
 
     for quest_id, required_items in quests.items():
         if quest_id in quests_completed or len(required_items) == 0:
@@ -55,9 +59,13 @@ async def check_for_quest_completion(user_id: int) -> str:
         if items_in_inventory(required_items, inventory):
             completed_now.append(quest_id)
             coins_to_reward += 1000
+            completed_text.append(f"<:queststart:1491012167170920560>{quest_id}")
+            continue
+
+        missing_items.append(item for item in required_items if item not in inventory)
 
     if not completed_now:
-        return "❌ No quests completed yet."
+        return "❌ Missing items to complete quest: " + ", ".join(missing_items)
 
     updated_quests = quests_completed + completed_now
 
@@ -69,7 +77,7 @@ async def check_for_quest_completion(user_id: int) -> str:
         }
     )
 
-    return f"🎉 Completed quests: {', '.join(completed_now)}, rewarded {coins_to_reward} coins."
+    return f"🎉 Completed quests: {', '.join(completed_text)}, rewarded <:oathcoin:1462999179998531614>{coins_to_reward}."
 
 
 def items_in_inventory(required_items: list, inventory: list) -> bool:
