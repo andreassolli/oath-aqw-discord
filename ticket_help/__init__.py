@@ -5,6 +5,7 @@ This module exposes setup helpers for the ticket system.
 It does NOT create or run a Discord client.
 """
 
+from quests.setup_quests import setup_quests
 from ticket_help.panels.update_ticket_counter import update_ticket
 
 from .dashboard.updater import update_dashboard
@@ -21,3 +22,4 @@ async def setup_ticket_system(bot):
     await setup_ticket_panel(bot)
     await update_dashboard(bot)
     await update_ticket(bot)
+    await setup_quests(bot)

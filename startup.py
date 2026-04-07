@@ -11,5 +11,5 @@ async def run_startup_tasks(bot):
     await build_class_index()
     await restore_tickets(bot)
     await restore_join_tickets(bot)
-    await setup_quests(bot)
+
     setup_tasks(bot)
