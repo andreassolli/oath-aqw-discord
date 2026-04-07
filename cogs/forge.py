@@ -298,7 +298,7 @@ class Forge(commands.Cog):
     async def acheron(self, interaction: discord.Interaction):
         await interaction.response.send_message(
             dedent("""\
-        <:swordaqw:1457810578994233434>**Acheron**
+        <:swordaqw:1487004634307629056>**Acheron**
         ❌ This enhancement requires lots of ACs spent on Treasure Keys, or an insane amount of luck. Average spending is around 40 000 ACs.
         > 100% chance to activate on third skill (no cooldown⌛️).
         > Deals 80% Magic Damage to up to 2 targets.
