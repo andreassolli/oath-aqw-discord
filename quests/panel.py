@@ -48,9 +48,13 @@ async def build_static_quest_embed() -> discord.Embed:
         block = format_quest_block(quest_id, items)
         description_parts.append(block)
 
-    description = "\nEach quest rewards <:oathcoin:1462999179998531614>1000.\nOnly available for Beta Testers.\n\n".join(
-        description_parts
-    )
+    if not description_parts:
+        description = "No quests available right now."
+    else:
+        description = (
+            "Each quest rewards <:oathcoin:1462999179998531614>1000.\n"
+            "Only available for Beta Testers.\n\n" + "\n\n".join(description_parts)
+        )
 
     embed = discord.Embed(
         title="📜 Available Quests", description=description, color=discord.Color.gold()

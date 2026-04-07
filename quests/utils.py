@@ -4,16 +4,27 @@ from user_profile.utils import fetch_inventory
 
 
 async def get_quests() -> dict:
-    quest_refs = {
-        "quest_1": db.collection("weekly-quests").document("quest1"),
-        "quest_2": db.collection("weekly-quests").document("quest2"),
-    }
-
     quests = {}
-    for quest_id, ref in quest_refs.items():
-        doc = ref.get()
-        if doc.exists:
-            quests[quest_id] = doc.to_dict().get("items", [])
+
+    for quest_id in [1, 2]:
+        items_ref = (
+            db.collection("weekly-quests")
+            .document(f"quest{quest_id}")
+            .collection("items")
+            .get()
+        )
+
+        items = []
+        for doc in items_ref:
+            data = doc.to_dict()
+            items.append(
+                {
+                    "strName": data.get("name"),
+                    "strType": data.get("type"),
+                }
+            )
+
+        quests[f"quest_{quest_id}"] = items
 
     return quests
 
