@@ -11,7 +11,7 @@ async def get_quests() -> dict:
 
     quests = {}
     for quest_id, ref in quest_refs.items():
-        doc = await ref.get()
+        doc = ref.get()
         if doc.exists:
             quests[quest_id] = doc.to_dict().get("items", [])
 
@@ -20,7 +20,7 @@ async def get_quests() -> dict:
 
 async def check_for_quest_completion(user_id: int) -> str:
     user_ref = db.collection("users").document(str(user_id))
-    user_data = await user_ref.get()
+    user_data = user_ref.get()
 
     if not user_data.exists:
         return "❌ No user found."
