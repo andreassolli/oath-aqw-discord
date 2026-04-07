@@ -49,7 +49,7 @@ async def check_for_quest_completion(user_id: int) -> str:
     coins_to_reward = 0
 
     for quest_id, required_items in quests.items():
-        if quest_id in quests_completed:
+        if quest_id in quests_completed or len(required_items) == 0:
             continue
 
         if items_in_inventory(required_items, inventory):
@@ -60,7 +60,9 @@ async def check_for_quest_completion(user_id: int) -> str:
         return "❌ No quests completed yet."
 
     updated_quests = quests_completed + completed_now
-    await user_ref.update(
+
+    # ❌ REMOVE await here
+    user_ref.update(
         {
             "quests_completed": updated_quests,
             "coins": gc_firestore.Increment(coins_to_reward),
