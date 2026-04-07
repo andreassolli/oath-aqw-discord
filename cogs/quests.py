@@ -47,11 +47,12 @@ class Quests(commands.Cog):
             "Floor Item",
         ],
     ):
+        await interaction.response.defer(ephemeral=True)
         db.collection("weekly-quests").document(f"quest{quest}").collection(
             "items"
         ).add({"name": item_name, "type": item_type})
         await setup_quests(self.bot)
-        await interaction.response.send_message(
+        await interaction.followup.send(
             f"Added {item_name} to quest {quest}.", ephemeral=True
         )
 
@@ -64,6 +65,7 @@ class Quests(commands.Cog):
         interaction: discord.Interaction,
         quest: Literal[1, 2],
     ):
+        await interaction.response.defer(ephemeral=True)
         items = (
             db.collection("weekly-quests")
             .document(f"quest{quest}")
@@ -71,11 +73,11 @@ class Quests(commands.Cog):
             .get()
         )
         if not items:
-            await interaction.response.send_message(
+            await interaction.followup.send(
                 f"Quest {quest} has no items.", ephemeral=True
             )
             return
-        await interaction.response.send_message(
+        await interaction.followup.send(
             f"Quest {quest} items: {', '.join([item.get('name') for item in items])}",
             ephemeral=True,
         )
@@ -90,6 +92,7 @@ class Quests(commands.Cog):
         quest: Literal[1, 2],
         item_name: str,
     ):
+        await interaction.response.defer(ephemeral=True)
         items = (
             db.collection("weekly-quests")
             .document(f"quest{quest}")
@@ -97,7 +100,7 @@ class Quests(commands.Cog):
             .get()
         )
         if not items:
-            await interaction.response.send_message(
+            await interaction.followup.send(
                 f"Quest {quest} has no items.", ephemeral=True
             )
             return
@@ -107,12 +110,12 @@ class Quests(commands.Cog):
                     "items"
                 ).document(item.id).delete()
                 await setup_quests(self.bot)
-                await interaction.response.send_message(
+                await interaction.followup.send(
                     f"Removed {item_name} from quest {quest}.", ephemeral=True
                 )
                 return
 
-        await interaction.response.send_message(
+        await interaction.followup.send(
             f"Quest {quest} has no item named {item_name}.", ephemeral=True
         )
 
@@ -125,6 +128,7 @@ class Quests(commands.Cog):
         interaction: discord.Interaction,
         quest: Literal[1, 2],
     ):
+        await interaction.response.defer(ephemeral=True)
         items = (
             db.collection("weekly-quests")
             .document(f"quest{quest}")
@@ -132,7 +136,7 @@ class Quests(commands.Cog):
             .get()
         )
         if not items:
-            await interaction.response.send_message(
+            await interaction.followup.send(
                 f"Quest {quest} has no items.", ephemeral=True
             )
             return
@@ -142,7 +146,7 @@ class Quests(commands.Cog):
             ).document(item.id).delete()
 
         await setup_quests(self.bot)
-        await interaction.response.send_message(
+        await interaction.followup.send(
             f"Cleared all items from quest {quest}.", ephemeral=True
         )
 
