@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from functools import total_ordering
 
 import discord
 from firebase_admin import firestore
@@ -50,6 +51,7 @@ class TicketActionView(discord.ui.View):
         try:
             message = await interaction.channel.fetch_message(message_id)
             claimer_roles = ticket_data.get("claimer_roles", {})
+            total_kills = ticket_data.get("total_kills", "0")
             embed = build_ticket_embed(
                 requester_id=ticket_data["user_id"],
                 bosses=ticket_data["bosses"],
@@ -61,7 +63,7 @@ class TicketActionView(discord.ui.View):
                 guild=interaction.guild,
                 type=ticket_data["type"],
                 server=ticket_data["server"],
-                total_kills=ticket_data["total_kills"],
+                total_kills=total_kills,
                 claimer_roles=claimer_roles,
             )
 
