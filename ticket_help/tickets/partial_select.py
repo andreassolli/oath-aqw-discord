@@ -1,7 +1,6 @@
 import discord
 
 from firebase_client import db
-from ticket_help.tickets.completion_utils import finalize_ticket
 
 
 def get_points_for_boss(boss: str) -> int:
@@ -12,7 +11,7 @@ def get_points_for_boss(boss: str) -> int:
 
 
 class PartialSelect(discord.ui.Select):
-    def __init__(self, ticket_name: str, bosses: list[str]):
+    def __init__(self, ticket_name: str, bosses: list[str], parent_view):
         options = [discord.SelectOption(label=boss, value=boss) for boss in bosses]
 
         super().__init__(
@@ -23,43 +22,11 @@ class PartialSelect(discord.ui.Select):
         )
 
         self.ticket_name = ticket_name
-        self.all_bosses = bosses
+        self.parent_view = parent_view
 
     async def callback(self, interaction: discord.Interaction):
-        await interaction.response.defer(ephemeral=True)
-        doc_ref = db.collection("tickets").document(self.ticket_name)
-        doc = doc_ref.get()
+        self.parent_view.selected_bosses = self.values
 
-        if not doc.exists:
-            return await interaction.followup.send(
-                "❌ Ticket not found.", ephemeral=True
-            )
-
-        data = doc.to_dict()
-        selected = self.values
-        all_bosses = self.all_bosses
-
-        completed = selected
-        not_completed = [b for b in all_bosses if b not in completed]
-
-        completed_points = sum(get_points_for_boss(b) for b in completed)
-        total_points = data.get("points", 1)
-
-        formatted_bosses = []
-        for boss in all_bosses:
-            if boss in completed:
-                formatted_bosses.append(boss)
-            else:
-                formatted_bosses.append(f"~~{boss}~~")
-
-        modified_data = data.copy()
-
-        modified_data["bosses"] = formatted_bosses
-        modified_data["points"] = completed_points
-        modified_data["completed_bosses"] = completed
-
-        await finalize_ticket(
-            interaction=interaction,
-            ticket_name=self.ticket_name,
-            ticket_data=modified_data,
+        await interaction.response.edit_message(
+            content=f"✅ Selected: {', '.join(self.values)}", view=self.parent_view
         )

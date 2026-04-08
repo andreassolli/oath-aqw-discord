@@ -8,14 +8,22 @@ from ticket_help.commands.permissions import (
 
 
 class SpecialBossButton(discord.ui.Button):
-    def __init__(self, ticket_name: str, experienced_only: bool = False):
+    def __init__(self, ticket_name: str, parent_view, experienced_only: bool = False):
+        label = "🔒 Experienced Only" if experienced_only else "🔑 All Helpers"
 
         super().__init__(
-            label="Toggle Experienced Only", style=discord.ButtonStyle.secondary, row=2
+            label=label,
+            style=discord.ButtonStyle.danger
+            if experienced_only
+            else discord.ButtonStyle.success,
+            row=2,
         )
+
         self.ticket_name = ticket_name
+        self.parent_view = parent_view
 
     async def callback(self, interaction: discord.Interaction):
+        await interaction.response.defer(ephemeral=True)
         doc_ref = db.collection("tickets").document(self.ticket_name)
         doc = doc_ref.get()
 
@@ -33,7 +41,7 @@ class SpecialBossButton(discord.ui.Button):
 
         if not (is_requester or is_oathsworn):
             return await interaction.response.send_message(
-                "🚫 Only requester or Oathsworn can toggle this.",
+                "🚫 Only requester or Admin can toggle this.",
                 ephemeral=True,
             )
 
@@ -42,9 +50,17 @@ class SpecialBossButton(discord.ui.Button):
 
         doc_ref.update({"experienced_only": new_value})
 
-        status = "🟢 Experienced Helpers ONLY" if new_value else "🔵 All Helpers"
+        self.label = "🔒 Experienced Only" if new_value else "🔑 All Helpers"
+        self.style = (
+            discord.ButtonStyle.danger if new_value else discord.ButtonStyle.success
+        )
+        view = self.view
 
-        await interaction.response.send_message(
-            f"⚡ Claim mode set to: **{status}**",
+        await self.parent_view._update_ticket_embed(interaction)
+
+        status = "🔒 Experienced Helpers ONLY" if new_value else "🔑 All Helpers"
+
+        await interaction.followup.send(
+            f"👊 Claim mode set to: **{status}**",
             ephemeral=True,
         )

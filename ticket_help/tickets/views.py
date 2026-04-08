@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from functools import total_ordering
 
 import discord
 from firebase_admin import firestore
@@ -15,7 +14,7 @@ from ticket_help.commands.permissions import (
 )
 from ticket_help.panels.change_server_view import ServerSelectView
 from ticket_help.panels.server_fetch import fetch_servers
-from ticket_help.tickets.partial_select import PartialSelect
+from ticket_help.tickets.partial_complete import PartialCompleteView
 
 from .completion_utils import finalize_ticket
 from .confirm_cancel_view import ConfirmCancelView
@@ -36,7 +35,14 @@ class TicketActionView(discord.ui.View):
         self.bosses = bosses
 
         if any(boss in ["Ultra Speaker", "Ultra Gramiel"] for boss in bosses):
-            self.add_item(SpecialBossButton(ticket_name))
+            doc_ref = db.collection("tickets").document(ticket_name)
+            doc = doc_ref.get()
+
+            experienced_only = False
+            if doc.exists:
+                experienced_only = doc.to_dict().get("experienced_only", False)
+
+            self.add_item(SpecialBossButton(ticket_name, self, experienced_only))
 
     async def _update_ticket_embed(self, interaction: discord.Interaction):
         doc_ref = db.collection("tickets").document(self.ticket_name)
@@ -322,7 +328,7 @@ class TicketActionView(discord.ui.View):
         )
 
     @discord.ui.button(
-        label="📝 Partial Complete", style=discord.ButtonStyle.success, row=1
+        label="📝 Partial Complete", style=discord.ButtonStyle.primary, row=1
     )
     async def partially_complete_ticket(self, interaction: discord.Interaction, _):
         await interaction.response.defer(ephemeral=True)
@@ -366,8 +372,7 @@ class TicketActionView(discord.ui.View):
                 ephemeral=True,
             )
 
-        view = discord.ui.View()
-        view.add_item(PartialSelect(self.ticket_name, self.bosses))
+        view = PartialCompleteView(self.ticket_name, self.bosses)
 
         await interaction.followup.send(
             "📝 Select which bosses were completed:",

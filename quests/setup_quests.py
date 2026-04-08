@@ -23,7 +23,8 @@ async def setup_quests(client: discord.Client):
             and msg.embeds
             and msg.embeds[0].title == "📜 Available Quests"
         ):
-            await msg.edit(embed=embed, view=QuestView())
+            await msg.delete()
+            await channel.send(embed=embed, view=QuestView())
             return
 
     await channel.send(embed=embed, view=QuestView())

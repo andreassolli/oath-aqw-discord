@@ -446,9 +446,66 @@ def reset_coins():
     print(f"Done. Updated {count} users.")
 
 
+BATCH_LIMIT = 500
+
+
+def migrate_quest_names_batch():
+    users_ref = db.collection("users").stream()
+
+    batch = db.batch()
+    operation_count = 0
+    updated_count = 0
+
+    for user_doc in users_ref:
+        user_data = user_doc.to_dict()
+        quests_completed = user_data.get("quests_completed")
+
+        if not quests_completed:
+            continue
+
+        updated_quests = []
+        changed = False
+
+        for quest in quests_completed:
+            if quest == "quest_1":
+                updated_quests.append("Weekly 1")
+                changed = True
+            elif quest == "quest_2":
+                updated_quests.append("Weekly 2")
+                changed = True
+            else:
+                updated_quests.append(quest)
+
+        if not changed:
+            continue
+
+        # Add update to batch
+        batch.update(user_doc.reference, {"quests_completed": updated_quests})
+
+        operation_count += 1
+        updated_count += 1
+
+        # Commit batch when limit reached
+        if operation_count >= BATCH_LIMIT:
+            batch.commit()
+            print(f"✅ Committed {operation_count} updates")
+
+            # Reset batch
+            batch = db.batch()
+            operation_count = 0
+
+    # Commit any remaining operations
+    if operation_count > 0:
+        batch.commit()
+        print(f"✅ Committed final {operation_count} updates")
+
+    print(f"🎉 Migration complete. Updated {updated_count} users.")
+
+
 if __name__ == "__main__":
+    migrate_quest_names_batch()
     # asyncio.run(generate_test_card())
-    reset_coins()
+    # reset_coins()
     # migrate_shop_prices()
     # backfill_wordle_stats()
     # asyncio.run(find_users_with_doom_card())

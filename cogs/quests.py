@@ -13,13 +13,13 @@ class Quests(commands.Cog):
         self.bot = bot
 
     @app_commands.command(
-        name="weeklies-add", description="Add item to this weeks quest."
+        name="quests-add", description="Add item to this weeks quest."
     )
     @app_commands.default_permissions(manage_guild=True)
-    async def weeklies_add(
+    async def quests_add(
         self,
         interaction: discord.Interaction,
-        quest: Literal[1, 2],
+        quest: Literal["Weekly 1", "Weekly 2", "Frequent 1", "Frequent 2"],
         item_name: str,
         item_type: Literal[
             "Axe",
@@ -48,7 +48,17 @@ class Quests(commands.Cog):
         ],
     ):
         await interaction.response.defer(ephemeral=True)
-        db.collection("weekly-quests").document(f"quest{quest}").collection(
+        if quest == "Weekly 1":
+            quest_ref = db.collection("weekly-quests").document("quest1")
+        elif quest == "Weekly 2":
+            quest_ref = db.collection("weekly-quests").document("quest2")
+        elif quest == "Frequent 1":
+            quest_ref = db.collection("frequent-quests").document("quest1")
+        else:
+            quest_ref = db.collection("frequent-quests").document("quest2")
+
+        item_ref = quest_ref.collection("items").document()
+        item_ref.collection("weekly-quests").document(f"quest{quest}").collection(
             "items"
         ).add({"name": item_name, "type": item_type})
         await setup_quests(self.bot)
@@ -56,22 +66,25 @@ class Quests(commands.Cog):
             f"Added {item_name} to quest {quest}.", ephemeral=True
         )
 
-    @app_commands.command(
-        name="weeklies-view", description="Add item to this weeks quest."
-    )
+    @app_commands.command(name="quests-view", description="View items for this quest.")
     @app_commands.default_permissions(manage_guild=True)
-    async def weeklies_view(
+    async def quests_view(
         self,
         interaction: discord.Interaction,
-        quest: Literal[1, 2],
+        quest: Literal["Weekly 1", "Weekly 2", "Frequent 1", "Frequent 2"],
     ):
         await interaction.response.defer(ephemeral=True)
-        items = (
-            db.collection("weekly-quests")
-            .document(f"quest{quest}")
-            .collection("items")
-            .get()
-        )
+        if quest == "Weekly 1":
+            quest_ref = db.collection("weekly-quests").document("quest1")
+        elif quest == "Weekly 2":
+            quest_ref = db.collection("weekly-quests").document("quest2")
+        elif quest == "Frequent 1":
+            quest_ref = db.collection("frequent-quests").document("quest1")
+        else:
+            quest_ref = db.collection("frequent-quests").document("quest2")
+
+        item_ref = quest_ref.collection("items").document()
+        items = item_ref.get()
         if not items:
             await interaction.followup.send(
                 f"Quest {quest} has no items.", ephemeral=True
@@ -82,38 +95,34 @@ class Quests(commands.Cog):
             ephemeral=True,
         )
 
-    @app_commands.command(
-        name="weeklies-remove", description="Remove item from this weeks quest."
-    )
+    @app_commands.command(name="quests-remove", description="Remove item from quest.")
     @app_commands.default_permissions(manage_guild=True)
-    async def weeklies_remove(
+    async def quests_remove(
         self,
         interaction: discord.Interaction,
-        quest: Literal[1, 2],
+        quest: Literal["Weekly 1", "Weekly 2", "Frequent 1", "Frequent 2"],
         item_name: str,
     ):
         await interaction.response.defer(ephemeral=True)
-        items = (
-            db.collection("weekly-quests")
-            .document(f"quest{quest}")
-            .collection("items")
-            .get()
-        )
-        if not items:
+        if quest == "Weekly 1":
+            quest_ref = db.collection("weekly-quests").document("quest1")
+        elif quest == "Weekly 2":
+            quest_ref = db.collection("weekly-quests").document("quest2")
+        elif quest == "Frequent 1":
+            quest_ref = db.collection("frequent-quests").document("quest1")
+        else:
+            quest_ref = db.collection("frequent-quests").document("quest2")
+
+        item_ref = quest_ref.collection("items").document(item_name)
+        item = item_ref.get()
+
+        if item:
+            item_ref.delete()
+            await setup_quests(self.bot)
             await interaction.followup.send(
-                f"Quest {quest} has no items.", ephemeral=True
+                f"Removed {item_name} from quest {quest}.", ephemeral=True
             )
             return
-        for item in items:
-            if item.get("name") == item_name:
-                db.collection("weekly-quests").document(f"quest{quest}").collection(
-                    "items"
-                ).document(item.id).delete()
-                await setup_quests(self.bot)
-                await interaction.followup.send(
-                    f"Removed {item_name} from quest {quest}.", ephemeral=True
-                )
-                return
 
         await interaction.followup.send(
             f"Quest {quest} has no item named {item_name}.", ephemeral=True

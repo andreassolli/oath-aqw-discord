@@ -6,7 +6,7 @@ from firebase_client import db
 from user_profile.utils import fetch_inventory
 
 
-async def get_quests() -> dict:
+async def get_weekly_quests() -> dict:
     quests = {}
 
     for quest_id in [1, 2]:
@@ -27,7 +27,33 @@ async def get_quests() -> dict:
                 }
             )
 
-        quests[f"quest_{quest_id}"] = items
+        quests[f"Weekly {quest_id}"] = items
+
+    return quests
+
+
+async def get_frequent_quests() -> dict:
+    quests = {}
+
+    for quest_id in [1, 2]:
+        items_ref = (
+            db.collection("frequent-quests")
+            .document(f"quest{quest_id}")
+            .collection("items")
+            .get()
+        )
+
+        items = []
+        for doc in items_ref:
+            data = doc.to_dict()
+            items.append(
+                {
+                    "strName": data.get("name"),
+                    "strType": data.get("type"),
+                }
+            )
+
+        quests[f"Frequent {quest_id}"] = items
 
     return quests
 
@@ -43,10 +69,12 @@ async def check_for_quest_completion(user_id: int) -> str:
     quests_completed = user_dict.get("quests_completed", [])
     ccid = user_dict.get("ccid", "")
 
-    if len(quests_completed) >= 2:
-        return "✅ You have already completed both quests."
+    if len(quests_completed) >= 4:
+        return "✅ You have already completed all quests."
 
-    quests = await get_quests()
+    weekly_quests = await get_weekly_quests()
+    frequent_quests = await get_frequent_quests()
+    quests = {**weekly_quests, **frequent_quests}
     completed_now = []
     inventory = await fetch_inventory(ccid)
     coins_to_reward = 0
@@ -59,7 +87,10 @@ async def check_for_quest_completion(user_id: int) -> str:
 
         if items_in_inventory(required_items, inventory):
             completed_now.append(quest_id)
-            coins_to_reward += 1000
+            if "Frequent" in quest_id:
+                coins_to_reward += 150
+            else:
+                coins_to_reward += 1000
             completed_text.append(f"<:queststart:1491012167170920560>{quest_id}")
             continue
 
@@ -72,7 +103,6 @@ async def check_for_quest_completion(user_id: int) -> str:
 
     updated_quests = quests_completed + completed_now
 
-    # ❌ REMOVE await here
     user_ref.update(
         {
             "quests_completed": updated_quests,
