@@ -11,7 +11,7 @@ class SpecialBossButton(discord.ui.Button):
     def __init__(self, ticket_name: str, experienced_only: bool = False):
 
         super().__init__(
-            label="Toggle Experienced Only", style=discord.ButtonStyle.secondary
+            label="Toggle Experienced Only", style=discord.ButtonStyle.secondary, row=2
         )
         self.ticket_name = ticket_name
 

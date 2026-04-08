@@ -86,7 +86,9 @@ async def finalize_ticket(
     requester_ref = db.collection("users").document(str(requester_id))
     requester_doc = requester_ref.get()
 
-    amount_bosses = len(ticket_data.get("bosses", []))
+    amount_bosses = len(
+        ticket_data.get("completed_bosses", ticket_data.get("bosses", []))
+    )
     ticket_type = ticket_data.get("type")
 
     MULTIPLIERS = {

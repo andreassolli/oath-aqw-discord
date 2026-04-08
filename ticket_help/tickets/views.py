@@ -15,6 +15,7 @@ from ticket_help.commands.permissions import (
 )
 from ticket_help.panels.change_server_view import ServerSelectView
 from ticket_help.panels.server_fetch import fetch_servers
+from ticket_help.tickets.partial_select import PartialSelect
 
 from .completion_utils import finalize_ticket
 from .confirm_cancel_view import ConfirmCancelView
@@ -72,7 +73,9 @@ class TicketActionView(discord.ui.View):
         except discord.NotFound:
             pass
 
-    @discord.ui.button(label="👊 Claim or unclaim", style=discord.ButtonStyle.success)
+    @discord.ui.button(
+        label="👊 Claim or unclaim", style=discord.ButtonStyle.success, row=3
+    )
     async def claim_ticket(
         self, interaction: discord.Interaction, button: discord.ui.Button
     ):
@@ -212,7 +215,9 @@ class TicketActionView(discord.ui.View):
             f"📋 **Room codes:**\n{rooms_text}", ephemeral=True
         )
 
-    @discord.ui.button(label="📋 Get room codes", style=discord.ButtonStyle.secondary)
+    @discord.ui.button(
+        label="📋 Get room codes", style=discord.ButtonStyle.secondary, row=3
+    )
     async def copy_room(self, interaction: discord.Interaction, _):
         doc_ref = db.collection("tickets").document(self.ticket_name)
         doc = doc_ref.get()
@@ -255,8 +260,71 @@ class TicketActionView(discord.ui.View):
             f"📋 **Room codes:**\n{rooms_text}", ephemeral=True
         )
 
-    @discord.ui.button(label="🎉 Complete Ticket", style=discord.ButtonStyle.primary)
+    @discord.ui.button(
+        label="🎉 Complete Ticket", style=discord.ButtonStyle.success, row=1
+    )
     async def complete_ticket(self, interaction: discord.Interaction, _):
+        await interaction.response.defer(ephemeral=True)
+
+        doc_ref = db.collection("tickets").document(self.ticket_name)
+        doc = doc_ref.get()
+
+        if not doc.exists:
+            return await interaction.followup.send(
+                "❌ Ticket data not found.", ephemeral=True
+            )
+
+        data = doc.to_dict()
+
+        if data.get("status") in ("completing", "completed"):
+            return await interaction.followup.send(
+                "⚠️ This ticket has already been completed.", ephemeral=True
+            )
+
+        requester_id = data.get("user_id")
+        is_requester = interaction.user.id == requester_id
+        is_admin = has_admin_role(interaction)
+        is_oathsworn = has_oathsworn_role(interaction)
+
+        if not (is_requester or is_admin or is_oathsworn):
+            return await interaction.followup.send(
+                "🚫 Only the ticket creator or an admin can complete this ticket.",
+                ephemeral=True,
+            )
+
+        claimers = data.get("claimers", [])
+        if len(claimers) == 0:
+            return await interaction.followup.send(
+                "⚠️ You cannot complete a ticket with no helpers.",
+                ephemeral=True,
+            )
+
+        max_claims = data.get("max_claims", 1)
+        points = data.get("points", 1)
+
+        if len(claimers) < max_claims:
+            view = ConfirmCompleteView(self.ticket_name)
+
+            await interaction.followup.send(
+                f"⚠️ **This ticket only has {len(claimers)} helper(s).** "
+                "Make sure the whole ticket is finished before completing.\n"
+                "Completing unfinished tickets is against the rules. "
+                "Is the ticket **finished**?\n",
+                ephemeral=True,
+                view=view,
+            )
+            return
+
+        await finalize_ticket(
+            interaction=interaction,
+            ticket_name=self.ticket_name,
+            ticket_data=data,
+        )
+
+    @discord.ui.button(
+        label="📝 Partial Complete", style=discord.ButtonStyle.success, row=1
+    )
+    async def partially_complete_ticket(self, interaction: discord.Interaction, _):
         await interaction.response.defer(ephemeral=True)
 
         doc_ref = db.collection("tickets").document(self.ticket_name)
@@ -287,28 +355,89 @@ class TicketActionView(discord.ui.View):
 
         points = data.get("points", 1)
         claimers = data.get("claimers", [])
-        max_claims = data.get("max_claims", 1)
-
-        if len(claimers) < max_claims:
-            view = ConfirmCompleteView(self.ticket_name)
-
-            await interaction.followup.send(
-                f"⚠️ **This ticket only has {len(claimers)} helper(s).** "
-                "Make sure the whole ticket is finished before completing.\n"
-                "Completing unfinished tickets is against the rules. "
-                "Is the ticket **finished**?\n",
+        if len(claimers) == 0:
+            return await interaction.followup.send(
+                "⚠️ You cannot complete a ticket with no helpers.",
                 ephemeral=True,
-                view=view,
             )
-            return
 
-        await finalize_ticket(
-            interaction=interaction,
-            ticket_name=self.ticket_name,
-            ticket_data=data,
+        view = discord.ui.View()
+        view.add_item(PartialSelect(self.ticket_name, self.bosses))
+
+        await interaction.followup.send(
+            "📝 Select which bosses were completed:",
+            view=view,
+            ephemeral=True,
         )
 
-    @discord.ui.button(label="📣 Ping Helpers", style=discord.ButtonStyle.primary)
+    @discord.ui.button(label="🗑️ Cancel Ticket", style=discord.ButtonStyle.danger, row=1)
+    async def cancel_ticket(self, interaction: discord.Interaction, _):
+        doc_ref = db.collection("tickets").document(self.ticket_name)
+        doc = doc_ref.get()
+
+        if not doc.exists:
+            return await interaction.response.send_message(
+                "❌ Ticket data not found.", ephemeral=True
+            )
+
+        data = doc.to_dict()
+        requester_id = data.get("user_id")
+        is_requester = interaction.user.id == requester_id
+        is_admin = has_admin_role(interaction)
+        is_oathsworn = has_oathsworn_role(interaction)
+
+        if not (is_requester or is_admin or is_oathsworn):
+            return await interaction.response.send_message(
+                "🚫 Only the ticket creator or an admin can cancel this ticket.",
+                ephemeral=True,
+            )
+
+        view = ConfirmCancelView(self.ticket_name, data)
+
+        await interaction.response.send_message(
+            "⚠️ **Are you sure you want to cancel this ticket?**\n"
+            "This action cannot be undone.",
+            ephemeral=True,
+            view=view,
+        )
+
+    @discord.ui.button(
+        label="🌐 Change Server", style=discord.ButtonStyle.secondary, row=2
+    )
+    async def change_server(self, interaction: discord.Interaction, _):
+        doc_ref = db.collection("tickets").document(self.ticket_name)
+        doc = doc_ref.get()
+
+        if not doc.exists:
+            return await interaction.response.send_message(
+                "❌ Ticket data not found.", ephemeral=True
+            )
+
+        data = doc.to_dict()
+
+        requester_id = data.get("user_id")
+        is_requester = interaction.user.id == requester_id
+        is_admin = has_admin_role(interaction)
+        is_oathsworn = has_oathsworn_role(interaction)
+
+        # 🔒 SAME PERMISSIONS AS COMPLETE/CANCEL
+        if not (is_requester or is_admin or is_oathsworn):
+            return await interaction.response.send_message(
+                "🚫 Only the ticket creator or an admin can change the server.",
+                ephemeral=True,
+            )
+
+        servers = await fetch_servers()
+
+        view = ServerSelectView(self.ticket_name, servers, parent_view=self)
+
+        await interaction.response.send_message(
+            "🌐 Select a new server:", view=view, ephemeral=True
+        )
+
+    @discord.ui.button(
+        label="📣 Ping Helpers", style=discord.ButtonStyle.primary, row=2
+    )
     async def ping_helpers(self, interaction: discord.Interaction, _):
         doc_ref = db.collection("tickets").document(self.ticket_name)
         doc = doc_ref.get()
@@ -362,67 +491,4 @@ class TicketActionView(discord.ui.View):
         await interaction.channel.send(
             f"{helper_role.mention}\n⚠️ **More helpers needed for this ticket!**",
             allowed_mentions=discord.AllowedMentions(roles=True),
-        )
-
-    @discord.ui.button(label="🗑️ Cancel Ticket", style=discord.ButtonStyle.danger)
-    async def cancel_ticket(self, interaction: discord.Interaction, _):
-        doc_ref = db.collection("tickets").document(self.ticket_name)
-        doc = doc_ref.get()
-
-        if not doc.exists:
-            return await interaction.response.send_message(
-                "❌ Ticket data not found.", ephemeral=True
-            )
-
-        data = doc.to_dict()
-        requester_id = data.get("user_id")
-        is_requester = interaction.user.id == requester_id
-        is_admin = has_admin_role(interaction)
-        is_oathsworn = has_oathsworn_role(interaction)
-
-        if not (is_requester or is_admin or is_oathsworn):
-            return await interaction.response.send_message(
-                "🚫 Only the ticket creator or an admin can cancel this ticket.",
-                ephemeral=True,
-            )
-
-        view = ConfirmCancelView(self.ticket_name, data)
-
-        await interaction.response.send_message(
-            "⚠️ **Are you sure you want to cancel this ticket?**\n"
-            "This action cannot be undone.",
-            ephemeral=True,
-            view=view,
-        )
-
-    @discord.ui.button(label="🌐 Change Server", style=discord.ButtonStyle.secondary)
-    async def change_server(self, interaction: discord.Interaction, _):
-        doc_ref = db.collection("tickets").document(self.ticket_name)
-        doc = doc_ref.get()
-
-        if not doc.exists:
-            return await interaction.response.send_message(
-                "❌ Ticket data not found.", ephemeral=True
-            )
-
-        data = doc.to_dict()
-
-        requester_id = data.get("user_id")
-        is_requester = interaction.user.id == requester_id
-        is_admin = has_admin_role(interaction)
-        is_oathsworn = has_oathsworn_role(interaction)
-
-        # 🔒 SAME PERMISSIONS AS COMPLETE/CANCEL
-        if not (is_requester or is_admin or is_oathsworn):
-            return await interaction.response.send_message(
-                "🚫 Only the ticket creator or an admin can change the server.",
-                ephemeral=True,
-            )
-
-        servers = await fetch_servers()
-
-        view = ServerSelectView(self.ticket_name, servers, parent_view=self)
-
-        await interaction.response.send_message(
-            "🌐 Select a new server:", view=view, ephemeral=True
         )
