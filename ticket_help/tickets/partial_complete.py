@@ -69,7 +69,7 @@ class PartialCompleteView(discord.ui.View):
             ticket_data=modified_data,
         )
 
-    @discord.ui.button(label="❌ Cancel", style=discord.ButtonStyle.secondary)
+    @discord.ui.button(label="❌ Cancel", style=discord.ButtonStyle.danger)
     async def cancel(self, interaction: discord.Interaction, _):
         await interaction.response.send_message(
             "❌ Partial completion cancelled.", ephemeral=True

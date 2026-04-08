@@ -57,10 +57,7 @@ class Quests(commands.Cog):
         else:
             quest_ref = db.collection("frequent-quests").document("quest2")
 
-        item_ref = quest_ref.collection("items").document()
-        item_ref.collection("weekly-quests").document(f"quest{quest}").collection(
-            "items"
-        ).add({"name": item_name, "type": item_type})
+        quest_ref.collection("items").add({"name": item_name, "type": item_type})
         await setup_quests(self.bot)
         await interaction.followup.send(
             f"Added {item_name} to quest {quest}.", ephemeral=True
@@ -83,15 +80,15 @@ class Quests(commands.Cog):
         else:
             quest_ref = db.collection("frequent-quests").document("quest2")
 
-        item_ref = quest_ref.collection("items").document()
-        items = item_ref.get()
-        if not items:
+        items = quest_ref.collection("items").stream()
+        items_list = [doc.to_dict().get("name") for doc in items]
+        if not items_list:
             await interaction.followup.send(
                 f"Quest {quest} has no items.", ephemeral=True
             )
             return
         await interaction.followup.send(
-            f"Quest {quest} items: {', '.join([item.get('name') for item in items])}",
+            f"Quest {quest} items: {', '.join([item.get('name') for item in items_list])}",
             ephemeral=True,
         )
 
@@ -113,20 +110,21 @@ class Quests(commands.Cog):
         else:
             quest_ref = db.collection("frequent-quests").document("quest2")
 
-        item_ref = quest_ref.collection("items").document(item_name)
-        item = item_ref.get()
+        items = quest_ref.collection("items").where("name", "==", item_name).stream()
 
-        if item:
-            item_ref.delete()
-            await setup_quests(self.bot)
+        found = False
+        for doc in items:
+            doc.reference.delete()
+            found = True
+
+        if found:
             await interaction.followup.send(
                 f"Removed {item_name} from quest {quest}.", ephemeral=True
             )
-            return
-
-        await interaction.followup.send(
-            f"Quest {quest} has no item named {item_name}.", ephemeral=True
-        )
+        else:
+            await interaction.followup.send(
+                f"Quest {quest} has no item named {item_name}.", ephemeral=True
+            )
 
     @app_commands.command(
         name="weeklies-clear", description="Clear all items from this weeks quest."
