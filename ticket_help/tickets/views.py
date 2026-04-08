@@ -336,6 +336,11 @@ class TicketActionView(discord.ui.View):
             )
 
         data = doc.to_dict()
+        if data.get("type") in {"other bosses", "spamming", "testing", "until drop"}:
+            return await interaction.followup.send(
+                "⚠️ Partial completion is not available for this ticket type.",
+                ephemeral=True,
+            )
 
         if data.get("status") in ("completing", "completed"):
             return await interaction.followup.send(

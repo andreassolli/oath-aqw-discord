@@ -26,11 +26,12 @@ class PartialSelect(discord.ui.Select):
         self.all_bosses = bosses
 
     async def callback(self, interaction: discord.Interaction):
+        await interaction.response.defer(ephemeral=True)
         doc_ref = db.collection("tickets").document(self.ticket_name)
         doc = doc_ref.get()
 
         if not doc.exists:
-            return await interaction.response.send_message(
+            return await interaction.followup.send(
                 "❌ Ticket not found.", ephemeral=True
             )
 
