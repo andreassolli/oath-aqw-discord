@@ -77,10 +77,14 @@ async def fetch_aqw_profile(username: str) -> AQWProfile | None:
 def check_for_bot_badges(badges: list[dict]) -> Dict[str, bool]:
     moosefish = any(badge.get("sTitle") == "Derp Moosefish" for badge in badges)
     mad_bro = any(badge.get("sTitle") == "You mad bro?" for badge in badges)
+    touch_mass = any(badge.get("sTitle") == "Touch Mass" for badge in badges)
+    martial_artist = any(badge.get("sTitle") == "Martial Artist" for badge in badges)
 
     return {
         "moosefish": moosefish,
         "mad_bro": mad_bro,
+        "touch_mass": touch_mass,
+        "martial_artist": martial_artist,
     }
 
 

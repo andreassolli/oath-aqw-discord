@@ -22,7 +22,7 @@ async def setup_ticket_panel(client: discord.Client):
 
     embed = discord.Embed(
         title="🎫 Need help?",
-        description="Make sure to read <#1473074765182009468> before creating a ticket. \nClick the button below to get started.",
+        description="Make sure to read [Creating Tickets, how to & rules](https://discord.com/channels/1455651278590972019/1473074765182009468) before creating a ticket. \nClick the button below to get started.",
         color=discord.Color.blurple(),
     )
 

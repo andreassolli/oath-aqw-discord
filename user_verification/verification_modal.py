@@ -226,6 +226,8 @@ class VerificationModal(discord.ui.Modal):
                     "epic_badges": epic_badges,
                     "derp_moosefish": bot_badges.get("moosefish"),
                     "you_mad_bro": bot_badges.get("mad_bro"),
+                    "touch_mass": bot_badges.get("touch_mass"),
+                    "martial_artist": bot_badges.get("martial_artist"),
                 }
             )
 

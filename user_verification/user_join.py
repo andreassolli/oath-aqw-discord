@@ -244,6 +244,8 @@ class DidUserJoinView(discord.ui.View):
 
         moosefish = "✅" if ticket["derp_moosefish"] else "❌"
         you_mad_bro = "✅" if ticket["you_mad_bro"] else "❌"
+        touch_mass = "✅" if ticket["touch_mass"] else "❌"
+        martial_artist = "✅" if ticket["martial_artist"] else "❌"
 
         embed.add_field(name="IGN", value=ticket["ign"], inline=True)
         embed.add_field(name="Level", value=ticket["level"], inline=True)
@@ -253,5 +255,8 @@ class DidUserJoinView(discord.ui.View):
 
         embed.add_field(name="Moosefish", value=moosefish, inline=True)
         embed.add_field(name="You Mad Bro", value=you_mad_bro, inline=True)
+
+        embed.add_field(name="Touch Mass", value=touch_mass, inline=True)
+        embed.add_field(name="Martial Artist", value=martial_artist, inline=True)
 
         await interaction.response.send_message(embed=embed, ephemeral=True)

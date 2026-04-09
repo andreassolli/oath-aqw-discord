@@ -32,7 +32,7 @@ async def setup_verification_panel(client: discord.Client):
             "🎖️ Select the badges you want to apply for below:\n\n"
             "🧳 Keep the necessary items in your inventory when applying.\n"
             "📑 You can select multiple badges per application.\n"
-            "📖 Read more about <#1471212539168686345>.\n\n"
+            "📖 Read more about [Obtaining Badges in Oath Discord](https://discord.com/channels/1455651278590972019/1471212539168686345).\n\n"
             f"🪪 *In order to apply, you must be verified in <#{VERIFICATION_CHANNEL_ID}>!*"
         ),
         color=discord.Color.blurple(),

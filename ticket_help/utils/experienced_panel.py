@@ -23,13 +23,14 @@ async def setup_application_panel(client: discord.Client):
         description=(
             "Are you experienced with ultras, and want to apply to become an Experienced Helper?\nClick the button below to start your application.\n\n"
             "📝 You will need to answer **10 questions** in total about **Ultra Speaker** and **Ultra Gramiel**, divided into 2 parts.\n"
-            "⚠️ Make sure to answer carefully.\nA ticket inspector will review your application and contact you for a trial if needed.\n\n"
-            "*Experienced Helpers are able to help if 'Experienced Only' is toggled on by the requester. (Only for **Gramiel and Speaker** for now)*"
+            "⚠️ Make sure to answer carefully.\nA ticket inspector will review your application and contact you for a trial if needed.\n"
+            "Need some tips? [Here is a visual representation of taunting as Lord of Order ⚖️](https://youtu.be/hahe9_HhDZA)\n\n"
+            "*Experienced Helpers are able to help if 'Experienced Only' is toggled on by the requester. (Only **Gramiel and Speaker** for now)*"
         ),
         color=discord.Color.blurple(),
     )
     embed.set_footer(
-        text="You need to be qualified to apply; 51% dmg weapon, LoO & AP, Scroll of Enrage, any potion."
+        text="❗️Make sure to copy your answers between the two parts in case anything happens."
     )
 
     await channel.send(embed=embed, view=StartView())

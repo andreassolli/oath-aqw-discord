@@ -190,7 +190,9 @@ class Forge(commands.Cog):
           * (🧟‍♂️ Binky, 📍  `/join doomvault`)
         * 🦴 Sapphire Orb  `x100` (🧟‍♂️Legion Lich Lord, 📍 `/join frozenlair`)
         * <:spearaqw:1487000575290642553> Boreal Cavalier Bardiche (🧟‍♂️Warlord Icewing, 📍 `/join icewing`)
-        * 🦴 Void Scale  `x13` (🧟‍♂️ArchFiend DragonLord, 📍 `/join underlair`)""")
+        * 🦴 Void Scale  `x13` (🧟‍♂️ArchFiend DragonLord, 📍 `/join underlair`)
+
+        **Ultra Bosses**: Use if you have low health, and/or boss does a lot of damage which isn't True Damage. """)
         )
 
     @forge.command(

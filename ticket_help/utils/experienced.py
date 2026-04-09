@@ -181,7 +181,7 @@ class StartView(discord.ui.View):
         super().__init__(timeout=None)
 
     @discord.ui.button(
-        label="Start application",
+        label="🤝 Start application",
         style=discord.ButtonStyle.primary,
         custom_id="start_application_button",
     )

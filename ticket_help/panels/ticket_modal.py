@@ -307,8 +307,7 @@ class CreateTicketModal(discord.ui.Modal):
             if guide_threads:
                 lines = []
                 for boss, thread in guide_threads.items():
-                    lines.append(f"• **{boss}** → {thread.mention}")
-
+                    lines.append(f"• **{boss}** → [{thread.name}]({thread.jump_url})")
                 embed = discord.Embed(
                     title="📘 **Relevant Guides**",
                     description="\n".join(lines),
