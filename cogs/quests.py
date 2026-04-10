@@ -3,6 +3,7 @@ from typing import Literal
 import discord
 from discord import app_commands
 from discord.ext import commands
+from google.cloud import firestore
 
 from firebase_client import db
 from quests.setup_quests import setup_quests
@@ -127,15 +128,66 @@ class Quests(commands.Cog):
             )
 
     @app_commands.command(
+        name="frequents-reset", description="Remove Frequent quests from all users."
+    )
+    @app_commands.default_permissions(manage_guild=True)
+    async def frequents_reset(self, interaction: discord.Interaction):
+        await interaction.response.defer(ephemeral=True)
+
+        users_ref = db.collection("users")
+        docs = users_ref.stream()
+
+        batch = db.batch()
+        batch_count = 0
+        BATCH_LIMIT = 500
+
+        updated = 0
+
+        for doc in docs:
+            user_data = doc.to_dict() or {}
+            quests = user_data.get("quests_completed", [])
+
+            # Skip users who don't have these quests
+            if "Frequent 1" not in quests and "Frequent 2" not in quests:
+                continue
+
+            batch.update(
+                doc.reference,
+                {
+                    "quests_completed": firestore.ArrayRemove(
+                        ["Frequent 1", "Frequent 2"]
+                    )
+                },
+            )
+
+            batch_count += 1
+            updated += 1
+
+            # 🚀 Commit every 500 writes
+            if batch_count >= BATCH_LIMIT:
+                batch.commit()
+                batch = db.batch()
+                batch_count = 0
+
+        # Final commit
+        if batch_count > 0:
+            batch.commit()
+
+        await interaction.followup.send(
+            f"✅ Removed Frequent quests from {updated} users.", ephemeral=True
+        )
+
+    @app_commands.command(
         name="weeklies-clear", description="Clear all items from this weeks quest."
     )
     @app_commands.default_permissions(manage_guild=True)
     async def weeklies_clear(
         self,
         interaction: discord.Interaction,
-        quest: Literal[1, 2],
+        quest: Literal["Weekly 1", "Weekly 2", "Frequent 1", "Frequent 2"],
     ):
         await interaction.response.defer(ephemeral=True)
+
         items = (
             db.collection("weekly-quests")
             .document(f"quest{quest}")
