@@ -490,7 +490,8 @@ class Economy(commands.Cog):
 
         await interaction.response.send_message(
             "<:creditWhaleL:1473755954309763182> **Last 20 Transactions**\n"
-            + "\n".join(formatted)
+            + "\n\n".join(formatted),
+            ephemeral=True,
         )
 
 

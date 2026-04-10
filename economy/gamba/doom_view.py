@@ -111,7 +111,7 @@ class DoomSpinView(discord.ui.View):
             {
                 "coins": firestore.Increment(new_result),
                 "transactions": firestore.ArrayUnion(
-                    [f"+ Won ${new_result} from the Wheel of Doom{bonus_text}"]
+                    [f"+ Won ${new_result} from the Wheel of Doom"]
                 ),
             },
             merge=True,
