@@ -15,6 +15,15 @@ class ShopItem(TypedDict):
     quantity: int
 
 
+def format_txt(t: str):
+    if t.startswith("+"):
+        t = t.replace("+", "<:greenUp:1475306546018648290>", 1)
+    elif t.startswith("-"):
+        t = t.replace("-", "<:redDown:1475306580814598185>", 1)
+
+    return t.replace("$", "<:oathcoin:1462999179998531614>")
+
+
 def rich_coins(guild: discord.Guild):
 
     users = (

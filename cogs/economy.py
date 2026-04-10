@@ -26,7 +26,7 @@ from economy.rocks_view import RockView
 from economy.shop import shop_embed
 from economy.shop_generation import generate_shop
 from economy.shop_view import ShopView
-from economy.utils import rich_coins
+from economy.utils import format_txt, rich_coins
 from firebase_client import db
 from inventory.utils import equip_item, get_inventory, unequip_item
 from inventory.view import InventoryView
@@ -156,7 +156,13 @@ class Economy(commands.Cog):
     ):
         user_ref = db.collection("users").document(str(user.id))
 
-        user_ref.set({"coins": firestore.Increment(coins)}, merge=True)
+        user_ref.set(
+            {
+                "coins": firestore.Increment(coins),
+                "transactions": firestore.ArrayUnion([f"+ Admin adjusted ${coins}"]),
+            },
+            merge=True,
+        )
         return await interaction.response.send_message(
             f"{user.display_name}'s points adjusted by {coins}", ephemeral=True
         )
@@ -261,10 +267,20 @@ class Economy(commands.Cog):
                 "You cannot donate more coins you have."
             )
         db.collection("users").document(str(interaction.user.id)).update(
-            {"coins": firestore.Increment(-coins)}
+            {
+                "coins": firestore.Increment(-coins),
+                "transactions": firestore.ArrayUnion(
+                    [f"- Donated ${coins} to {user.display_name}"]
+                ),
+            }
         )
         db.collection("users").document(str(user.id)).update(
-            {"coins": firestore.Increment(coins)}
+            {
+                "coins": firestore.Increment(coins),
+                "transactions": firestore.ArrayUnion(
+                    [f"+ Received ${coins} from {interaction.user.display_name}"]
+                ),
+            }
         )
 
         return await interaction.response.send_message(
@@ -395,7 +411,7 @@ class Economy(commands.Cog):
 
         if last_steal:
             last_steal = last_steal.replace(tzinfo=None)
-            remaining = timedelta(minutes=20) - (datetime.utcnow() - last_steal)
+            remaining = timedelta(minutes=30) - (datetime.utcnow() - last_steal)
 
             if remaining.total_seconds() > 0:
                 mins, secs = divmod(int(remaining.total_seconds()), 60)
@@ -424,7 +440,7 @@ class Economy(commands.Cog):
                 "You cannot steal coins from someone who has none.", ephemeral=True
             )
 
-        max_steal = int(max(target_coins * 0.03, 15))
+        max_steal = int(max(target_coins * 0.02, 15))
         max_steal = min(max_steal, 150)
         coins = random.randint(5, max_steal)
         not_dropped = random.randint(coins - 5, coins)
@@ -432,17 +448,49 @@ class Economy(commands.Cog):
         user_ref.update({"coins": firestore.Increment(not_dropped)})
         target_ref.update({"coins": firestore.Increment(-coins)})
         user_ref.set(
-            {"last_steal": firestore.SERVER_TIMESTAMP},
+            {
+                "last_steal": firestore.SERVER_TIMESTAMP,
+                "transactions": firestore.ArrayUnion(
+                    [f"+ Stole ${coins} from {target.display_name}"]
+                ),
+            },
             merge=True,
         )
 
         target_ref.set(
-            {"last_stolen_from": firestore.SERVER_TIMESTAMP},
+            {
+                "last_stolen_from": firestore.SERVER_TIMESTAMP,
+                "transactions": firestore.ArrayUnion(
+                    [f"- {interaction.user.display_name} stole ${coins}"]
+                ),
+            },
             merge=True,
         )
 
         return await interaction.response.send_message(
             f"{interaction.user.display_name} stole <:oathcoin:1462999179998531614>{coins} from {target.display_name}, but they dropped <:oathcoin:1462999179998531614>{dropped} in the process!"
+        )
+
+    @app_commands.command(
+        name="transactions", description="Shows your transaction history."
+    )
+    async def transactions(self, interaction: discord.Interaction):
+        user_ref = db.collection("users").document(str(interaction.user.id))
+        user_doc = user_ref.get()
+        user_data = user_doc.to_dict() or {}
+
+        transactions = user_data.get("transactions", [])
+
+        if not transactions:
+            return await interaction.response.send_message(
+                "You have no transaction history."
+            )
+
+        formatted = [format_txt(t) for t in reversed(transactions[-20:])]
+
+        await interaction.response.send_message(
+            "<:creditWhaleL:1473755954309763182> **Last 20 Transactions**\n"
+            + "\n".join(formatted)
         )
 
 

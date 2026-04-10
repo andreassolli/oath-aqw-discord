@@ -106,6 +106,9 @@ async def buy_item(item: ShopItem, user_id: int):
 
     if coin_price > 0:
         updates["coins"] = firestore.Increment(-coin_price)
+        updates["transactions"] = firestore.ArrayUnion(
+            [f"- Bought {name} for ${coin_price}"]
+        )
 
     if shard_price > 0:
         updates["gems"] = firestore.Increment(-shard_price)

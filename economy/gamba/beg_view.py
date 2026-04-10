@@ -48,7 +48,14 @@ class BegView(discord.ui.View):
                 "You don't have enough coins.", ephemeral=True
             )
 
-        user_ref.update({"coins": firestore.Increment(-1)})
+        user_ref.update(
+            {
+                "coins": firestore.Increment(-1),
+                "transactions": firestore.ArrayUnion(
+                    [f"+ Donated $1 to {self.beggar.display_name}"]
+                ),
+            }
+        )
 
         self.donors.add(donor_id)
         self.donor_names.add(interaction.user.display_name)
@@ -73,7 +80,14 @@ class BegView(discord.ui.View):
             stealer_id = list(self.donors)[random_index]
             stealer_ref = db.collection("users").document(str(stealer_id))
             stealer_name = list(self.donor_names)[random_index]
-            stealer_ref.update({"coins": firestore.Increment(self.total)})
+            stealer_ref.update(
+                {
+                    "coins": firestore.Increment(self.total),
+                    "transactions": firestore.ArrayUnion(
+                        [f"+ Robbed ${self.total} from {self.beggar.display_name}"]
+                    ),
+                }
+            )
             if self.message:
                 await self.message.channel.send(
                     f"<:GoobShock:1463149045731299328> {stealer_name} took of with all the coins! "
@@ -82,7 +96,14 @@ class BegView(discord.ui.View):
 
         else:
             beggar_ref = db.collection("users").document(str(self.beggar.id))
-            beggar_ref.update({"coins": firestore.Increment(self.total)})
+            beggar_ref.update(
+                {
+                    "coins": firestore.Increment(self.total),
+                    "transactions": firestore.ArrayUnion(
+                        [f"+ Begged for ${self.total}"]
+                    ),
+                }
+            )
             donor_names_string = ", ".join(self.donor_names)
             if len(self.donor_names) > 0:
                 donor_names_string += " and "

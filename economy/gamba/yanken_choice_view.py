@@ -40,7 +40,12 @@ class RPSChoiceView(discord.ui.View):
                 ephemeral=True,
             )
             return
-
+        if interaction.user.id in self.choices:
+            await interaction.response.send_message(
+                "You have already made your choice.",
+                ephemeral=True,
+            )
+            return
         self.choices[interaction.user.id] = choice
 
         await interaction.response.send_message(
@@ -73,8 +78,28 @@ class RPSChoiceView(discord.ui.View):
             winner_ref = db.collection("users").document(str(winner.id))
             loser_ref = db.collection("users").document(str(loser.id))
 
-            winner_ref.set({"coins": firestore.Increment(self.wager)}, merge=True)
-            loser_ref.set({"coins": firestore.Increment(-self.wager)}, merge=True)
+            winner_ref.set(
+                {
+                    "coins": firestore.Increment(self.wager),
+                    "transactions": firestore.ArrayUnion(
+                        [
+                            f"+ Won ${self.wager} from janken against {loser.display_name}"
+                        ]
+                    ),
+                },
+                merge=True,
+            )
+            loser_ref.set(
+                {
+                    "coins": firestore.Increment(-self.wager),
+                    "transactions": firestore.ArrayUnion(
+                        [
+                            f"- Lost ${self.wager} from janken against {winner.display_name}"
+                        ]
+                    ),
+                },
+                merge=True,
+            )
 
         embed = discord.Embed(
             title="<:gon:1480922691950088293> Rock Paper Scissors Result",

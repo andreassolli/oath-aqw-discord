@@ -2,6 +2,7 @@ import random
 from datetime import datetime, timedelta, timezone
 
 import discord
+from google.cloud import firestore
 
 from firebase_client import db
 
@@ -17,7 +18,12 @@ def buy_rock_break(user: discord.User, price: int):
         coins = user_data.get("coins", 0)
 
     if coins >= price:
-        user_ref.update({"coins": coins - price})
+        user_ref.update(
+            {
+                "coins": coins - price,
+                "transactions": firestore.ArrayUnion([f"- Broke a rock for ${price}"]),
+            }
+        )
         return True
     return False
 

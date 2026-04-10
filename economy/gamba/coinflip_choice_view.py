@@ -43,8 +43,26 @@ class CoinChoiceView(discord.ui.View):
         unlock_coins(self.opponent.id, self.wager)
 
         # then apply results
-        winner_ref.set({"coins": firestore.Increment(self.wager)}, merge=True)
-        loser_ref.set({"coins": firestore.Increment(-self.wager)}, merge=True)
+        winner_ref.set(
+            {
+                "coins": firestore.Increment(self.wager),
+                "transactions": firestore.ArrayUnion(
+                    [f"+ Won ${self.wager} from coinflip against {loser.display_name}"]
+                ),
+            },
+            merge=True,
+        )
+        loser_ref.set(
+            {
+                "coins": firestore.Increment(-self.wager),
+                "transactions": firestore.ArrayUnion(
+                    [
+                        f"- Lost ${self.wager} from coinflip against {winner.display_name}"
+                    ]
+                ),
+            },
+            merge=True,
+        )
 
         heads_coin = "<:goobCoin:1480895675477524564>"
         tails_coin = "<:oathcoin:1462999179998531614>"
