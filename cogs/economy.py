@@ -489,8 +489,8 @@ class Economy(commands.Cog):
         formatted = [format_txt(t) for t in reversed(transactions[-20:])]
 
         await interaction.response.send_message(
-            "<:creditWhaleL:1473755954309763182> **Last 20 Transactions**\n"
-            + "\n\n".join(formatted),
+            "<:creditWhaleL:1473755954309763182> **Last 20 Transactions**\n\n"
+            + "\n".join(formatted),
             ephemeral=True,
         )
 
