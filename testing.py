@@ -502,8 +502,84 @@ def migrate_quest_names_batch():
     print(f"🎉 Migration complete. Updated {updated_count} users.")
 
 
+def fix_gems_awarded_points():
+    snapshot_ref = db.collection("points_archive").document("2026-04-01_16-02-50")
+    snapshot_doc = snapshot_ref.get()
+
+    if not snapshot_doc.exists:
+        print("Snapshot not found.")
+        return
+
+    snapshot_users = snapshot_doc.to_dict().get("users", {})
+
+    updated = 0
+    skipped = 0
+    overpaid_count = 0
+
+    batch = db.batch()
+    batch_count = 0
+
+    for user_id, snapshot_user_data in snapshot_users.items():
+        snapshot_points = snapshot_user_data.get("points", 0)
+
+        user_ref = db.collection("users").document(user_id)
+        user_doc = user_ref.get()
+
+        if not user_doc.exists:
+            skipped += 1
+            continue
+
+        user_data = user_doc.to_dict() or {}
+
+        current_points = user_data.get("points", 0)
+        current_awarded = user_data.get("gems_awarded_points", 0)
+
+        # 🔥 CORE LOGIC
+        if current_points > snapshot_points:
+            new_awarded = current_points - snapshot_points
+            overpaid = True
+        else:
+            new_awarded = 0
+            overpaid = False
+
+        if new_awarded == current_awarded:
+            skipped += 1
+            continue
+
+        print(
+            f"{user_id}: snapshot={snapshot_points}, current={current_points}, "
+            f"old={current_awarded} -> new={new_awarded}, overpaid={overpaid}"
+        )
+
+        # ✅ Add to batch instead of updating immediately
+        batch.update(user_ref, {"gems_awarded_points": new_awarded})
+
+        batch_count += 1
+        updated += 1
+
+        if overpaid:
+            overpaid_count += 1
+
+        # 🚀 Commit when batch is full
+        if batch_count >= BATCH_LIMIT:
+            batch.commit()
+            print(f"Committed {batch_count} updates...")
+            batch = db.batch()
+            batch_count = 0
+
+    # 🔥 Commit remaining writes
+    if batch_count > 0:
+        batch.commit()
+        print(f"Committed final {batch_count} updates...")
+
+    print("\nDone.")
+    print(f"Updated: {updated}")
+    print(f"Skipped: {skipped}")
+    print(f"Overpaid users: {overpaid_count}")
+
+
 if __name__ == "__main__":
-    migrate_quest_names_batch()
+
     # asyncio.run(generate_test_card())
     # reset_coins()
     # migrate_shop_prices()

@@ -8,7 +8,7 @@ from discord.ext import tasks
 from config import INITIATE_ROLE_ID, NEWS_WEBHOOK_URL
 from firebase_client import db
 
-RSS_URL = "https://rss.app/feeds/twitter/Oath_AQW.xml"
+RSS_URL = "https://rss.app/feeds/fJjHnQTQN43lL4Ot.xml"
 
 
 def load_last_id():
@@ -51,7 +51,8 @@ async def check_rss():
 
 
 async def send_to_discord(text, link, image_url=None):
-    role_mention = f"<@&{INITIATE_ROLE_ID}>"
+    # role_mention = f"<@&{INITIATE_ROLE_ID}>"
+    role_mention = f""
 
     embed = {
         "title": "🐦 New Tweet from Oath!",
