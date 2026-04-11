@@ -49,13 +49,13 @@ async def setup_application_panel(client: discord.Client):
             "⚠️ Ultra Speaker & Ultra Gramiel requires a Trial as well.\n"
             "💰 Speaker and Gramiel rewards <:oathcoin:1462999179998531614>3750, rest give <:oathcoin:1462999179998531614>1950\n\n"
             "❓Tips: \n"
-            "[Speaker as Lord of Order ⚖️](https://youtu.be/hahe9_HhDZA) \n"
-            "[Dage as Chaos Avenger/Classic Ninja 🥷](https://youtu.be/hJK9o-yIz9I)"
+            "- [Speaker as Lord of Order ⚖️](https://youtu.be/hahe9_HhDZA) \n"
+            "- [Dage as Chaos Avenger/Classic Ninja 🥷](https://youtu.be/hJK9o-yIz9I)\n\n"
         ),
         color=discord.Color.blurple(),
     )
     embed.set_footer(
-        text="❗️Certifications allows you to help if 'Certified Only' is toggled on by the requester. (Only **Gramiel and Speaker** for now)"
+        text="❗️Certifications allows you to help if 'Certified Only' is toggled on by the requester. (Only Gramiel and Speaker for now)"
     )
 
     await channel.send(embed=embed, view=StartApplicationView())
