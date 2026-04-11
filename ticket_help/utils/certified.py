@@ -233,7 +233,6 @@ class ApplicationSelectView(discord.ui.View):
             )
 
         self.select.disabled = True
-        await interaction.message.edit(view=self)
 
         if choice == "speaker":
             await interaction.response.send_modal(SpeakerModal())
