@@ -31,11 +31,10 @@ def get_latest_entry():
 
     response = client.get_users_tweets(
         id=OATH_USER_ID,
-        max_results=5,
+        max_results=1,
         tweet_fields=["created_at"],
         expansions=["attachments.media_keys"],
         media_fields=["url", "preview_image_url"],
-        max_results=1
     )
 
     if not response.data:
