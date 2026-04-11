@@ -62,18 +62,13 @@ def get_latest_entry():
 
 @tasks.loop(seconds=120)
 async def check_twitter():
-    print("🔁 check_twitter loop running...")
 
     try:
         entry, image_url = get_latest_entry()
-        print("Fetched entry:", entry)
 
         last_entry_id = load_last_id()
-        print("Last ID:", last_entry_id)
 
         if entry and str(entry.id) != str(last_entry_id):
-            print("✅ New tweet detected!")
-
             save_last_id(str(entry.id))
 
             tweet_link = f"https://twitter.com/{OATH_USER_ID}/status/{entry.id}"
@@ -87,7 +82,7 @@ async def check_twitter():
         traceback.print_exc()
 
 
-async def send_to_discord(text, link, image_url=None, tweet_id=None):
+async def send_to_discord(text, link, image_url=None):
     role_mention = f"<@&{INITIATE_ROLE_ID}>"
 
     embed = {
