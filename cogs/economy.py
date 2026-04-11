@@ -9,7 +9,9 @@ from discord.ext import commands
 from google.cloud import firestore
 
 from config import (
+    ALLOWED_COMMANDS_CHANNELS,
     BETA_TESTER_ROLE_ID,
+    BETA_TESTING_CHANNEL_ID,
     BOT_GUY_ROLE_ID,
     DISCORD_MANAGER_ROLE_ID,
     MODERATOR_ROLE_ID,
@@ -174,6 +176,16 @@ class Economy(commands.Cog):
     async def purse(
         self, interaction: discord.Interaction, user: discord.Member | None = None
     ):
+        if interaction.channel_id not in ALLOWED_COMMANDS_CHANNELS:
+            allowed_mentions = ", ".join(
+                f"<#{cid}>" for cid in ALLOWED_COMMANDS_CHANNELS
+            )
+
+            await interaction.followup.send(
+                f"❌ This command can only be used in {allowed_mentions}.",
+                ephemeral=True,
+            )
+            return
         if user:
             user_id = user.id
             user_doc = db.collection("users").document(str(user_id)).get()
@@ -251,6 +263,16 @@ class Economy(commands.Cog):
     async def donate(
         self, interaction: discord.Interaction, user: discord.Member, coins: int
     ):
+        if interaction.channel_id not in ALLOWED_COMMANDS_CHANNELS:
+            allowed_mentions = ", ".join(
+                f"<#{cid}>" for cid in ALLOWED_COMMANDS_CHANNELS
+            )
+
+            await interaction.followup.send(
+                f"❌ This command can only be used in {allowed_mentions}.",
+                ephemeral=True,
+            )
+            return
         if coins <= 0:
             return await interaction.response.send_message(
                 "Select a number higher than 0."
@@ -399,6 +421,14 @@ class Economy(commands.Cog):
     @app_commands.command(name="steal", description="Steal coins from someone.")
     @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
     async def steal(self, interaction: discord.Interaction, target: discord.Member):
+        if interaction.channel_id != BETA_TESTING_CHANNEL_ID:
+            allowed_mentions = ", ".join(f"<#{BETA_TESTING_CHANNEL_ID}>")
+
+            await interaction.followup.send(
+                f"❌ This command can only be used in {allowed_mentions}.",
+                ephemeral=True,
+            )
+            return
         if target.id == interaction.user.id:
             return await interaction.response.send_message(
                 "You can't steal from yourself.", ephemeral=True

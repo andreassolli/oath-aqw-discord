@@ -61,6 +61,7 @@ class Gamba(commands.Cog):
         wager: int,
         opponent: discord.Member,
     ):
+
         channel_id = interaction.channel_id
         if channel_id and channel_id != BETA_TESTING_CHANNEL_ID:
             guild = interaction.guild
@@ -119,7 +120,16 @@ class Gamba(commands.Cog):
     @app_commands.command(name="beg", description="Beg the other users for some money")
     @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
     async def beg_command(self, interaction: discord.Interaction):
+        if interaction.channel_id not in ALLOWED_COMMANDS_CHANNELS:
+            allowed_mentions = ", ".join(
+                f"<#{cid}>" for cid in ALLOWED_COMMANDS_CHANNELS
+            )
 
+            await interaction.followup.send(
+                f"❌ This command can only be used in {allowed_mentions}.",
+                ephemeral=True,
+            )
+            return
         guild = interaction.guild
         if not guild:
             return

@@ -14,7 +14,12 @@ from class_setups.utils import (
     get_class_loadouts,
     get_classes_for_boss,
 )
-from config import BOSS_TO_SHEET, BOSS_TYPES, DISCORD_MANAGER_ROLE_ID
+from config import (
+    ALLOWED_COMMANDS_CHANNELS,
+    BOSS_TO_SHEET,
+    BOSS_TYPES,
+    DISCORD_MANAGER_ROLE_ID,
+)
 
 
 class ClassSetups(commands.Cog):
@@ -54,6 +59,16 @@ class ClassSetups(commands.Cog):
         class_name: str,
     ):
         await interaction.response.defer()
+        if interaction.channel_id not in ALLOWED_COMMANDS_CHANNELS:
+            allowed_mentions = ", ".join(
+                f"<#{cid}>" for cid in ALLOWED_COMMANDS_CHANNELS
+            )
+
+            await interaction.followup.send(
+                f"❌ This command can only be used in {allowed_mentions}.",
+                ephemeral=True,
+            )
+            return
 
         await build_class_index()
 
