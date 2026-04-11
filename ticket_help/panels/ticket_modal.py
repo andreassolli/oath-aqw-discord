@@ -322,9 +322,7 @@ class CreateTicketModal(discord.ui.Modal):
                     description="This ticket has certified-only toggled on by default.\nRequester may turn it off by clicking '🔒 Certified Only' button.",
                     color=discord.Color.red(),
                 )
-                embed.set_footer(
-                    text="Get the role here: https://discord.com/channels/1455651278590972019/1455651281006756046"
-                )
+                embed.set_footer(text="Get your certificate in the 「🌏」roles channel")
                 await channel.send(embed=embed)
 
             db.collection("tickets").document(ticket_name).update(
