@@ -21,6 +21,7 @@ from config import (
     DRAKATH_CERTIFICATE_ID,
     EXPERIENCED_HELPER_ROLE_ID,
     GRAMIEL_CERTIFICATE_ID,
+    HELPER_CHANNEL_ID,
     INITIATE_ROLE_ID,
     NULGATH_CERTIFICATE_ID,
     OATHSWORN_ROLE_ID,
@@ -307,6 +308,7 @@ class Extra(commands.Cog):
             "Ultra Nulgath",
         ],
         reason: Literal["Passed Trial", "Questions + Experience", "Experience only"],
+        announce: bool = False,
     ):
         await interaction.response.defer(ephemeral=True)
 
@@ -337,10 +339,44 @@ class Extra(commands.Cog):
                 ephemeral=True,
             )
 
-        await interaction.followup.send(
-            f"✅ Added {role.mention} to {user.mention}.",
-            ephemeral=True,
-        )
+        user_ref = db.collection("users").document(str(user.id))
+        user_doc = user_ref.get()
+        user_data = user_doc.to_dict() or {}
+
+        rewarded_certs = user_data.get("certificates_rewarded", [])
+
+        if certificate not in rewarded_certs:
+            coins_to_add = (
+                3750 if certificate in ["Ultra Speaker", "Ultra Gramiel"] else 1950
+            )
+
+            update_data = {
+                "coins": firestore.Increment(coins_to_add),
+                "certificates_rewarded": ArrayUnion([certificate]),
+            }
+
+            user_ref.set(update_data, merge=True)
+
+            reward_text = f"\n💰 +{coins_to_add} coins awarded"
+        else:
+            reward_text = "\n⚠️ Reward already claimed for this certificate"
+
+        if not announce:
+            await interaction.followup.send(
+                f"✅ Added {role.mention} to {user.mention}. {reward_text}\nRemember to announce it {user.mention} yourself, and include the coins they were given!",
+                ephemeral=True,
+            )
+        else:
+            helper_channel = interaction.guild.get_channel(HELPER_CHANNEL_ID)
+            if helper_channel:
+                await helper_channel.send(
+                    f"🫡 {user.mention}, your application has been approved and you have been awarded {certificate} certificate.{reward_text}"
+                )
+            await interaction.followup.send(
+                f"✅ Added {role.mention} to {user.mention}. {reward_text}\nAnnounced in the helper channel.",
+                ephemeral=True,
+            )
+
         log_channel = interaction.guild.get_channel(TICKET_LOG_CHANNEL_ID)
 
         if log_channel:
@@ -383,6 +419,7 @@ class Extra(commands.Cog):
             "Ultra Nulgath",
         ],
         reason: str,
+        announce: bool = False,
     ):
         await interaction.response.defer(ephemeral=True)
 
@@ -457,6 +494,7 @@ class Extra(commands.Cog):
         updated = 0
         skipped = 0
         failed = 0
+        coins_to_add = 7500
         for user_doc in users:
             try:
                 data = user_doc.to_dict() or {}
@@ -465,6 +503,15 @@ class Extra(commands.Cog):
                 if not member:
                     skipped += 1
                     continue
+
+                user_ref = db.collection("users").document(user_doc.id)
+
+                user_ref.update(
+                    {
+                        "coins": firestore.Increment(coins_to_add),
+                        "certificates_rewarded": ["Ultra Gramiel", "Ultra Speaker"],
+                    }
+                )
 
                 verified = data.get("verified", False)
                 guild_name = data.get("guild")
