@@ -613,6 +613,60 @@ class Extra(commands.Cog):
             ephemeral=True,
         )
 
+    @app_commands.command(
+        name="role-add-bulk",
+        description="Give all members of one role another role",
+    )
+    @app_commands.default_permissions(manage_roles=True)
+    @app_commands.checks.has_role(BOT_GUY_ROLE_ID)
+    async def role_add_bulk(
+        self,
+        interaction: discord.Interaction,
+        from_role: discord.Role,
+        to_role: discord.Role,
+    ):
+        await interaction.response.defer(ephemeral=True)
+
+        guild = interaction.guild
+        if not guild:
+            return await interaction.followup.send(
+                "❌ Guild not found.", ephemeral=True
+            )
+
+        if to_role >= guild.me.top_role:
+            return await interaction.followup.send(
+                "❌ I cannot assign that role (it's higher than me).",
+                ephemeral=True,
+            )
+
+        members = from_role.members
+
+        updated = 0
+        skipped = 0
+        failed = 0
+
+        for member in members:
+            try:
+                if to_role in member.roles:
+                    skipped += 1
+                    continue
+
+                await member.add_roles(to_role, reason="Bulk role assignment")
+                updated += 1
+
+            except discord.Forbidden:
+                failed += 1
+            except Exception:
+                failed += 1
+
+        await interaction.followup.send(
+            f"✅ Done.\n"
+            f"Updated: {updated}\n"
+            f"Skipped (already had role): {skipped}\n"
+            f"Failed: {failed}",
+            ephemeral=True,
+        )
+
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(Extra(bot))
