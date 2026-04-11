@@ -1,6 +1,7 @@
 import discord
 from google.cloud import firestore
 
+from economy.gamba.utils import unlock_coins
 from economy.gamba.yanken import rock_paper_scissor
 from firebase_client import db
 
@@ -62,7 +63,8 @@ class RPSChoiceView(discord.ui.View):
         c2 = self.choices[self.opponent.id]
 
         result = await rock_paper_scissor(c1, c2)
-
+        unlock_coins(self.challenger.id, self.wager)
+        unlock_coins(self.opponent.id, self.wager)
         if result == "Draw":
             winner_text = "It's a draw!"
         else:
