@@ -34,9 +34,16 @@ async def on_ready():
         await bot.tree.sync()
         _synced = True
 
-    await run_startup_tasks(bot)
+    try:
+        await run_startup_tasks(bot)
+    except Exception as e:
+        import traceback
+
+        print("Startup task failed:")
+        traceback.print_exc()
 
     if not check_twitter.is_running():
+        print("🚀 Starting twitter loop...")
         check_twitter.start()
 
     if bot.user:
