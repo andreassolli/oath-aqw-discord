@@ -1,7 +1,30 @@
 import discord
 
 from config import ROLES_CHANNEL_ID
+from firebase_client import db
 from ticket_help.utils.certified import ApplicationSelectView
+
+
+class StartApplicationView(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=None)
+
+    @discord.ui.button(
+        label="🤝 Start Application",
+        style=discord.ButtonStyle.primary,
+        custom_id="start_application_button",
+    )
+    async def start(self, interaction: discord.Interaction, button: discord.ui.Button):
+
+        user_ref = db.collection("users").document(str(interaction.user.id))
+        user_doc = user_ref.get()
+        user_data = user_doc.to_dict() or {}
+
+        await interaction.response.send_message(
+            "Select which application you want to apply for:",
+            view=ApplicationSelectView(user_data),
+            ephemeral=True,
+        )
 
 
 async def setup_application_panel(client: discord.Client):
@@ -31,4 +54,4 @@ async def setup_application_panel(client: discord.Client):
     )
     embed.set_footer(text="❗️Make sure to copy your answers in case anything happens.")
 
-    await channel.send(embed=embed, view=ApplicationSelectView())
+    await channel.send(embed=embed, view=StartApplicationView())
