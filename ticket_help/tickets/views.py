@@ -62,7 +62,7 @@ class TicketActionView(discord.ui.View):
             self.add_item(SpecialBossButton(ticket_name, self, experienced_only))
             self.add_item(
                 discord.ui.Button(
-                    label="─────────────── Helper Buttons ───────────────",
+                    label="────────────────── Helper Buttons ──────────────────",
                     style=discord.ButtonStyle.secondary,
                     disabled=True,
                     row=3,
