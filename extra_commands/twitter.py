@@ -4,11 +4,15 @@ import aiohttp
 import feedparser
 import requests
 from discord.ext import tasks
+from tweepy import Client as TwitterClient
 
-from config import INITIATE_ROLE_ID, NEWS_WEBHOOK_URL
+from config import (
+    INITIATE_ROLE_ID,
+    NEWS_WEBHOOK_URL,
+    OATH_USER_ID,
+    TWITTER_BEARER_TOKEN,
+)
 from firebase_client import db
-
-RSS_URL = "https://rss.app/feeds/fJjHnQTQN43lL4Ot.xml"
 
 
 def load_last_id():
@@ -23,26 +27,44 @@ def save_last_id(entry_id):
 
 
 def get_latest_entry():
-    feed = feedparser.parse(RSS_URL)
+    client = TwitterClient(bearer_token=TWITTER_BEARER_TOKEN)
 
-    if not feed.entries:
-        return None
+    response = client.get_users_tweets(
+        id=OATH_USER_ID,
+        max_results=5,
+        tweet_fields=["created_at"],
+        expansions=["attachments.media_keys"],
+        media_fields=["url", "preview_image_url"],
+        max_results=1
+    )
 
-    return feed.entries[0]
+    if not response.data:
+        return None, None
+
+    tweet = response.data[0]
+
+    media_url = None
+
+    if response.includes and "media" in response.includes:
+        media = response.includes["media"]
+        if media:
+            media_item = media[0]
+            media_url = media_item.url or media_item.preview_image_url
+
+    return tweet, media_url
 
 
-@tasks.loop(seconds=60)
-async def check_rss():
+@tasks.loop(seconds=120)
+async def check_twitter():
     try:
-        entry = get_latest_entry()
+        entry, image_url = get_latest_entry()
         last_entry_id = load_last_id()
 
-        if entry and entry.id != last_entry_id:
-            save_last_id(entry.id)
+        if entry and str(entry.id) != str(last_entry_id):
+            save_last_id(str(entry.id))
 
-            tweet_link = entry.link
-            tweet_text = entry.title
-            image_url = get_image_from_entry(entry)
+            tweet_link = f"https://twitter.com/{OATH_USER_ID}/status/{entry.id}"
+            tweet_text = entry.text
 
             await send_to_discord(tweet_text, tweet_link, image_url)
 
@@ -52,7 +74,7 @@ async def check_rss():
 
 async def send_to_discord(text, link, image_url=None):
     # role_mention = f"<@&{INITIATE_ROLE_ID}>"
-    role_mention = f""
+    role_mention = ""
 
     embed = {
         "title": "🐦 New Tweet from Oath!",
@@ -72,24 +94,3 @@ async def send_to_discord(text, link, image_url=None):
     if NEWS_WEBHOOK_URL:
         async with aiohttp.ClientSession() as session:
             await session.post(NEWS_WEBHOOK_URL, json=data)
-
-
-def get_image_from_entry(entry):
-
-    if hasattr(entry, "media_content"):
-        media = entry.media_content
-        if media and "url" in media[0]:
-            return media[0]["url"]
-
-    if hasattr(entry, "enclosures"):
-        if entry.enclosures:
-            return entry.enclosures[0].get("href")
-
-    if "summary" in entry:
-        import re
-
-        match = re.search(r'<img.*?src="(.*?)"', entry.summary)
-        if match:
-            return match.group(1)
-
-    return None

@@ -3,6 +3,7 @@ import random
 
 import aiohttp
 from google.cloud import firestore as gc_firestore
+from tweepy import Client as TwitterClient
 
 from economy.generate_rocks import generate_rocks
 from economy.inventory import generate_inventory
