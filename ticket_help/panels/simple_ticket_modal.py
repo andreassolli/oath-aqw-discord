@@ -3,7 +3,12 @@ import random
 import discord
 from firebase_admin import firestore
 
-from config import EXPERIENCED_HELPER_ROLE_ID, TICKET_CATEGORY_ID
+from config import (
+    EXPERIENCED_HELPER_ROLE_ID,
+    GRAMIEL_CERTIFICATE_ID,
+    SPEAKER_CERTIFICATE_ID,
+    TICKET_CATEGORY_ID,
+)
 from firebase_client import db
 from ticket_help.tickets.embed_utils import build_ticket_embed
 from ticket_help.tickets.ids import get_next_ticket_id
@@ -49,7 +54,8 @@ class SimpleTicketModal(discord.ui.Modal, title="Create Practice Ticket"):
 
         category = guild.get_channel(TICKET_CATEGORY_ID)
 
-        helper_role = guild.get_role(EXPERIENCED_HELPER_ROLE_ID)
+        gramiel_role = guild.get_role(GRAMIEL_CERTIFICATE_ID)
+        speaker_role = guild.get_role(SPEAKER_CERTIFICATE_ID)
         bosses = self._preset_bosses
         overwrites = {
             guild.default_role: discord.PermissionOverwrite(view_channel=False),
@@ -58,8 +64,11 @@ class SimpleTicketModal(discord.ui.Modal, title="Create Practice Ticket"):
             ),
         }
 
-        if helper_role:
-            overwrites[helper_role] = discord.PermissionOverwrite(
+        if gramiel_role and speaker_role:
+            overwrites[gramiel_role] = discord.PermissionOverwrite(
+                view_channel=True, send_messages=True
+            )
+            overwrites[speaker_role] = discord.PermissionOverwrite(
                 view_channel=True, send_messages=True
             )
 

@@ -162,7 +162,13 @@ class SecondModal(discord.ui.Modal, title="Step 2 - Ultra Gramiel"):
 
         db.collection("users").document(str(interaction.user.id)).set(
             {
-                "last_application_at": discord.utils.utcnow(),
+                "last_speaker_application_at": discord.utils.utcnow(),
+            },
+            merge=True,
+        )
+        db.collection("users").document(str(interaction.user.id)).set(
+            {
+                "last_gramiel_application_at": discord.utils.utcnow(),
             },
             merge=True,
         )

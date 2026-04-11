@@ -9,7 +9,7 @@ from ticket_help.commands.permissions import (
 
 class SpecialBossButton(discord.ui.Button):
     def __init__(self, ticket_name: str, parent_view, experienced_only: bool = False):
-        label = "🔒 Experienced Only" if experienced_only else "🔑 All Helpers"
+        label = "🔒 Certified Only" if experienced_only else "🔑 All Helpers"
 
         super().__init__(
             label=label,
@@ -50,7 +50,7 @@ class SpecialBossButton(discord.ui.Button):
 
         doc_ref.update({"experienced_only": new_value})
 
-        self.label = "🔒 Experienced Only" if new_value else "🔑 All Helpers"
+        self.label = "🔒 Certified Only" if new_value else "🔑 All Helpers"
         self.style = (
             discord.ButtonStyle.danger if new_value else discord.ButtonStyle.success
         )
@@ -58,7 +58,7 @@ class SpecialBossButton(discord.ui.Button):
 
         await self.parent_view._update_ticket_embed(interaction)
 
-        status = "🔒 Experienced Helpers ONLY" if new_value else "🔑 All Helpers"
+        status = "🔒 Certified Helpers ONLY" if new_value else "🔑 All Helpers"
 
         await interaction.followup.send(
             f"👊 Claim mode set to: **{status}**",

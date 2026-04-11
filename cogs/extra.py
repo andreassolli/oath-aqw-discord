@@ -14,10 +14,17 @@ from config import (
     BETA_TESTER_ROLE_ID,
     BETA_TESTING_CHANNEL_ID,
     BOT_GUY_ROLE_ID,
+    DAGE_CERTIFICATE_ID,
+    DARKON_CERTIFICATE_ID,
     DISCORD_MANAGER_ROLE_ID,
+    DRAGO_CERTIFICATE_ID,
+    DRAKATH_CERTIFICATE_ID,
     EXPERIENCED_HELPER_ROLE_ID,
+    GRAMIEL_CERTIFICATE_ID,
     INITIATE_ROLE_ID,
+    NULGATH_CERTIFICATE_ID,
     OATHSWORN_ROLE_ID,
+    SPEAKER_CERTIFICATE_ID,
     TICKET_INSPECTOR_ROLE_ID,
     TICKET_LOG_CHANNEL_ID,
 )
@@ -59,6 +66,16 @@ from extra_commands.wordle_image import generate_wordle_board
 from firebase_client import db
 from ticket_help.utils.experienced import StartView
 from user_verification.utils import change_roles
+
+BOSS_TO_CERTIFICATE = {
+    # "Champion Drakath": DRAKATH_CERTIFICATE_ID,
+    # "Ultra Dage": DAGE_CERTIFICATE_ID,
+    # "Ultra Drago": DRAGO_CERTIFICATE_ID,
+    # "Ultra Darkon": DARKON_CERTIFICATE_ID,
+    "Ultra Speaker": SPEAKER_CERTIFICATE_ID,
+    "Ultra Gramiel": GRAMIEL_CERTIFICATE_ID,
+    # "Ultra Nulgath": NULGATH_CERTIFICATE_ID,
+}
 
 
 class Extra(commands.Cog):
@@ -273,18 +290,27 @@ class Extra(commands.Cog):
 
     @app_commands.command(
         name="promote-helper",
-        description="Promote a user to the Experienced Helper role",
+        description="Award a certificate for specified boss.",
     )
     @app_commands.checks.has_role(TICKET_INSPECTOR_ROLE_ID)
     async def add_role(
         self,
         interaction: discord.Interaction,
         user: discord.Member,
+        certificate: Literal[
+            "Champion Drakath",
+            "Ultra Dage",
+            "Ultra Drago",
+            "Ultra Darkon",
+            "Ultra Speaker",
+            "Ultra Gramiel",
+            "Ultra Nulgath",
+        ],
         reason: Literal["Passed Trial", "Questions + Experience", "Experience only"],
     ):
         await interaction.response.defer(ephemeral=True)
 
-        role = interaction.guild.get_role(EXPERIENCED_HELPER_ROLE_ID)
+        role = interaction.guild.get_role(BOSS_TO_CERTIFICATE[certificate])
         if not role:
             return await interaction.followup.send(
                 "❌ Role not found.",
@@ -319,7 +345,7 @@ class Extra(commands.Cog):
 
         if log_channel:
             embed = discord.Embed(
-                title="🟢 Helper Promoted",
+                title=f"🟢 Certificate Awarded ({certificate})",
                 color=discord.Color.green(),
                 timestamp=discord.utils.utcnow(),
             )
@@ -328,7 +354,7 @@ class Extra(commands.Cog):
                 name="User", value=f"{user.mention} ({user.display_name})", inline=True
             )
             embed.add_field(
-                name="Promoted By",
+                name="Awarded By",
                 value=f"{interaction.user.mention} ({interaction.user.display_name})",
                 inline=True,
             )
@@ -340,15 +366,27 @@ class Extra(commands.Cog):
 
     @app_commands.command(
         name="demote-helper",
-        description="Demote a user from the Experienced Helper role",
+        description="Strip a helper of a certificate.",
     )
     @app_commands.checks.has_role(TICKET_INSPECTOR_ROLE_ID)
     async def remove_role(
-        self, interaction: discord.Interaction, user: discord.Member, reason: str
+        self,
+        interaction: discord.Interaction,
+        user: discord.Member,
+        certificate: Literal[
+            "Champion Drakath",
+            "Ultra Dage",
+            "Ultra Drago",
+            "Ultra Darkon",
+            "Ultra Speaker",
+            "Ultra Gramiel",
+            "Ultra Nulgath",
+        ],
+        reason: str,
     ):
         await interaction.response.defer(ephemeral=True)
 
-        role = interaction.guild.get_role(EXPERIENCED_HELPER_ROLE_ID)
+        role = interaction.guild.get_role(BOSS_TO_CERTIFICATE[certificate])
         if not role:
             return await interaction.followup.send(
                 "❌ Role not found.",
@@ -383,7 +421,7 @@ class Extra(commands.Cog):
         log_channel = interaction.guild.get_channel(TICKET_LOG_CHANNEL_ID)
         if log_channel:
             embed = discord.Embed(
-                title="🔴 Helper Demoted",
+                title=f"🔴 {certificate} Removed",
                 color=discord.Color.red(),
                 timestamp=discord.utils.utcnow(),
             )
@@ -392,7 +430,7 @@ class Extra(commands.Cog):
                 name="User", value=f"{user.mention} ({user.display_name})", inline=True
             )
             embed.add_field(
-                name="Demoted By",
+                name="Removed By",
                 value=f"{interaction.user.mention} ({interaction.user.display_name})",
                 inline=True,
             )

@@ -4,8 +4,15 @@ import discord
 from firebase_admin import firestore
 
 from config import (
+    DAGE_CERTIFICATE_ID,
+    DARKON_CERTIFICATE_ID,
+    DRAGO_CERTIFICATE_ID,
+    DRAKATH_CERTIFICATE_ID,
     EXPERIENCED_HELPER_ROLE_ID,
+    GRAMIEL_CERTIFICATE_ID,
     HELPER_ROLE_ID,
+    NULGATH_CERTIFICATE_ID,
+    SPEAKER_CERTIFICATE_ID,
 )
 from firebase_client import db
 from ticket_help.commands.permissions import (
@@ -24,6 +31,16 @@ from .experienced_helper_button import SpecialBossButton
 from .points import get_boss_room
 from .role_claim_view import RoleClaimView
 from .utils import clear_active_ticket, set_active_ticket
+
+BOSS_TO_CERTIFICATE = {
+    # "Champion Drakath": DRAKATH_CERTIFICATE_ID,
+    # "Ultra Dage": DAGE_CERTIFICATE_ID,
+    # "Ultra Drago": DRAGO_CERTIFICATE_ID,
+    # "Ultra Darkon": DARKON_CERTIFICATE_ID,
+    "Ultra Speaker": SPEAKER_CERTIFICATE_ID,
+    "Ultra Gramiel": GRAMIEL_CERTIFICATE_ID,
+    # "Ultra Nulgath": NULGATH_CERTIFICATE_ID,
+}
 
 
 class TicketActionView(discord.ui.View):
@@ -151,19 +168,23 @@ class TicketActionView(discord.ui.View):
         guild = interaction.guild
 
         helper_role = guild.get_role(HELPER_ROLE_ID)
-        experienced_role = guild.get_role(EXPERIENCED_HELPER_ROLE_ID)
 
         has_helper = helper_role in member.roles if helper_role else False
-        has_experienced = (
-            experienced_role in member.roles if experienced_role else False
-        )
+
+        needed_certificates = []
+        for boss in self.bosses:
+            if boss in BOSS_TO_CERTIFICATE:
+                needed_certificates.append(BOSS_TO_CERTIFICATE[boss])
+
+        member_role_ids = {role.id for role in member.roles}
 
         if experienced_only:
-            if not has_experienced:
-                return await interaction.followup.send(
-                    "🚫 Only **Experienced Helpers** can claim this ticket.",
-                    ephemeral=True,
-                )
+            for cert in needed_certificates:
+                if cert not in member_role_ids:
+                    return await interaction.followup.send(
+                        "🚫 You need a **Certification** for one or more of the bosses in this ticket.",
+                        ephemeral=True,
+                    )
         else:
             if not has_helper:
                 return await interaction.followup.send(
@@ -484,8 +505,6 @@ class TicketActionView(discord.ui.View):
                 )
 
         helper_role = interaction.guild.get_role(HELPER_ROLE_ID)
-        if data.get("experienced_only"):
-            helper_role = interaction.guild.get_role(EXPERIENCED_HELPER_ROLE_ID)
 
         if not helper_role:
             return await interaction.response.send_message(
