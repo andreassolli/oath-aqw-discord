@@ -1,4 +1,5 @@
 import asyncio
+import json
 
 import aiohttp
 import feedparser
@@ -102,34 +103,6 @@ async def send_to_discord(text, link, image_url=None, tweet_id=None):
     data = {
         "content": role_mention,
         "embeds": [embed],
-        "components": [
-            {
-                "type": 1,
-                "components": [
-                    {
-                        "type": 2,
-                        "style": 5,
-                        "emoji": {"name": "❤️"},
-                        "label": " ",
-                        "url": f"https://twitter.com/intent/like?tweet_id={tweet_id}",
-                    },
-                    {
-                        "type": 2,
-                        "style": 5,
-                        "emoji": {"name": "🔁"},
-                        "label": " ",
-                        "url": f"https://twitter.com/intent/retweet?tweet_id={tweet_id}",
-                    },
-                    {
-                        "type": 2,
-                        "style": 5,
-                        "emoji": {"name": "💬"},
-                        "label": " ",
-                        "url": link,
-                    },
-                ],
-            }
-        ],
         "allowed_mentions": {"parse": ["roles"]},
     }
     if NEWS_WEBHOOK_URL:
@@ -140,10 +113,14 @@ async def send_to_discord(text, link, image_url=None, tweet_id=None):
 
             else:
                 with open("assets/oath-logo.png", "rb") as f:
-                    form = aiohttp.FormData()
-                    form.add_field("payload_json", str(data).replace("'", '"'))
-                    form.add_field("file", f, filename="oath-logo.png")
-
                     embed["image"] = {"url": "attachment://oath-logo.png"}
+
+                    form = aiohttp.FormData()
+                    form.add_field(
+                        "payload_json",
+                        json.dumps(data),
+                        content_type="application/json",
+                    )
+                    form.add_field("file", f, filename="oath-logo.png")
 
                     await session.post(NEWS_WEBHOOK_URL, data=form)
