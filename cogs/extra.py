@@ -693,6 +693,14 @@ class Extra(commands.Cog):
         failed = 0
 
         for member in members:
+            user_ref = db.collection("users").document(str(member.id))
+
+            user_ref.update(
+                {
+                    "coins": firestore.Increment(7500),
+                    "certificates_rewarded": ["Ultra Gramiel", "Ultra Speaker"],
+                }
+            )
             try:
                 if to_role in member.roles:
                     skipped += 1
