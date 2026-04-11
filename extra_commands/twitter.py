@@ -61,11 +61,18 @@ def get_latest_entry():
 
 @tasks.loop(seconds=120)
 async def check_twitter():
+    print("🔁 check_twitter loop running...")
+
     try:
         entry, image_url = get_latest_entry()
+        print("Fetched entry:", entry)
+
         last_entry_id = load_last_id()
+        print("Last ID:", last_entry_id)
 
         if entry and str(entry.id) != str(last_entry_id):
+            print("✅ New tweet detected!")
+
             save_last_id(str(entry.id))
 
             tweet_link = f"https://twitter.com/{OATH_USER_ID}/status/{entry.id}"
@@ -74,7 +81,9 @@ async def check_twitter():
             await send_to_discord(tweet_text, tweet_link, image_url, tweet_id=entry.id)
 
     except Exception as e:
-        print("Error:", e)
+        import traceback
+
+        traceback.print_exc()
 
 
 async def send_to_discord(text, link, image_url=None, tweet_id=None):
@@ -99,21 +108,21 @@ async def send_to_discord(text, link, image_url=None, tweet_id=None):
                 "components": [
                     {
                         "type": 2,
-                        "style": 4,
-                        "emoji": {"name": "🤍"},
+                        "style": 5,
+                        "emoji": {"name": "❤️"},
                         "label": " ",
                         "url": f"https://twitter.com/intent/like?tweet_id={tweet_id}",
                     },
                     {
                         "type": 2,
-                        "style": 3,
+                        "style": 5,
                         "emoji": {"name": "🔁"},
                         "label": " ",
                         "url": f"https://twitter.com/intent/retweet?tweet_id={tweet_id}",
                     },
                     {
                         "type": 2,
-                        "style": 1,
+                        "style": 5,
                         "emoji": {"name": "💬"},
                         "label": " ",
                         "url": link,
