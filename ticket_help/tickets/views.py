@@ -60,6 +60,14 @@ class TicketActionView(discord.ui.View):
                 experienced_only = doc.to_dict().get("experienced_only", False)
 
             self.add_item(SpecialBossButton(ticket_name, self, experienced_only))
+            self.add_item(
+                discord.ui.Button(
+                    label="───── Helper Buttons ─────",
+                    style=discord.ButtonStyle.secondary,
+                    disabled=True,
+                    row=3,
+                )
+            )
 
     async def _update_ticket_embed(self, interaction: discord.Interaction):
         doc_ref = db.collection("tickets").document(self.ticket_name)
@@ -97,7 +105,7 @@ class TicketActionView(discord.ui.View):
             pass
 
     @discord.ui.button(
-        label="👊 Claim or unclaim", style=discord.ButtonStyle.success, row=3
+        label="👊 Claim or unclaim", style=discord.ButtonStyle.success, row=4
     )
     async def claim_ticket(
         self, interaction: discord.Interaction, button: discord.ui.Button
@@ -243,7 +251,7 @@ class TicketActionView(discord.ui.View):
         )
 
     @discord.ui.button(
-        label="📋 Get room codes", style=discord.ButtonStyle.secondary, row=3
+        label="📋 Get room codes", style=discord.ButtonStyle.secondary, row=4
     )
     async def copy_room(self, interaction: discord.Interaction, _):
         doc_ref = db.collection("tickets").document(self.ticket_name)
