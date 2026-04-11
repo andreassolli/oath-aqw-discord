@@ -31,8 +31,8 @@ def get_latest_entry():
 
     response = client.get_users_tweets(
         id=OATH_USER_ID,
-        max_results=1,
-        tweet_fields=["created_at"],
+        max_results=5,
+        tweet_fields=["created_at", "attachments"],
         expansions=["attachments.media_keys"],
         media_fields=["url", "preview_image_url"],
     )
@@ -44,11 +44,17 @@ def get_latest_entry():
 
     media_url = None
 
-    if response.includes and "media" in response.includes:
-        media = response.includes["media"]
-        if media:
-            media_item = media[0]
-            media_url = media_item.url or media_item.preview_image_url
+    if hasattr(tweet, "attachments") and tweet.attachments:
+        media_keys = tweet.attachments.get("media_keys", [])
+
+        if response.includes and "media" in response.includes:
+            media_lookup = {m.media_key: m for m in response.includes["media"]}
+
+            for key in media_keys:
+                media = media_lookup.get(key)
+                if media:
+                    media_url = media.url or media.preview_image_url
+                    break  # take first image only
 
     return tweet, media_url
 
@@ -65,15 +71,14 @@ async def check_twitter():
             tweet_link = f"https://twitter.com/{OATH_USER_ID}/status/{entry.id}"
             tweet_text = entry.text
 
-            await send_to_discord(tweet_text, tweet_link, image_url)
+            await send_to_discord(tweet_text, tweet_link, image_url, tweet_id=entry.id)
 
     except Exception as e:
         print("Error:", e)
 
 
-async def send_to_discord(text, link, image_url=None):
-    # role_mention = f"<@&{INITIATE_ROLE_ID}>"
-    role_mention = ""
+async def send_to_discord(text, link, image_url=None, tweet_id=None):
+    role_mention = f"<@&{INITIATE_ROLE_ID}>"
 
     embed = {
         "title": "🐦 New Tweet from Oath!",
@@ -88,8 +93,48 @@ async def send_to_discord(text, link, image_url=None):
     data = {
         "content": role_mention,
         "embeds": [embed],
+        "components": [
+            {
+                "type": 1,
+                "components": [
+                    {
+                        "type": 2,
+                        "style": 4,
+                        "emoji": {"name": "🤍"},
+                        "label": " ",
+                        "url": f"https://twitter.com/intent/like?tweet_id={tweet_id}",
+                    },
+                    {
+                        "type": 2,
+                        "style": 3,
+                        "emoji": {"name": "🔁"},
+                        "label": " ",
+                        "url": f"https://twitter.com/intent/retweet?tweet_id={tweet_id}",
+                    },
+                    {
+                        "type": 2,
+                        "style": 1,
+                        "emoji": {"name": "💬"},
+                        "label": " ",
+                        "url": link,
+                    },
+                ],
+            }
+        ],
         "allowed_mentions": {"parse": ["roles"]},
     }
     if NEWS_WEBHOOK_URL:
         async with aiohttp.ClientSession() as session:
-            await session.post(NEWS_WEBHOOK_URL, json=data)
+            if image_url:
+                embed["image"] = {"url": image_url}
+                await session.post(NEWS_WEBHOOK_URL, json=data)
+
+            else:
+                with open("assets/oath-logo.png", "rb") as f:
+                    form = aiohttp.FormData()
+                    form.add_field("payload_json", str(data).replace("'", '"'))
+                    form.add_field("file", f, filename="oath-logo.png")
+
+                    embed["image"] = {"url": "attachment://oath-logo.png"}
+
+                    await session.post(NEWS_WEBHOOK_URL, data=form)

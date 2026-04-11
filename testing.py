@@ -8,6 +8,7 @@ from tweepy import Client as TwitterClient
 from economy.generate_rocks import generate_rocks
 from economy.inventory import generate_inventory
 from economy.shop_generation import generate_shop
+from extra_commands.twitter import check_twitter
 from extra_commands.wordle import choose_new_word
 from extra_commands.wordle_share import generate_wordle_share
 from firebase_client import db, firestore
@@ -580,7 +581,7 @@ def fix_gems_awarded_points():
 
 
 if __name__ == "__main__":
-
+    asyncio.run(check_twitter())
     # asyncio.run(generate_test_card())
     # reset_coins()
     # migrate_shop_prices()
