@@ -69,13 +69,11 @@ async def check_twitter():
         last_entry_id = load_last_id()
 
         if entry and str(entry.id) != str(last_entry_id):
-            save_last_id(str(entry.id))
-
             tweet_link = f"https://twitter.com/{OATH_USER_ID}/status/{entry.id}"
             tweet_text = entry.text
 
-            await send_to_discord(tweet_text, tweet_link, image_url, tweet_id=entry.id)
-
+            await send_to_discord(tweet_text, tweet_link, image_url)
+            save_last_id(str(entry.id))
     except Exception as e:
         import traceback
 
