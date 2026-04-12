@@ -46,11 +46,11 @@ async def setup_application_panel(client: discord.Client):
         description=(
             "Think you know your ultras? Apply for a certificate!\n\n"
             "📝 Answer 5 questions for the selected boss.\n"
-            "⚠️ Ultra Speaker & Ultra Gramiel requires a Trial as well.\n"
-            "💰 Speaker and Gramiel rewards <:oathcoin:1462999179998531614>3750, rest give <:oathcoin:1462999179998531614>1950\n\n"
-            "❓Tips: \n"
-            "- [Speaker as Lord of Order ⚖️](https://youtu.be/hahe9_HhDZA) \n"
-            "- [Dage as Chaos Avenger/Classic Ninja 🥷](https://youtu.be/hJK9o-yIz9I)\n\n"
+            "⚠️ <:malgor:1492231505668341860>Speaker & <:gramiel:1492231304601796658>Gramiel requires a Trial as well.\n"
+            "💰 Speaker and Gramiel rewards <:oathcoin:1462999179998531614>3750, rest give <:oathcoin:1462999179998531614>1950.\n\n"
+            "📌 Tips: \n"
+            "- <:malgor:1492231505668341860>[Speaker as Lord of Order ⚖️](https://youtu.be/hahe9_HhDZA) \n"
+            "- <:dage:1492231405067964627>[Dage as Chaos Avenger/Classic Ninja 🥷](https://youtu.be/hJK9o-yIz9I)\n\n"
         ),
         color=discord.Color.blurple(),
     )

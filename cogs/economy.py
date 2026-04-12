@@ -474,7 +474,7 @@ class Economy(commands.Cog):
         z = 4
         y = random.randint(1, 100)
         if x == y:
-            user_data = await user_ref.get()
+            user_data = user_ref.get()
             stealer_coins = user_data.get("coins", 0)
             coins_to_pay = int(stealer_coins * 0.03)
             user_ref.update({"coins": firestore.Increment(-coins_to_pay)})
@@ -484,7 +484,7 @@ class Economy(commands.Cog):
                 ephemeral=True,
             )
         elif z == y:
-            user_data = await user_ref.get()
+            user_data = user_ref.get()
             stealer_coins = user_data.get("coins", 0)
             coins_to_pay = int(stealer_coins * 0.05)
             user_ref.update({"coins": firestore.Increment(-coins_to_pay)})
