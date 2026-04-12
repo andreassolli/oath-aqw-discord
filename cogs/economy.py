@@ -470,6 +470,31 @@ class Economy(commands.Cog):
                 "You cannot steal coins from someone who has none.", ephemeral=True
             )
 
+        x = 2
+        z = 4
+        y = random.randint(1, 100)
+        if x == y:
+            user_data = await user_ref.get()
+            stealer_coins = user_data.get("coins", 0)
+            coins_to_pay = int(stealer_coins * 0.03)
+            user_ref.update({"coins": firestore.Increment(-coins_to_pay)})
+            return await interaction.response.send_message(
+                f"<:GoobShock:1463149045731299328> You were caught stealing!\n"
+                f"In order to pay the bailout, you lost ${coins_to_pay}.",
+                ephemeral=True,
+            )
+        elif z == y:
+            user_data = await user_ref.get()
+            stealer_coins = user_data.get("coins", 0)
+            coins_to_pay = int(stealer_coins * 0.05)
+            user_ref.update({"coins": firestore.Increment(-coins_to_pay)})
+            return await interaction.response.send_message(
+                f"<:GoobShock:1463149045731299328> You were caught stealing!\n"
+                f"You escaped from the cops, but you broke your ankle in the process.\n"
+                f"In order to pay medical expenses, you lost ${coins_to_pay}.",
+                ephemeral=True,
+            )
+
         max_steal = int(max(target_coins * 0.02, 15))
         max_steal = min(max_steal, 150)
         coins = random.randint(5, max_steal)

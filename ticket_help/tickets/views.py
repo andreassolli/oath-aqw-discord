@@ -50,7 +50,14 @@ class TicketActionView(discord.ui.View):
         self.max_claims = max_claims
         self.room = room
         self.bosses = bosses
-
+        self.add_item(
+            discord.ui.Button(
+                label="────────────────── Helper Buttons ──────────────────",
+                style=discord.ButtonStyle.secondary,
+                disabled=True,
+                row=3,
+            )
+        )
         if any(boss in ["Ultra Speaker", "Ultra Gramiel"] for boss in bosses):
             doc_ref = db.collection("tickets").document(ticket_name)
             doc = doc_ref.get()
@@ -60,14 +67,6 @@ class TicketActionView(discord.ui.View):
                 experienced_only = doc.to_dict().get("experienced_only", False)
 
             self.add_item(SpecialBossButton(ticket_name, self, experienced_only))
-            self.add_item(
-                discord.ui.Button(
-                    label="────────────────── Helper Buttons ──────────────────",
-                    style=discord.ButtonStyle.secondary,
-                    disabled=True,
-                    row=3,
-                )
-            )
 
     async def _update_ticket_embed(self, interaction: discord.Interaction):
         doc_ref = db.collection("tickets").document(self.ticket_name)
