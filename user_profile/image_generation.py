@@ -10,6 +10,7 @@ from PIL import Image, ImageDraw, ImageFont
 from assets_caching import ASSET_CACHE, BADGE_CACHE, FONTS
 from config import AQW_BADGES, POTW_ROLE_ID
 from firebase_client import db
+from user_profile.aqwordle_client import db as aqwordle_db
 from user_profile.extra_borders import apply_extra_border
 from user_profile.image_utils import draw_gradient_text
 
@@ -37,7 +38,14 @@ async def generate_profile_card(
     mee6, avatar = await asyncio.gather(mee6_task, avatar_task)
 
     doc_ref = db.collection("users").document(str(user_id))
-
+    statsRef = (
+        aqwordle_db.collection("users")
+        .document(str(user_id))
+        .collection("meta")
+        .document("stats")
+    )
+    stat_snap = statsRef.get()
+    stats = stat_snap.to_dict() if stat_snap.exists else {}
     doc = cast(Any, doc_ref.get())
     data: Dict[str, Any] = doc.to_dict() or {}
 
@@ -49,17 +57,14 @@ async def generate_profile_card(
         guild = ""
     has_been_potw = data.get("has_been_potw", False)
     is_potw = any(role.id == POTW_ROLE_ID for role in target.roles)
-    game_ref = db.collection("wordle_games").document(str(target.id))
-    game_doc = game_ref.get()
-    game_data = game_doc.to_dict() if game_doc.exists else {}
-    total_guesses = game_data.get("total_guesses", 0)
-    games_played = game_data.get("games_played", 0)
+    total_wins = stats.get("wins", 0)
+    total_guesses = stats.get("totalGuesses", 0)
+    games_played = stats.get("totalGames", 0)
     if games_played > 0:
         avg_guesses = round(total_guesses / games_played, 2)
     else:
         avg_guesses = 0
     avg_display = f"{avg_guesses}" if games_played > 0 else "—"
-    completed_words = game_data.get("words_completed", 0)
     users_above = list(db.collection("users").where("points", ">", points).stream())
     rank = len(users_above) + 1
     counting_score = data.get("counting_score", 0)
@@ -247,7 +252,7 @@ async def generate_profile_card(
     )
     draw.text(
         (346, 346),
-        f"{completed_words} words",
+        f"{total_wins} words",
         font=font_xsmall,
         fill=color,
         stroke_fill=outline_color,
