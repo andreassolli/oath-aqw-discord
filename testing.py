@@ -6,6 +6,7 @@ from google.cloud import firestore as gc_firestore
 from tweepy import Client as TwitterClient
 
 from economy.gamba.blackjack import add_card, deal, get_value
+from economy.gamba.generate_blackjack import generate_blackjack
 from economy.generate_rocks import generate_rocks
 from economy.inventory import generate_inventory
 from economy.shop_generation import generate_shop
@@ -581,23 +582,18 @@ def fix_gems_awarded_points():
     print(f"Overpaid users: {overpaid_count}")
 
 
-async def getting_cards():
-    cards = await deal()
-    print(cards)
-    value = await get_value(cards["user"])
-    print(value)
-    after_adding_card = await add_card(cards["user"], cards["deck"])
-    value_after_adding = await get_value(after_adding_card["user"])
-    print(after_adding_card, value_after_adding)
-    after_adding_card2 = await add_card(
-        after_adding_card["user"], after_adding_card["deck"]
-    )
-    value_after_adding2 = await get_value(after_adding_card2["user"])
-    print(after_adding_card2, value_after_adding2)
+async def test_blackjack():
+    user, dealer, deck = await deal()
+    user, deck = await add_card(user, deck)
+    user, deck = await add_card(user, deck)
+    user, deck = await add_card(user, deck)
+    await generate_blackjack(user, dealer)
+
+    # await generate_blackjack(user, dealer)
 
 
 if __name__ == "__main__":
-    asyncio.run(getting_cards())
+    asyncio.run(test_blackjack())
     # asyncio.run(generate_test_card())
     # reset_coins()
     # migrate_shop_prices()

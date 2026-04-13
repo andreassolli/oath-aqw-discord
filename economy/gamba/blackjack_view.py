@@ -1,6 +1,7 @@
 import discord
 
 from economy.gamba.blackjack import add_card, add_dealer_card, get_value
+from economy.gamba.generate_blackjack import generate_blackjack
 
 
 class BlackjackView(discord.ui.View):
@@ -14,6 +15,8 @@ class BlackjackView(discord.ui.View):
     @discord.ui.button(label="Hit", style=discord.ButtonStyle.success)
     async def hit(self, interaction: discord.Interaction, button: discord.ui.Button):
         self.user, self.deck = await add_card(self.user, self.deck)
+        buffer = await generate_blackjack(self.user, self.dealer)
+        file = discord.File(buffer, filename="table.png")
 
         user_total = await get_value(self.user)
 
@@ -45,6 +48,7 @@ class BlackjackView(discord.ui.View):
         await interaction.response.edit_message(
             content=f"You: {self.user} ({user_total})\nDealer: [hidden], {self.dealer[1]}",
             view=self,
+            file=file,
         )
 
     @discord.ui.button(label="Stand", style=discord.ButtonStyle.primary)

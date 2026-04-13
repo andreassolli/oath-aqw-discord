@@ -14,6 +14,7 @@ from economy.gamba.beg import beg
 from economy.gamba.blackjack import add_card, deal, get_value
 from economy.gamba.blackjack_view import BlackjackView
 from economy.gamba.coinflip import run_coinflip
+from economy.gamba.generate_blackjack import generate_blackjack
 from economy.gamba.utils import lock_coins
 from economy.gamba.yanken_accept_view import RPSAcceptView
 from firebase_client import db
@@ -187,12 +188,16 @@ class Gamba(commands.Cog):
                 f"{result}\nYou: {user_total} | Dealer: {dealer_total}", ephemeral=True
             )
 
+        buffer = await generate_blackjack(user, dealer)
+        file = discord.File(buffer, filename="table.png")
         user_string = f"Your cards: {', '.join(map(str, user))} (value: {user_total})"
         dealer_string = (
             f"Dealer's cards: {', '.join(map(str, dealer))} (value: {dealer_total})"
         )
         return await interaction.followup.send(
-            f"{user_string}\n{dealer_string}", view=BlackjackView(user, dealer, deck)
+            f"{user_string}\n{dealer_string}",
+            view=BlackjackView(user, dealer, deck),
+            file=file,
         )
 
 
