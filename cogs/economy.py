@@ -431,7 +431,7 @@ class Economy(commands.Cog):
             )
             return
         if target.id == interaction.user.id:
-            return await interaction.response.send_message(
+            return await interaction.followup.send(
                 "You can't steal from yourself.", ephemeral=True
             )
         user_ref = db.collection("users").document(str(interaction.user.id))
@@ -446,7 +446,7 @@ class Economy(commands.Cog):
 
             if remaining.total_seconds() > 0:
                 mins, secs = divmod(int(remaining.total_seconds()), 60)
-                return await interaction.response.send_message(
+                return await interaction.followup.send(
                     f"⏳ You can steal again in {mins}m {secs}s.", ephemeral=True
                 )
 
@@ -460,14 +460,14 @@ class Economy(commands.Cog):
 
             if remaining.total_seconds() > 0:
                 mins, secs = divmod(int(remaining.total_seconds()), 60)
-                return await interaction.response.send_message(
+                return await interaction.followup.send(
                     f"⏳ This person cannot be stolen from again for another {mins}m {secs}s.",
                     ephemeral=True,
                 )
 
         target_coins = target_data.get("coins", 0)
         if target_coins <= 0:
-            return await interaction.response.send_message(
+            return await interaction.followup.send(
                 "You cannot steal coins from someone who has none.", ephemeral=True
             )
 
@@ -479,17 +479,17 @@ class Economy(commands.Cog):
             stealer_coins = user_data.get("coins", 0)
             coins_to_pay = int(stealer_coins * 0.03)
             user_ref.update({"coins": firestore.Increment(-coins_to_pay)})
-            return await interaction.response.send_message(
+            return await interaction.followup.send(
                 f"<:GoobShock:1463149045731299328> You were caught stealing!\n"
                 f"In order to pay the bailout, you lost ${coins_to_pay}.",
                 ephemeral=True,
             )
         elif z == y:
-            user_data = user_ref.get()
+            user_data = user_ref.get().to_dict() or {}
             stealer_coins = user_data.get("coins", 0)
             coins_to_pay = int(stealer_coins * 0.05)
             user_ref.update({"coins": firestore.Increment(-coins_to_pay)})
-            return await interaction.response.send_message(
+            return await interaction.followup.send(
                 f"<:GoobShock:1463149045731299328> You were caught stealing!\n"
                 f"You escaped from the cops, but you broke your ankle in the process.\n"
                 f"In order to pay medical expenses, you lost ${coins_to_pay}.",
@@ -523,7 +523,7 @@ class Economy(commands.Cog):
             merge=True,
         )
 
-        return await interaction.response.send_message(
+        return await interaction.followup.send(
             f"{interaction.user.display_name} stole <:oathcoin:1462999179998531614>{coins} from {target.display_name}, but they dropped <:oathcoin:1462999179998531614>{dropped} in the process!"
         )
 
