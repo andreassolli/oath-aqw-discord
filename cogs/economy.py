@@ -421,6 +421,7 @@ class Economy(commands.Cog):
     @app_commands.command(name="steal", description="Steal coins from someone.")
     @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
     async def steal(self, interaction: discord.Interaction, target: discord.Member):
+        await interaction.response.defer(ephemeral=True)
         if interaction.channel_id != BETA_TESTING_CHANNEL_ID:
             allowed_mentions = ", ".join(f"<#{BETA_TESTING_CHANNEL_ID}>")
 
@@ -474,7 +475,7 @@ class Economy(commands.Cog):
         z = 4
         y = random.randint(1, 100)
         if x == y:
-            user_data = user_ref.get()
+            user_data = user_ref.get().to_dict() or {}
             stealer_coins = user_data.get("coins", 0)
             coins_to_pay = int(stealer_coins * 0.03)
             user_ref.update({"coins": firestore.Increment(-coins_to_pay)})
