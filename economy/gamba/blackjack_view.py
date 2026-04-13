@@ -45,10 +45,10 @@ class BlackjackView(discord.ui.View):
                 view=None,
             )
 
-        await interaction.response.edit_message(
+        await interaction.message.edit(
             content=f"You: {self.user} ({user_total})\nDealer: [hidden], {self.dealer[1]}",
             view=self,
-            file=file,
+            attachments=[file],
         )
 
     @discord.ui.button(label="Stand", style=discord.ButtonStyle.primary)
