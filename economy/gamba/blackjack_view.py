@@ -11,9 +11,11 @@ class BlackjackView(discord.ui.View):
         self.dealer = dealer
         self.deck = deck
         self.locked = False
+        self.message = None
 
     @discord.ui.button(label="Hit", style=discord.ButtonStyle.success)
     async def hit(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await interaction.response.defer()
         self.user, self.deck = await add_card(self.user, self.deck)
         buffer = await generate_blackjack(self.user, self.dealer)
         file = discord.File(buffer, filename="table.png")
@@ -22,7 +24,7 @@ class BlackjackView(discord.ui.View):
 
         if user_total > 21:
             self.stop()
-            return await interaction.message.edit(
+            return await self.message.edit(
                 content=f"You busted with {user_total} 💀",
                 view=None,
                 attachments=[file],
@@ -42,13 +44,13 @@ class BlackjackView(discord.ui.View):
                 result = "Push 🤝"
 
             self.stop()
-            return await interaction.message.edit(
+            return await self.message.edit(
                 content=f"{result}\nYou: {user_total} | Dealer: {dealer_total}",
                 view=None,
                 attachments=[file],
             )
 
-        await interaction.message.edit(
+        await self.message.edit(
             content=f"You: {self.user} ({user_total})\nDealer: [hidden], {self.dealer[1]}",
             view=self,
             attachments=[file],
@@ -77,7 +79,7 @@ class BlackjackView(discord.ui.View):
 
         self.stop()
         self.locked = False
-        return await interaction.response.edit_message(
+        return await interaction.response.send_message(
             content=f"{result}\nYou: {user_total} | Dealer: {dealer_total}", view=None
         )
 
@@ -91,7 +93,7 @@ class BlackjackView(discord.ui.View):
             )
         self.locked = True
         self.stop()
-        await interaction.response.edit_message(
+        return await interaction.response.send_message(
             content="You surrendered and lost half your coins.", view=None
         )
         self.locked = False

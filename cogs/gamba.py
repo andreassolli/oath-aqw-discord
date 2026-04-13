@@ -194,11 +194,14 @@ class Gamba(commands.Cog):
         dealer_string = (
             f"Dealer's cards: {', '.join(map(str, dealer))} (value: {dealer_total})"
         )
-        return await interaction.followup.send(
+        view = BlackjackView(user, dealer, deck)
+        msg = await interaction.followup.send(
             f"{user_string}\n{dealer_string}",
-            view=BlackjackView(user, dealer, deck),
+            view=view,
             file=file,
         )
+        view.message = msg
+        return
 
 
 async def setup(bot: commands.Bot):
