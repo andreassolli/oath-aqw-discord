@@ -7,7 +7,11 @@ _rule_cache = None
 def load_point_rules():
     global _rule_cache
     if _rule_cache is None:
-        _rule_cache = [rule.to_dict() for rule in db.collection("point_rules").stream()]
+        _rule_cache = []
+        for doc in db.collection("point_rules").stream():
+            data = doc.to_dict() or {}
+            data["id"] = doc.id
+            _rule_cache.append(data)
     return _rule_cache
 
 
@@ -21,10 +25,11 @@ def calculate_ticket_points(note: str) -> int:
         return DEFAULT_POINTS
 
     note_lower = note.lower()
+    rules = load_point_rules()
 
-    for doc in db.collection("point_rules").stream():
-        if doc.id.lower() in note_lower:
-            return int(doc.to_dict().get("points", DEFAULT_POINTS))
+    for rule in rules:
+        if rule["id"].lower() in note_lower:
+            return int(rule.get("points", DEFAULT_POINTS))
 
     return DEFAULT_POINTS
 
@@ -36,9 +41,11 @@ _rooms_cache = None
 def load_boss_rooms():
     global _rooms_cache
     if _rooms_cache is None:
-        _rooms_cache = [
-            boss_room.to_dict() for boss_room in db.collection("point_rules").stream()
-        ]
+        _rooms_cache = []
+        for doc in db.collection("point_rules").stream():
+            data = doc.to_dict() or {}
+            data["id"] = doc.id
+            _rooms_cache.append(data)
     return _rooms_cache
 
 
@@ -52,9 +59,10 @@ def get_boss_room(boss: str) -> str:
         return DEFAULT_ROOM
 
     boss_lower = boss.lower()
+    rooms = load_boss_rooms()
 
-    for doc in db.collection("point_rules").stream():
-        if doc.id.lower() == boss_lower:
-            return doc.to_dict().get("room", DEFAULT_ROOM)
+    for room in rooms:
+        if room["id"].lower() == boss_lower:
+            return room.get("room", DEFAULT_ROOM)
 
     return DEFAULT_ROOM

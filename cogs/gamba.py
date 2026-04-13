@@ -4,8 +4,15 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
-from config import BETA_TESTER_ROLE_ID, BETA_TESTING_CHANNEL_ID, OFFICER_ROLE_ID
+from config import (
+    BETA_TESTER_ROLE_ID,
+    BETA_TESTING_CHANNEL_ID,
+    BOT_GUY_ROLE_ID,
+    OFFICER_ROLE_ID,
+)
 from economy.gamba.beg import beg
+from economy.gamba.blackjack import add_card, deal, get_value
+from economy.gamba.blackjack_view import BlackjackView
 from economy.gamba.coinflip import run_coinflip
 from economy.gamba.utils import lock_coins
 from economy.gamba.yanken_accept_view import RPSAcceptView
@@ -161,6 +168,21 @@ class Gamba(commands.Cog):
         file = discord.File("assets/finaly.gif", filename="finaly.gif")
         embed.set_image(url="attachment://finaly.gif")
         await interaction.response.send_message(embed=embed, file=file)
+
+    @app_commands.command(
+        name="blackjack", description="Play blackjack with the house."
+    )
+    @app_commands.checks.has_role(BOT_GUY_ROLE_ID)
+    async def blackjack_command(self, interaction: discord.Interaction):
+        await interaction.response.defer(ephemeral=True)
+        (user, dealer, deck) = await deal()
+        user_values = await get_value(user)
+        dealer_values = await get_value(dealer)
+        user_string = f"Your cards: {', '.join([str(card) for card in user])} (values: {user_values['sum_x'] or user_values['sum_y']})"
+        dealer_string = f"Dealer's cards: {', '.join([str(card) for card in dealer])} (values: {dealer_values['sum_x'] or dealer_values['sum_y']})"
+        return await interaction.followup.send(
+            f"{user_string}\n{dealer_string}", view=BlackjackView(user, dealer, deck)
+        )
 
 
 async def setup(bot: commands.Bot):
