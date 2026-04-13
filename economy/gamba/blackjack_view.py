@@ -18,9 +18,9 @@ class BlackjackView(discord.ui.View):
                 "Please wait for your card to be dealt.", ephemeral=True
             )
         self.locked = True
-        (user, deck) = await add_card(self.user, self.deck)
+        user, deck = await add_card(self.user, self.deck)
         self.user = user
-        (dealer, deck) = await add_dealer_card(self.dealer, deck)
+        dealer, deck = await add_dealer_card(self.dealer, deck)
         self.dealer = dealer
         self.deck = deck
         self.locked = False
@@ -33,7 +33,7 @@ class BlackjackView(discord.ui.View):
                 "Please wait for the dealer's turn.", ephemeral=True
             )
         self.locked = True
-        (dealer, deck) = await add_dealer_card(self.dealer, self.deck)
+        dealer, deck = await add_dealer_card(self.dealer, self.deck)
         self.dealer = dealer
         self.deck = deck
         self.locked = False

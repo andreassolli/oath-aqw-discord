@@ -175,7 +175,7 @@ class Gamba(commands.Cog):
     @app_commands.checks.has_role(BOT_GUY_ROLE_ID)
     async def blackjack_command(self, interaction: discord.Interaction):
         await interaction.response.defer(ephemeral=True)
-        (user, dealer, deck) = await deal()
+        user, dealer, deck = await deal()
         user_values = await get_value(user)
         dealer_values = await get_value(dealer)
         user_string = f"Your cards: {', '.join([str(card) for card in user])} (values: {user_values['sum_x'] or user_values['sum_y']})"

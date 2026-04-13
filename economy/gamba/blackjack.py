@@ -38,7 +38,7 @@ async def add_dealer_card(cards, deck):
     dealer_values = await get_value(cards)
 
     if dealer_values.get("sum_y", 0) <= 16 and dealer_values.get("sum_x", 0) <= 16:
-        (dealer, deck) = await add_card(cards, deck)
+        dealer, deck = await add_card(cards, deck)
         return {"dealer": dealer, "deck": deck}
     else:
         return {"dealer": cards, "deck": deck}
