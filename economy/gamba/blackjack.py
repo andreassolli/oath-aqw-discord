@@ -11,34 +11,35 @@ async def deal():
     user_cards = [deck.pop(), deck.pop()]
     dealer_cards = [deck.pop(), deck.pop()]
 
-    return {"user": user_cards, "dealer": dealer_cards, "deck": deck}
+    return user_cards, dealer_cards, deck
 
 
 async def get_value(cards):
-    sum_x = 0
-    sum_y = 0
-    for card in cards:
-        sum_x += card[1]
-        if card[1] == 14:
-            sum_y += 1
-            sum_x += 11
-        elif card[1] >= 10 and card[1] <= 13:
-            sum_y += card[10]
+    total = 0
+    aces = 0
+
+    for _, value in cards:
+        if value >= 11 and value <= 13:
+            total += 10
+        elif value == 14:
+            total += 11
+            aces += 1
         else:
-            sum_y += card[1]
-    return {"sum_x": sum_x, "sum_y": sum_y}
+            total += value
+
+    while total > 21 and aces:
+        total -= 10
+        aces -= 1
+
+    return total
 
 
 async def add_card(cards, deck):
     cards.append(deck.pop())
-    return {"user": cards, "deck": deck}
+    return cards, deck
 
 
 async def add_dealer_card(cards, deck):
-    dealer_values = await get_value(cards)
-
-    if dealer_values.get("sum_y", 0) <= 16 and dealer_values.get("sum_x", 0) <= 16:
-        dealer, deck = await add_card(cards, deck)
-        return {"dealer": dealer, "deck": deck}
-    else:
-        return {"dealer": cards, "deck": deck}
+    while await get_value(cards) < 17:
+        cards, deck = await add_card(cards, deck)
+    return cards, deck

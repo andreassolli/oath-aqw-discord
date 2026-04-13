@@ -127,10 +127,8 @@ class Gamba(commands.Cog):
     @app_commands.command(name="beg", description="Beg the other users for some money")
     @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
     async def beg_command(self, interaction: discord.Interaction):
-        if interaction.channel_id not in ALLOWED_COMMANDS_CHANNELS:
-            allowed_mentions = ", ".join(
-                f"<#{cid}>" for cid in ALLOWED_COMMANDS_CHANNELS
-            )
+        if interaction.channel_id != BETA_TESTING_CHANNEL_ID:
+            allowed_mentions = f"<#{BETA_TESTING_CHANNEL_ID}>"
 
             await interaction.followup.send(
                 f"❌ This command can only be used in {allowed_mentions}.",
@@ -176,10 +174,23 @@ class Gamba(commands.Cog):
     async def blackjack_command(self, interaction: discord.Interaction):
         await interaction.response.defer(ephemeral=True)
         user, dealer, deck = await deal()
-        user_values = await get_value(user)
-        dealer_values = await get_value(dealer)
-        user_string = f"Your cards: {', '.join([str(card) for card in user])} (values: {user_values['sum_x'] or user_values['sum_y']})"
-        dealer_string = f"Dealer's cards: {', '.join([str(card) for card in dealer])} (values: {dealer_values['sum_x'] or dealer_values['sum_y']})"
+        user_total = await get_value(user)
+        dealer_total = await get_value(dealer)
+
+        if user_total == 21:
+            if dealer_total == 21:
+                result = "Push 🤝 (both blackjack)"
+            else:
+                result = "Blackjack! You win 🎉"
+
+            return await interaction.followup.send(
+                f"{result}\nYou: {user_total} | Dealer: {dealer_total}", ephemeral=True
+            )
+
+        user_string = f"Your cards: {', '.join(map(str, user))} (value: {user_total})"
+        dealer_string = (
+            f"Dealer's cards: {', '.join(map(str, dealer))} (value: {dealer_total})"
+        )
         return await interaction.followup.send(
             f"{user_string}\n{dealer_string}", view=BlackjackView(user, dealer, deck)
         )

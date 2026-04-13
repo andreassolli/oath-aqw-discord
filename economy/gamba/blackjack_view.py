@@ -13,18 +13,39 @@ class BlackjackView(discord.ui.View):
 
     @discord.ui.button(label="Hit", style=discord.ButtonStyle.success)
     async def hit(self, interaction: discord.Interaction, button: discord.ui.Button):
-        if self.locked:
-            return await interaction.response.send_message(
-                "Please wait for your card to be dealt.", ephemeral=True
+        self.user, self.deck = await add_card(self.user, self.deck)
+
+        user_total = await get_value(self.user)
+
+        if user_total > 21:
+            self.stop()
+            return await interaction.response.edit_message(
+                content=f"You busted with {user_total} 💀", view=None
             )
-        self.locked = True
-        user, deck = await add_card(self.user, self.deck)
-        self.user = user
-        dealer, deck = await add_dealer_card(self.dealer, deck)
-        self.dealer = dealer
-        self.deck = deck
-        self.locked = False
-        await interaction.response.edit_message(view=self)
+        elif user_total == 21:
+            self.dealer, self.deck = await add_dealer_card(self.dealer, self.deck)
+
+            dealer_total = await get_value(self.dealer)
+
+            if dealer_total > 21:
+                result = "Dealer busted, you win 🎉"
+            elif dealer_total > user_total:
+                result = "Dealer wins 😢"
+            elif dealer_total < user_total:
+                result = "You win 🎉"
+            else:
+                result = "Push 🤝"
+
+            self.stop()
+            return await interaction.response.edit_message(
+                content=f"{result}\nYou: {user_total} | Dealer: {dealer_total}",
+                view=None,
+            )
+
+        await interaction.response.edit_message(
+            content=f"You: {self.user} ({user_total})\nDealer: [hidden], {self.dealer[1]}",
+            view=self,
+        )
 
     @discord.ui.button(label="Stand", style=discord.ButtonStyle.primary)
     async def stand(self, interaction: discord.Interaction, button: discord.ui.Button):
@@ -33,11 +54,25 @@ class BlackjackView(discord.ui.View):
                 "Please wait for the dealer's turn.", ephemeral=True
             )
         self.locked = True
-        dealer, deck = await add_dealer_card(self.dealer, self.deck)
-        self.dealer = dealer
-        self.deck = deck
+        self.dealer, self.deck = await add_dealer_card(self.dealer, self.deck)
+
+        user_total = await get_value(self.user)
+        dealer_total = await get_value(self.dealer)
+
+        if dealer_total > 21:
+            result = "Dealer busted, you win 🎉"
+        elif dealer_total > user_total:
+            result = "Dealer wins 😢"
+        elif dealer_total < user_total:
+            result = "You win 🎉"
+        else:
+            result = "Push 🤝"
+
+        self.stop()
         self.locked = False
-        await interaction.response.edit_message(view=self)
+        return await interaction.response.edit_message(
+            content=f"{result}\nYou: {user_total} | Dealer: {dealer_total}", view=None
+        )
 
     @discord.ui.button(label="Surrender", style=discord.ButtonStyle.danger)
     async def surrender(
@@ -48,8 +83,8 @@ class BlackjackView(discord.ui.View):
                 "Please wait for the dealer's turn.", ephemeral=True
             )
         self.locked = True
-        await interaction.response.send_message(
-            "You have surrendered, and lost have of your wagered coins."
+        self.stop()
+        await interaction.response.edit_message(
+            content="You surrendered and lost half your coins.", view=None
         )
         self.locked = False
-        await interaction.response.edit_message(view=self)

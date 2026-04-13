@@ -421,7 +421,7 @@ class Economy(commands.Cog):
     @app_commands.command(name="steal", description="Steal coins from someone.")
     @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
     async def steal(self, interaction: discord.Interaction, target: discord.Member):
-        await interaction.response.defer(ephemeral=True)
+        await interaction.response.defer()
         if interaction.channel_id != BETA_TESTING_CHANNEL_ID:
             allowed_mentions = ", ".join(f"<#{BETA_TESTING_CHANNEL_ID}>")
 
@@ -482,7 +482,6 @@ class Economy(commands.Cog):
             return await interaction.followup.send(
                 f"<:GoobShock:1463149045731299328> You were caught stealing!\n"
                 f"In order to pay the bailout, you lost ${coins_to_pay}.",
-                ephemeral=True,
             )
         elif z == y:
             user_data = user_ref.get().to_dict() or {}
@@ -493,7 +492,6 @@ class Economy(commands.Cog):
                 f"<:GoobShock:1463149045731299328> You were caught stealing!\n"
                 f"You escaped from the cops, but you broke your ankle in the process.\n"
                 f"In order to pay medical expenses, you lost ${coins_to_pay}.",
-                ephemeral=True,
             )
 
         max_steal = int(max(target_coins * 0.02, 15))

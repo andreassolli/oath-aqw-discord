@@ -12,6 +12,7 @@ from config import (
 from firebase_client import db
 from ticket_help.tickets.embed_utils import build_ticket_embed
 from ticket_help.tickets.ids import get_next_ticket_id
+from ticket_help.tickets.points import calculate_ticket_points
 from ticket_help.tickets.utils import (
     find_guide_threads,
     set_active_ticket,
@@ -133,8 +134,6 @@ class CreateTicketModal(discord.ui.Modal):
             else:
                 total_kills_value = 1
 
-            type_doc = db.collection("point_rules").document(self.type).get()
-            type_data = type_doc.to_dict() or {}
             six_helper_bosses = [
                 "Astral Shrine",
                 "Grim Challenge",
@@ -200,26 +199,9 @@ class CreateTicketModal(discord.ui.Modal):
             else:
                 bosses = self._preset_bosses
 
-                type_ref = db.collection("point_rules")
                 points = 0
-                legion_boss_counter = 0
-                legion_bosses = ["The Beast", "Deimos", "Legion Lich Lord"]
-
                 for boss in bosses:
-                    if boss in legion_bosses:
-                        legion_boss_counter += 1
-                        continue
-
-                    boss_doc = type_ref.document(boss).get()
-                    boss_data = boss_doc.to_dict() if boss_doc.exists else {}
-
-                    points += int(boss_data.get("points", 1))
-
-                if legion_boss_counter > 1:
-                    legion_doc = type_ref.document("Legion Daily").get()
-                    legion_data = legion_doc.to_dict() if legion_doc.exists else {}
-
-                    points += int(legion_data.get("points", 1))
+                    points += calculate_ticket_points(boss)
 
             ticket_id = get_next_ticket_id()
             channel_name = f"「🔖」ticket-{ticket_id:03d}"
