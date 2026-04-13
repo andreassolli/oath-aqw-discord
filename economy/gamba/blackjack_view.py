@@ -22,8 +22,10 @@ class BlackjackView(discord.ui.View):
 
         if user_total > 21:
             self.stop()
-            return await interaction.response.edit_message(
-                content=f"You busted with {user_total} 💀", view=None
+            return await interaction.message.edit(
+                content=f"You busted with {user_total} 💀",
+                view=None,
+                attachments=[file],
             )
         elif user_total == 21:
             self.dealer, self.deck = await add_dealer_card(self.dealer, self.deck)
@@ -40,9 +42,10 @@ class BlackjackView(discord.ui.View):
                 result = "Push 🤝"
 
             self.stop()
-            return await interaction.response.edit_message(
+            return await interaction.message.edit(
                 content=f"{result}\nYou: {user_total} | Dealer: {dealer_total}",
                 view=None,
+                attachments=[file],
             )
 
         await interaction.message.edit(
