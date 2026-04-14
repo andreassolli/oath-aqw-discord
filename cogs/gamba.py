@@ -3,6 +3,7 @@ from typing import Literal
 import discord
 from discord import app_commands
 from discord.ext import commands
+from google.cloud import firestore
 
 from config import (
     BETA_TESTER_ROLE_ID,
@@ -15,7 +16,7 @@ from economy.gamba.blackjack import add_card, deal, get_value
 from economy.gamba.blackjack_view import BlackjackView
 from economy.gamba.coinflip import run_coinflip
 from economy.gamba.generate_blackjack import generate_blackjack
-from economy.gamba.utils import lock_coins
+from economy.gamba.utils import lock_coins, unlock_coins
 from economy.gamba.yanken_accept_view import RPSAcceptView
 from firebase_client import db
 
@@ -171,18 +172,38 @@ class Gamba(commands.Cog):
     @app_commands.command(
         name="blackjack", description="Play blackjack with the house."
     )
-    @app_commands.checks.has_role(BOT_GUY_ROLE_ID)
-    async def blackjack_command(self, interaction: discord.Interaction):
+    @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
+    async def blackjack_command(self, interaction: discord.Interaction, wager: int):
         await interaction.response.defer(ephemeral=True)
+        if wager < 1:
+            return await interaction.followup.send(
+                "Wager must be at least <:oathcoin:1462999179998531614>1.",
+                ephemeral=True,
+            )
+        success, error = lock_coins(interaction.user.id, wager)
+
+        if not success:
+            return await interaction.followup.send(error, ephemeral=True)
+
         user, dealer, deck = await deal()
         user_total = await get_value(user)
         dealer_total = await get_value(dealer)
 
         if user_total == 21:
+            user_ref = db.collection("users").document(str(interaction.user.id))
+            buffer = await generate_blackjack(user, dealer, True)
+            await interaction.message.edit(
+                content=f"Blackjack! You win <:oathcoin:1462999179998531614>{wager * 2.5}",
+                attachments=[discord.File(buffer, filename="table.png")],
+            )
+            unlock_coins(interaction.user.id, wager)
+
             if dealer_total == 21:
-                result = "Push 🤝 (both blackjack)"
+                result = f"<:mapClown:1484474701798707240> Push, gained back <:oathcoin:1462999179998531614>{self.wager}"
+
             else:
-                result = "Blackjack! You win 🎉"
+                user_ref.update({"coins": firestore.Increment(wager * 1.5)})
+                result = f"<:GoobShock:1463149045731299328> Blackjack! You win <:oathcoin:1462999179998531614>{wager * 2.5}"
 
             return await interaction.followup.send(
                 f"{result}\nYour cards: {user_total} | Dealer: {dealer_total}",
@@ -192,7 +213,7 @@ class Gamba(commands.Cog):
         buffer = await generate_blackjack(user, dealer)
         file = discord.File(buffer, filename="table.png")
         user_string = f"Your cards: {user_total}"
-        view = BlackjackView(user, dealer, deck)
+        view = BlackjackView(user, dealer, deck, wager)
         msg = await interaction.followup.send(
             f"{user_string}",
             view=view,
