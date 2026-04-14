@@ -479,19 +479,41 @@ class Economy(commands.Cog):
             stealer_coins = user_data.get("coins", 0)
             coins_to_pay = int(stealer_coins * 0.03)
             user_ref.update({"coins": firestore.Increment(-coins_to_pay)})
+            user_ref.set(
+                {
+                    "last_steal": firestore.SERVER_TIMESTAMP,
+                    "transactions": firestore.ArrayUnion(
+                        [
+                            f"+ Paid bail for ${coins_to_pay} trying to steal from {target.display_name}"
+                        ]
+                    ),
+                },
+                merge=True,
+            )
             return await interaction.followup.send(
                 f"<:GoobShock:1463149045731299328> You were caught stealing!\n"
-                f"In order to pay the bailout, you lost ${coins_to_pay}.",
+                f"In order to pay the bailout, you lost <:oathcoin:1462999179998531614>{coins_to_pay}.",
             )
         elif z == y:
             user_data = user_ref.get().to_dict() or {}
             stealer_coins = user_data.get("coins", 0)
             coins_to_pay = int(stealer_coins * 0.05)
             user_ref.update({"coins": firestore.Increment(-coins_to_pay)})
+            user_ref.set(
+                {
+                    "last_steal": firestore.SERVER_TIMESTAMP,
+                    "transactions": firestore.ArrayUnion(
+                        [
+                            f"+ Paid medical expenses for ${coins_to_pay} trying to steal from {target.display_name}"
+                        ]
+                    ),
+                },
+                merge=True,
+            )
             return await interaction.followup.send(
                 f"<:GoobShock:1463149045731299328> You were caught stealing!\n"
                 f"You escaped from the cops, but you broke your ankle in the process.\n"
-                f"In order to pay medical expenses, you lost ${coins_to_pay}.",
+                f"In order to pay medical expenses, you lost <:oathcoin:1462999179998531614>{coins_to_pay}.",
             )
 
         max_steal = int(max(target_coins * 0.02, 15))

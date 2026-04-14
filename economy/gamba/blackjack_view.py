@@ -25,23 +25,24 @@ class BlackjackView(discord.ui.View):
         if user_total > 21:
             self.stop()
             return await self.message.edit(
-                content=f"You busted with {user_total} 💀",
+                content=f"<:GoobCrying:1457956174174617651> You busted with {user_total}",
                 view=None,
                 attachments=[file],
             )
         elif user_total == 21:
             self.dealer, self.deck = await add_dealer_card(self.dealer, self.deck)
-
+            buffer = await generate_blackjack(self.user, self.dealer, True)
+            file = discord.File(buffer, filename="table.png")
             dealer_total = await get_value(self.dealer)
 
             if dealer_total > 21:
-                result = "Dealer busted, you win 🎉"
+                result = "<:GoobHeart:1459836996381048863> Dealer busted, you win!"
             elif dealer_total > user_total:
-                result = "Dealer wins 😢"
+                result = "<:GoobCrying:1457956174174617651> Dealer wins"
             elif dealer_total < user_total:
-                result = "You win 🎉"
+                result = "<:GoobHeart:1459836996381048863> You win!"
             else:
-                result = "Push 🤝"
+                result = "<:mapClown:1484474701798707240> Push"
 
             self.stop()
             return await self.message.edit(
@@ -51,7 +52,7 @@ class BlackjackView(discord.ui.View):
             )
 
         await self.message.edit(
-            content=f"You: {self.user} ({user_total})\nDealer: [hidden], {self.dealer[1]}",
+            content=f"Your cards: {user_total}",
             view=self,
             attachments=[file],
         )
@@ -80,20 +81,15 @@ class BlackjackView(discord.ui.View):
         self.stop()
         self.locked = False
         return await interaction.response.send_message(
-            content=f"{result}\nYou: {user_total} | Dealer: {dealer_total}", view=None
+            content=f"{result}\nYou: {user_total} | Dealer: {dealer_total}"
         )
 
     @discord.ui.button(label="Surrender", style=discord.ButtonStyle.danger)
     async def surrender(
         self, interaction: discord.Interaction, button: discord.ui.Button
     ):
-        if self.locked:
-            return await interaction.response.send_message(
-                "Please wait for the dealer's turn.", ephemeral=True
-            )
-        self.locked = True
+
         self.stop()
         return await interaction.response.send_message(
-            content="You surrendered and lost half your coins.", view=None
+            content="You surrendered and lost half your coins."
         )
-        self.locked = False

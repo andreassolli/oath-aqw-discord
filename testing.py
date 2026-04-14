@@ -587,7 +587,7 @@ async def test_blackjack():
     user, deck = await add_card(user, deck)
     user, deck = await add_card(user, deck)
     user, deck = await add_card(user, deck)
-    await generate_blackjack(user, dealer)
+    await generate_blackjack(([1, 11], [1, 12], [1, 13]), dealer)
 
     # await generate_blackjack(user, dealer)
 

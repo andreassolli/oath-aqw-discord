@@ -2,6 +2,7 @@ import random
 from datetime import datetime, timedelta, timezone
 
 from google.cloud.firestore import Increment
+from PIL import Image, ImageDraw
 
 from firebase_client import db
 
@@ -86,3 +87,16 @@ def format_time(td: timedelta) -> str:
     minutes = (total_seconds % 3600) // 60
 
     return f"{hours}h {minutes}m"
+
+
+def rounded_crop(img, width, height, radius):
+    img = img.resize((width, height))
+
+    mask = Image.new("L", (width, height), 0)
+    draw = ImageDraw.Draw(mask)
+
+    # Draw rounded rectangle instead of circle
+    draw.rounded_rectangle((0, 0, width, height), radius=radius, fill=255)
+
+    img.putalpha(mask)
+    return img

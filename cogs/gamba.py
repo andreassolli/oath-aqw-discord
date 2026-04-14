@@ -185,18 +185,16 @@ class Gamba(commands.Cog):
                 result = "Blackjack! You win 🎉"
 
             return await interaction.followup.send(
-                f"{result}\nYou: {user_total} | Dealer: {dealer_total}", ephemeral=True
+                f"{result}\nYour cards: {user_total} | Dealer: {dealer_total}",
+                ephemeral=True,
             )
 
         buffer = await generate_blackjack(user, dealer)
         file = discord.File(buffer, filename="table.png")
-        user_string = f"Your cards: {', '.join(map(str, user))} (value: {user_total})"
-        dealer_string = (
-            f"Dealer's cards: {', '.join(map(str, dealer))} (value: {dealer_total})"
-        )
+        user_string = f"Your cards: {user_total}"
         view = BlackjackView(user, dealer, deck)
         msg = await interaction.followup.send(
-            f"{user_string}\n{dealer_string}",
+            f"{user_string}",
             view=view,
             file=file,
         )
