@@ -16,7 +16,7 @@ def apply_extra_border(card_buffer: BytesIO, border: str) -> BytesIO:
     canvas = Image.new("RGBA", (border_image.width, border_image.height), (0, 0, 0, 0))
 
     card_x = (border_image.width - card.width) // 2
-    card_y = 101
+    card_y = (border_image.height - card.height) // 2
 
     canvas.paste(card, (card_x, card_y), card)
 
