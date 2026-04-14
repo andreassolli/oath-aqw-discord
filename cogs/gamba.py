@@ -210,10 +210,9 @@ class Gamba(commands.Cog):
                 ephemeral=True,
             )
 
-        buffer = await generate_blackjack(user, dealer)
-        file = discord.File(buffer, filename="table.png")
         user_string = f"Your cards: {user_total}"
         view = BlackjackView(user, dealer, deck, wager)
+        file = view._to_file()
         msg = await interaction.followup.send(
             f"{user_string}",
             view=view,

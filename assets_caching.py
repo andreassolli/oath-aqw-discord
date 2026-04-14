@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from economy.gamba.utils import rounded_card_crop
 from user_profile.utils import rounded_crop
 
 ASSET_CACHE = {}
@@ -12,6 +13,31 @@ BASE_DIR = Path(__file__).resolve().parent
 ASSETS_DIR = BASE_DIR / "assets"
 FONTS_DIR = BASE_DIR / "assets/fonts"
 
+CARD_CACHE = {}
+
+
+NUM_MAP = {
+    2: "2",
+    3: "3",
+    4: "4",
+    5: "5",
+    6: "6",
+    7: "7",
+    8: "8",
+    9: "9",
+    10: "10",
+    11: "J",
+    12: "Q",
+    13: "K",
+    14: "A",
+}
+
+SUIT_MAP = {
+    1: "D",
+    2: "H",
+    3: "C",
+    4: "S",
+}
 
 BADGE_TO_IMAGE = {
     "Beta Tester White": ASSETS_DIR / "beta_white.png",
@@ -50,6 +76,19 @@ def initialize_assets():
         if size:
             img = img.resize(size, Image.Resampling.LANCZOS)
         return img
+
+    CARD_CACHE["blackjack"] = Image.open(ASSETS_DIR / "blackjack.png").convert("RGBA")
+
+    CARD_CACHE["cardback"] = (
+        Image.open(ASSETS_DIR / "cardback.png").convert("RGBA").resize((108, 171))
+    )
+
+    for suit in range(1, 5):
+        for value in range(2, 15):
+            path = ASSETS_DIR / f"{NUM_MAP[value]}{SUIT_MAP[suit]}.png"
+            img = Image.open(path).convert("RGBA")
+            img = rounded_card_crop(img, 104, 169, 22)
+            CARD_CACHE[(suit, value)] = img
 
     # --- UI Assets ---
     ASSET_CACHE["coin"] = load("coin.png", (26, 27))

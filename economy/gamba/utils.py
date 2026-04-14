@@ -89,7 +89,7 @@ def format_time(td: timedelta) -> str:
     return f"{hours}h {minutes}m"
 
 
-def rounded_crop(img, width, height, radius):
+def rounded_card_crop(img, width, height, radius):
     img = img.resize((width, height))
 
     mask = Image.new("L", (width, height), 0)
