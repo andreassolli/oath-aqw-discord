@@ -69,19 +69,25 @@ class BlackjackView(discord.ui.View):
         user_total = await get_value(self.user)
         dealer_total = await get_value(self.dealer)
 
+        self.dealer, self.deck = await add_dealer_card(self.dealer, self.deck)
+        buffer = await generate_blackjack(self.user, self.dealer, True)
+        file = discord.File(buffer, filename="table.png")
+        dealer_total = await get_value(self.dealer)
+
         if dealer_total > 21:
-            result = "Dealer busted, you win 🎉"
+            result = "<:GoobHeart:1459836996381048863> Dealer busted, you win!"
         elif dealer_total > user_total:
-            result = "Dealer wins 😢"
+            result = "<:GoobCrying:1457956174174617651> Dealer wins"
         elif dealer_total < user_total:
-            result = "You win 🎉"
+            result = "<:GoobHeart:1459836996381048863> You win!"
         else:
-            result = "Push 🤝"
+            result = "<:mapClown:1484474701798707240> Push"
 
         self.stop()
         self.locked = False
-        return await interaction.response.send_message(
-            content=f"{result}\nYou: {user_total} | Dealer: {dealer_total}"
+        return await self.message.edit(
+            content=f"{result}\nYou: {user_total} | Dealer: {dealer_total}",
+            attachments=[file],
         )
 
     @discord.ui.button(label="Surrender", style=discord.ButtonStyle.danger)
@@ -90,6 +96,6 @@ class BlackjackView(discord.ui.View):
     ):
 
         self.stop()
-        return await interaction.response.send_message(
+        return await interaction.response.edit_message(
             content="You surrendered and lost half your coins."
         )
