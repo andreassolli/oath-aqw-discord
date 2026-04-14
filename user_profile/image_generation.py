@@ -20,7 +20,7 @@ from .utils import circle_crop, fetch_avatar, ordinal, sort_badges
 BASE_DIR = Path(__file__).resolve().parent.parent
 ASSETS_DIR = BASE_DIR / "assets"
 
-EXTRA_BORDERS = {"Wanted Poster"}
+# EXTRA_BORDERS = {"Wanted Poster", "Nature Border"}
 
 
 async def generate_profile_card(
@@ -94,9 +94,9 @@ async def generate_profile_card(
         outline_color = "#583400"
         outline_width = 0
 
-    if border and not gold_card and not border.get("id") in EXTRA_BORDERS:
-        border_img = Image.open(ASSETS_DIR / f"{border.get('image')}").convert("RGBA")
-        bg.paste(border_img, (0, 0), border_img)
+    # if border and not gold_card and not border.get("id") in EXTRA_BORDERS:
+    #     border_img = Image.open(ASSETS_DIR / f"{border.get('image')}").convert("RGBA")
+    #     bg.paste(border_img, (0, 0), border_img)
 
     draw = ImageDraw.Draw(bg)
     avatar = circle_crop(avatar, 218)
@@ -337,7 +337,7 @@ async def generate_profile_card(
     buffer = BytesIO()
     bg.save(buffer, format="PNG")
     buffer.seek(0)
-    if border and border.get("id") in EXTRA_BORDERS:
-        buffer = apply_extra_border(buffer, border["image"])
+    # if border and border.get("id") in EXTRA_BORDERS:
+    buffer = apply_extra_border(buffer, border["image"])
 
     return buffer, badges, is_potw, has_been_potw, target.display_name, wins, gold_card
