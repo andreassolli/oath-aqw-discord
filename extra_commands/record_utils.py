@@ -54,7 +54,7 @@ async def get_highest_level():
     user_levels = {}
 
     async with aiohttp.ClientSession() as session:
-        url = f"{MEE6_API}{GUILD_ID}?page=0"
+        url = f"{MEE6_API}{GUILD_ID}"
 
         async with session.get(url) as resp:
             if resp.status != 200:
