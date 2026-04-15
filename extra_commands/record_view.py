@@ -38,12 +38,10 @@ class LeaderboardView(discord.ui.View):
         embed = await record_holder("coins", guild)
         await interaction.response.edit_message(embed=embed, view=self)
 
-    @discord.ui.button(label="🧩AQWordle", style=discord.ButtonStyle.success)
-    async def aqwordle(
-        self, interaction: discord.Interaction, button: discord.ui.Button
-    ):
+    @discord.ui.button(label="📊Levels", style=discord.ButtonStyle.success)
+    async def level(self, interaction: discord.Interaction, button: discord.ui.Button):
         guild = interaction.guild
         if not guild:
             return
-        embed = await record_holder("aqwordle", guild)
+        embed = await record_holder("level", guild)
         await interaction.response.edit_message(embed=embed, view=self)
