@@ -338,6 +338,7 @@ async def generate_profile_card(
     bg.save(buffer, format="PNG")
     buffer.seek(0)
     # if border and border.get("id") in EXTRA_BORDERS:
-    buffer = apply_extra_border(buffer, border["image"])
+    if border:
+        buffer = apply_extra_border(buffer, border["image"])
 
     return buffer, badges, is_potw, has_been_potw, target.display_name, wins, gold_card
