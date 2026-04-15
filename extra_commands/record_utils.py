@@ -81,47 +81,56 @@ async def build_leaderboard(users_ref, field, guild):
     lines = []
     position = 0
 
-    for doc in users_ref:
+    is_level_board = field == "level" and isinstance(users_ref, dict)
+
+    iterable = (
+        sorted(users_ref.items(), key=lambda x: x[1]["level"], reverse=True)
+        if is_level_board
+        else users_ref
+    )
+
+    for item in iterable:
         if len(lines) >= 25:
             break
 
-        if field == "coins":
-            data = doc.to_dict() or {}
-            member = guild.get_member(int(doc.id))
-
-            # ❌ Skip if user has manager role
-            if member and any(
-                role.id == DISCORD_MANAGER_ROLE_ID for role in member.roles
-            ):
-                continue
-
         position += 1
-        data = doc.to_dict()
 
-        display_name = data.get("aqw_username", "Unknown User")
-        num = data.get(field, 0)
+        if is_level_board:
+            user_id, data = item
+            display_name = data.get("name", "Unknown User")
+            num = data.get("level", 0)
 
-        if position <= 3:
-            prefix = medals[position - 1]
         else:
-            prefix = f"`{position:02}`"
+            doc = item
+            data = doc.to_dict() or {}
+
+            if field == "coins":
+                member = guild.get_member(int(doc.id))
+                if member and any(
+                    role.id == DISCORD_MANAGER_ROLE_ID for role in member.roles
+                ):
+                    position -= 1
+                    continue
+
+            display_name = data.get("aqw_username", "Unknown User")
+            num = data.get(field, 0)
+
+        prefix = medals[position - 1] if position <= 3 else f"`{position:02}`"
 
         icon = ""
         if field == "coins":
             icon = "<:oathcoin:1462999179998531614>"
-        elif field == "counts":
+        elif field == "counting_score":
             icon = "🎲"
         elif field == "level":
             icon = "lvl "
 
-        type = ""
-        if field == "points":
-            type = " pts"
-        elif field == "tickets":
-            type = " tickets"
-        elif field == "aqwordle":
-            type = " words"
+        suffix = ""
+        if field == "total_points":
+            suffix = " pts"
+        elif field == "total_claimed":
+            suffix = " tickets"
 
-        lines.append(f"{prefix} **{display_name}** — {icon}`{num}`{type}")
+        lines.append(f"{prefix} **{display_name}** — {icon}`{num}`{suffix}")
 
     return lines
