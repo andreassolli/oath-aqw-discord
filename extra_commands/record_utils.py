@@ -63,7 +63,7 @@ async def get_highest_level():
             data = await resp.json()
             players = data.get("players", [])
 
-            for player in players[25:]:
+            for player in players:
                 user_id = str(player["id"])
 
                 user_data = user_map.get(user_id, {})
