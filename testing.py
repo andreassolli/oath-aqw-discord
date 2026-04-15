@@ -568,8 +568,19 @@ def get_total_points():
     print(f"Skipped: {skipped}")
 
 
+async def add_killer_card():
+    await add_item(
+        str(463869761625915393),
+        "Killer Card",
+        "card",
+        "killer_card.png",
+        "killer_card_item.png",
+        "rare",
+    )
+
+
 if __name__ == "__main__":
-    get_total_points()
+    asyncio.run(add_killer_card())
     # asyncio.run(generate_test_card())
     # reset_coins()
     # migrate_shop_prices()

@@ -33,7 +33,11 @@ async def record_holder(board_type: str, guild: discord.Guild) -> discord.Embed:
 
     fetch_func, field, title = config[board_type]
 
-    users_ref = fetch_func()
+    if board_type == "level":
+        users_ref = await get_highest_level()
+    else:
+        users_ref = fetch_func()
+
     lines = await build_leaderboard(users_ref, field, guild)
 
     description = "\n".join(lines) if lines else "No data available."
