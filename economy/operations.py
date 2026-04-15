@@ -124,8 +124,8 @@ async def buy_item(item: ShopItem, user_id: int):
             str(user_id),
             "Howl's Bundle X",
             "card",
-            "howl2_card",
-            "howl2_card_item",
+            "howl2_card.png",
+            "howl2_card_item.png",
             "legendary",
         )
 
