@@ -178,6 +178,52 @@ class Quests(commands.Cog):
         )
 
     @app_commands.command(
+        name="weeklies-reset", description="Remove Weekly quests from all users."
+    )
+    @app_commands.default_permissions(manage_guild=True)
+    async def weeklies_reset(self, interaction: discord.Interaction):
+        await interaction.response.defer(ephemeral=True)
+
+        users_ref = db.collection("users")
+        docs = users_ref.stream()
+
+        batch = db.batch()
+        batch_count = 0
+        BATCH_LIMIT = 500
+
+        updated = 0
+
+        for doc in docs:
+            user_data = doc.to_dict() or {}
+            quests = user_data.get("quests_completed", [])
+
+            # Skip users who don't have these quests
+            if "Weekly 1" not in quests and "Weekly 2" not in quests:
+                continue
+
+            batch.update(
+                doc.reference,
+                {"quests_completed": firestore.ArrayRemove(["Weekly 1", "Weekly 2"])},
+            )
+
+            batch_count += 1
+            updated += 1
+
+            # 🚀 Commit every 500 writes
+            if batch_count >= BATCH_LIMIT:
+                batch.commit()
+                batch = db.batch()
+                batch_count = 0
+
+        # Final commit
+        if batch_count > 0:
+            batch.commit()
+
+        await interaction.followup.send(
+            f"✅ Removed Weekly quests from {updated} users.", ephemeral=True
+        )
+
+    @app_commands.command(
         name="weeklies-clear", description="Clear all items from this weeks quest."
     )
     @app_commands.default_permissions(manage_guild=True)
