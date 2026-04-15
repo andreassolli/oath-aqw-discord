@@ -727,7 +727,10 @@ class Extra(commands.Cog):
     @app_commands.command(name="leaderboard", description="View leaderboards")
     async def leaderboard(self, interaction: discord.Interaction):
         await interaction.response.defer()
-        embed = await record_holder("points")
+        guild = interaction.guild
+        if not guild:
+            return
+        embed = await record_holder("points", guild)
         await interaction.followup.send(embed=embed, view=LeaderboardView())
 
 
