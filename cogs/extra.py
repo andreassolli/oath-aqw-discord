@@ -47,6 +47,8 @@ from extra_commands.memes import (
     m_sker,
     m_yokai,
 )
+from extra_commands.record_holder import record_holder
+from extra_commands.record_view import LeaderboardView
 from extra_commands.utils import (
     check_missing_badges,
     count_messages,
@@ -721,6 +723,12 @@ class Extra(commands.Cog):
             f"Failed: {failed}",
             ephemeral=True,
         )
+
+    @app_commands.command(name="leaderboard", description="View leaderboards")
+    async def leaderboard(self, interaction: discord.Interaction):
+        await interaction.response.defer()
+        embed = await record_holder("points")
+        await interaction.followup.send(embed=embed, view=LeaderboardView())
 
 
 async def setup(bot: commands.Bot):

@@ -72,6 +72,8 @@ async def finalize_ticket(
                     "username": display,
                     "points": firestore.Increment(points),
                     "tickets_claimed": firestore.Increment(1),
+                    "total_claimed": firestore.Increment(1),
+                    "total_points": firestore.Increment(points),
                 }
             )
         else:
@@ -80,6 +82,8 @@ async def finalize_ticket(
                     "username": display,
                     "points": points,
                     "tickets_claimed": 1,
+                    "total_claimed": 1,
+                    "total_points": points,
                 }
             )
 
@@ -133,6 +137,7 @@ async def finalize_ticket(
 
     if final_reward > 0:
         updates["points"] = firestore.Increment(final_reward)
+        updates["total_points"] = firestore.Increment(final_reward)
     if len(claimers) <= 0:
         final_reward = 0
 
@@ -140,7 +145,9 @@ async def finalize_ticket(
         requester_ref.update(updates)
     else:
         updates["points"] = final_reward
-        updates["tickets_claimed"] = 1
+        updates["tickets_created"] = 1
+        updates["total_claimed"] = 1
+        updates["total_points"] = final_reward
         requester_ref.set(updates)
 
     clear_active_ticket(requester_id, ticket_name)

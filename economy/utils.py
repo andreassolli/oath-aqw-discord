@@ -29,7 +29,7 @@ def rich_coins(guild: discord.Guild):
     users = (
         db.collection("users")
         .order_by("coins", direction="DESCENDING")
-        .limit(50)  # 👈 fetch more
+        .limit(50)
         .stream()
     )
 

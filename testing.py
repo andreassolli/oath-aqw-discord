@@ -5,8 +5,6 @@ import aiohttp
 from google.cloud import firestore as gc_firestore
 from tweepy import Client as TwitterClient
 
-from economy.gamba.blackjack import add_card, deal, get_value
-from economy.gamba.generate_blackjack import generate_blackjack
 from economy.generate_rocks import generate_rocks
 from economy.inventory import generate_inventory
 from economy.shop_generation import generate_shop
@@ -506,25 +504,31 @@ def migrate_quest_names_batch():
     print(f"🎉 Migration complete. Updated {updated_count} users.")
 
 
-def fix_gems_awarded_points():
+def get_total_points():
     snapshot_ref = db.collection("points_archive").document("2026-04-01_16-02-50")
     snapshot_doc = snapshot_ref.get()
 
-    if not snapshot_doc.exists:
-        print("Snapshot not found.")
+    snapshot2_ref = db.collection("points_archive").document("2026-03-01_22-10-54")
+    snapshot2_doc = snapshot2_ref.get()
+
+    if not snapshot_doc.exists or not snapshot2_doc.exists:
+        print("One or both snapshots not found.")
         return
 
     snapshot_users = snapshot_doc.to_dict().get("users", {})
+    snapshot2_users = snapshot2_doc.to_dict().get("users", {})
 
     updated = 0
     skipped = 0
-    overpaid_count = 0
 
     batch = db.batch()
     batch_count = 0
 
-    for user_id, snapshot_user_data in snapshot_users.items():
-        snapshot_points = snapshot_user_data.get("points", 0)
+    all_user_ids = set(snapshot_users.keys()) | set(snapshot2_users.keys())
+
+    for user_id in all_user_ids:
+        snapshot_points = snapshot_users.get(user_id, {}).get("tickets_claimed", 0)
+        snapshot2_points = snapshot2_users.get(user_id, {}).get("tickets_claimed", 0)
 
         user_ref = db.collection("users").document(user_id)
         user_doc = user_ref.get()
@@ -534,44 +538,27 @@ def fix_gems_awarded_points():
             continue
 
         user_data = user_doc.to_dict() or {}
+        current_points = user_data.get("tickets_claimed", 0)
 
-        current_points = user_data.get("points", 0)
-        current_awarded = user_data.get("gems_awarded_points", 0)
-
-        # 🔥 CORE LOGIC
-        if current_points > snapshot_points:
-            new_awarded = current_points - snapshot_points
-            overpaid = True
-        else:
-            new_awarded = 0
-            overpaid = False
-
-        if new_awarded == current_awarded:
-            skipped += 1
-            continue
+        total_snapshot_points = snapshot_points + snapshot2_points
+        new_awarded = current_points + total_snapshot_points
 
         print(
-            f"{user_id}: snapshot={snapshot_points}, current={current_points}, "
-            f"old={current_awarded} -> new={new_awarded}, overpaid={overpaid}"
+            f"{user_id}: snap1={snapshot_points}, snap2={snapshot2_points}, "
+            f"current={current_points}, total={new_awarded}"
         )
 
-        # ✅ Add to batch instead of updating immediately
-        batch.update(user_ref, {"gems_awarded_points": new_awarded})
+        batch.update(user_ref, {"total_claimed": new_awarded})
 
         batch_count += 1
         updated += 1
 
-        if overpaid:
-            overpaid_count += 1
-
-        # 🚀 Commit when batch is full
         if batch_count >= BATCH_LIMIT:
             batch.commit()
             print(f"Committed {batch_count} updates...")
             batch = db.batch()
             batch_count = 0
 
-    # 🔥 Commit remaining writes
     if batch_count > 0:
         batch.commit()
         print(f"Committed final {batch_count} updates...")
@@ -579,21 +566,10 @@ def fix_gems_awarded_points():
     print("\nDone.")
     print(f"Updated: {updated}")
     print(f"Skipped: {skipped}")
-    print(f"Overpaid users: {overpaid_count}")
-
-
-async def test_blackjack():
-    user, dealer, deck = await deal()
-    user, deck = await add_card(user, deck)
-    user, deck = await add_card(user, deck)
-    user, deck = await add_card(user, deck)
-    await generate_blackjack(([1, 11], [1, 12], [1, 13]), dealer)
-
-    # await generate_blackjack(user, dealer)
 
 
 if __name__ == "__main__":
-    asyncio.run(test_blackjack())
+    get_total_points()
     # asyncio.run(generate_test_card())
     # reset_coins()
     # migrate_shop_prices()
