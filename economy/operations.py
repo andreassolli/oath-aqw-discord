@@ -119,6 +119,16 @@ async def buy_item(item: ShopItem, user_id: int):
     if name == "I was here!":
         user_ref.update({"participated_in_beta": True})
 
+    if name == "Howl's Bundle":
+        await add_item(
+            str(user_id),
+            "Howl's Bundle X",
+            "card",
+            "howl2_card",
+            "howl2_card_item",
+            "legendary",
+        )
+
     BETA_BADGES = {
         "Beta Card W": "Beta Tester White",
         "Beta Card B": "Beta Tester Black",

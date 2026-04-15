@@ -155,6 +155,7 @@ class BlackjackView(discord.ui.View):
         return await self.message.edit(
             content=f"{result}\nYou: {user_total} | Dealer: {dealer_total}",
             attachments=[file],
+            view=None,
         )
 
     @discord.ui.button(label="Surrender", style=discord.ButtonStyle.danger)
@@ -165,5 +166,5 @@ class BlackjackView(discord.ui.View):
         await self.payout(interaction.user.id, self.wager // 2)
         self.stop()
         return await interaction.response.edit_message(
-            content=f"You surrendered and got back {self.wager // 2}."
+            content=f"You surrendered and got back {self.wager // 2}.", view=None
         )
