@@ -14,7 +14,7 @@ class LeaderboardView(discord.ui.View):
         embed = await record_holder("counts")
         await interaction.response.edit_message(embed=embed, view=self)
 
-    @discord.ui.button(label="Claimed", style=discord.ButtonStyle.success)
+    @discord.ui.button(label="Tickets", style=discord.ButtonStyle.success)
     async def claimed(
         self, interaction: discord.Interaction, button: discord.ui.Button
     ):

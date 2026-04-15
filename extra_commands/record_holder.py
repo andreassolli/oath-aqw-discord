@@ -27,7 +27,7 @@ async def record_holder(board_type: str) -> discord.Embed:
 
     fetch_func, field, title = config[board_type]
 
-    users_ref = await fetch_func()
+    users_ref = fetch_func()
     lines = await build_leaderboard(users_ref, field)
 
     description = "\n".join(lines) if lines else "No data available."
