@@ -13,47 +13,6 @@ def env_int(name: str) -> int:
     return int(value)
 
 
-import asyncio
-import os
-
-import discord
-from discord.ext import commands
-
-from config import APPLICATION_ID, BOT_TOKEN_ID, GUILD_ID
-
-intents = discord.Intents.default()
-intents.guilds = True
-
-bot = commands.Bot(
-    command_prefix=commands.when_mentioned_or("!"),
-    intents=intents,
-    application_id=APPLICATION_ID,
-)
-
-_synced = False
-
-
-@bot.event
-async def on_ready():
-    global _synced
-
-    if not _synced:
-        await bot.tree.sync()
-        _synced = True
-
-
-async def main():
-    async with bot:
-        for ext in ("bounty",):
-            await bot.load_extension(ext)
-        await bot.start(os.environ["BOT_TOKEN_ID"])
-
-
-if __name__ == "__main__":
-    import asyncio
-
-    asyncio.run(main())
-
 BOT_GUY_ROLE_ID = env_int("BOT_GUY_ROLE_ID")
 EVENT_CHANNEL_ID = env_int("EVENT_CHANNEL_ID")
 TOKEN = os.getenv("DISCORD_TOKEN")
