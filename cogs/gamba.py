@@ -192,7 +192,7 @@ class Gamba(commands.Cog):
         if user_total == 21:
             user_ref = db.collection("users").document(str(interaction.user.id))
             buffer = await generate_blackjack(user, dealer, True)
-            await interaction.message.edit(
+            await interaction.edit_original_response(
                 content=f"Blackjack! You win <:oathcoin:1462999179998531614>{wager * 2.5}",
                 attachments=[discord.File(buffer, filename="table.png")],
             )
