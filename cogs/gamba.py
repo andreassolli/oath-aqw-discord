@@ -193,7 +193,7 @@ class Gamba(commands.Cog):
             user_ref = db.collection("users").document(str(interaction.user.id))
             buffer = await generate_blackjack(user, dealer, True)
             await interaction.edit_original_response(
-                content=f"Blackjack! You win <:oathcoin:1462999179998531614>{wager * 2.5}",
+                content=f"Blackjack! You win <:oathcoin:1462999179998531614>{int(wager * 2.5)}",
                 attachments=[discord.File(buffer, filename="table.png")],
             )
             unlock_coins(interaction.user.id, wager)
@@ -202,8 +202,8 @@ class Gamba(commands.Cog):
                 result = f"<:mapClown:1484474701798707240> Push, gained back <:oathcoin:1462999179998531614>{wager}"
 
             else:
-                user_ref.update({"coins": firestore.Increment(wager * 1.5)})
-                result = f"<:GoobShock:1463149045731299328> Blackjack! You win <:oathcoin:1462999179998531614>{wager * 2.5}"
+                user_ref.update({"coins": firestore.Increment(int(wager * 1.5))})
+                result = f"<:GoobShock:1463149045731299328> Blackjack! You win <:oathcoin:1462999179998531614>{int(wager * 2.5)}"
 
             return await interaction.followup.send(
                 f"{result}\nYour cards: {user_total} | Dealer: {dealer_total}",
