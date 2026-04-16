@@ -46,7 +46,7 @@ async def generate_blackjack(user_cards, dealer_cards, dealer_faceup: bool = Fal
         bg.paste(card_image, (58 + i * 117, 254), card_image)
 
     for i in range(0, len(dealer_cards)):
-        if dealer_faceup:
+        if dealer_faceup or i == 0:
             card_image = CARD_CACHE[dealer_cards[i]]
             bg.paste(card_image, (58 + i * 117, 52), card_image)
         else:
