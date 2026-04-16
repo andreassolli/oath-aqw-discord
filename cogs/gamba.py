@@ -199,7 +199,7 @@ class Gamba(commands.Cog):
             unlock_coins(interaction.user.id, wager)
 
             if dealer_total == 21:
-                result = f"<:mapClown:1484474701798707240> Push, gained back <:oathcoin:1462999179998531614>{self.wager}"
+                result = f"<:mapClown:1484474701798707240> Push, gained back <:oathcoin:1462999179998531614>{wager}"
 
             else:
                 user_ref.update({"coins": firestore.Increment(wager * 1.5)})
