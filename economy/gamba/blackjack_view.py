@@ -36,7 +36,11 @@ class BlackjackView(discord.ui.View):
             self.table_image.paste(img, (58 + i * 117, 254), img)
 
         for i, card in enumerate(self.dealer):
-            self.table_image.paste(CARD_BACK, (58 + i * 117, 52), CARD_BACK)
+            if i == 0:
+                img = CARD_CACHE[card]
+                self.table_image.paste(img, (58 + i * 117, 52), img)
+            else:
+                self.table_image.paste(CARD_BACK, (58 + i * 117, 52), CARD_BACK)
 
     def _to_file(self):
         buffer = BytesIO()
