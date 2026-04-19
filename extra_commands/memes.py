@@ -31,6 +31,16 @@ async def m_gld(interaction: discord.Interaction):
     await interaction.response.send_message(embed=embed, file=file)
 
 
+async def m_glad(interaction: discord.Interaction):
+    embed = discord.Embed(
+        color=discord.Color.red(),
+    )
+    embed.set_footer(text="uwu")
+    file = discord.File("assets/spnk.png", filename="spnk.png")
+    embed.set_image(url="attachment://spnk.png")
+    await interaction.response.send_message(embed=embed, file=file)
+
+
 async def m_mapril(interaction: discord.Interaction):
     embed = discord.Embed(
         title="Official Duffer of Dufferville in St. Duffersburg",

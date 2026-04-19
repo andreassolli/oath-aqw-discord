@@ -36,6 +36,7 @@ from economy.gamba.yanken_accept_view import RPSAcceptView
 from extra_commands.memes import (
     m_bigrig,
     m_dryage,
+    m_glad,
     m_gld,
     m_goon_greed,
     m_juns,
@@ -209,6 +210,12 @@ class Extra(commands.Cog):
     @has_any_role(ADMIN_ROLE_ID, DISCORD_MANAGER_ROLE_ID)
     async def glad(self, interaction: discord.Interaction):
         await m_gld(interaction)
+
+    @app_commands.command(name="glad")
+    @app_commands.default_permissions(administrator=True)
+    @has_any_role(ADMIN_ROLE_ID, DISCORD_MANAGER_ROLE_ID)
+    async def eglad(self, interaction: discord.Interaction):
+        await m_glad(interaction)
 
     @app_commands.command(name="goon-greed")
     async def goon_greed(self, interaction: discord.Interaction):
