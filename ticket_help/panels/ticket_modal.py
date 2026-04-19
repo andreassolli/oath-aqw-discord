@@ -22,10 +22,10 @@ from ticket_help.utils.ticket import get_overwrites
 
 CORRECT_BOSS_ORDER = [
     "Ultra Dage",
-    "Champion Drakath",
+    "Ultra Nulgath",
     "Ultra Drago",
     "Ultra Darkon",
-    "Ultra Nulgath",
+    "Champion Drakath",
     "Ultra Speaker",
     "Ultra Gramiel",
 ]

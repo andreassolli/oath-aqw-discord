@@ -9,7 +9,6 @@ from PIL import Image, ImageDraw, ImageFont
 
 from config import POTW_ROLE_ID
 from firebase_client import db
-from user_profile.computer_border_test import apply_computer_border
 from user_profile.image_utils import draw_gradient_text
 
 from .utils import circle_crop, fetch_avatar, ordinal, sort_badges
@@ -111,7 +110,7 @@ async def generate_test_card(
     #    bg.paste(border_img, (0, 0), border_img)
 
     draw = ImageDraw.Draw(bg)
-    avatar = Image.open(ASSETS_DIR / "custom.png").convert("RGBA")
+    avatar = Image.open(ASSETS_DIR / "test_avatar.jpeg").convert("RGBA")
     avatar = circle_crop(avatar, 218)
     bg.paste(avatar, (43, 37), avatar)
 
@@ -119,8 +118,8 @@ async def generate_test_card(
     #    test_border = Image.open(ASSETS_DIR / "test_border.png").convert("RGBA")
     #    bg.paste(test_border, (0, 0), test_border)
 
-    potw_border = load_asset("potw_border.webp", (226, 241))
-    bg.paste(potw_border, (39, 32), potw_border)
+    potw_border = load_asset("gold_avatar.png", (234, 234))
+    bg.paste(potw_border, (40, 34), potw_border)
 
     font_big = load_font("Urbanist-Regular.ttf", 54)
     font_bold = load_font("Urbanist-Bold.ttf", 66)
@@ -239,10 +238,9 @@ async def generate_test_card(
     buffer = BytesIO()
 
     bg.save(buffer, format="PNG")
-    image_buffer = apply_computer_border(buffer)
-
-    image = Image.open(image_buffer)
-    image.save("test_image.png", format="PNG")
     buffer.seek(0)
+
+    image = Image.open(buffer)
+    image.save("test_image.png", format="PNG")
 
     return buffer, badges, False, has_been_potw, "Proxy", wins
