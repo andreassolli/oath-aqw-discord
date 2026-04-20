@@ -5,31 +5,31 @@ from ticket_help.utils.cert_utils import handle_application_submission
 
 class DarkonModal(discord.ui.Modal, title="Ultra Darkon Application"):
     q1 = discord.ui.TextInput(
-        label="Q1: When should LoO stop and start using 5?",
+        label="Q1: When should LoO stop/start using 5?",
         placeholder="",
         style=discord.TextStyle.paragraph,
         max_length=1000,
     )
     q2 = discord.ui.TextInput(
-        label="Q2: What is the way to taunt at Darkon?",
+        label="Q2: How do we taunt at Darkon?",
         placeholder="",
         style=discord.TextStyle.paragraph,
         max_length=1000,
     )
     q3 = discord.ui.TextInput(
-        label="Q3: What does taunting elegy do in each phase?",
+        label="Q3: What does taunting elegy do each phase?",
         placeholder="Elegy = Mouth Animation",
         style=discord.TextStyle.paragraph,
         max_length=1000,
     )
     q4 = discord.ui.TextInput(
-        label="Q4: What is different in P3 from P1 & P2",
+        label="Q4: What's different in P3 from P1 & P2",
         placeholder="P1, P2, P3 = Phase 1, Phase 2, Phase 3",
         style=discord.TextStyle.paragraph,
         max_length=1000,
     )
     q5 = discord.ui.TextInput(
-        label="Q5: Give some examples for DPS and healing",
+        label="Q5: Give examples for DPS and heal",
         placeholder="Atleast 2 classes per type, with 1 being Free to Play.",
         style=discord.TextStyle.paragraph,
         max_length=1000,
