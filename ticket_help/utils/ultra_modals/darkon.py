@@ -17,7 +17,7 @@ class DarkonModal(discord.ui.Modal, title="Ultra Darkon Application"):
         max_length=1000,
     )
     q3 = discord.ui.TextInput(
-        label="Q3: What does taunting the elegy do in the 3 diff phases?",
+        label="Q3: What does taunting elegy do in each phase?",
         placeholder="Elegy = Mouth Animation",
         style=discord.TextStyle.paragraph,
         max_length=1000,

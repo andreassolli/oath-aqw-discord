@@ -5,7 +5,7 @@ from ticket_help.utils.cert_utils import handle_application_submission
 
 class DrakathModal(discord.ui.Modal, title="Ultra Drakath Application"):
     q1 = discord.ui.TextInput(
-        label="Q1: What are the Taunt thresholds?",
+        label="Q1: What's the Taunt thresholds?",
         placeholder="Explain why.",
         style=discord.TextStyle.paragraph,
         max_length=1000,
@@ -17,14 +17,14 @@ class DrakathModal(discord.ui.Modal, title="Ultra Drakath Application"):
         max_length=1000,
     )
     q3 = discord.ui.TextInput(
-        label="Q3: Can LR survive taunting with 2.9K HP?",
+        label="Q3: Can LR survive taunts at 2.9K HP?",
         placeholder="Expand a bit!",
         style=discord.TextStyle.paragraph,
         max_length=1000,
     )
     q4 = discord.ui.TextInput(
-        label="Q4: Would one prefer max defense, or more damage reduction?*",
-        placeholder="*In general when fighting Drakath",
+        label="Q4: Max defense, or more damage reduction?*",
+        placeholder="*What would you prefer in general when fighting Drakath",
         style=discord.TextStyle.paragraph,
         max_length=1000,
     )

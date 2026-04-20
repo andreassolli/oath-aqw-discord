@@ -11,13 +11,13 @@ class NulgathModal(discord.ui.Modal, title="Ultra Nulgath Application"):
         max_length=1000,
     )
     q2 = discord.ui.TextInput(
-        label="Q2: Why and when do you die, even with correct taunts?",
-        placeholder="Exact time and reason.",
+        label="Q2: Why and when do you die, with taunts?",
+        placeholder="Assume taunting is correct, and give exact time and reason.",
         style=discord.TextStyle.paragraph,
         max_length=1000,
     )
     q3 = discord.ui.TextInput(
-        label="Q3: Should you aim to kill Blade on respawn?",
+        label="Q3: Should you kill Blade on respawn?",
         placeholder="Why, or why not?",
         style=discord.TextStyle.paragraph,
         max_length=1000,

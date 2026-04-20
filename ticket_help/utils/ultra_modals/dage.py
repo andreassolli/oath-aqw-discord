@@ -17,19 +17,19 @@ class DageModal(discord.ui.Modal, title="Ultra Dage Application"):
         max_length=1000,
     )
     q3 = discord.ui.TextInput(
-        label="Q3: When does Dage heal a massive amount?",
+        label="Q3: When does Dage heal massively?",
         placeholder="Exact time.",
         style=discord.TextStyle.paragraph,
         max_length=1000,
     )
     q4 = discord.ui.TextInput(
-        label="Q4: What is most important when fighting Dage?",
+        label="Q4: What is most important against Dage?",
         placeholder="",
         style=discord.TextStyle.paragraph,
         max_length=1000,
     )
     q5 = discord.ui.TextInput(
-        label="Q5: Give atleast 2 comps that can defeat Ultra Dage",
+        label="Q5: Give 2 example comps",
         placeholder="",
         style=discord.TextStyle.paragraph,
         max_length=1000,
