@@ -402,6 +402,7 @@ class Extra(commands.Cog):
             coins_to_add = (
                 3750 if certificate in ["Ultra Speaker", "Ultra Gramiel"] else 1950
             )
+            coins_to_add = 2500 if certificate == "Ultra Darkon" else coins_to_add
 
             update_data = {
                 "coins": firestore.Increment(coins_to_add),

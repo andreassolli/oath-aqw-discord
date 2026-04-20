@@ -46,8 +46,8 @@ async def setup_application_panel(client: discord.Client):
         description=(
             "Think you know your ultras? Apply for a certificate!\n\n"
             "📝 Answer 5 questions for the selected boss.\n"
-            "⚠️ Speaker, Gramiel and Drakath requires a Trial as well.\n"
-            "💰 Speaker and Gramiel rewards <:oathcoin:1462999179998531614>3750, Drakath <:oathcoin:1462999179998531614>2500, rest <:oathcoin:1462999179998531614>1950.\n\n"
+            "⚠️ Speaker, Gramiel and Darkon requires a Trial as well.\n"
+            "💰 Speaker and Gramiel rewards <:oathcoin:1462999179998531614>3750, Darkon <:oathcoin:1462999179998531614>2500, rest <:oathcoin:1462999179998531614>1950.\n\n"
             "📌 Tips: \n"
             "- <:gramiel:1492231304601796658> [Gramiel with Lillicht chart 📊️](https://youtu.be/O9PZnXxXClQ?si=4DZBuNmSwG1nqdwK) \n"
             "- <:malgor:1492231505668341860> [Speaker as Lord of Order ⚖️](https://youtu.be/hahe9_HhDZA) \n"
