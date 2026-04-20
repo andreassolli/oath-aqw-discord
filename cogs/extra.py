@@ -328,11 +328,10 @@ class Extra(commands.Cog):
     ):
         await interaction.response.defer()
         app_type = certificate.split(" ")[1].lower()
-        db.collection("users").document(str(user.id)).set(
+        db.collection("users").document(str(user.id)).update(
             {
                 f"application_statuses.{app_type}": status,
             },
-            merge=True,
         )
         try:
             dm = await user.create_dm()
@@ -525,11 +524,10 @@ class Extra(commands.Cog):
             )
 
         app_type = certificate.split(" ")[1].lower()
-        db.collection("users").document(str(user.id)).set(
+        db.collection("users").document(str(user.id)).update(
             {
                 f"application_statuses.{app_type}": "Revoked",
             },
-            merge=True,
         )
         if announce:
             try:
@@ -611,8 +609,7 @@ class Extra(commands.Cog):
     @app_commands.checks.has_role(TICKET_INSPECTOR_ROLE_ID)
     async def pending_applications(self, interaction: discord.Interaction):
         await interaction.response.defer()
-        channel = interaction.channel
-        if channel != TICKET_INSPECTORS_CHANNEL_ID:
+        if interaction.channel_id != TICKET_INSPECTORS_CHANNEL_ID:
             return await interaction.followup.send(
                 "❌ This command can only be used in the Certifications channel.",
                 ephemeral=True,

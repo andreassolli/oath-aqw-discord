@@ -40,12 +40,11 @@ async def handle_application_submission(interaction, app_type, questions, answer
     application_statuses = data.get("application_statuses", {})
     application_statuses[app_type] = "Under review"
 
-    db.collection("users").document(str(interaction.user.id)).set(
+    db.collection("users").document(str(interaction.user.id)).update(
         {
             field: discord.utils.utcnow(),
             f"application_statuses.{app_type}": "Under review",
         },
-        merge=True,
     )
 
     await interaction.followup.send("✅ Application submitted!", ephemeral=True)
