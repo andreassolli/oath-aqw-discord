@@ -5,14 +5,14 @@ from ticket_help.utils.cert_utils import handle_application_submission
 
 class DrakathModal(discord.ui.Modal, title="Ultra Drakath Application"):
     q1 = discord.ui.TextInput(
-        label="Q1: What's the Taunt thresholds?",
+        label="Q1: What's the taunt thresholds?",
         placeholder="Explain why.",
         style=discord.TextStyle.paragraph,
         max_length=1000,
     )
     q2 = discord.ui.TextInput(
-        label="Q2: Why/when do we have 2 taunters? How does it work?",
-        placeholder="",
+        label="Q2: Why/when do we have 2 taunters?",
+        placeholder="How does it work?",
         style=discord.TextStyle.paragraph,
         max_length=1000,
     )
@@ -29,8 +29,8 @@ class DrakathModal(discord.ui.Modal, title="Ultra Drakath Application"):
         max_length=1000,
     )
     q5 = discord.ui.TextInput(
-        label="Q5: How much damage, and what type, are the nukes?",
-        placeholder="",
+        label="Q5: Nukes, how much dmg, and type?",
+        placeholder="How much damage do nukes do, and what type of damage do they do?",
         style=discord.TextStyle.paragraph,
         max_length=1000,
     )

@@ -1,16 +1,16 @@
 import discord
 
-from config import EVENT_CHANNEL_ID
+from config import GAMBA_UPDATES_CHANNEL_ID
 from quests.panel import build_static_quest_embed
 from quests.view import QuestView
 
 
 async def setup_quests(client: discord.Client):
-    channel = client.get_channel(EVENT_CHANNEL_ID)
+    channel = client.get_channel(GAMBA_UPDATES_CHANNEL_ID)
 
     if not channel:
         try:
-            channel = await client.fetch_channel(EVENT_CHANNEL_ID)
+            channel = await client.fetch_channel(GAMBA_UPDATES_CHANNEL_ID)
         except Exception as e:
             print(f"❌ Failed to fetch channel: {e}")
             return
