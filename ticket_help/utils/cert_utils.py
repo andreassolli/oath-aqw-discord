@@ -43,7 +43,7 @@ async def handle_application_submission(interaction, app_type, questions, answer
     db.collection("users").document(str(interaction.user.id)).set(
         {
             field: discord.utils.utcnow(),
-            "application_statuses": application_statuses,
+            f"application_statuses.{app_type}": "Under review",
         },
         merge=True,
     )

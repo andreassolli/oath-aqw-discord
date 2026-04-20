@@ -27,6 +27,7 @@ from config import (
     OATHSWORN_ROLE_ID,
     SPEAKER_CERTIFICATE_ID,
     TICKET_INSPECTOR_ROLE_ID,
+    TICKET_INSPECTORS_CHANNEL_ID,
     TICKET_LOG_CHANNEL_ID,
 )
 from economy.gamba.coinflip import run_coinflip
@@ -79,6 +80,13 @@ BOSS_TO_CERTIFICATE = {
     "Ultra Speaker": SPEAKER_CERTIFICATE_ID,
     "Ultra Gramiel": GRAMIEL_CERTIFICATE_ID,
     # "Ultra Nulgath": NULGATH_CERTIFICATE_ID,
+}
+
+STATUS_TO_EMOJI = {
+    "Awaiting Trial": "⏳",
+    "Under review": "🔍",
+    "Rejected": "❌",
+    "Passed Trial": "✅",
 }
 
 
@@ -329,17 +337,18 @@ class Extra(commands.Cog):
         try:
             dm = await user.create_dm()
             await dm.send(
-                f"🔔 The status for your {certificate} application has been updated to {status}."
+                f"🔔 The status for your {certificate} application has been updated to {STATUS_TO_EMOJI[status]} {status}."
             )
         except discord.Forbidden:
             helper_channel = interaction.guild.get_channel(HELPER_CHANNEL_ID)
             if helper_channel:
                 await helper_channel.send(
-                    f"{user.mention}, we tried reaching out to you through DMs, but were unable to send you a message.\n🔔 The status for your {certificate} application has been updated to {status}."
+                    f"{user.mention}, we tried reaching out to you through DMs, but were unable to send you a message.\n🔔 The status for your {certificate} application has been updated to {STATUS_TO_EMOJI[status]} {status}."
                 )
 
         await interaction.followup.send(
-            f"Updated {user.mention}'s application status to {status}", ephemeral=True
+            f"Updated {user.mention}'s application status to {STATUS_TO_EMOJI[status]} {status}",
+            ephemeral=True,
         )
 
     @app_commands.command(
@@ -574,31 +583,24 @@ class Extra(commands.Cog):
         await interaction.response.defer(ephemeral=True)
 
         user = interaction.user
-        users = db.collection("users").stream()
 
-        for doc in users:
-            if doc.id == str(user.id):
-                data = doc.to_dict() or {}
-                statuses = data.get("application_statuses", {})
+        doc = db.collection("users").document(str(user.id)).get()
+        data = doc.to_dict() or {}
 
-                if not statuses:
-                    return await interaction.followup.send(
-                        "✅ You have no pending applications.",
-                        ephemeral=True,
-                    )
+        statuses = data.get("application_statuses", {})
 
-                lines = []
-                for app_type, status in statuses.items():
-                    lines.append(f"**{app_type.title()}** ({status})")
+        if not statuses:
+            return await interaction.followup.send(
+                "📭 You have no applications.",
+                ephemeral=True,
+            )
 
-                await interaction.followup.send(
-                    "📋 **Your Applications:**\n\n" + "\n".join(lines),
-                    ephemeral=True,
-                )
-                return
+        lines = []
+        for app_type, status in statuses.items():
+            lines.append(f"**{app_type.title()}** — {STATUS_TO_EMOJI[status]} {status}")
 
         await interaction.followup.send(
-            "❌ User not found in the database.",
+            "📋 **Your Applications:**\n\n" + "\n".join(lines),
             ephemeral=True,
         )
 
@@ -608,21 +610,28 @@ class Extra(commands.Cog):
     )
     @app_commands.checks.has_role(TICKET_INSPECTOR_ROLE_ID)
     async def pending_applications(self, interaction: discord.Interaction):
-        await interaction.response.defer(ephemeral=True)
+        await interaction.response.defer()
+        channel = interaction.channel
+        if channel != TICKET_INSPECTORS_CHANNEL_ID:
+            return await interaction.followup.send(
+                "❌ This command can only be used in the Certifications channel.",
+                ephemeral=True,
+            )
 
         target_statuses = {"Awaiting Trial", "Under review"}
 
-        users = db.collection("users").stream()
-
         results = []
 
-        for doc in users:
+        for doc in db.collection("users").stream():
             data = doc.to_dict() or {}
             statuses = data.get("application_statuses", {})
 
+            if not isinstance(statuses, dict):
+                continue  # safety guard
+
             for app_type, status in statuses.items():
                 if status in target_statuses:
-                    results.append((doc.id, app_type, status))
+                    results.append((doc.id, app_type.lower(), status))  # normalize
 
         if not results:
             return await interaction.followup.send(
@@ -630,17 +639,23 @@ class Extra(commands.Cog):
                 ephemeral=True,
             )
 
+        results.sort(key=lambda x: (x[1], x[2]))
+
         lines = []
         for uid, app_type, status in results[:25]:
-            lines.append(f"<@{uid}> — **{app_type.title()}** ({status})")
+            member = interaction.guild.get_member(int(uid))
+            name = member.display_name if member else f"<@{uid}>"
+
+            lines.append(
+                f"• {name} — **{app_type.title()}** ({STATUS_TO_EMOJI[status]} {status})"
+            )
 
         extra = len(results) - 25
         if extra > 0:
-            lines.append(f"\n...and {extra} more")
+            lines.append(f"\n… and {extra} more")
 
         await interaction.followup.send(
             "📋 **Pending Applications:**\n\n" + "\n".join(lines),
-            ephemeral=True,
         )
 
     @app_commands.command(name="sync-roles", description="Apply roles from DB")
