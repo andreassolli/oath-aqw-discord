@@ -9,6 +9,9 @@ ROLE_EMOJIS = {
     "Taunter 2": "📜",
     "Tank": "🛡️",
     "Fill": "➕",
+    "Lord of Order": "⚖️",
+    "ArchPaladin": "🛡️",
+    "Legion Revenant": "💀",
 }
 
 
@@ -33,7 +36,7 @@ def build_ticket_embed(
     requester_role = claimer_roles.get(str(requester_id), "Fill")
 
     # Only apply role formatting in grimchallenge
-    if requester_role and "Grim Challenge" in bosses:
+    if requester_role and ("Grim Challenge" in bosses or "Ultra Speaker" in bosses):
         requester_mention = (
             f"**{ROLE_EMOJIS.get(requester_role, '❔')}{requester_role}:** {requester_member.mention}"
             if requester_member
@@ -56,7 +59,7 @@ def build_ticket_embed(
             role = claimer_roles.get(str(uid))
 
             # Only apply role formatting in grimchallenge
-            if role and "Grim Challenge" in bosses:
+            if role and ("Grim Challenge" in bosses or "Ultra Speaker" in bosses):
                 helper_lines.append(
                     f"**{ROLE_EMOJIS.get(role, '❔')}{role}:** {mention}"
                 )
