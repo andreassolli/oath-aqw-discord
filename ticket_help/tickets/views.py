@@ -22,6 +22,7 @@ from ticket_help.commands.permissions import (
 from ticket_help.panels.change_server_view import ServerSelectView
 from ticket_help.panels.server_fetch import fetch_servers
 from ticket_help.tickets.partial_complete import PartialCompleteView
+from ticket_help.tickets.speaker_role_claim import SpeakerRoleClaimView
 
 from .completion_utils import finalize_ticket
 from .confirm_cancel_view import ConfirmCancelView
@@ -163,7 +164,11 @@ class TicketActionView(discord.ui.View):
                 "🚫 You are already helping on another ticket.", ephemeral=True
             )
 
-        if is_requester and "Grim Challenge" not in self.bosses:
+        if (
+            is_requester
+            and "Grim Challenge" not in self.bosses
+            and "Ultra Speaker" not in self.bosses
+        ):
             return await interaction.followup.send(
                 "🚫 Ticket creator cannot claim their own ticket.",
                 ephemeral=True,
@@ -198,16 +203,24 @@ class TicketActionView(discord.ui.View):
                     "🚫 You must be a helper to claim this ticket.",
                     ephemeral=True,
                 )
-        if "Grim Challenge" in self.bosses:
+        if "Grim Challenge" in self.bosses or "Ultra Speaker" in self.bosses:
             roles = data.get("claimer_roles", {})
-
-            view = RoleClaimView(
-                ticket_name=self.ticket_name,
-                user_id=interaction.user.id,
-                parent_view=self,
-                roles=roles,
-                is_requester=is_requester,
-            )
+            if "Grim Challenge" in self.bosses:
+                view = RoleClaimView(
+                    ticket_name=self.ticket_name,
+                    user_id=interaction.user.id,
+                    parent_view=self,
+                    roles=roles,
+                    is_requester=is_requester,
+                )
+            elif "Ultra Speaker" in self.bosses:
+                view = SpeakerRoleClaimView(
+                    ticket_name=self.ticket_name,
+                    user_id=interaction.user.id,
+                    parent_view=self,
+                    roles=roles,
+                    is_requester=is_requester,
+                )
 
             return await interaction.followup.send(
                 "Select your role before claiming:",

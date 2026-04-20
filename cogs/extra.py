@@ -319,7 +319,7 @@ class Extra(commands.Cog):
         status: Literal["Awaiting Trial", "Rejected"],
     ):
         await interaction.response.defer()
-        app_type = certificate.split(" ")[1]
+        app_type = certificate.split(" ")[1].lower()
         db.collection("users").document(str(user.id)).set(
             {
                 f"application_statuses.{app_type}": status,
@@ -395,7 +395,7 @@ class Extra(commands.Cog):
         user_ref = db.collection("users").document(str(user.id))
         user_doc = user_ref.get()
         user_data = user_doc.to_dict() or {}
-        app_type = certificate.split(" ")[1]
+        app_type = certificate.split(" ")[1].lower()
         rewarded_certs = user_data.get("certificates_rewarded", [])
 
         if certificate not in rewarded_certs:
@@ -515,7 +515,7 @@ class Extra(commands.Cog):
                 ephemeral=True,
             )
 
-        app_type = certificate.split(" ")[1]
+        app_type = certificate.split(" ")[1].lower()
         db.collection("users").document(str(user.id)).set(
             {
                 f"application_statuses.{app_type}": "Revoked",
@@ -577,7 +577,7 @@ class Extra(commands.Cog):
         users = db.collection("users").stream()
 
         for doc in users:
-            if doc.id == user.id:
+            if doc.id == str(user.id):
                 data = doc.to_dict() or {}
                 statuses = data.get("application_statuses", {})
 
