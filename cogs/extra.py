@@ -212,7 +212,7 @@ class Extra(commands.Cog):
         await m_gld(interaction)
 
     @app_commands.command(name="glad")
-    @app_commands.default_permissions(administrator=True)
+    @app_commands.default_permissions(manage_roles=True)
     @has_any_role(ADMIN_ROLE_ID, DISCORD_MANAGER_ROLE_ID)
     async def eglad(self, interaction: discord.Interaction):
         await m_glad(interaction)
@@ -299,6 +299,50 @@ class Extra(commands.Cog):
     #    return await interaction.followup.send(f"Warned {user.mention}", ephemeral=True)
 
     @app_commands.command(
+        name="update-application",
+        description="Update the application status for a user.",
+    )
+    @app_commands.checks.has_role(TICKET_INSPECTOR_ROLE_ID)
+    async def update_application(
+        self,
+        interaction: discord.Interaction,
+        user: discord.Member,
+        certificate: Literal[
+            "Champion Drakath",
+            "Ultra Dage",
+            "Ultra Drago",
+            "Ultra Darkon",
+            "Ultra Speaker",
+            "Ultra Gramiel",
+            "Ultra Nulgath",
+        ],
+        status: Literal["Awaiting Trial", "Rejected"],
+    ):
+        await interaction.response.defer()
+        app_type = certificate.split(" ")[1]
+        db.collection("users").document(str(user.id)).set(
+            {
+                f"application_statuses.{app_type}": status,
+            },
+            merge=True,
+        )
+        try:
+            dm = await user.create_dm()
+            await dm.send(
+                f"🔔 The status for your {certificate} application has been updated to {status}."
+            )
+        except discord.Forbidden:
+            helper_channel = interaction.guild.get_channel(HELPER_CHANNEL_ID)
+            if helper_channel:
+                await helper_channel.send(
+                    f"{user.mention}, we tried reaching out to you through DMs, but were unable to send you a message.\n🔔 The status for your {certificate} application has been updated to {status}."
+                )
+
+        await interaction.followup.send(
+            f"Updated {user.mention}'s application status to {status}", ephemeral=True
+        )
+
+    @app_commands.command(
         name="promote-helper",
         description="Award a certificate for specified boss.",
     )
@@ -351,7 +395,7 @@ class Extra(commands.Cog):
         user_ref = db.collection("users").document(str(user.id))
         user_doc = user_ref.get()
         user_data = user_doc.to_dict() or {}
-
+        app_type = certificate.split(" ")[1]
         rewarded_certs = user_data.get("certificates_rewarded", [])
 
         if certificate not in rewarded_certs:
@@ -362,6 +406,7 @@ class Extra(commands.Cog):
             update_data = {
                 "coins": firestore.Increment(coins_to_add),
                 "certificates_rewarded": ArrayUnion([certificate]),
+                f"application_statuses.{app_type}": "Approved",
             }
 
             user_ref.set(update_data, merge=True)
@@ -376,15 +421,25 @@ class Extra(commands.Cog):
                 ephemeral=True,
             )
         else:
-            helper_channel = interaction.guild.get_channel(HELPER_CHANNEL_ID)
-            if helper_channel:
-                await helper_channel.send(
-                    f"🫡 {user.mention}, your application has been approved and you have been awarded {certificate} certificate.{reward_text}"
+            try:
+                dm = await user.create_dm()
+                await dm.send(
+                    f"🔔 Your application has been approved, and you have been awarded {certificate} certificate.{reward_text}."
                 )
-            await interaction.followup.send(
-                f"✅ Added {role.mention} to {user.mention}. {reward_text}\nAnnounced in the helper channel.",
-                ephemeral=True,
-            )
+                await interaction.followup.send(
+                    f"✅ Added {role.mention} to {user.mention}. {reward_text}\nMessage sent via DM.",
+                    ephemeral=True,
+                )
+            except discord.Forbidden:
+                helper_channel = interaction.guild.get_channel(HELPER_CHANNEL_ID)
+                if helper_channel:
+                    await helper_channel.send(
+                        f"{user.mention}, we tried reaching out to you through DMs, but were unable to send you a message.\n🫡 Your application has been approved and you have been awarded {certificate} certificate.{reward_text}"
+                    )
+                    await interaction.followup.send(
+                        f"✅ Added {role.mention} to {user.mention}. {reward_text}\nAnnounced in the helper channel.",
+                        ephemeral=True,
+                    )
 
         log_channel = interaction.guild.get_channel(TICKET_LOG_CHANNEL_ID)
 
@@ -459,11 +514,36 @@ class Extra(commands.Cog):
                 ephemeral=True,
             )
 
-        await interaction.followup.send(
-            f"✅ Removed {role.mention} from {user.mention}.",
-            ephemeral=True,
+        app_type = certificate.split(" ")[1]
+        db.collection("users").document(str(user.id)).set(
+            {
+                f"application_statuses.{app_type}": "Revoked",
+            },
+            merge=True,
         )
-
+        if announce:
+            try:
+                dm = await user.create_dm()
+                await dm.send(f"❌ Your {certificate} has been revoked.")
+                await interaction.followup.send(
+                    f"✅ Removed {role.mention} from {user.mention}.\nDM sent.",
+                    ephemeral=True,
+                )
+            except discord.Forbidden:
+                helper_channel = interaction.guild.get_channel(HELPER_CHANNEL_ID)
+                if helper_channel:
+                    await helper_channel.send(
+                        f"{user.mention}, we tried reaching out to you through DMs, but were unable to send you a message.\n❌ Your {certificate} has been revoked."
+                    )
+                    await interaction.followup.send(
+                        f"✅ Removed {role.mention} from {user.mention}.\nMentioned in the helper channel.",
+                        ephemeral=True,
+                    )
+        else:
+            await interaction.followup.send(
+                f"✅ Removed {role.mention} from {user.mention}.\nNo announcement made.",
+                ephemeral=True,
+            )
         log_channel = interaction.guild.get_channel(TICKET_LOG_CHANNEL_ID)
         if log_channel:
             embed = discord.Embed(
@@ -485,6 +565,82 @@ class Extra(commands.Cog):
             embed.set_footer(text=f"User ID: {user.id}")
 
             await log_channel.send(embed=embed)
+
+    @app_commands.command(
+        name="view-applications", description="View your application statuses"
+    )
+    async def view_applications(self, interaction: discord.Interaction):
+        await interaction.response.defer(ephemeral=True)
+
+        user = interaction.user
+        users = db.collection("users").stream()
+
+        for doc in users:
+            if doc.id == user.id:
+                data = doc.to_dict() or {}
+                statuses = data.get("application_statuses", {})
+
+                if not statuses:
+                    return await interaction.followup.send(
+                        "✅ You have no pending applications.",
+                        ephemeral=True,
+                    )
+
+                lines = []
+                for app_type, status in statuses.items():
+                    lines.append(f"**{app_type.title()}** ({status})")
+
+                await interaction.followup.send(
+                    "📋 **Your Applications:**\n\n" + "\n".join(lines),
+                    ephemeral=True,
+                )
+                return
+
+        await interaction.followup.send(
+            "❌ User not found in the database.",
+            ephemeral=True,
+        )
+
+    @app_commands.command(
+        name="pending-applications",
+        description="List all users with pending applications",
+    )
+    @app_commands.checks.has_role(TICKET_INSPECTOR_ROLE_ID)
+    async def pending_applications(self, interaction: discord.Interaction):
+        await interaction.response.defer(ephemeral=True)
+
+        target_statuses = {"Awaiting Trial", "Under review"}
+
+        users = db.collection("users").stream()
+
+        results = []
+
+        for doc in users:
+            data = doc.to_dict() or {}
+            statuses = data.get("application_statuses", {})
+
+            for app_type, status in statuses.items():
+                if status in target_statuses:
+                    results.append((doc.id, app_type, status))
+
+        if not results:
+            return await interaction.followup.send(
+                "✅ No pending applications found.",
+                ephemeral=True,
+            )
+
+        lines = []
+        for uid, app_type, status in results[:25]:
+            lines.append(f"<@{uid}> — **{app_type.title()}** ({status})")
+
+        extra = len(results) - 25
+        if extra > 0:
+            lines.append(f"\n...and {extra} more")
+
+        await interaction.followup.send(
+            "📋 **Pending Applications:**\n\n" + "\n".join(lines),
+            ephemeral=True,
+        )
 
     @app_commands.command(name="sync-roles", description="Apply roles from DB")
     @app_commands.default_permissions(manage_roles=True)
@@ -734,6 +890,16 @@ class Extra(commands.Cog):
     @app_commands.command(name="leaderboard", description="View leaderboards")
     async def leaderboard(self, interaction: discord.Interaction):
         await interaction.response.defer()
+        channel = interaction.channel
+        if channel not in ALLOWED_COMMANDS_CHANNELS:
+            allowed_mentions = ", ".join(
+                [f"<#{channel}>" for channel in ALLOWED_COMMANDS_CHANNELS]
+            )
+            await interaction.followup.send(
+                f"❌ This command can only be used in {allowed_mentions}.",
+                ephemeral=True,
+            )
+            return
         guild = interaction.guild
         if not guild:
             return

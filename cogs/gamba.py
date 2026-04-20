@@ -29,7 +29,6 @@ class Gamba(commands.Cog):
         name="flip",
         description="Flip a coin, either against the house or challenge someone",
     )
-    @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
     async def coinflip_command(
         self,
         interaction: discord.Interaction,
@@ -63,7 +62,6 @@ class Gamba(commands.Cog):
         name="janken",
         description="Challenge someone to Rock Paper Scissors",
     )
-    @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
     async def rps(
         self,
         interaction: discord.Interaction,
@@ -127,7 +125,6 @@ class Gamba(commands.Cog):
         return
 
     @app_commands.command(name="beg", description="Beg the other users for some money")
-    @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
     async def beg_command(self, interaction: discord.Interaction):
         if interaction.channel_id != BETA_TESTING_CHANNEL_ID:
             allowed_mentions = f"<#{BETA_TESTING_CHANNEL_ID}>"
@@ -172,7 +169,6 @@ class Gamba(commands.Cog):
     @app_commands.command(
         name="blackjack", description="Play blackjack with the house."
     )
-    @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
     async def blackjack_command(self, interaction: discord.Interaction, wager: int):
         await interaction.response.defer(ephemeral=True)
         if wager < 1:

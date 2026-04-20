@@ -89,7 +89,6 @@ class Economy(commands.Cog):
         )
 
     @app_commands.command(name="shop", description="List all the items in the shop.")
-    @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
     async def see_shop(self, interaction: discord.Interaction):
 
         await interaction.response.defer(ephemeral=True)
@@ -172,7 +171,6 @@ class Economy(commands.Cog):
     @app_commands.command(
         name="purse", description="Check how many coins you have in your coin purse."
     )
-    @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
     async def purse(
         self, interaction: discord.Interaction, user: discord.Member | None = None
     ):
@@ -216,7 +214,6 @@ class Economy(commands.Cog):
             )
 
     @app_commands.command(name="doom", description="Spin the Wheel of Doom")
-    @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
     async def doom(self, interaction: discord.Interaction):
 
         await interaction.response.defer(ephemeral=True)
@@ -249,7 +246,6 @@ class Economy(commands.Cog):
         name="coin-leaderboard",
         description="Scout the 15 richest people in the discord.",
     )
-    @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
     async def coin_leaderboard(self, interaction: discord.Interaction):
         await interaction.response.defer(thinking=True)
         guild = interaction.guild
@@ -259,7 +255,6 @@ class Economy(commands.Cog):
         return await interaction.followup.send(embed=embed)
 
     @app_commands.command(name="donate", description="Donate coins to a friend.")
-    @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
     async def donate(
         self, interaction: discord.Interaction, user: discord.Member, coins: int
     ):
@@ -312,7 +307,6 @@ class Economy(commands.Cog):
     @app_commands.command(
         name="inventory", description="View the items in your inventory."
     )
-    @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
     async def inventory(self, interaction: discord.Interaction):
         await interaction.response.defer(ephemeral=True)
         user_doc = db.collection("users").document(str(interaction.user.id)).get()
@@ -378,7 +372,6 @@ class Economy(commands.Cog):
     @app_commands.command(
         name="equip", description="Equip an item from your inventory."
     )
-    @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
     async def equip(self, interaction: discord.Interaction, item: str):
 
         response = await equip_item(str(interaction.user.id), item)
@@ -388,7 +381,6 @@ class Economy(commands.Cog):
     @app_commands.command(
         name="unequip", description="Unequip an item from your inventory."
     )
-    @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
     async def unequip(self, interaction: discord.Interaction, item: str):
 
         response = await unequip_item(str(interaction.user.id), item)
@@ -398,7 +390,6 @@ class Economy(commands.Cog):
     @app_commands.command(
         name="break-rocks", description="Break rocks for a chance to win Chaos Shards."
     )
-    @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
     async def view_rocks(self, interaction: discord.Interaction):
         cooldown = await get_break_cooldown(interaction.user.id)
 
@@ -408,7 +399,7 @@ class Economy(commands.Cog):
                 ephemeral=True,
             )
 
-        price = random.randint(600, 800)
+        price = random.randint(500, 650)
 
         view = RockConfirmView(interaction.user, price)
 
@@ -419,11 +410,10 @@ class Economy(commands.Cog):
         )
 
     @app_commands.command(name="steal", description="Steal coins from someone.")
-    @app_commands.checks.has_role(BETA_TESTER_ROLE_ID)
     async def steal(self, interaction: discord.Interaction, target: discord.Member):
         await interaction.response.defer()
         if interaction.channel_id != BETA_TESTING_CHANNEL_ID:
-            allowed_mentions = ", ".join(f"<#{BETA_TESTING_CHANNEL_ID}>")
+            allowed_mentions = f"<#{BETA_TESTING_CHANNEL_ID}>"
 
             await interaction.followup.send(
                 f"❌ This command can only be used in {allowed_mentions}.",
