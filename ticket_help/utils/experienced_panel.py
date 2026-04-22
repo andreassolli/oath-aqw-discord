@@ -48,11 +48,12 @@ async def setup_application_panel(client: discord.Client):
             "📝 Answer 5 questions for the selected boss.\n"
             "⚠️ Speaker, Gramiel and Darkon requires a Trial as well.\n"
             "💰 Speaker and Gramiel rewards <:oathcoin:1462999179998531614>3750, Darkon <:oathcoin:1462999179998531614>2500, rest <:oathcoin:1462999179998531614>1950.\n\n"
-            "📌 Tips: \n"
+            "🎥 Video tips: \n"
             "- <:gramiel:1492231304601796658> [Gramiel with Lillicht chart 📊️](https://youtu.be/O9PZnXxXClQ?si=4DZBuNmSwG1nqdwK) \n"
             "- <:malgor:1492231505668341860> [Speaker as Lord of Order ⚖️](https://youtu.be/hahe9_HhDZA) \n"
             "- <:malgor:1492231505668341860> [Speaker as ArchPaladin 🛡️](https://youtu.be/ftgaITjXdt8?si=tyILn2PjFQ7bqI6O) \n"
-            "- <:dage:1492231405067964627> [Dage as Chaos Avenger/Classic Ninja 🥷](https://youtu.be/hJK9o-yIz9I)\n\n"
+            "- <:dage:1492231405067964627> [Dage as Chaos Avenger/Classic Ninja 🥷](https://youtu.be/hJK9o-yIz9I)\n"
+            "- <:drago:1492231338353229985> [Taunting at Drago 👑](https://www.youtube.com/watch?v=o1n94q9vjr8)\n\n"
             "Use the command `/view-applications` to view your application statuses.\n\n"
         ),
         color=discord.Color.blurple(),

@@ -87,6 +87,7 @@ STATUS_TO_EMOJI = {
     "Under review": "🔍",
     "Rejected": "❌",
     "Passed Trial": "✅",
+    "Approved": "✅",
 }
 
 
@@ -324,7 +325,8 @@ class Extra(commands.Cog):
             "Ultra Gramiel",
             "Ultra Nulgath",
         ],
-        status: Literal["Awaiting Trial", "Rejected"],
+        status: Literal["Awaiting Trial", "Rejected", "Approved"],
+        extra_message: str = "",
     ):
         await interaction.response.defer()
         app_type = certificate.split(" ")[1].lower()
@@ -334,15 +336,16 @@ class Extra(commands.Cog):
             },
         )
         try:
+            extra_message = f"\n {extra_message}" if extra_message else ""
             dm = await user.create_dm()
             await dm.send(
-                f"🔔 The status for your {certificate} application has been updated to {STATUS_TO_EMOJI[status]} {status}."
+                f"🔔 The status for your {certificate} application has been updated to {STATUS_TO_EMOJI[status]} {status}{extra_message}."
             )
         except discord.Forbidden:
             helper_channel = interaction.guild.get_channel(HELPER_CHANNEL_ID)
             if helper_channel:
                 await helper_channel.send(
-                    f"{user.mention}, we tried reaching out to you through DMs, but were unable to send you a message.\n🔔 The status for your {certificate} application has been updated to {STATUS_TO_EMOJI[status]} {status}."
+                    f"{user.mention}, we tried reaching out to you through DMs, but were unable to send you a message.\n🔔 The status for your {certificate} application has been updated to {STATUS_TO_EMOJI[status]} {status}{extra_message}."
                 )
 
         await interaction.followup.send(
