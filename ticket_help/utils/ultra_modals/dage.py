@@ -54,7 +54,7 @@ class DageModal(discord.ui.Modal, title="Ultra Dage Application"):
 
         await handle_application_submission(
             interaction,
-            "darkon",
+            "dage",
             questions,
             answers,
         )

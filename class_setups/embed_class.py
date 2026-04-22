@@ -23,9 +23,9 @@ def build_class_embed(
     # -------- General Section --------
     general_text = (
         "<:forge:1456909374562898093> **Enhancements**\n"
-        f"<:swordaqw:1457810578994233434> - {general_loadout.get('sword', '—')}\n"
-        f"<:classaqw:1457810673395433641> - {general_loadout.get('class', '—')}\n"
-        f"<:helmaqw:1457810605443383307> - {general_loadout.get('helm', '—')}\n"
+        f"<:swordaqw:1487004634307629056> - {general_loadout.get('sword', '—')}\n"
+        f"<:classbadge:1471256107057156117> - {general_loadout.get('class', '—')}\n"
+        f"<:helmaqw:1487000474014974054> - {general_loadout.get('helm', '—')}\n"
         f"<:cloakaqw:1457810628168253522> - {general_loadout.get('cloak', '—')}\n"
     )
 
