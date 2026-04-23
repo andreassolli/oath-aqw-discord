@@ -912,8 +912,8 @@ class Extra(commands.Cog):
     @app_commands.command(name="leaderboard", description="View leaderboards")
     async def leaderboard(self, interaction: discord.Interaction):
         await interaction.response.defer()
-        channel = interaction.channel
-        if channel not in ALLOWED_COMMANDS_CHANNELS:
+        channel_id = interaction.channel_id
+        if channel_id not in ALLOWED_COMMANDS_CHANNELS:
             allowed_mentions = ", ".join(
                 [f"<#{channel}>" for channel in ALLOWED_COMMANDS_CHANNELS]
             )
