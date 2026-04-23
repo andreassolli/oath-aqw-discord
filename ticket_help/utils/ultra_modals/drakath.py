@@ -17,8 +17,8 @@ class DrakathModal(discord.ui.Modal, title="Ultra Drakath Application"):
         max_length=1000,
     )
     q3 = discord.ui.TextInput(
-        label="Q3: Can LR survive taunts at 2.9K HP?",
-        placeholder="Expand a bit!",
+        label="Q3: Can LR survive taunts at 2.9K HP? Explain",
+        placeholder="Assume Lord of Order buffs!",
         style=discord.TextStyle.paragraph,
         max_length=1000,
     )

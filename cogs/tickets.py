@@ -1,5 +1,6 @@
 from discord.ext import commands
 
+from extra_commands.transcended_colors import setup_color_panel
 from ticket_help import setup_ticket_system
 from ticket_help.commands.admin import (
     add_boss,
@@ -46,6 +47,7 @@ class Tickets(commands.Cog):
 
         self._started = True
         await self.bot.wait_until_ready()
+        await setup_color_panel(self.bot)
         await setup_application_panel(self.bot)
         await setup_ticket_system(self.bot)
 

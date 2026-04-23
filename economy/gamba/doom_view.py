@@ -4,7 +4,13 @@ import random
 import discord
 from google.cloud import firestore
 
-from config import ASCENDED_ROLE_ID, INITIATE_ROLE_ID, OFFICER_ROLE_ID, POTW_ROLE_ID
+from config import (
+    ASCENDED_ROLE_ID,
+    INITIATE_ROLE_ID,
+    OFFICER_ROLE_ID,
+    POTW_ROLE_ID,
+    TRANSCENDED_ROLE_ID,
+)
 from economy.gamba.utils import set_spin_today
 from firebase_client import db
 from inventory.utils import add_item
@@ -84,6 +90,10 @@ class DoomSpinView(discord.ui.View):
             multiplier = 1.125
             new_result = int(result * multiplier)
             bonus_text = f"\nThanks to your **<:potwBadge:1476938152861241565>Player of the Week** role, you got 12.5% bonus coins!\nTotal payout: <:oathcoin:1462999179998531614>`{new_result}`"
+        elif any(role.id == TRANSCENDED_ROLE_ID for role in interaction.user.roles):
+            multiplier = 1.11
+            new_result = int(result * multiplier)
+            bonus_text = f"\nThanks to your **<:ascended:1485289045524484126>Ascended** role, you got 11% bonus coins!\nTotal payout: <:oathcoin:1462999179998531614>`{new_result}`"
         elif any(role.id == ASCENDED_ROLE_ID for role in interaction.user.roles):
             multiplier = 1.1
             new_result = int(result * multiplier)
