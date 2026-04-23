@@ -349,7 +349,7 @@ class Extra(commands.Cog):
                 )
 
         await interaction.followup.send(
-            f"Updated {user.mention}'s application status to {STATUS_TO_EMOJI[status]} {status}",
+            f"Updated {user.mention}'s application status to {STATUS_TO_EMOJI[status]} {status}{extra_message}",
             ephemeral=True,
         )
 
@@ -371,7 +371,13 @@ class Extra(commands.Cog):
             "Ultra Gramiel",
             "Ultra Nulgath",
         ],
-        reason: Literal["Passed Trial", "Questions + Experience", "Experience only"],
+        reason: Literal[
+            "Passed Trial",
+            "Questions + Experience",
+            "Experience only",
+            "Questions Only",
+        ],
+        extra_message: str = "",
         announce: bool = False,
     ):
         await interaction.response.defer(ephemeral=True)
@@ -408,7 +414,7 @@ class Extra(commands.Cog):
         user_data = user_doc.to_dict() or {}
         app_type = certificate.split(" ")[1].lower()
         rewarded_certs = user_data.get("certificates_rewarded", [])
-
+        extra_message = f"\n {extra_message}" if extra_message else ""
         if certificate not in rewarded_certs:
             coins_to_add = (
                 3750 if certificate in ["Ultra Speaker", "Ultra Gramiel"] else 1950
@@ -429,27 +435,27 @@ class Extra(commands.Cog):
 
         if not announce:
             await interaction.followup.send(
-                f"✅ Added {role.mention} to {user.mention}. {reward_text}\nRemember to announce it {user.mention} yourself, and include the coins they were given!",
+                f"✅ Added {role.mention} to {user.mention}. {reward_text}{extra_message}\nRemember to announce it {user.mention} yourself, and include the coins they were given!",
                 ephemeral=True,
             )
         else:
             try:
                 dm = await user.create_dm()
                 await dm.send(
-                    f"🔔 Your application has been approved, and you have been awarded {certificate} certificate.{reward_text}."
+                    f"🔔 Your application has been approved, and you have been awarded {certificate} certificate.{reward_text}.{extra_message}"
                 )
                 await interaction.followup.send(
-                    f"✅ Added {role.mention} to {user.mention}. {reward_text}\nMessage sent via DM.",
+                    f"✅ Added {role.mention} to {user.mention}. {reward_text}{extra_message}\nMessage sent via DM.",
                     ephemeral=True,
                 )
             except discord.Forbidden:
                 helper_channel = interaction.guild.get_channel(HELPER_CHANNEL_ID)
                 if helper_channel:
                     await helper_channel.send(
-                        f"{user.mention}, we tried reaching out to you through DMs, but were unable to send you a message.\n🫡 Your application has been approved and you have been awarded {certificate} certificate.{reward_text}"
+                        f"{user.mention}, we tried reaching out to you through DMs, but were unable to send you a message.\n🫡 Your application has been approved and you have been awarded {certificate} certificate.{reward_text}{extra_message}"
                     )
                     await interaction.followup.send(
-                        f"✅ Added {role.mention} to {user.mention}. {reward_text}\nAnnounced in the helper channel.",
+                        f"✅ Added {role.mention} to {user.mention}. {reward_text}{extra_message}\nAnnounced in the helper channel.",
                         ephemeral=True,
                     )
 
