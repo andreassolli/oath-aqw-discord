@@ -73,13 +73,13 @@ from ticket_help.utils.experienced import StartView
 from user_verification.utils import change_roles
 
 BOSS_TO_CERTIFICATE = {
-    # "Champion Drakath": DRAKATH_CERTIFICATE_ID,
-    # "Ultra Dage": DAGE_CERTIFICATE_ID,
-    # "Ultra Drago": DRAGO_CERTIFICATE_ID,
-    # "Ultra Darkon": DARKON_CERTIFICATE_ID,
+    "Champion Drakath": DRAKATH_CERTIFICATE_ID,
+    "Ultra Dage": DAGE_CERTIFICATE_ID,
+    "Ultra Drago": DRAGO_CERTIFICATE_ID,
+    "Ultra Darkon": DARKON_CERTIFICATE_ID,
     "Ultra Speaker": SPEAKER_CERTIFICATE_ID,
     "Ultra Gramiel": GRAMIEL_CERTIFICATE_ID,
-    # "Ultra Nulgath": NULGATH_CERTIFICATE_ID,
+    "Ultra Nulgath": NULGATH_CERTIFICATE_ID,
 }
 
 STATUS_TO_EMOJI = {

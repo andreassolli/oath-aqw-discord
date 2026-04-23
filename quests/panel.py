@@ -60,8 +60,8 @@ async def build_static_quest_embed() -> discord.Embed:
         description = "No quests available right now."
     else:
         description = (
-            "Each Weekly Quest rewards <:oathcoin:1462999179998531614>1000, while the Frequent Quests rewards <:oathcoin:1462999179998531614>150.\n"
-            "Only available for Beta Testers.\n\n" + "\n\n".join(description_parts)
+            "Each Weekly Quest rewards <:oathcoin:1462999179998531614>1000, while the Frequent Quests rewards <:oathcoin:1462999179998531614>150.\n\n"
+            "\n\n".join(description_parts)
         )
 
     embed = discord.Embed(

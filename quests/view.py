@@ -21,10 +21,6 @@ class QuestCheckButton(Button):
                 "This can only be used in a server.", ephemeral=True
             )
 
-        if not any(role.id == BETA_TESTER_ROLE_ID for role in interaction.user.roles):
-            return await interaction.followup.send(
-                "You are not a beta tester.", ephemeral=True
-            )
         user_id = interaction.user.id
 
         result = await check_for_quest_completion(user_id)
