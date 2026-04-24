@@ -88,7 +88,7 @@ class ColorRoleView(discord.ui.View):
         )
 
     @discord.ui.button(
-        label="🛡️ Royal Vanguard",
+        label="🎴 Royal Vanguard",
         style=discord.ButtonStyle.secondary,
         custom_id="royal_vanguard_button",
     )
