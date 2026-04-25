@@ -102,7 +102,7 @@ async def generate_test_card(
     border = data.get("border", {})
     card = data.get("card", {})
     gems = data.get("gems", 0)
-    bg = Image.open(ASSETS_DIR / f"default.png").convert("RGBA")
+    bg = Image.open(ASSETS_DIR / "sm.png").convert("RGBA")
     role = data.get("highlighted_role", "None")
 
     # if border:
@@ -118,8 +118,8 @@ async def generate_test_card(
     #    test_border = Image.open(ASSETS_DIR / "test_border.png").convert("RGBA")
     #    bg.paste(test_border, (0, 0), test_border)
 
-    potw_border = load_asset("gold_avatar.png", (234, 234))
-    bg.paste(potw_border, (40, 34), potw_border)
+    # potw_border = load_asset("gold_avatar.png", (234, 234))
+    # bg.paste(potw_border, (40, 34), potw_border)
 
     font_big = load_font("Urbanist-Regular.ttf", 54)
     font_bold = load_font("Urbanist-Bold.ttf", 66)
