@@ -13,7 +13,9 @@ from config import (
     PROXY_SERVICE,
     STRANGER_ROLE_ID,
     UNSWORN_ROLE_ID,
+    VOX_ROLE,
 )
+from firebase_client import db
 from http_client import get_session
 
 HEADERS = {
@@ -88,6 +90,17 @@ def check_for_bot_badges(badges: list[dict]) -> Dict[str, bool]:
     }
 
 
+def get_user(ccid: str):
+    users = db.collection("users")
+    query = users.where("ccid", "==", ccid).limit(1)
+    results = query.get()
+
+    if results:
+        return results[0].id
+
+    return None
+
+
 async def change_roles(
     member: discord.Member,
     *,
@@ -99,6 +112,8 @@ async def change_roles(
     stranger_role = discord.utils.get(member.guild.roles, id=STRANGER_ROLE_ID)
     unsworn_role = discord.utils.get(member.guild.roles, id=UNSWORN_ROLE_ID)
     helper_role = discord.utils.get(member.guild.roles, id=HELPER_ROLE_ID)
+    vox_role = discord.utils.get(member.guild.roles, id=VOX_ROLE)
+
     try:
         if not verified_at_all:
             await member.remove_roles(
@@ -112,7 +127,7 @@ async def change_roles(
                 reason="User isnt verified",
             )
             return True
-        # 1️⃣ User joined guild
+
         if is_join_event:
             await member.remove_roles(
                 stranger_role,
@@ -126,7 +141,6 @@ async def change_roles(
             )
             return True
 
-        # 2️⃣ Verified and belongs to Oath
         if verified_guild == "Oath":
             # If they previously had Initiate → scenario 3
 
@@ -143,7 +157,19 @@ async def change_roles(
             )
             return True
 
-        # 4️⃣ Verified but not in Oath
+        elif verified_guild == "Vox":
+            await member.remove_roles(
+                stranger_role,
+                reason="User verified in Vox",
+            )
+            await member.add_roles(
+                unsworn_role,
+                helper_role,
+                vox_role,
+                reason="User verified in Vox",
+            )
+            return True
+
         await member.remove_roles(
             stranger_role,
             initiate_role,

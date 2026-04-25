@@ -26,6 +26,7 @@ from user_verification.utils import (
     change_roles,
     check_for_bot_badges,
     fetch_aqw_profile,
+    get_user,
 )
 
 from .user_join import DidUserJoinView
@@ -55,6 +56,13 @@ class VerificationModal(discord.ui.Modal):
         if not user:
             return await interaction.followup.send(
                 f"❌ Could not find AQW profile for username: **{self.username.value}**",
+                ephemeral=True,
+            )
+
+        user_id = get_user(user["ccid"])
+        if user_id and user_id != interaction.user.id:
+            return await interaction.followup.send(
+                f"❌ A user has already been verified with this AQW account.",
                 ephemeral=True,
             )
 

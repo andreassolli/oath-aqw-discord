@@ -1,7 +1,9 @@
 import asyncio
 import random
+from datetime import datetime
 
 import aiohttp
+import requests
 from google.cloud import firestore as gc_firestore
 from tweepy import Client as TwitterClient
 
@@ -578,21 +580,74 @@ async def add_killer_card():
     )
 
 
+donations = [
+    {"amount": 25, "name": "Isocat", "date": "2026-04-18"},
+    {"amount": 10, "name": "Quincy Dao", "date": "2026-04-18"},
+    {"amount": 5, "name": "Samdal", "date": "2026-04-18"},
+    {"amount": 1, "name": "Smoked Out", "date": "2026-04-18"},
+    {"amount": 10, "name": "Smoked Out", "date": "2026-04-20"},
+    {"amount": 10, "name": "Groot", "date": "2026-04-21"},
+    {"amount": 50, "name": "Isocat", "date": "2026-04-23"},
+    {"amount": 100, "name": "Skyper", "date": "2026-04-24"},
+    {"amount": 50, "name": "Greed", "date": "2026-04-24"},
+    {"amount": 50, "name": "Redact", "date": "2026-04-24"},
+    {"amount": 50, "name": "Thundersnow Demigod", "date": "2026-04-24"},
+    {"amount": 50, "name": "Smoked Out", "date": "2026-04-24"},
+    {"amount": 50, "name": "Groot", "date": "2026-04-25"},
+    {"amount": 20, "name": "Groot", "date": "2026-04-25"},
+    {"amount": 100, "name": "Im Clancy", "date": "2026-04-25"},
+]
+
+
+async def backlog_donations():
+    for donation in donations:
+        timestamp = datetime.strptime(donation["date"], "%Y-%m-%d").isoformat() + "Z"
+
+        payload = {
+            "embeds": [
+                {
+                    "title": "New donation!",
+                    "description": (
+                        f"**{donation['name']}** has donated "
+                        f"${donation['amount']} to the Oath Ko-Fi ❤️"
+                    ),
+                    "timestamp": timestamp,
+                    "footer": {"text": "Thank you for supporting Oath ❤️"},
+                }
+            ]
+        }
+
+        response = requests.post(DISCORD_WEBHOOK_URL, json=payload)
+
+        if response.ok:
+            print(f"Sent: {donation['name']} (${donation['amount']})")
+        else:
+            print(
+                f"Failed: {donation['name']} ({response.status_code}) {response.text}"
+            )
+
+
 if __name__ == "__main__":
+    asyncio.run(backlog_donations())
     # asyncio.run(add_killer_card())
-    asyncio.run(generate_test_card())
+    # asyncio.run(generate_test_card())
     # reset_coins()
     # migrate_shop_prices()
     # backfill_wordle_stats()
     # asyncio.run(find_users_with_doom_card())
     # get_all_users()
     # choose_new_word()
-# asyncio.run(
-#    add_item(
-#        "292040660696039424", "Guts Card", "card", "guts_card.png", "custom.png"
-#    )
-# )
-# asyncio.run(test_fetch_call())
+    # asyncio.run(
+    #    add_item(
+    #        "696254108788719627",
+    #        "Smoked Card",
+    #        "card",
+    #        "smoked_card.png",
+    #        "custom.png",
+    #        "rare",
+    #    )
+    # )
+    # asyncio.run(test_fetch_call())
 # asyncio.run(generate_inventory(userId="292040660696039424"))
 # asyncio.run(backfill_ccids())
 # asyncio.run(generate_wordle_share(None, "292040660696039424"))
