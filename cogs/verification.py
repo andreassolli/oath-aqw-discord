@@ -454,6 +454,8 @@ class VerificationCog(commands.Cog):
             await user.remove_roles(stranger_role)
             await user.remove_roles(role)
 
+        await user.edit(nick=aqw_username)
+
         if old_ign and old_ign != aqw_username:
             if old_ign not in previous_igns:
                 updates["previous_igns"] = firestore.ArrayUnion([old_ign])

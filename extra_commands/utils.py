@@ -8,8 +8,10 @@ from discord import app_commands
 from google.cloud.firestore import ArrayUnion
 
 from config import (
+    ANNOUNCEMENT_CHANNEL_ID,
     BANNED_LIST_CHANNEL_ID,
     EVENT_CHANNEL_ID,
+    INITIATE_ROLE_ID,
     LEADERBOARD_HISTORY_CHANNEL_ID,
     LORE_CHANNEL_ID,
     OATH_EVENT_CHANNEL_ID,
@@ -321,6 +323,21 @@ async def elect_potw(member: discord.Member):
         await thread.send(embed=embed)
     else:
         print("Channel is not a thread")
+
+    announcement_channel = guild.get_channel(ANNOUNCEMENT_CHANNEL_ID)
+    initiate_role = guild.get_role(INITIATE_ROLE_ID)
+    if announcement_channel and initiate_role:
+        message = (
+            f"{initiate_role.mention}\n"
+            f"👑 A new Player of the Week has been crowned:\n"
+            f"**{member.mention}**\n\n"
+            f"We recognize their great contributions to Oath!<:oath:1457451850184917122>\n\n"
+            f"Make sure to say hi if you see them in-game, "
+            f"and spam them with lots of pings on Discord!"
+            f"<:GoobHeart:1459836996381048863>"
+        )
+
+        await announcement_channel.send(message)
 
 
 async def elect_potw_by_name(username: str, guild: discord.Guild):

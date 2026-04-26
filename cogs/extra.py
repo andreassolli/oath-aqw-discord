@@ -349,7 +349,7 @@ class Extra(commands.Cog):
                 )
 
         await interaction.followup.send(
-            f"Updated {user.mention}'s application status to {STATUS_TO_EMOJI[status]} {status}{extra_message}",
+            f"Updated {user.mention}'s {certificate} application status to {STATUS_TO_EMOJI[status]} {status}{extra_message}",
             ephemeral=True,
         )
 
@@ -436,6 +436,14 @@ class Extra(commands.Cog):
         if not announce:
             await interaction.followup.send(
                 f"✅ Added {role.mention} to {user.mention}. {reward_text}{extra_message}\nRemember to announce it {user.mention} yourself, and include the coins they were given!",
+                ephemeral=True,
+            )
+            dm = await user.create_dm()
+            await dm.send(
+                f"🔔 Your application has been approved, and you have been awarded {certificate} certificate.{reward_text}.{extra_message}"
+            )
+            await interaction.followup.send(
+                f"✅ Added {role.mention} to {user.mention}. {reward_text}{extra_message}\nMessage sent via DM.",
                 ephemeral=True,
             )
         else:
