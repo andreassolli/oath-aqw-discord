@@ -945,10 +945,10 @@ class Extra(commands.Cog):
         data = doc.to_dict() or {}
         last_timeout = data.get("last_timeout")
         if last_timeout and (datetime.now(timezone.utc) - last_timeout) < timedelta(
-            hours=1
+            days=30
         ):
             await interaction.followup.send(
-                "You can only timeout a member once per hour.",
+                "You can only timeout a member once per 30 days.",
                 ephemeral=True,
             )
             return
