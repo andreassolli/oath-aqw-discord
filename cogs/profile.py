@@ -19,6 +19,7 @@ MANUAL_BADGES = [
     "Beta Tester White",
     "Beta Tester Black",
     "Beta Tester Green",
+    "Oath Pillar",
 ]
 
 

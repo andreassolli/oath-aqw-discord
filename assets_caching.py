@@ -65,6 +65,7 @@ BADGE_TO_IMAGE = {
     "Whale II": ASSETS_DIR / "whale2.webp",
     "Whale III": ASSETS_DIR / "whale3.webp",
     "Whale IV": ASSETS_DIR / "whale4.webp",
+    "Oath Pillar": ASSETS_DIR / "oath_pillar.png",
 }
 
 
