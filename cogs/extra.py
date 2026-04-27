@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta, timezone
 from typing import Literal
 
 import discord
@@ -29,6 +30,7 @@ from config import (
     TICKET_INSPECTOR_ROLE_ID,
     TICKET_INSPECTORS_CHANNEL_ID,
     TICKET_LOG_CHANNEL_ID,
+    TRANSCENDED_ROLE_ID,
 )
 from economy.gamba.coinflip import run_coinflip
 from economy.gamba.doom_view import DoomSpinView
@@ -935,6 +937,65 @@ class Extra(commands.Cog):
             return
         embed = await record_holder("points", guild)
         await interaction.followup.send(embed=embed, view=LeaderboardView())
+
+    @app_commands.command(name="timeout", description="Timeout an officer for 1 hour.")
+    async def timeout(self, interaction: discord.Interaction, target: discord.Member):
+        await interaction.response.defer()
+        doc = db.collection("users").document(str(interaction.user.id)).get()
+        data = doc.to_dict() or {}
+        last_timeout = data.get("last_timeout")
+        if last_timeout and (datetime.now(timezone.utc) - last_timeout) < timedelta(
+            hours=1
+        ):
+            await interaction.followup.send(
+                "You can only timeout a member once per hour.",
+                ephemeral=True,
+            )
+            return
+
+        guild = interaction.guild
+        if not guild:
+            return
+        transcended_role = guild.get_role(TRANSCENDED_ROLE_ID)
+        user_roles = interaction.user.roles
+        if transcended_role not in user_roles:
+            await interaction.followup.send(
+                "You are not a transcended member.",
+                ephemeral=True,
+            )
+            return
+
+        target_roles = target.roles
+        oathsworn_role = guild.get_role(OATHSWORN_ROLE_ID)
+
+        if oathsworn_role not in target_roles:
+            await interaction.followup.send(
+                "Target is not an oathsworn member.",
+                ephemeral=True,
+            )
+            return
+
+        if target.guild_permissions.administrator:
+            await interaction.followup.send(
+                "You cannot timeout an administrator.",
+                ephemeral=True,
+            )
+            return
+
+        hour_from_now = datetime.now(timezone.utc) + timedelta(hours=1)
+        await target.edit(
+            timed_out_until=hour_from_now, reason=f"Timed out by {interaction.user}"
+        )
+        now = datetime.now(timezone.utc)
+
+        db.collection("users").document(str(interaction.user.id)).set(
+            {"last_timeout": now}, merge=True
+        )
+        await interaction.followup.send(
+            f"{target.mention} has been timed out for 1 hour.",
+            ephemeral=True,
+        )
+        return
 
 
 async def setup(bot: commands.Bot):
