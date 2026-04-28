@@ -58,6 +58,7 @@ from extra_commands.utils import (
     check_missing_badges,
     count_messages,
     elect_potw,
+    format_duration,
     has_any_role,
     is_oath_or_allowed_user,
     manual_leaderboard_post,
@@ -1033,21 +1034,31 @@ class Extra(commands.Cog):
 
         missing_potions = 1000 - int(treasure_potions)
         days_non_mem = math.ceil(missing_potions / int(per_spin)) * 7
-        days_mem = math.ceil(missing_potions / int(per_spin)) * 7
+        days_mem = math.ceil(missing_potions / int(per_spin))
         days_mem -= days_mem // 7
         acs = math.ceil(missing_potions / int(per_spin)) * 200
         embed = discord.Embed(
-            title="How far off Item of Digital Awesomeness?", description=f""
+            title="How far off Item of Digital Awesomeness?",
+            description="",
+            color=discord.Color.gold(),
         )
-        embed.add_field(name="Current Potions", value=treasure_potions)
-
-        embed.add_field(name="Weekly spins", value=f"{days_non_mem} days")
+        embed.add_field(name="Current Potions", value=treasure_potions, inline=False)
 
         embed.add_field(
-            name="Daily spins", value=f"{days_mem} days<:legendaqw:1498781178075943043>"
+            name="Weekly spins",
+            value=f"{format_duration(days_non_mem)} days",
+            inline=False,
         )
 
-        embed.add_field(name="Using ACs", value=f"{acs}<:acaqw:1498781113127145482>")
+        embed.add_field(
+            name="Daily spins",
+            value=f"{format_duration(days_mem)} days<:legendaqw:1498781178075943043>",
+            inline=False,
+        )
+
+        embed.add_field(
+            name="Using ACs", value=f"{acs}<:acaqw:1498781113127145482>", inline=False
+        )
         await interaction.followup.send(embed=embed)
 
 

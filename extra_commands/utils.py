@@ -340,6 +340,24 @@ async def elect_potw(member: discord.Member):
         await announcement_channel.send(message)
 
 
+def format_duration(total_days):
+    years = total_days // 365
+    remaining_days = total_days % 365
+
+    months = remaining_days // 30
+    days = remaining_days % 30
+
+    parts = []
+    if years:
+        parts.append(f"{years}y")
+    if months:
+        parts.append(f"{months}m")
+    if days or not parts:
+        parts.append(f"{days}d")
+
+    return " ".join(parts)
+
+
 async def elect_potw_by_name(username: str, guild: discord.Guild):
 
     potw_role = guild.get_role(POTW_ROLE_ID)
