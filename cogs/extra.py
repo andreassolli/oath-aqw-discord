@@ -1009,6 +1009,12 @@ class Extra(commands.Cog):
         per_spin: Literal["1", "2", "6"],
     ):
         await interaction.response.defer()
+        channel_id = interaction.channel_id
+        if channel_id not in ALLOWED_COMMANDS_CHANNELS:
+            await interaction.followup.send(
+                "This command is not allowed in this channel.", ephemeral=True
+            )
+            return
         user_doc = db.collection("users").document(str(user.id)).get()
         if not user_doc.exists:
             await interaction.followup.send("User not found.", ephemeral=True)
