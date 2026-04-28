@@ -1,3 +1,4 @@
+import math
 from datetime import datetime, timedelta, timezone
 from typing import Literal
 
@@ -72,6 +73,7 @@ from extra_commands.wordle import (
 from extra_commands.wordle_image import generate_wordle_board
 from firebase_client import db
 from ticket_help.utils.experienced import StartView
+from user_profile.utils import fetch_inventory
 from user_verification.utils import change_roles
 
 BOSS_TO_CERTIFICATE = {
@@ -996,6 +998,51 @@ class Extra(commands.Cog):
             ephemeral=True,
         )
         return
+
+    @app_commands.command(
+        name="ioda", description="See how much AC you need to spend for an IoDA"
+    )
+    async def ioda(
+        self,
+        interaction: discord.Interaction,
+        user: discord.Member,
+        per_spin: Literal["1", "2", "6"],
+    ):
+        await interaction.response.defer()
+        user_doc = db.collection("users").document(str(user.id)).get()
+        if not user_doc.exists:
+            await interaction.followup.send("User not found.", ephemeral=True)
+            return
+        user_data = user_doc.to_dict()
+        ccid = user_data.get("ccid")
+        if not ccid:
+            await interaction.followup.send("User has no CCID.", ephemeral=True)
+            return
+
+        inventory = await fetch_inventory(ccid)
+        treasure_potions = 0
+        for item in inventory:
+            if item.get("strName") == "Treasure Potion":
+                treasure_potions = int(item.get("intCount", 0))
+
+        missing_potions = 1000 - int(treasure_potions)
+        days_non_mem = math.ceil(missing_potions / int(per_spin)) * 7
+        days_mem = math.ceil(missing_potions / int(per_spin)) * 7
+        days_mem -= days_mem // 7
+        acs = math.ceil(missing_potions / int(per_spin)) * 200
+        embed = discord.Embed(
+            title="How far off Item of Digital Awesomeness?", description=f""
+        )
+        embed.add_field(name="Current Potions", value=treasure_potions)
+
+        embed.add_field(name="Weekly spins", value=f"{days_non_mem} days")
+
+        embed.add_field(
+            name="Daily spins", value=f"{days_mem} days<:legendaqw:1498781178075943043>"
+        )
+
+        embed.add_field(name="Using ACs", value=f"{acs}<:acaqw:1498781113127145482>")
+        await interaction.followup.send(embed=embed)
 
 
 async def setup(bot: commands.Bot):
