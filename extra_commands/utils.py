@@ -348,12 +348,22 @@ def format_duration(total_days):
     days = remaining_days % 30
 
     parts = []
+
     if years:
-        parts.append(f"{years}y")
+        if years == 1:
+            parts.append(f"{years} year")
+        else:
+            parts.append(f"{years} years")
     if months:
-        parts.append(f"{months}m")
+        if months == 1:
+            parts.append(f"{months} month")
+        else:
+            parts.append(f"{months} months")
     if days or not parts:
-        parts.append(f"{days}d")
+        if days == 1:
+            parts.append(f"{days} day")
+        elif days:
+            parts.append(f"{days} days")
 
     return " ".join(parts)
 

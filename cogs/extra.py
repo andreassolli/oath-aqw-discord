@@ -1042,17 +1042,19 @@ class Extra(commands.Cog):
             description="",
             color=discord.Color.gold(),
         )
-        embed.add_field(name="Current Potions", value=treasure_potions, inline=False)
+        embed.add_field(
+            name="Currently", value=f"{treasure_potions}/1000 potions", inline=False
+        )
 
         embed.add_field(
-            name="Weekly spins",
-            value=f"{format_duration(days_non_mem)} days",
+            name="Using weekly spins",
+            value=f"{format_duration(days_non_mem)}",
             inline=False,
         )
 
         embed.add_field(
-            name="Daily spins",
-            value=f"{format_duration(days_mem)} days<:legendaqw:1498781178075943043>",
+            name="Using daily spins <:legendaqw:1498781178075943043>",
+            value=f"{format_duration(days_mem)}",
             inline=False,
         )
 
