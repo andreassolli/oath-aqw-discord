@@ -232,8 +232,6 @@ async def get_badge_stats(ccid: str) -> dict:
 
     badges = await fetch_badges(ccid)
 
-    whale = calculate_whale_badges(badges)
-
     return {
         "total_badges": calculate_total_badges(badges),
         "epic_badges": calculate_epic_badges(badges),
@@ -301,7 +299,9 @@ async def check_for_ioda(inventory: list[dict]) -> bool:
 def define_whale(badges: list[dict], ioda: bool) -> str | None:
 
     whaling = calculate_whale_badges(badges)
-
+    print("Upholder badges:", whaling["upholder_badges"])
+    print("Platinum badges:", whaling["platinum_badges"])
+    print("Gifting badges:", whaling["gifting_badges"])
     if (
         whaling["whale_badges"] >= 300
         and whaling["lower_gifting"]
