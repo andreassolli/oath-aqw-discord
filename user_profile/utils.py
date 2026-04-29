@@ -323,7 +323,7 @@ def define_whale(badges: list[dict], ioda: bool) -> str | None:
     elif (
         whaling["whale_badges"] >= 200
         and whaling["gifting_badges"] >= 1
-        and whaling["upholder_badges"] >= 4
+        and whaling["upholder_badges"] >= 3
     ):
         return "Whale II"
 
