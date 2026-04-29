@@ -153,7 +153,12 @@ def calculate_whale_badges(badges: list[dict]) -> dict:
     platinum_badges = sum(1 for badge in badges if badge.get("sTitle") in pet_badges)
 
     gifting_badges = sum(
-        1 for badge in badges if "giftingtier7" in badge.get("sFileName", "")
+        1
+        for badge in badges
+        if (
+            "giftingtier7" in badge.get("sFileName", "")
+            or "giftingTier7" in badge.get("sFileName", "")
+        )
     )
 
     lower_gifting = any(
