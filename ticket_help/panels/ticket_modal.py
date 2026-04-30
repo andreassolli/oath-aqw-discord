@@ -179,7 +179,7 @@ class CreateTicketModal(discord.ui.Modal):
             if self.type in {"other bosses", "spamming", "testing"}:
                 if self.type == "spamming":
                     selected_spam = self._preset_bosses[0]
-                    if selected_spam == "Full TempleShrine":
+                    if selected_spam == "All TempleShrine":
                         points = int(total_kills_value * 1.75)
                     elif selected_spam == "Middle TempleShrine":
                         points = int(total_kills_value * 0.75)
