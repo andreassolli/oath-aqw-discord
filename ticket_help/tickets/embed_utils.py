@@ -33,7 +33,9 @@ def build_ticket_embed(
 ):
     requester_member = guild.get_member(requester_id)
     claimer_roles = claimer_roles or {}
-    requester_role = claimer_roles.get(str(requester_id), "Fill")
+    requester_role = claimer_roles.get(
+        str(requester_id), "DPS" if "Ultra Speaker" in bosses else "Fill"
+    )
 
     # Only apply role formatting in grimchallenge
     if requester_role and ("Grim Challenge" in bosses or "Ultra Speaker" in bosses):

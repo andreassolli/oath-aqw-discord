@@ -187,7 +187,10 @@ class CreateTicketModal(discord.ui.Modal):
                         points = int(total_kills_value * 1.75)
                     elif selected_spam == "Middle TempleShrine":
                         points = int(total_kills_value * 0.75)
-                    elif selected_spam == "Side TempleShrine":
+                    elif (
+                        selected_spam == "Right TempleShrine"
+                        or selected_spam == "Left TempleShrine"
+                    ):
                         points = int(total_kills_value * 0.5)
                     else:
                         index = bisect.bisect_left(spam_points, total_kills_value)
