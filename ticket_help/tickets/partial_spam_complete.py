@@ -73,7 +73,7 @@ class SpamAmountModal(discord.ui.Modal, title="Enter completed runs/kills"):
         modified_data = self.build_modified_data(data, amount)
 
         modified_data["total_kills"] = amount
-
+        await interaction.response.defer(ephemeral=True)
         await finalize_ticket(
             interaction=interaction,
             ticket_name=self.ticket_name,
