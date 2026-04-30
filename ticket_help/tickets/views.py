@@ -383,24 +383,26 @@ class TicketActionView(discord.ui.View):
         label="📝 Partial Complete", style=discord.ButtonStyle.primary, row=1
     )
     async def partially_complete_ticket(self, interaction: discord.Interaction, _):
-        await interaction.response.defer(ephemeral=True)
 
         doc_ref = db.collection("tickets").document(self.ticket_name)
         doc = doc_ref.get()
 
         if not doc.exists:
+            await interaction.response.defer(ephemeral=True)
             return await interaction.followup.send(
                 "❌ Ticket data not found.", ephemeral=True
             )
 
         data = doc.to_dict()
         if data.get("type") in {"other bosses", "testing", "until drop"}:
+            await interaction.response.defer(ephemeral=True)
             return await interaction.followup.send(
                 "⚠️ Partial completion is not available for this ticket type.",
                 ephemeral=True,
             )
 
         if data.get("status") in ("completing", "completed"):
+            await interaction.response.defer(ephemeral=True)
             return await interaction.followup.send(
                 "⚠️ This ticket has already been completed.", ephemeral=True
             )
@@ -411,6 +413,7 @@ class TicketActionView(discord.ui.View):
         is_oathsworn = has_oathsworn_role(interaction)
 
         if not (is_requester or is_admin or is_oathsworn):
+            await interaction.response.defer(ephemeral=True)
             return await interaction.followup.send(
                 "🚫 Only the ticket creator or an admin can complete this ticket.",
                 ephemeral=True,
@@ -419,6 +422,7 @@ class TicketActionView(discord.ui.View):
         points = data.get("points", 1)
         claimers = data.get("claimers", [])
         if len(claimers) == 0:
+            await interaction.response.defer(ephemeral=True)
             return await interaction.followup.send(
                 "⚠️ You cannot complete a ticket with no helpers.",
                 ephemeral=True,
@@ -433,7 +437,7 @@ class TicketActionView(discord.ui.View):
             )
 
         view = PartialCompleteView(self.ticket_name, self.bosses)
-
+        await interaction.response.defer(ephemeral=True)
         await interaction.followup.send(
             "📝 Select which bosses were completed:",
             view=view,
