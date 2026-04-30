@@ -51,7 +51,7 @@ class CreateTicketModal(discord.ui.Modal):
         username = username if username else ""
         self.username = discord.ui.TextInput(label="Username", required=True)
         self.username.default = username
-
+        self.add_item(self.username)
         # if self.type in {"other bosses", "spamming", "testing"}:
         #    self.room_input = discord.ui.TextInput(
         #        label="Room",
@@ -129,7 +129,7 @@ class CreateTicketModal(discord.ui.Modal):
                         int(self.room_input.value) if self.room_input else self.room
                     )
             except ValueError:
-                await interaction.response.send_message(
+                await interaction.followup.send(
                     "❌ Room must be a number.", ephemeral=True
                 )
                 return
@@ -143,7 +143,7 @@ class CreateTicketModal(discord.ui.Modal):
                 try:
                     total_kills_value = int(self.total_kills_input.value)
                 except ValueError:
-                    return await interaction.response.send_message(
+                    return await interaction.followup.send(
                         "❌ Total kills must be a number.", ephemeral=True
                     )
             else:
