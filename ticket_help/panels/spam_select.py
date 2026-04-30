@@ -32,5 +32,5 @@ class SpamSelect(discord.ui.Select):
         )
 
     async def callback(self, interaction: discord.Interaction):
-        self.view.selected_bosses = self.values[0]
+        self.view.selected_bosses = [self.values[0]]
         await interaction.response.defer()
