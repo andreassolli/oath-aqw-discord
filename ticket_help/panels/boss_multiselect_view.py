@@ -15,15 +15,15 @@ class BossMultiSelectView(discord.ui.View):
         self.server = server
         self.selected_bosses = []
 
-        if self.ticket_type == "spamming":
-            self.add_item(SpamSelect())
-        else:
+        if self.ticket_type != "spamming":
             bosses = get_bosses_for_type(ticket_type)
 
             if not bosses:
                 raise ValueError(f"No bosses configured for type '{ticket_type}'")
 
             self.add_item(BossMultiSelect(bosses))
+        else:
+            self.add_item(SpamSelect())
 
     @discord.ui.button(label="Next", style=discord.ButtonStyle.primary, row=1)
     async def next_step(self, interaction: discord.Interaction, _):
