@@ -28,7 +28,6 @@ class TicketCreateView(discord.ui.View):
 
         if self.selected_type in {
             "other bosses",
-            "spamming",
             "testing",
             "until drop",
         }:

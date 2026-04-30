@@ -4,6 +4,7 @@ from ticket_help.tickets.boss_type import get_bosses_for_type
 
 from .boss_multiselect import BossMultiSelect
 from .simple_ticket_modal import SimpleTicketModal
+from .spam_select import SpamSelect
 from .ticket_modal import CreateTicketModal
 
 
@@ -14,12 +15,15 @@ class BossMultiSelectView(discord.ui.View):
         self.server = server
         self.selected_bosses = []
 
-        bosses = get_bosses_for_type(ticket_type)
+        if ticket_type == "spamming":
+            self.add_item(SpamSelect())
+        else:
+            bosses = get_bosses_for_type(ticket_type)
 
-        if not bosses:
-            raise ValueError(f"No bosses configured for type '{ticket_type}'")
+            if not bosses:
+                raise ValueError(f"No bosses configured for type '{ticket_type}'")
 
-        self.add_item(BossMultiSelect(bosses))
+            self.add_item(BossMultiSelect(bosses))
 
     @discord.ui.button(label="Next", style=discord.ButtonStyle.primary, row=1)
     async def next_step(self, interaction: discord.Interaction, _):

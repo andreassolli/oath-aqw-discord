@@ -1,3 +1,4 @@
+import bisect
 import random
 
 import discord
@@ -60,7 +61,12 @@ class CreateTicketModal(discord.ui.Modal):
         #    self.room = None
         # else:
 
-        if self.type in {"other bosses", "spamming", "testing", "until drop"}:
+        if self.type in {
+            "other bosses",
+            "spamming",
+            "testing",
+            "until drop",
+        } and not any("TempleShrine" in boss for boss in self._preset_bosses):
             self.bosses_input = discord.ui.TextInput(
                 label="List boss rooms (comma-separated)",
                 placeholder="Ectocave,WorldEnder,Voidlair...",
@@ -73,7 +79,12 @@ class CreateTicketModal(discord.ui.Modal):
 
         self.add_item(self.username)
 
-        if self.type in {"other bosses", "spamming", "testing", "until drop"}:
+        if self.type in {
+            "other bosses",
+            "spamming",
+            "testing",
+            "until drop",
+        } and not any("TempleShrine" in boss for boss in self._preset_bosses):
             self.max_claims_input = discord.ui.TextInput(
                 label="Maximum helpers",
                 placeholder="Digit between 1 and 20",
@@ -97,7 +108,7 @@ class CreateTicketModal(discord.ui.Modal):
 
         if self.type == "spamming":
             self.total_kills_input = discord.ui.TextInput(
-                label="Total kills",
+                label="Total kills/runs",
                 placeholder="Digit between 1 and 500",
                 required=True,
             )
@@ -166,20 +177,16 @@ class CreateTicketModal(discord.ui.Modal):
                 max_claims_value = 3
 
             if self.type in {"other bosses", "spamming", "testing"}:
-                bosses = [boss.strip() for boss in self.bosses_input.value.split(",")]
-                start = 0
-                end = len(spam_points) - 1
-                mid = (start + end) // 2
-                while start < end:
-                    mid = (start + end) // 2
-                    if spam_points[mid] > total_kills_value:
-                        end = mid - 1
-                    elif spam_points[mid] < total_kills_value:
-                        start = mid + 1
+                if self.type == "spamming":
+                    if self.type == "Full TempleShrine":
+                        points = int(self.total_kills * 1.75)
+                    elif self.type == "Middle TempleShrine":
+                        points = int(self.total_kills * 0.75)
+                    elif self.type == "Side TempleShrine":
+                        points = int(self.total_kills * 0.5)
                     else:
-                        break
-
-                points = start + 1
+                        index = bisect.bisect_left(spam_points, self.total_kills)
+                        points = spam_points[index - 1] if index > 0 else 0
             elif self.type == "until drop":
                 bosses = [boss.strip() for boss in self.bosses_input.value.split(",")]
 
@@ -276,6 +283,7 @@ class CreateTicketModal(discord.ui.Modal):
                     max_claims=max_claims_value,
                     room=str(room_value),
                     bosses=bosses,
+                    kills=total_kills_value,
                 ),
                 allowed_mentions=allowed_mentioning,
             )

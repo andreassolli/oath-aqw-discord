@@ -22,6 +22,7 @@ from ticket_help.commands.permissions import (
 from ticket_help.panels.change_server_view import ServerSelectView
 from ticket_help.panels.server_fetch import fetch_servers
 from ticket_help.tickets.partial_complete import PartialCompleteView
+from ticket_help.tickets.partial_spam_complete import SpamAmountModal
 from ticket_help.tickets.speaker_role_claim import SpeakerRoleClaimView
 
 from .completion_utils import finalize_ticket
@@ -45,12 +46,20 @@ BOSS_TO_CERTIFICATE = {
 
 
 class TicketActionView(discord.ui.View):
-    def __init__(self, ticket_name: str, max_claims: int, room: str, bosses: list[str]):
+    def __init__(
+        self,
+        ticket_name: str,
+        max_claims: int,
+        room: str,
+        bosses: list[str],
+        kills: int,
+    ):
         super().__init__(timeout=None)
         self.ticket_name = ticket_name
         self.max_claims = max_claims
         self.room = room
         self.bosses = bosses
+        self.kills = kills
         self.add_item(
             discord.ui.Button(
                 label="────────────────── Helper Buttons ──────────────────",
@@ -241,9 +250,11 @@ class TicketActionView(discord.ui.View):
 
         lines = []
         for boss in self.bosses:
-            custom_tickets = {"spamming", "testing", "until drop"}
+            custom_tickets = {"testing", "until drop"}
             if data.get("type") in custom_tickets:
                 rooms = boss
+            elif data.get("type") == "spamming" and self.bosses == "custom":
+                rooms = get_boss_room(boss)
             else:
                 rooms = get_boss_room(boss)
 
@@ -383,7 +394,7 @@ class TicketActionView(discord.ui.View):
             )
 
         data = doc.to_dict()
-        if data.get("type") in {"other bosses", "spamming", "testing", "until drop"}:
+        if data.get("type") in {"other bosses", "testing", "until drop"}:
             return await interaction.followup.send(
                 "⚠️ Partial completion is not available for this ticket type.",
                 ephemeral=True,
@@ -411,6 +422,14 @@ class TicketActionView(discord.ui.View):
             return await interaction.followup.send(
                 "⚠️ You cannot complete a ticket with no helpers.",
                 ephemeral=True,
+            )
+
+        if data.get("type") == "spamming":
+            return await interaction.response.send_modal(
+                SpamAmountModal(
+                    ticket_name=self.ticket_name,
+                    kills=self.kills,
+                )
             )
 
         view = PartialCompleteView(self.ticket_name, self.bosses)

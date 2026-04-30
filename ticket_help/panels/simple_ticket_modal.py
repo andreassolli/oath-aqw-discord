@@ -4,6 +4,7 @@ import discord
 from firebase_admin import firestore
 
 from config import (
+    DAGE_CERTIFICATE_ID,
     EXPERIENCED_HELPER_ROLE_ID,
     GRAMIEL_CERTIFICATE_ID,
     SPEAKER_CERTIFICATE_ID,
@@ -56,6 +57,7 @@ class SimpleTicketModal(discord.ui.Modal, title="Create Practice Ticket"):
 
         gramiel_role = guild.get_role(GRAMIEL_CERTIFICATE_ID)
         speaker_role = guild.get_role(SPEAKER_CERTIFICATE_ID)
+        dage_role = guild.get_role(DAGE_CERTIFICATE_ID)
         bosses = self._preset_bosses
         overwrites = {
             guild.default_role: discord.PermissionOverwrite(view_channel=False),

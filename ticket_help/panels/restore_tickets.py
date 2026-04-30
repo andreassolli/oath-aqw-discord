@@ -53,6 +53,7 @@ async def restore_tickets(bot: discord.Client):
             max_claims=data["max_claims"],
             room=str(data["room"]),
             bosses=data["bosses"],
+            kills=data.get("total_kills", 1),
         )
 
         await message.edit(embed=embed, view=view)
