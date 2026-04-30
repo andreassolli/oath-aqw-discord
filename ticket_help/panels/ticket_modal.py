@@ -131,7 +131,7 @@ class CreateTicketModal(discord.ui.Modal):
                 return
 
             drops_list = []
-
+            bosses = self._preset_bosses
             if self.total_drops_input:
                 drops_list = self.total_drops_input.value.strip().split(",")
 
