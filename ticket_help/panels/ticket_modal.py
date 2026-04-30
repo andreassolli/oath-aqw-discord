@@ -77,8 +77,6 @@ class CreateTicketModal(discord.ui.Modal):
         self.room = random.randint(11111, 99999)
         self.room_input = None
 
-        self.add_item(self.username)
-
         if self.type in {
             "other bosses",
             "spamming",
@@ -121,9 +119,14 @@ class CreateTicketModal(discord.ui.Modal):
         try:
             await interaction.response.defer(ephemeral=True)
             try:
-                room_value = (
-                    int(self.room_input.value) if self.room_input else self.room
-                )
+                if self.type == "spamming" and any(
+                    "TempleShrine" in boss for boss in self._preset_bosses
+                ):
+                    room_value = "templshrine"
+                else:
+                    room_value = (
+                        int(self.room_input.value) if self.room_input else self.room
+                    )
             except ValueError:
                 await interaction.response.send_message(
                     "❌ Room must be a number.", ephemeral=True
