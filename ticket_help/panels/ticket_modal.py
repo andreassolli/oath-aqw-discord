@@ -51,6 +51,7 @@ class CreateTicketModal(discord.ui.Modal):
         username = username if username else ""
         self.username = discord.ui.TextInput(label="Username", required=True)
         self.username.default = username
+
         # if self.type in {"other bosses", "spamming", "testing"}:
         #    self.room_input = discord.ui.TextInput(
         #        label="Room",

@@ -15,7 +15,7 @@ class BossMultiSelectView(discord.ui.View):
         self.server = server
         self.selected_bosses = []
 
-        if ticket_type == "spamming":
+        if self.ticket_type == "spamming":
             self.add_item(SpamSelect())
         else:
             bosses = get_bosses_for_type(ticket_type)
