@@ -28,7 +28,7 @@ class SpamSelect(discord.ui.Select):
             min_values=1,
             max_values=1,
             options=options[:25],  # Discord limit
-            row=1,
+            row=0,
         )
 
     async def callback(self, interaction: discord.Interaction):
