@@ -300,7 +300,7 @@ class TicketActionView(discord.ui.View):
             custom_tickets = {"spamming", "testing", "until drop"}
             if data.get("type") in custom_tickets:
                 if "TempleShrine" in boss:
-                    rooms = "templshrine"
+                    rooms = "templeshrine"
                 else:
                     rooms = boss
             else:
