@@ -448,21 +448,21 @@ async def manual_leaderboard_post(interaction: discord.Interaction):
     if channel is None:
         channel = await guild.fetch_channel(LEADERBOARD_HISTORY_CHANNEL_ID)
     users = {
-        "OG San": 1700,
-        "Aidest": 946,
-        "Paboloso": 763,
-        "Fird": 611,
-        "notification": 519,
-        "Kid_": 342,
-        "Z e ta": 287,
-        "Lil_girl0": 271,
-        "cyore": 256,
-        "Juns": 218,
-        "bookworm": 192,
-        "NEGGS": 132,
-        "dkj": 129,
-        "Veritus": 129,
-        "Proxy": 127,
+        "Aidest": 2187,
+        "Fird": 1870,
+        "OG San": 1430,
+        "Samdal": 1348,
+        "AxelAnimations": 511,
+        "Paboloso": 477,
+        "Muhr So": 450,
+        "Z e ta": 359,
+        "L1ght0": 336,
+        "Bookworm": 336,
+        "Quincy Dao": 320,
+        "Krydoom": 308,
+        "cyore": 307,
+        "Maou": 301,
+        "Proxy": 268,
     }
     medals = ["🥇", "🥈", "🥉"]
     lines = []
@@ -470,7 +470,7 @@ async def manual_leaderboard_post(interaction: discord.Interaction):
     for i, (display_name, points) in enumerate(users.items()):
         position = i + 1
         guild = "💠 Oath"
-        if display_name == "Veritus":
+        if display_name == "AxelAnimations":
             guild = "On Gouache"
         elif display_name == "NEGGS":
             guild = "Vanaheim"
@@ -485,7 +485,7 @@ async def manual_leaderboard_post(interaction: discord.Interaction):
         lines.append(f"{prefix} **{display_name}** `{guild}` — `{points}` points")
 
     embed = discord.Embed(
-        title="🏆 Leaderboard for March 2026 (Top 15)",
+        title="🏆 Leaderboard for April 2026 (Top 15)",
         description="\n".join(lines),
         color=discord.Color.gold(),
         timestamp=datetime.now(UTC),

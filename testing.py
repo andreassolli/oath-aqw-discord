@@ -3,6 +3,7 @@ import random
 from datetime import datetime
 
 import aiohttp
+import discord
 import requests
 from google.cloud import firestore as gc_firestore
 from tweepy import Client as TwitterClient
@@ -627,8 +628,94 @@ async def backlog_donations():
             )
 
 
+async def post_kofi_summary():
+    timestamp = datetime.now().isoformat() + "Z"
+
+    payload = {
+        "embeds": [
+            {
+                "title": "Oath Ko-Fi April '26 ☕️",
+                "description": (
+                    "We want to be as open and transparent about the fundings, as well as spendings, for our community. "
+                    "In order to do so we will be posting a summary each month of inventory, donations received, and prizes spent.\n\n"
+                    "**Donations received 💵**\n"
+                    "- Total: **$1046**\n"
+                    "- After fees: **$935**\n\n"
+                    "**Total spendings 💸**\n"
+                    "- Total: **$943**, $8 above\n\n"
+                    "**Expenses 🧾**\n"
+                    "- Hosting expense, April/May: **$26**\n"
+                    "- Pay artists: **$22**\n"
+                    "- Set aside for commission: **$50**\n\n"
+                    "**Inventory 🧳**\n"
+                    "```diff\n"
+                    "+ 73 000 Artix Points ($365)\n"
+                    "+ 23 HeroPoints ($55)\n"
+                    "+ 11 HeroMart Items ($276)\n"
+                    "+ 6 AQW:I Founder ($150)\n"
+                    "```\n"
+                    "Stay tuned for when we will distribute some of the prizes acquired! "
+                    "<a:Twilly_fire:1457144099432825095>"
+                ),
+                "color": 0x34B4EB,
+                "timestamp": timestamp,
+                "footer": {
+                    "text": "A massive thank you to everyone who supported us this month ❤️"
+                },
+            }
+        ]
+    }
+
+    response = requests.post(
+        "https://discord.com/api/webhooks/1497599199188094977/3rZftx-W9mQQ6UKatVacS0lNqIvZxzmYS7_NqmVDwdkftctR2D1gTfgss89TPl7oqdFT",
+        json=payload,
+    )
+
+    if response.ok:
+        print("Posted")
+    else:
+        print("Failed")
+
+
+def migrate_quest_names_batch():
+    users_ref = db.collection("users").where("points", "==", None).stream()
+
+    batch = db.batch()
+    operation_count = 0
+    updated_count = 0
+
+    for user_doc in users_ref:
+        user_data = user_doc.to_dict()
+        quests_completed = user_data.get("points")
+
+        if not quests_completed:
+            continue
+
+        # Add update to batch
+        batch.update(user_doc.reference, {"points": 0})
+
+        operation_count += 1
+        updated_count += 1
+
+        # Commit batch when limit reached
+        if operation_count >= BATCH_LIMIT:
+            batch.commit()
+            print(f"✅ Committed {operation_count} updates")
+
+            # Reset batch
+            batch = db.batch()
+            operation_count = 0
+
+    # Commit any remaining operations
+    if operation_count > 0:
+        batch.commit()
+        print(f"✅ Committed final {operation_count} updates")
+
+    print(f"🎉 Migration complete. Updated {updated_count} users.")
+
+
 if __name__ == "__main__":
-    asyncio.run(backlog_donations())
+    asyncio.run(post_kofi_summary())
     # asyncio.run(add_killer_card())
     # asyncio.run(generate_test_card())
     # reset_coins()
