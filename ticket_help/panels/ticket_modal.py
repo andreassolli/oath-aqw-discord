@@ -120,14 +120,9 @@ class CreateTicketModal(discord.ui.Modal):
         try:
             await interaction.response.defer(ephemeral=True)
             try:
-                if self.type == "spamming" and any(
-                    "TempleShrine" in boss for boss in self._preset_bosses
-                ):
-                    room_value = "templshrine"
-                else:
-                    room_value = (
-                        int(self.room_input.value) if self.room_input else self.room
-                    )
+                room_value = (
+                    int(self.room_input.value) if self.room_input else self.room
+                )
             except ValueError:
                 await interaction.followup.send(
                     "❌ Room must be a number.", ephemeral=True
@@ -262,6 +257,7 @@ class CreateTicketModal(discord.ui.Modal):
                     "auto_closed": False,
                     "total_kills": total_kills_value,
                     "experienced_only": experienced_only,
+                    "claimer_roles": {str(interaction.user.id): "DPS"},
                 }
             )
 
