@@ -667,7 +667,7 @@ async def post_kofi_summary():
     }
 
     response = requests.post(
-        "https://discord.com/api/webhooks/1497599199188094977/3rZftx-W9mQQ6UKatVacS0lNqIvZxzmYS7_NqmVDwdkftctR2D1gTfgss89TPl7oqdFT",
+        "",
         json=payload,
     )
 
