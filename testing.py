@@ -715,9 +715,9 @@ def migrate_quest_names_batch():
 
 
 if __name__ == "__main__":
-    asyncio.run(post_kofi_summary())
+    # asyncio.run(post_kofi_summary())
     # asyncio.run(add_killer_card())
-    # asyncio.run(generate_test_card())
+    asyncio.run(generate_test_card())
     # reset_coins()
     # migrate_shop_prices()
     # backfill_wordle_stats()
