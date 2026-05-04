@@ -23,6 +23,7 @@ class BlackjackView(discord.ui.View):
         self.locked = False
         self.message = None
         self.wager = wager
+        self.has_hit = False
         self.table_image = BG.copy()
         self._draw_initial_cards()
 
@@ -52,7 +53,10 @@ class BlackjackView(discord.ui.View):
     async def hit(self, interaction: discord.Interaction, button: discord.ui.Button):
         await interaction.response.defer()
         self.user, self.deck = await add_card(self.user, self.deck)
-
+        self.has_hit = True
+        for child in self.children:
+            if isinstance(child, discord.ui.Button) and child.label == "Surrender":
+                child.disabled = True
         new_card = self.user[-1]
         img = CARD_CACHE[new_card]
 
@@ -166,6 +170,10 @@ class BlackjackView(discord.ui.View):
     async def surrender(
         self, interaction: discord.Interaction, button: discord.ui.Button
     ):
+        if self.has_hit:
+            return await interaction.response.send_message(
+                "You can only surrender before taking a hit.", ephemeral=True
+            )
         unlock_coins(interaction.user.id, self.wager)
         await self.payout(interaction.user.id, -(self.wager // 2))
         self.stop()
