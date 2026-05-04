@@ -18,7 +18,7 @@ from config import (
 )
 from firebase_client import db
 from user_verification.process_join_ticket import process_join_ticket
-from user_verification.utils import fetch_aqw_profile
+from user_verification.utils import change_roles, fetch_aqw_profile
 from user_verification.verification_panel import setup_verification_panel
 from utils import is_bot_channel
 
@@ -468,6 +468,55 @@ class VerificationCog(commands.Cog):
             f"AQW Username: **{aqw_username}**\n"
             f"Guild: **{profile.get('guild', 'None')}**",
             ephemeral=True,
+        )
+
+    @app_commands.command(name="force-sync", description="Force sync with the db")
+    @app_commands.default_permissions(administrator=True)
+    @app_commands.checks.has_role(DISCORD_MANAGER_ROLE_ID)
+    async def force_sync(self, interaction: discord.Interaction):
+        await interaction.response.defer(ephemeral=True)
+        await interaction.followup.send("Syncing...")
+        guild = interaction.guild
+        if not guild:
+            return await interaction.followup.send("No guild")
+
+        users = list(db.collection("users").stream())
+
+        updated = 0
+        failed = 0
+        missing = 0
+
+        for user_doc in users:
+            try:
+                user_data = user_doc.to_dict()
+                discord_id = int(user_doc.id)
+
+                member = guild.get_member(discord_id)
+
+                if not member:
+                    missing += 1
+                    continue
+
+                success = await change_roles(
+                    member,
+                    is_join_event=False,
+                    verified_guild=user_data.get("guild"),
+                    verified_at_all=user_data.get("verified", False),
+                )
+
+                if success:
+                    updated += 1
+                else:
+                    failed += 1
+
+            except Exception as e:
+                failed += 1
+
+        return await interaction.followup.send(
+            f"Role sync complete.\n"
+            f"Updated: {updated}\n"
+            f"Missing: {missing}\n"
+            f"Failed: {failed}"
         )
 
 
