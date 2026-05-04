@@ -471,7 +471,7 @@ class VerificationCog(commands.Cog):
         )
 
     @app_commands.command(name="force-sync", description="Force sync with the db")
-    @app_commands.default_permissions(administrator=True)
+    @app_commands.default_permissions(manage_roles=True)
     @app_commands.checks.has_role(DISCORD_MANAGER_ROLE_ID)
     async def force_sync(self, interaction: discord.Interaction):
         await interaction.response.defer(ephemeral=True)
