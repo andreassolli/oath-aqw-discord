@@ -152,7 +152,6 @@ async def change_roles(
             )
             await member.add_roles(
                 initiate_role,
-                helper_role,
                 reason="User verified in Oath",
             )
             return True
@@ -164,7 +163,6 @@ async def change_roles(
             )
             await member.add_roles(
                 unsworn_role,
-                helper_role,
                 vox_role,
                 reason="User verified in Vox",
             )
@@ -177,7 +175,6 @@ async def change_roles(
         )
         await member.add_roles(
             unsworn_role,
-            helper_role,
             reason="User verified outside Oath",
         )
         return True
