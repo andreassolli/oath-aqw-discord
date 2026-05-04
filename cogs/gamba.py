@@ -51,6 +51,11 @@ class Gamba(commands.Cog):
                 "You cannot wager a negative amount.",
                 ephemeral=True,
             )
+        if wager > 25000:
+            return await interaction.followup.send(
+                "Wager must be below <:oathcoin:1462999179998531614>25 000.",
+                ephemeral=True,
+            )
         success, error = lock_coins(interaction.user.id, wager)
 
         if not success:
@@ -82,6 +87,11 @@ class Gamba(commands.Cog):
         if wager <= 0:
             return await interaction.response.send_message(
                 "You cannot wager a negative amount.",
+                ephemeral=True,
+            )
+        if wager > 25000:
+            return await interaction.followup.send(
+                "Wager must be below <:oathcoin:1462999179998531614>25 000.",
                 ephemeral=True,
             )
         if opponent == interaction.user:
@@ -174,6 +184,11 @@ class Gamba(commands.Cog):
         if wager < 1:
             return await interaction.followup.send(
                 "Wager must be at least <:oathcoin:1462999179998531614>1.",
+                ephemeral=True,
+            )
+        if wager > 25000:
+            return await interaction.followup.send(
+                "Wager must be below <:oathcoin:1462999179998531614>25 000.",
                 ephemeral=True,
             )
         success, error = lock_coins(interaction.user.id, wager)
