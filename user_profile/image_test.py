@@ -102,7 +102,7 @@ async def generate_test_card(
     border = data.get("border", {})
     card = data.get("card", {})
     gems = data.get("gems", 0)
-    bg = Image.open(ASSETS_DIR / "sm.png").convert("RGBA")
+    bg = Image.open(ASSETS_DIR / "green_card.png").convert("RGBA")
     role = data.get("highlighted_role", "None")
 
     # if border:
