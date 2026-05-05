@@ -223,7 +223,7 @@ class Gamba(commands.Cog):
 
         user_string = f"Your cards: {user_total}"
         view = BlackjackView(user, dealer, deck, wager)
-        file = view._to_file()
+        file = view.to_file()
         msg = await interaction.followup.send(
             f"{user_string}",
             view=view,
