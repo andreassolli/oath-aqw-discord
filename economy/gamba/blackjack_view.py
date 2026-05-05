@@ -124,7 +124,9 @@ class BlackjackView(discord.ui.View):
                 attachments=[file],
             )
         elif user_total == 21:
-            result, file, dealer_total = await self.dealer_draws(user_id=interaction.user.id, user_total)
+            result, file, dealer_total = await self.dealer_draws(
+                interaction.user.id, user_total
+            )
             self.stop()
             return await self.message.edit(
                 content=f"{result}\nYou: {user_total} | Dealer: {dealer_total}",
@@ -153,7 +155,9 @@ class BlackjackView(discord.ui.View):
         self.dealer, self.deck = await add_dealer_card(self.dealer, self.deck)
         self.table_image = BG.copy()
 
-        result, file, dealer_total = await self.dealer_draws(interaction.user.id, user_total)
+        result, file, dealer_total = await self.dealer_draws(
+            interaction.user.id, user_total
+        )
 
         self.stop()
         self.locked = False
