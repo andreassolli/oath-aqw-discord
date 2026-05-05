@@ -8,7 +8,6 @@ from economy.gamba.generate_blackjack import (
     BG,
     CARD_BACK,
     CARD_CACHE,
-    generate_blackjack,
 )
 from economy.gamba.utils import unlock_coins
 from firebase_client import db
@@ -63,6 +62,39 @@ class BlackjackView(discord.ui.View):
         buffer.seek(0)
         return discord.File(buffer, filename="table.png")
 
+    async def dealer_draws(self, user_total: int):
+        self.dealer, self.deck = await add_dealer_card(self.dealer, self.deck)
+        self.table_image = BG.copy()
+
+        for i, card in enumerate(self.user):
+            img = CARD_CACHE[card]
+            self.table_image.paste(img, (58 + i * 117, 254), img)
+
+        for i, card in enumerate(self.dealer):
+            img = CARD_CACHE[card]
+            self.table_image.paste(img, (58 + i * 117, 52), img)
+
+        file = self.to_file()
+        dealer_total = await get_value(self.dealer)
+        unlock_coins(self.user.id, self.wager)
+
+        if dealer_total > 21:
+            await self.payout(self.user.id, self.wager)
+            result = f"<:GoobHeart:1459836996381048863> Dealer busted, you won, and got <:oathcoin:1462999179998531614>{self.wager * 2}!"
+
+        elif dealer_total > user_total:
+            result = f"<:GoobCrying:1457956174174617651> Dealer wins, you lost <:oathcoin:1462999179998531614>{self.wager}..."
+            await self.payout(self.user.id, -self.wager)
+
+        elif dealer_total < user_total:
+            await self.payout(self.user.id, int(self.wager * 1.5))
+            result = f"<:GoobShock:1463149045731299328> Blackjack! You won <:oathcoin:1462999179998531614>{int(self.wager * 2.5)}!"
+
+        else:
+            result = f"<:mapClown:1484474701798707240> Push, gained back <:oathcoin:1462999179998531614>{self.wager}"
+
+        return result, file, dealer_total
+
     @discord.ui.button(label="Hit", style=discord.ButtonStyle.success)
     async def hit(self, interaction: discord.Interaction, button: discord.ui.Button):
         await interaction.response.defer()
@@ -90,36 +122,7 @@ class BlackjackView(discord.ui.View):
                 attachments=[file],
             )
         elif user_total == 21:
-            self.dealer, self.deck = await add_dealer_card(self.dealer, self.deck)
-            self.table_image = BG.copy()
-
-            for i, card in enumerate(self.user):
-                img = CARD_CACHE[card]
-                self.table_image.paste(img, (58 + i * 117, 254), img)
-
-            for i, card in enumerate(self.dealer):
-                img = CARD_CACHE[card]
-                self.table_image.paste(img, (58 + i * 117, 52), img)
-
-            file = self.to_file()
-            dealer_total = await get_value(self.dealer)
-            unlock_coins(interaction.user.id, self.wager)
-
-            if dealer_total > 21:
-                await self.payout(interaction.user.id, self.wager)
-                result = f"<:GoobHeart:1459836996381048863> Dealer busted, you won, and got <:oathcoin:1462999179998531614>{self.wager * 2}!"
-
-            elif dealer_total > user_total:
-                result = f"<:GoobCrying:1457956174174617651> Dealer wins, you lost <:oathcoin:1462999179998531614>{self.wager}..."
-                await self.payout(interaction.user.id, -self.wager)
-
-            elif dealer_total < user_total:
-                await self.payout(interaction.user.id, int(self.wager * 1.5))
-                result = f"<:GoobShock:1463149045731299328> Blackjack! You won <:oathcoin:1462999179998531614>{int(self.wager * 2.5)}!"
-
-            else:
-                result = f"<:mapClown:1484474701798707240> Push, gained back <:oathcoin:1462999179998531614>{self.wager}"
-
+            result, file, dealer_total = await self.dealer_draws(user_total)
             self.stop()
             return await self.message.edit(
                 content=f"{result}\nYou: {user_total} | Dealer: {dealer_total}",
@@ -147,30 +150,7 @@ class BlackjackView(discord.ui.View):
         self.dealer, self.deck = await add_dealer_card(self.dealer, self.deck)
         self.table_image = BG.copy()
 
-        for i, card in enumerate(self.user):
-            img = CARD_CACHE[card]
-            self.table_image.paste(img, (58 + i * 117, 254), img)
-
-        for i, card in enumerate(self.dealer):
-            img = CARD_CACHE[card]
-            self.table_image.paste(img, (58 + i * 117, 52), img)
-
-        file = self.to_file()
-        dealer_total = await get_value(self.dealer)
-        unlock_coins(interaction.user.id, self.wager)
-        if dealer_total > 21:
-            await self.payout(interaction.user.id, self.wager)
-            result = f"<:GoobHeart:1459836996381048863> Dealer busted, you won, and got <:oathcoin:1462999179998531614>{self.wager * 2}!"
-
-        elif dealer_total > user_total:
-            result = f"<:GoobCrying:1457956174174617651> Dealer wins, you lost <:oathcoin:1462999179998531614>{self.wager}..."
-            await self.payout(interaction.user.id, -self.wager)
-        elif dealer_total < user_total:
-            await self.payout(interaction.user.id, self.wager)
-            result = f"<:GoobHeart:1459836996381048863> You won, and got <:oathcoin:1462999179998531614>{self.wager * 2}!"
-
-        else:
-            result = f"<:mapClown:1484474701798707240> Push, gained back <:oathcoin:1462999179998531614>{self.wager}"
+        result, file, dealer_total = await self.dealer_draws(user_total)
 
         self.stop()
         self.locked = False
