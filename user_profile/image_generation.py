@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import random
 from io import BytesIO
 from pathlib import Path
 from typing import Any, Dict, cast
@@ -78,6 +79,7 @@ async def generate_profile_card(
     outline_color = "#FFFFFF"
     outline_width = 0
     gold_card = card.get("id") == "Sign Card"
+    bot_breaker = card.get("id") == "BotBreaker Card"
     if target.joined_at:
         day = target.joined_at.day
         joined_text = f"Joined {day}. {target.joined_at.strftime('%b %Y')}"
@@ -85,14 +87,21 @@ async def generate_profile_card(
         joined_text = "Joined unknown"
 
     if card:
-        bg = Image.open(ASSETS_DIR / f"{card.get('image')}").convert("RGBA")
+        if gold_card:
+            bg = Image.open(ASSETS_DIR / "gold_signature_card.png").convert("RGBA")
+            outline_color = "#583400"
+            outline_width = 0
+        elif bot_breaker:
+            bg_options = [
+                ASSETS_DIR / "botbreaker1_card.png",
+                ASSETS_DIR / "botbreaker2_card.png",
+            ]
+            bg = Image.open(random.choice(bg_options)).convert("RGBA")
+
+        else:
+            bg = Image.open(ASSETS_DIR / f"{card.get('image')}").convert("RGBA")
     else:
         bg = ASSET_CACHE["default_bg"].copy()
-
-    if gold_card:
-        bg = Image.open(ASSETS_DIR / "gold_signature_card.png").convert("RGBA")
-        outline_color = "#583400"
-        outline_width = 0
 
     # if border and not gold_card and not border.get("id") in EXTRA_BORDERS:
     #     border_img = Image.open(ASSETS_DIR / f"{border.get('image')}").convert("RGBA")
