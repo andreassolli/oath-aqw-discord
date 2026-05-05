@@ -56,13 +56,15 @@ class BlackjackView(discord.ui.View):
             else:
                 self.table_image.paste(CARD_BACK, (58 + i * 117, 52), CARD_BACK)
 
+    # Display board
     def to_file(self):
         buffer = BytesIO()
         self.table_image.save(buffer, format="PNG")
         buffer.seek(0)
         return discord.File(buffer, filename="table.png")
 
-    async def dealer_draws(self, user_total: int):
+    # Whenever your turn is over
+    async def dealer_draws(self, user_id, user_total: int):
         self.dealer, self.deck = await add_dealer_card(self.dealer, self.deck)
         self.table_image = BG.copy()
 
@@ -76,18 +78,18 @@ class BlackjackView(discord.ui.View):
 
         file = self.to_file()
         dealer_total = await get_value(self.dealer)
-        unlock_coins(self.user.id, self.wager)
+        unlock_coins(user_id, self.wager)
 
         if dealer_total > 21:
-            await self.payout(self.user.id, self.wager)
+            await self.payout(user_id, self.wager)
             result = f"<:GoobHeart:1459836996381048863> Dealer busted, you won, and got <:oathcoin:1462999179998531614>{self.wager * 2}!"
 
         elif dealer_total > user_total:
             result = f"<:GoobCrying:1457956174174617651> Dealer wins, you lost <:oathcoin:1462999179998531614>{self.wager}..."
-            await self.payout(self.user.id, -self.wager)
+            await self.payout(user_id, -self.wager)
 
         elif dealer_total < user_total:
-            await self.payout(self.user.id, int(self.wager * 1.5))
+            await self.payout(user_id, int(self.wager * 1.5))
             result = f"<:GoobShock:1463149045731299328> Blackjack! You won <:oathcoin:1462999179998531614>{int(self.wager * 2.5)}!"
 
         else:
@@ -122,7 +124,7 @@ class BlackjackView(discord.ui.View):
                 attachments=[file],
             )
         elif user_total == 21:
-            result, file, dealer_total = await self.dealer_draws(user_total)
+            result, file, dealer_total = await self.dealer_draws(user_id=interaction.user.id, user_total)
             self.stop()
             return await self.message.edit(
                 content=f"{result}\nYou: {user_total} | Dealer: {dealer_total}",
@@ -130,6 +132,7 @@ class BlackjackView(discord.ui.View):
                 attachments=[file],
             )
 
+        # No blackjack or bust, continue
         await self.message.edit(
             content=f"Your cards: {user_total}",
             view=self,
@@ -150,7 +153,7 @@ class BlackjackView(discord.ui.View):
         self.dealer, self.deck = await add_dealer_card(self.dealer, self.deck)
         self.table_image = BG.copy()
 
-        result, file, dealer_total = await self.dealer_draws(user_total)
+        result, file, dealer_total = await self.dealer_draws(interaction.user.id, user_total)
 
         self.stop()
         self.locked = False
