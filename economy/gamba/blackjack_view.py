@@ -65,35 +65,45 @@ class BlackjackView(discord.ui.View):
 
     # Whenever your turn is over
     async def dealer_draws(self, user_id, user_total: int):
-        self.dealer, self.deck = await add_dealer_card(self.dealer, self.deck)
-        self.table_image = BG.copy()
-
-        for i, card in enumerate(self.user):
-            img = CARD_CACHE[card]
-            self.table_image.paste(img, (58 + i * 117, 254), img)
-
-        for i, card in enumerate(self.dealer):
-            img = CARD_CACHE[card]
-            self.table_image.paste(img, (58 + i * 117, 52), img)
-
-        file = self.to_file()
+        # Dealer draws until 17+
         dealer_total = await get_value(self.dealer)
+
+        while dealer_total < 17:
+            self.dealer, self.deck = await add_dealer_card(self.dealer, self.deck)
+            dealer_total = await get_value(self.dealer)
+
+        self.render_table(hide_dealer=False)
+        file = self.to_file()
+
+        # Release wager lock now that round is over
         unlock_coins(user_id, self.wager)
 
         if dealer_total > 21:
+            # Return wager + winnings
             await self.payout(user_id, self.wager)
-            result = f"<:GoobHeart:1459836996381048863> Dealer busted, you won, and got <:oathcoin:1462999179998531614>{self.wager * 2}!"
+            result = (
+                f"<:GoobHeart:1459836996381048863> Dealer busted! "
+                f"You won <:oathcoin:1462999179998531614>{self.wager}!"
+            )
 
         elif dealer_total > user_total:
-            result = f"<:GoobCrying:1457956174174617651> Dealer wins, you lost <:oathcoin:1462999179998531614>{self.wager}..."
-            await self.payout(user_id, -self.wager)
+            result = (
+                f"<:GoobCrying:1457956174174617651> Dealer wins. "
+                f"You lost <:oathcoin:1462999179998531614>{self.wager}."
+            )
 
         elif dealer_total < user_total:
-            await self.payout(user_id, int(self.wager * 1.5))
-            result = f"<:GoobShock:1463149045731299328> Blackjack! You won <:oathcoin:1462999179998531614>{int(self.wager * 2.5)}!"
+            # Standard win pays 1:1
+            await self.payout(user_id, self.wager)
+            result = (
+                f"<:GoobShock:1463149045731299328> You won "
+                f"<:oathcoin:1462999179998531614>{self.wager}!"
+            )
 
         else:
-            result = f"<:mapClown:1484474701798707240> Push, gained back <:oathcoin:1462999179998531614>{self.wager}"
+            # Push = refund wager
+            await self.payout(user_id, self.wager)
+            result = f"<:mapClown:1484474701798707240> Push. Your wager was returned."
 
         return result, file, dealer_total
 
@@ -147,13 +157,11 @@ class BlackjackView(discord.ui.View):
             return await interaction.response.send_message(
                 "Please wait for the dealer's turn.", ephemeral=True
             )
+
+        await interaction.response.defer()
         self.locked = True
 
         user_total = await get_value(self.user)
-        dealer_total = await get_value(self.dealer)
-
-        self.dealer, self.deck = await add_dealer_card(self.dealer, self.deck)
-        self.table_image = BG.copy()
 
         result, file, dealer_total = await self.dealer_draws(
             interaction.user.id, user_total
@@ -161,7 +169,8 @@ class BlackjackView(discord.ui.View):
 
         self.stop()
         self.locked = False
-        return await self.message.edit(
+
+        await self.message.edit(
             content=f"{result}\nYou: {user_total} | Dealer: {dealer_total}",
             attachments=[file],
             view=None,
@@ -175,9 +184,11 @@ class BlackjackView(discord.ui.View):
             return await interaction.response.send_message(
                 "You can only surrender before taking a hit.", ephemeral=True
             )
-        unlock_coins(interaction.user.id, self.wager)
-        await self.payout(interaction.user.id, -(self.wager // 2))
+
+        # Return half the wager
+        unlock_coins(interaction.user.id, self.wager // 2)
+
         self.stop()
-        return await interaction.response.edit_message(
+        await interaction.response.edit_message(
             content=f"You surrendered and got back {self.wager // 2}.", view=None
         )
