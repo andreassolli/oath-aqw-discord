@@ -724,16 +724,16 @@ if __name__ == "__main__":
     # asyncio.run(find_users_with_doom_card())
     # get_all_users()
     # choose_new_word()
-    # asyncio.run(
-    #    add_item(
-    #        "696254108788719627",
-    #        "Smoked Card",
-    #        "card",
-    #        "smoked_card.png",
-    #        "custom.png",
-    #        "rare",
-    #    )
-    # )
+    asyncio.run(
+        add_item(
+            "620750060233293824",
+            "Eldrazi Titans",
+            "card",
+            "groot1_card.png",
+            "groot1_card_item.png",
+            "legendary",
+        )
+    )
     # asyncio.run(test_fetch_call())
 # asyncio.run(generate_inventory(userId="292040660696039424"))
 # asyncio.run(backfill_ccids())
