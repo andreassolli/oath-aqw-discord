@@ -79,7 +79,7 @@ async def generate_profile_card(
     outline_color = "#FFFFFF"
     outline_width = 0
     gold_card = card.get("id") == "Sign Card"
-    bot_breaker = card.get("id") == "BotBreaker Card"
+    bot_breaker = card.get("id") == "BotBreaker"
     if target.joined_at:
         day = target.joined_at.day
         joined_text = f"Joined {day}. {target.joined_at.strftime('%b %Y')}"

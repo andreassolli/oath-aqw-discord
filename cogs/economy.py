@@ -272,14 +272,11 @@ class Economy(commands.Cog):
             return await interaction.response.send_message(
                 "Select a number higher than 0."
             )
-        user_coins = (
-            db.collection("users")
-            .document(str(interaction.user.id))
-            .get()
-            .to_dict()
-            .get("coins", 0)
-        )
-        if user_coins < coins:
+        user_doc = db.collection("users").document(str(interaction.user.id))
+        user_data = user_doc.to_dict() or {}
+        user_coins = user_data.get("coins", 0)
+        user_locked_coins = user_data.get("locked_coins", 0)
+        if user_coins - user_locked_coins < coins:
             return await interaction.response.send_message(
                 "You cannot donate more coins you have."
             )
