@@ -200,12 +200,14 @@ class Gamba(commands.Cog):
 
         coins = data.get("coins", 0)
         locked = data.get("locked_coins", 0)
-        current_blackjack = data.get("current_blackjack", {"status": "completed"})
+        current_blackjack = data.get("current_blackjack") or {"status": "completed"}
         if current_blackjack.get("status") == "ongoing":
-            deck = [tuple(card) for card in current_blackjack.get("deck")]
-            user_cards = [tuple(card) for card in current_blackjack.get("user_cards")]
+            deck = [tuple(card) for card in current_blackjack.get("deck", [])]
+            user_cards = [
+                tuple(card) for card in current_blackjack.get("user_cards", [])
+            ]
             dealer_cards = [
-                tuple(card) for card in current_blackjack.get("dealer_cards")
+                tuple(card) for card in current_blackjack.get("dealer_cards", [])
             ]
             user_total = await get_value(user_cards)
             dealer_total = await get_value(dealer_cards)
@@ -252,13 +254,20 @@ class Gamba(commands.Cog):
                 ephemeral=True,
             )
 
+        def debug_cards(cards, name):
+            print(f"\n{name}:")
+            for i, card in enumerate(cards):
+                print(f"  card {i}: {card} | types: {[type(x) for x in card]}")
+
+        debug_cards(user, "USER CARDS")
+        debug_cards(dealer, "DEALER CARDS")
+        debug_cards(deck, "DECK")
         user_string = f"Your cards: {user_total}"
         user_ref.update(
             {
                 "locked_coins": Increment(wager),
             }
         )
-        user_ref.update({"current_blackjack": DELETE_FIELD})
         user_ref.set(
             {
                 "current_blackjack": {
