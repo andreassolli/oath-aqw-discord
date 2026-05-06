@@ -258,6 +258,7 @@ class Gamba(commands.Cog):
         user_string = f"Your cards: {user_total}"
         user_ref.set(
             {
+                "locked_coins": Increment(wager),
                 "current_blackjack": {
                     "user_cards": [{"suit": c[0], "value": c[1]} for c in user_cards],
                     "dealer_cards": [
@@ -266,7 +267,7 @@ class Gamba(commands.Cog):
                     "wager": wager,
                     "deck": [{"suit": c[0], "value": c[1]} for c in deck],
                     "status": "ongoing",
-                }
+                },
             },
             merge=True,
         )
