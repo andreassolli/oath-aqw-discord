@@ -253,6 +253,7 @@ class Gamba(commands.Cog):
             )
 
         user_string = f"Your cards: {user_total}"
+        user_ref.set({"current_blackjack": {}}, merge=True)
 
         user_ref.update(
             {
