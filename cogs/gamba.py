@@ -202,15 +202,16 @@ class Gamba(commands.Cog):
         locked = data.get("locked_coins", 0)
         current_blackjack = data.get("current_blackjack") or {"status": "completed"}
         if current_blackjack.get("status") == "ongoing":
-            deck = [tuple(card) for card in current_blackjack.get("deck", [])]
+            deck = [(c["suit"], c["value"]) for c in current_blackjack.get("deck", [])]
             user_cards = [
-                tuple(card) for card in current_blackjack.get("user_cards", [])
+                (c["suit"], c["value"]) for c in current_blackjack.get("user_cards", [])
             ]
             dealer_cards = [
-                tuple(card) for card in current_blackjack.get("dealer_cards", [])
+                (c["suit"], c["value"])
+                for c in current_blackjack.get("dealer_cards", [])
             ]
-            user_total = await get_value(user_cards)
-            dealer_total = await get_value(dealer_cards)
+            user_total = get_value(user_cards)
+            dealer_total = get_value(dealer_cards)
             user_string = f"Your cards: {user_total}"
 
             view = BlackjackView(user_cards, dealer_cards, deck, wager)
@@ -230,9 +231,9 @@ class Gamba(commands.Cog):
                 "Not enough coins avilable", ephemeral=True
             )
 
-        user, dealer, deck = await deal()
-        user_total = await get_value(user)
-        dealer_total = await get_value(dealer)
+        user, dealer, deck = deal()
+        user_total = get_value(user)
+        dealer_total = get_value(dealer)
 
         if user_total == 21:
             user_ref = db.collection("users").document(str(interaction.user.id))
@@ -263,20 +264,16 @@ class Gamba(commands.Cog):
         debug_cards(dealer, "DEALER CARDS")
         debug_cards(deck, "DECK")
         user_string = f"Your cards: {user_total}"
-        user_ref.update(
-            {
-                "locked_coins": Increment(wager),
-            }
-        )
         user_ref.set(
             {
+                "locked_coins": Increment(wager),
                 "current_blackjack": {
                     "user_cards": [list(card) for card in user],
                     "dealer_cards": [list(card) for card in dealer],
                     "wager": wager,
                     "deck": [list(card) for card in deck],
                     "status": "ongoing",
-                }
+                },
             },
             merge=True,
         )
