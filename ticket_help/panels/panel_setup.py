@@ -26,7 +26,7 @@ async def setup_ticket_panel(client: discord.Client):
         color=discord.Color.blurple(),
     )
 
-    file = discord.File("assets/create_ticket.png", filename="create_ticket.png")
-    embed.set_image(url="attachment://create_ticket.png")
+    file = discord.File("assets/bountyboard.png", filename="bountyboard.png")
+    embed.set_image(url="attachment://bountyboard.png")
 
     await channel.send(file=file, embed=embed, view=TicketPanelView())
