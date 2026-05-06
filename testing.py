@@ -8,6 +8,7 @@ import requests
 from google.cloud import firestore as gc_firestore
 from tweepy import Client as TwitterClient
 
+from economy.gamba.blackjack import deal
 from economy.generate_rocks import generate_rocks
 from economy.inventory import generate_inventory
 from economy.shop_generation import generate_shop
@@ -714,26 +715,41 @@ def migrate_quest_names_batch():
     print(f"🎉 Migration complete. Updated {updated_count} users.")
 
 
+async def test_blackjack():
+    user_ref = db.collection("users").document("292040660696039424")
+    user_cards, dealer_cards, deck = deal()
+    user_ref.set(
+        {
+            "current_blackjack": {
+                "user_cards": [{"suit": c[0], "value": c[1]} for c in user_cards],
+                "dealer_cards": [{"suit": c[0], "value": c[1]} for c in dealer_cards],
+                "wager": 200,
+                "deck": [{"suit": c[0], "value": c[1]} for c in deck],
+                "status": "ongoing",
+            }
+        },
+        merge=True,
+    )
+
+
 if __name__ == "__main__":
     # asyncio.run(post_kofi_summary())
     # asyncio.run(add_killer_card())
-    asyncio.run(generate_test_card())
+    asyncio.run(test_blackjack())
     # reset_coins()
     # migrate_shop_prices()
     # backfill_wordle_stats()
     # asyncio.run(find_users_with_doom_card())
     # get_all_users()
     # choose_new_word()
-    asyncio.run(
-        add_item(
-            "620750060233293824",
-            "Eldrazi Titans",
-            "card",
-            "groot1_card.png",
-            "groot1_card_item.png",
-            "legendary",
-        )
-    )
+    # asyncio.run(
+    #    add_item(
+    #        "620750060233293824",
+    #       "Eldrazi Titans",
+    #       "card",
+    #       "groot1_card.png",
+    #       "groot1_card_item.png",
+    #
     # asyncio.run(test_fetch_call())
 # asyncio.run(generate_inventory(userId="292040660696039424"))
 # asyncio.run(backfill_ccids())

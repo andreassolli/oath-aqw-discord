@@ -71,11 +71,11 @@ class BlackjackView(discord.ui.View):
     # Whenever your turn is over
     async def dealer_draws(self, user_id, user_total: int):
         # Dealer draws until 17+
-        dealer_total = await get_value(self.dealer)
+        dealer_total = get_value(self.dealer)
 
         while dealer_total < 17:
-            self.dealer, self.deck = await add_dealer_card(self.dealer, self.deck)
-            dealer_total = await get_value(self.dealer)
+            self.dealer, self.deck = add_dealer_card(self.dealer, self.deck)
+            dealer_total = get_value(self.dealer)
 
         self.render_table(hide_dealer=False)
         file = self.to_file()
@@ -115,7 +115,7 @@ class BlackjackView(discord.ui.View):
     @discord.ui.button(label="Hit", style=discord.ButtonStyle.success)
     async def hit(self, interaction: discord.Interaction, button: discord.ui.Button):
         await interaction.response.defer()
-        self.user, self.deck = await add_card(self.user, self.deck)
+        self.user, self.deck = add_card(self.user, self.deck)
         self.has_hit = True
         for child in self.children:
             if isinstance(child, discord.ui.Button) and child.label == "Surrender":
@@ -127,7 +127,7 @@ class BlackjackView(discord.ui.View):
 
         file = self.to_file()
 
-        user_total = await get_value(self.user)
+        user_total = get_value(self.user)
 
         if user_total > 21:
             unlock_coins(interaction.user.id, self.wager)
@@ -189,7 +189,7 @@ class BlackjackView(discord.ui.View):
             )
 
         self.wager *= 2
-        self.user, self.deck = await add_card(self.user, self.deck)
+        self.user, self.deck = add_card(self.user, self.deck)
         new_card = self.user[-1]
         img = CARD_CACHE[new_card]
 
@@ -197,7 +197,7 @@ class BlackjackView(discord.ui.View):
 
         file = self.to_file()
 
-        user_total = await get_value(self.user)
+        user_total = get_value(self.user)
 
         # Player Busted after doubling down
         if user_total > 21:
@@ -231,7 +231,7 @@ class BlackjackView(discord.ui.View):
         await interaction.response.defer()
         self.locked = True
 
-        user_total = await get_value(self.user)
+        user_total = get_value(self.user)
 
         result, file, dealer_total = await self.dealer_draws(
             interaction.user.id, user_total
