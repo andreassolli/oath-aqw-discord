@@ -231,13 +231,13 @@ class Gamba(commands.Cog):
                 "Not enough coins avilable", ephemeral=True
             )
 
-        user, dealer, deck = deal()
-        user_total = get_value(user)
-        dealer_total = get_value(dealer)
+        user_cards, dealer_cards, deck = deal()
+        user_total = get_value(user_cards)
+        dealer_total = get_value(dealer_cards)
 
         if user_total == 21:
             user_ref = db.collection("users").document(str(interaction.user.id))
-            buffer = await generate_blackjack(user, dealer, True)
+            buffer = await generate_blackjack(user_cards, dealer_cards, True)
             await interaction.edit_original_response(
                 content=f"Blackjack! You win <:oathcoin:1462999179998531614>{int(wager * 2.5)}",
                 attachments=[discord.File(buffer, filename="table.png")],
@@ -255,29 +255,22 @@ class Gamba(commands.Cog):
                 ephemeral=True,
             )
 
-        def debug_cards(cards, name):
-            print(f"\n{name}:")
-            for i, card in enumerate(cards):
-                print(f"  card {i}: {card} | types: {[type(x) for x in card]}")
-
-        debug_cards(user, "USER CARDS")
-        debug_cards(dealer, "DEALER CARDS")
-        debug_cards(deck, "DECK")
         user_string = f"Your cards: {user_total}"
         user_ref.set(
             {
-                "locked_coins": Increment(wager),
                 "current_blackjack": {
-                    "user_cards": [list(card) for card in user],
-                    "dealer_cards": [list(card) for card in dealer],
+                    "user_cards": [{"suit": c[0], "value": c[1]} for c in user_cards],
+                    "dealer_cards": [
+                        {"suit": c[0], "value": c[1]} for c in dealer_cards
+                    ],
                     "wager": wager,
-                    "deck": [list(card) for card in deck],
+                    "deck": [{"suit": c[0], "value": c[1]} for c in deck],
                     "status": "ongoing",
-                },
+                }
             },
             merge=True,
         )
-        view = BlackjackView(user, dealer, deck, wager)
+        view = BlackjackView(user_cards, dealer_cards, deck, wager)
         file = view.to_file()
         msg = await interaction.followup.send(
             f"{user_string}",
