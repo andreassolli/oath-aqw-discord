@@ -28,11 +28,20 @@ class BlackjackView(discord.ui.View):
 
     async def payout(self, user_id, amount):
         user_ref = db.collection("users").document(str(user_id))
-        user_ref.update(
+        user_ref.set(
             {
                 "coins": firestore.Increment(amount),
-                "current_blackjack.status": "completed",
-            }
+                "current_blackjack": {
+                    "user_cards": [{"suit": c[0], "value": c[1]} for c in self.user],
+                    "dealer_cards": [
+                        {"suit": c[0], "value": c[1]} for c in self.dealer
+                    ],
+                    "wager": self.wager,
+                    "deck": [{"suit": c[0], "value": c[1]} for c in self.deck],
+                    "status": "completed",
+                },
+            },
+            merge=True,
         )
 
     def render_table(self, hide_dealer=True):
@@ -154,10 +163,12 @@ class BlackjackView(discord.ui.View):
         user_ref.set(
             {
                 "current_blackjack": {
-                    "user_cards": [list(card) for card in self.user],
-                    "dealer_cards": [list(card) for card in self.dealer],
+                    "user_cards": [{"suit": c[0], "value": c[1]} for c in self.user],
+                    "dealer_cards": [
+                        {"suit": c[0], "value": c[1]} for c in self.dealer
+                    ],
                     "wager": self.wager,
-                    "deck": [list(card) for card in self.deck],
+                    "deck": [{"suit": c[0], "value": c[1]} for c in self.deck],
                     "status": "ongoing",
                 }
             },
@@ -188,7 +199,7 @@ class BlackjackView(discord.ui.View):
                 "You do not have enough coins to double.", ephemeral=True
             )
 
-        self.wager *= 2
+        self.wager = self.wager * 2
         self.user, self.deck = add_card(self.user, self.deck)
         new_card = self.user[-1]
         img = CARD_CACHE[new_card]
@@ -257,7 +268,7 @@ class BlackjackView(discord.ui.View):
 
         # Return half the wager
         unlock_coins(interaction.user.id, self.wager)
-        self.payout(interaction.user.id, -(self.wager // 2))
+        await self.payout(interaction.user.id, -(self.wager // 2))
 
         self.stop()
         await interaction.response.edit_message(
