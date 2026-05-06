@@ -253,24 +253,17 @@ class Gamba(commands.Cog):
             )
 
         user_string = f"Your cards: {user_total}"
-        print(
-            {
-                "locked_coins": Increment(wager),
-                "current_blackjack.user_cards": [list(card) for card in user],
-                "current_blackjack.dealer_cards": [list(card) for card in dealer],
-                "current_blackjack.wager": wager,
-                "current_blackjack.deck": [list(card) for card in deck],
-                "current_blackjack.status": "ongoing",
-            }
-        )
+
         user_ref.update(
             {
                 "locked_coins": Increment(wager),
-                "current_blackjack.user_cards": [list(card) for card in user],
-                "current_blackjack.dealer_cards": [list(card) for card in dealer],
-                "current_blackjack.wager": wager,
-                "current_blackjack.deck": [list(card) for card in deck],
-                "current_blackjack.status": "ongoing",
+                "current_blackjack": {
+                    "user_cards": [list(card) for card in user],
+                    "dealer_cards": [list(card) for card in dealer],
+                    "wager": wager,
+                    "deck": [list(card) for card in deck],
+                    "status": "ongoing",
+                },
             }
         )
         view = BlackjackView(user, dealer, deck, wager)
