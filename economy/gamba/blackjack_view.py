@@ -154,10 +154,10 @@ class BlackjackView(discord.ui.View):
         user_ref.update(
             {
                 "current_blackjack": {
-                    "dealer_cards": self.dealer,
-                    "user_cards": self.user,
+                    "user_cards": [list(card) for card in self.user],
+                    "dealer_cards": [list(card) for card in self.dealer],
                     "wager": self.wager,
-                    "deck": self.deck,
+                    "deck": [list(card) for card in self.deck],
                     "status": "ongoing",
                 },
             }

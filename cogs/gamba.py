@@ -202,9 +202,11 @@ class Gamba(commands.Cog):
         locked = data.get("locked_coins", 0)
         current_blackjack = data.get("current_blackjack", {"status": "completed"})
         if current_blackjack.get("status") == "ongoing":
-            user_cards = current_blackjack.get("user_cards")
-            dealer_cards = current_blackjack.get("dealer_cards")
-            deck = current_blackjack.get("deck")
+            deck = [tuple(card) for card in current_blackjack.get("deck")]
+            user_cards = [tuple(card) for card in current_blackjack.get("user_cards")]
+            dealer_cards = [
+                tuple(card) for card in current_blackjack.get("dealer_cards")
+            ]
             user_total = await get_value(user_cards)
             dealer_total = await get_value(dealer_cards)
             user_string = f"Your cards: {user_total}"
@@ -255,10 +257,10 @@ class Gamba(commands.Cog):
             {
                 "locked_coins": Increment(wager),
                 "current_blackjack": {
-                    "dealer_cards": dealer,
-                    "user_cards": user,
+                    "user_cards": [list(card) for card in user],
+                    "dealer_cards": [list(card) for card in dealer],
                     "wager": wager,
-                    "deck": deck,
+                    "deck": [list(card) for card in deck],
                     "status": "ongoing",
                 },
             }
