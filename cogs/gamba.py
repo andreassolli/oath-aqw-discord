@@ -193,7 +193,7 @@ class Gamba(commands.Cog):
                 "Wager must be below <:oathcoin:1462999179998531614>25 000.",
                 ephemeral=True,
             )
-        user_ref = db.collection("users").document(str(user_id))
+        user_ref = db.collection("users").document(str(interaction.user.id))
 
         doc = user_ref.get()
         data = doc.to_dict() or {}
