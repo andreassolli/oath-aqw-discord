@@ -181,6 +181,10 @@ class Gamba(commands.Cog):
     )
     async def blackjack_command(self, interaction: discord.Interaction, wager: int):
         await interaction.response.defer(ephemeral=True)
+        return await interaction.followup.send(
+            "Disabled until Proxy wakes up. <:catOK:1471887331857403915>",
+            ephemeral=True,
+        )
         if wager < 1:
             return await interaction.followup.send(
                 "Wager must be at least <:oathcoin:1462999179998531614>1.",
