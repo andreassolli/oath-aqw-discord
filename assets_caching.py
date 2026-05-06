@@ -85,7 +85,7 @@ def initialize_assets():
     )
 
     for suit in range(1, 5):
-        for value in range(2, 15):
+        for value in range(1, 14):
             path = ASSETS_DIR / f"{NUM_MAP[value]}{SUIT_MAP[suit]}.png"
             img = Image.open(path).convert("RGBA")
             img = rounded_card_crop(img, 104, 169, 22)
