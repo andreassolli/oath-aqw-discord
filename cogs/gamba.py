@@ -253,19 +253,22 @@ class Gamba(commands.Cog):
             )
 
         user_string = f"Your cards: {user_total}"
-        user_ref.set({"current_blackjack": {}}, merge=True)
-
         user_ref.update(
             {
                 "locked_coins": Increment(wager),
+            }
+        )
+        user_ref.set(
+            {
                 "current_blackjack": {
                     "user_cards": [list(card) for card in user],
                     "dealer_cards": [list(card) for card in dealer],
                     "wager": wager,
                     "deck": [list(card) for card in deck],
                     "status": "ongoing",
-                },
-            }
+                }
+            },
+            merge=True,
         )
         view = BlackjackView(user, dealer, deck, wager)
         file = view.to_file()
