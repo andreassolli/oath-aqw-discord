@@ -272,7 +272,7 @@ class Economy(commands.Cog):
             return await interaction.response.send_message(
                 "Select a number higher than 0."
             )
-        user_doc = db.collection("users").document(str(interaction.user.id))
+        user_doc = db.collection("users").document(str(interaction.user.id)).get()
         user_data = user_doc.to_dict() or {}
         user_coins = user_data.get("coins", 0)
         user_locked_coins = user_data.get("locked_coins", 0)
