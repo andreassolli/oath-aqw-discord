@@ -101,6 +101,7 @@ class BlackjackView(discord.ui.View):
             )
 
         elif dealer_total > user_total:
+            await self.payout(user_id, -self.wager)
             result = (
                 f"<:GoobCrying:1457956174174617651> Dealer wins. "
                 f"You lost <:oathcoin:1462999179998531614>{self.wager}."
@@ -116,7 +117,23 @@ class BlackjackView(discord.ui.View):
 
         else:
             # Push = refund wager
-            await self.payout(user_id, self.wager)
+            user_ref = db.collection("users").document(str(user_id))
+            user_ref.set(
+                {
+                    "current_blackjack": {
+                        "user_cards": [
+                            {"suit": c[0], "value": c[1]} for c in self.user
+                        ],
+                        "dealer_cards": [
+                            {"suit": c[0], "value": c[1]} for c in self.dealer
+                        ],
+                        "wager": self.wager,
+                        "deck": [{"suit": c[0], "value": c[1]} for c in self.deck],
+                        "status": "completed",
+                    },
+                },
+                merge=True,
+            )
             result = f"<:mapClown:1484474701798707240> Push. Your wager was returned."
 
         return result, file, dealer_total
