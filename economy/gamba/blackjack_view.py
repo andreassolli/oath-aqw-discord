@@ -151,11 +151,17 @@ class BlackjackView(discord.ui.View):
 
         # No blackjack or bust, continue
         user_ref = db.collection("users").document(str(interaction.user.id))
-        user_ref.update(
+        user_ref.set(
             {
-                "current_blackjack.user_cards": [list(card) for card in self.user],
-                "current_blackjack.deck": [list(card) for card in self.deck],
-            }
+                "current_blackjack": {
+                    "user_cards": [list(card) for card in self.user],
+                    "dealer_cards": [list(card) for card in self.dealer],
+                    "wager": self.wager,
+                    "deck": [list(card) for card in self.deck],
+                    "status": "ongoing",
+                }
+            },
+            merge=True,
         )
 
         await self.message.edit(
