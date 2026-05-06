@@ -630,7 +630,7 @@ class Extra(commands.Cog):
     )
     @app_commands.checks.has_role(TICKET_INSPECTOR_ROLE_ID)
     async def pending_applications(self, interaction: discord.Interaction):
-        await interaction.response.defer()
+        await interaction.response.defer(ephemeral=True)
         if interaction.channel_id != TICKET_INSPECTORS_CHANNEL_ID:
             return await interaction.followup.send(
                 "❌ This command can only be used in the Certifications channel.",
@@ -674,7 +674,7 @@ class Extra(commands.Cog):
             lines.append(f"\n… and {extra} more")
 
         await interaction.followup.send(
-            "📋 **Pending Applications:**\n\n" + "\n".join(lines),
+            "📋 **Pending Applications:**\n\n" + "\n".join(lines), ephemeral=True
         )
 
     @app_commands.command(name="sync-roles", description="Apply roles from DB")

@@ -28,7 +28,7 @@ async def handle_application_submission(interaction, app_type, questions, answer
 
         role = guild.get_role(TICKET_INSPECTOR_ROLE_ID)
         if role:
-            await channel.send(f"📮 {role.mention}, new {app_type} application!")
+            await channel.send(f"📮 New {app_type} application!")
 
     except Exception as e:
         return await interaction.followup.send(f"❌ Failed: {e}", ephemeral=True)
