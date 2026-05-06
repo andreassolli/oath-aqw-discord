@@ -4,7 +4,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 from google.cloud import firestore
-from google.cloud.firestore import Increment
+from google.cloud.firestore import DELETE_FIELD, Increment
 
 from config import (
     BETA_TESTER_ROLE_ID,
@@ -258,6 +258,7 @@ class Gamba(commands.Cog):
                 "locked_coins": Increment(wager),
             }
         )
+        user_ref.update({"current_blackjack": DELETE_FIELD})
         user_ref.set(
             {
                 "current_blackjack": {
