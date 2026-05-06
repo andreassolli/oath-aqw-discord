@@ -54,7 +54,13 @@ async def set_spin_today(user_id: int):
     )
 
 
-def lock_coins(user_id: int, amount: int) -> tuple[bool, str | None]:
+def lock_coins(
+    user_id: int,
+    amount: int,
+    blackjack: bool = False,
+    user_cards: list[str] = [],
+    dealer_cards: list[str] = [],
+) -> tuple[bool, str | None]:
     user_ref = db.collection("users").document(str(user_id))
 
     doc = user_ref.get()
@@ -68,16 +74,36 @@ def lock_coins(user_id: int, amount: int) -> tuple[bool, str | None]:
     if available < amount:
         return False, "Not enough available coins."
 
-    user_ref.update({"locked_coins": Increment(amount)})
+    if blackjack:
+        user_ref.update(
+            {
+                "locked_coins": Increment(amount),
+                "current_blackjack": {
+                    "dealer_cards": dealer_cards,
+                    "user_cards": user_cards,
+                    "wager": amount,
+                    "status": "ongoing",
+                },
+            }
+        )
+    else:
+        user_ref.update({"locked_coins": Increment(amount)})
 
     return True, None
 
 
-def unlock_coins(user_id: int, amount: int):
+def unlock_coins(user_id: int, amount: int, blackjack: bool = False):
 
     user_ref = db.collection("users").document(str(user_id))
-
-    user_ref.update({"locked_coins": Increment(-amount)})
+    if blackjack:
+        user_ref.update(
+            {
+                "locked_coins": Increment(-amount),
+                "current_blackjack.status": "completed",
+            }
+        )
+    else:
+        user_ref.update({"locked_coins": Increment(-amount)})
 
 
 def format_time(td: timedelta) -> str:

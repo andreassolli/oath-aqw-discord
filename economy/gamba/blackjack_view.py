@@ -9,7 +9,7 @@ from economy.gamba.generate_blackjack import (
     CARD_BACK,
     CARD_CACHE,
 )
-from economy.gamba.utils import unlock_coins
+from economy.gamba.utils import lock_coins, unlock_coins
 from firebase_client import db
 
 
@@ -28,7 +28,12 @@ class BlackjackView(discord.ui.View):
 
     async def payout(self, user_id, amount):
         user_ref = db.collection("users").document(str(user_id))
-        user_ref.update({"coins": firestore.Increment(amount)})
+        user_ref.update(
+            {
+                "coins": firestore.Increment(amount),
+                "current_blackjack.status": "completed",
+            }
+        )
 
     def render_table(self, hide_dealer=True):
         self.table_image = BG.copy()
@@ -145,11 +150,75 @@ class BlackjackView(discord.ui.View):
             )
 
         # No blackjack or bust, continue
+        user_ref = db.collection("users").document(str(interaction.user.id))
+        user_ref.update(
+            {
+                "current_blackjack": {
+                    "dealer_cards": self.dealer,
+                    "user_cards": self.user,
+                    "wager": self.wager,
+                    "deck": self.deck,
+                    "status": "ongoing",
+                },
+            }
+        )
+
         await self.message.edit(
             content=f"Your cards: {user_total}",
             view=self,
             attachments=[file],
         )
+
+    @discord.ui.button(label="Double", style=discord.ButtonStyle.success)
+    async def double(self, interaction: discord.Interaction, button: discord.ui.Button):
+
+        await interaction.response.defer()
+
+        # Check if the user has already hit
+        if self.has_hit:
+            return await interaction.followup.send(
+                "You can only double down before hitting.", ephemeral=True
+            )
+
+        # Add a check for if the user has enough coins to double down
+        success, error = lock_coins(interaction.user.id, self.wager)
+        if not success:
+            return await interaction.followup.send(
+                "You do not have enough coins to double.", ephemeral=True
+            )
+
+        self.wager *= 2
+        self.user, self.deck = await add_card(self.user, self.deck)
+        new_card = self.user[-1]
+        img = CARD_CACHE[new_card]
+
+        self.table_image.paste(img, (58 + (len(self.user) - 1) * 117, 254), img)
+
+        file = self.to_file()
+
+        user_total = await get_value(self.user)
+
+        # Player Busted after doubling down
+        if user_total > 21:
+            unlock_coins(interaction.user.id, self.wager)
+            await self.payout(interaction.user.id, -self.wager)
+            self.stop()
+            return await self.message.edit(
+                content=f"<:GoobCrying:1457956174174617651> You busted with {user_total}, and lost the double down <:oathcoin:1462999179998531614>{self.wager}",
+                view=None,
+                attachments=[file],
+            )
+        # House Plays out their hand
+        else:
+            result, file, dealer_total = await self.dealer_draws(
+                interaction.user.id, user_total
+            )
+            self.stop()
+            return await self.message.edit(
+                content=f"{result}\nYou: {user_total} | Dealer: {dealer_total}",
+                view=None,
+                attachments=[file],
+            )
 
     @discord.ui.button(label="Stand", style=discord.ButtonStyle.primary)
     async def stand(self, interaction: discord.Interaction, button: discord.ui.Button):
@@ -186,7 +255,8 @@ class BlackjackView(discord.ui.View):
             )
 
         # Return half the wager
-        unlock_coins(interaction.user.id, self.wager // 2)
+        unlock_coins(interaction.user.id, self.wager)
+        self.payout(interaction.user.id, -(self.wager // 2))
 
         self.stop()
         await interaction.response.edit_message(
