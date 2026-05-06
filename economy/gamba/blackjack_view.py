@@ -194,7 +194,7 @@ class BlackjackView(discord.ui.View):
 
         # Add a check for if the user has enough coins to double down
         success, error = lock_coins(interaction.user.id, self.wager)
-        if not success:
+        if error:
             return await interaction.followup.send(
                 "You do not have enough coins to double.", ephemeral=True
             )
