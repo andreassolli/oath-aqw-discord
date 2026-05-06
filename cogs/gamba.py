@@ -4,6 +4,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 from google.cloud import firestore
+from google.cloud.firestore import Increment
 
 from config import (
     BETA_TESTER_ROLE_ID,
@@ -181,10 +182,7 @@ class Gamba(commands.Cog):
     )
     async def blackjack_command(self, interaction: discord.Interaction, wager: int):
         await interaction.response.defer(ephemeral=True)
-        return await interaction.followup.send(
-            "Disabled until Proxy wakes up. <:catOK:1471887331857403915>",
-            ephemeral=True,
-        )
+
         if wager < 1:
             return await interaction.followup.send(
                 "Wager must be at least <:oathcoin:1462999179998531614>1.",
@@ -195,10 +193,38 @@ class Gamba(commands.Cog):
                 "Wager must be below <:oathcoin:1462999179998531614>25 000.",
                 ephemeral=True,
             )
-        success, error = lock_coins(interaction.user.id, wager)
+        user_ref = db.collection("users").document(str(user_id))
 
-        if not success:
-            return await interaction.followup.send(error, ephemeral=True)
+        doc = user_ref.get()
+        data = doc.to_dict() or {}
+
+        coins = data.get("coins", 0)
+        locked = data.get("locked_coins", 0)
+        current_blackjack = data.get("current_blackjack", {"status": "completed"})
+        if current_blackjack.get("status") == "ongoing":
+            user_cards = current_blackjack.get("user_cards")
+            dealer_cards = current_blackjack.get("dealer_cards")
+            deck = current_blackjack.get("deck")
+            user_total = await get_value(user_cards)
+            dealer_total = await get_value(dealer_cards)
+            user_string = f"Your cards: {user_total}"
+
+            view = BlackjackView(user_cards, dealer_cards, deck, wager)
+            file = view.to_file()
+            msg = await interaction.followup.send(
+                f"{user_string}",
+                view=view,
+                file=file,
+            )
+            view.message = msg
+            return
+
+        available = coins - locked
+
+        if available < wager:
+            return await interaction.followup.send(
+                "Not enough coins avilable", ephemeral=True
+            )
 
         user, dealer, deck = await deal()
         user_total = await get_value(user)
@@ -211,7 +237,6 @@ class Gamba(commands.Cog):
                 content=f"Blackjack! You win <:oathcoin:1462999179998531614>{int(wager * 2.5)}",
                 attachments=[discord.File(buffer, filename="table.png")],
             )
-            unlock_coins(interaction.user.id, wager)
 
             if dealer_total == 21:
                 result = f"<:mapClown:1484474701798707240> Push, gained back <:oathcoin:1462999179998531614>{wager}"
@@ -226,6 +251,18 @@ class Gamba(commands.Cog):
             )
 
         user_string = f"Your cards: {user_total}"
+        user_ref.update(
+            {
+                "locked_coins": Increment(wager),
+                "current_blackjack": {
+                    "dealer_cards": dealer,
+                    "user_cards": user,
+                    "wager": wager,
+                    "deck": deck,
+                    "status": "ongoing",
+                },
+            }
+        )
         view = BlackjackView(user, dealer, deck, wager)
         file = view.to_file()
         msg = await interaction.followup.send(

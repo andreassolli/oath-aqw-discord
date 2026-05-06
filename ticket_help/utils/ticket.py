@@ -1,6 +1,11 @@
 import discord
 
-from config import ADMIN_ROLE_ID, HELPER_ROLE_ID, OATHSWORN_ROLE_ID
+from config import (
+    ADMIN_ROLE_ID,
+    HELPER_ROLE_ID,
+    OATHSWORN_ROLE_ID,
+    TICKET_OFFICER_ROLE_ID,
+)
 
 
 def get_overwrites(interaction: discord.Interaction):
@@ -28,6 +33,10 @@ def get_overwrites(interaction: discord.Interaction):
         OATHSWORN_ROLE_ID: {
             **base_member_perms,
             "mention_everyone": True,
+        },
+        TICKET_OFFICER_ROLE_ID: {
+            **base_member_perms,
+            "manage_messages": True,
         },
         ADMIN_ROLE_ID: {
             **base_member_perms,

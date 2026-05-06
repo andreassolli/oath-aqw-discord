@@ -31,7 +31,9 @@ class SpamAmountModal(discord.ui.Modal, title="Enter completed runs/kills"):
             completed_points = int(kills * 1.75)
         elif self.type == "Middle TempleShrine":
             completed_points = int(kills * 0.75)
-        elif self.type == "Side TempleShrine":
+        elif self.type == "Right TempleShrine":
+            completed_points = int(kills * 0.5)
+        elif self.type == "Left TempleShrine":
             completed_points = int(kills * 0.5)
         else:
             index = bisect.bisect_left(spam_points, kills)

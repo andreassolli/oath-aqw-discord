@@ -188,6 +188,9 @@ class CreateTicketModal(discord.ui.Modal):
                     ):
                         points = int(total_kills_value * 0.5)
                     else:
+                        bosses = [
+                            boss.strip() for boss in self.bosses_input.value.split(",")
+                        ]
                         index = bisect.bisect_left(spam_points, total_kills_value)
                         points = index if index > 0 else 1
             elif self.type == "until drop":
