@@ -35,7 +35,7 @@ class Bosses(commands.Cog):
         embed.set_image(url="attachment://lemspeaker.png")
         await interaction.response.send_message(embed=embed, file=file)
 
-    @speaker.command(name="ap", description="View the Lem's chart for 2 man taunt")
+    @speaker.command(name="ap", description="View a simplified chart for AP")
     async def ap(self, interaction: discord.Interaction):
         embed = discord.Embed(
             title="Simple AP chart for 3 man", color=discord.Color.blue()
@@ -44,7 +44,7 @@ class Bosses(commands.Cog):
         embed.set_image(url="attachment://apspeaker.png")
         await interaction.response.send_message(embed=embed, file=file)
 
-    @speaker.command(name="loo", description="View the Lem's chart for 2 man taunt")
+    @speaker.command(name="loo", description="View a simplified chart for LOO")
     async def loo(self, interaction: discord.Interaction):
         embed = discord.Embed(
             title="Simple LOO chart for 3 man", color=discord.Color.blue()

@@ -5,26 +5,26 @@ from ticket_help.utils.cert_utils import handle_application_submission
 
 class DageModal(discord.ui.Modal, title="Ultra Dage Application"):
     q1 = discord.ui.TextInput(
-        label="Q1: What is Flux Taunting, how do you do it?",
-        placeholder="",
+        label="Q1: How do we taunt as CAV?",
+        placeholder="Explain either loop taunt or flux taunt. CAV = Chaos Avenger",
         style=discord.TextStyle.paragraph,
         max_length=1000,
     )
     q2 = discord.ui.TextInput(
-        label="Q2: Why do we Taunt or use Shadowblade?",
-        placeholder="",
+        label="Q2: Why Taunt or use Shadowblade?",
+        placeholder="Shadowblade = Scroll or Classic Ninja skill 3",
         style=discord.TextStyle.paragraph,
         max_length=1000,
     )
     q3 = discord.ui.TextInput(
-        label="Q3: When does Dage heal massively?",
-        placeholder="Exact time.",
+        label="Q3: When is Decay needed? Exact time!",
+        placeholder="",
         style=discord.TextStyle.paragraph,
         max_length=1000,
     )
     q4 = discord.ui.TextInput(
-        label="Q4: What is most important against Dage?",
-        placeholder="",
+        label="Q4: List key aspects to keep in mind.",
+        placeholder="When fighting Ultra Dage. Both what to avoid, and what to do.",
         style=discord.TextStyle.paragraph,
         max_length=1000,
     )

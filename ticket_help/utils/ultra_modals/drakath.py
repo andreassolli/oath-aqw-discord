@@ -17,20 +17,20 @@ class DrakathModal(discord.ui.Modal, title="Ultra Drakath Application"):
         max_length=1000,
     )
     q3 = discord.ui.TextInput(
-        label="Q3: Can LR survive taunts at 2.9K HP? Explain",
-        placeholder="Assume Lord of Order buffs!",
+        label="Q3: Can LR survive taunts with LoO?",
+        placeholder="Assume enhancements: Arcana's Concerto, Wizard, Wizard, Penitence",
         style=discord.TextStyle.paragraph,
         max_length=1000,
     )
     q4 = discord.ui.TextInput(
-        label="Q4: Max defense, or more damage reduction?*",
-        placeholder="*What would you prefer in general when fighting Drakath",
+        label="Q4: Nukes, how much dmg, and type?",
+        placeholder="How much damage do nukes do, and what type of damage do they do?",
         style=discord.TextStyle.paragraph,
         max_length=1000,
     )
     q5 = discord.ui.TextInput(
-        label="Q5: Nukes, how much dmg, and type?",
-        placeholder="How much damage do nukes do, and what type of damage do they do?",
+        label="Q5: Max def/dmg resist vs. dmg reduction?*",
+        placeholder="*What would you prefer in general when fighting Drakath. Either Max defense/damage resistance, or more damage reduction, explain.",
         style=discord.TextStyle.paragraph,
         max_length=1000,
     )

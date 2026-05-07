@@ -6,13 +6,13 @@ from ticket_help.utils.cert_utils import handle_application_submission
 class DarkonModal(discord.ui.Modal, title="Ultra Darkon Application"):
     q1 = discord.ui.TextInput(
         label="Q1: When should LoO stop/start using 5?",
-        placeholder="",
+        placeholder="LoO = Lord of Order",
         style=discord.TextStyle.paragraph,
         max_length=1000,
     )
     q2 = discord.ui.TextInput(
-        label="Q2: How do we taunt at Darkon?",
-        placeholder="",
+        label="Q2: Who should taunt, and why?",
+        placeholder="Also what style of taunting.",
         style=discord.TextStyle.paragraph,
         max_length=1000,
     )

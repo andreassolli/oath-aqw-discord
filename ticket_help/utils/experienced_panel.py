@@ -45,7 +45,7 @@ async def setup_application_panel(client: discord.Client):
         title="Ultra Certificate Application",
         description=(
             "Think you know your ultras? Apply for a certificate!\n\n"
-            "📝 Answer 5 questions for the selected boss.\n"
+            "📝 Answer up to 5 questions for the selected boss.\n"
             "⚠️ Speaker, Gramiel and Darkon requires a Trial as well.\n"
             "💰 Speaker and Gramiel rewards <:oathcoin:1462999179998531614>3750, Darkon <:oathcoin:1462999179998531614>2500, rest <:oathcoin:1462999179998531614>1950.\n\n"
             "🎥 Video tips: \n"

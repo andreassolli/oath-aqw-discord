@@ -99,6 +99,7 @@ class SimpleTicketModal(discord.ui.Modal, title="Create Practice Ticket"):
                 "reping_helpers": True,
                 "reminder_sent": False,
                 "auto_closed": False,
+                "claimer_roles": {str(interaction.user.id): "Lord of Order"},
             }
         )
 
@@ -128,6 +129,7 @@ class SimpleTicketModal(discord.ui.Modal, title="Create Practice Ticket"):
                 max_claims=3,
                 room=str(room_value),
                 bosses=bosses,
+                kills=0,
             ),
             allowed_mentions=allowed_mentioning,
         )

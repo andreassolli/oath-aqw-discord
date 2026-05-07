@@ -330,7 +330,7 @@ class Extra(commands.Cog):
             "Ultra Gramiel",
             "Ultra Nulgath",
         ],
-        status: Literal["Awaiting Trial", "Rejected", "Approved"],
+        status: Literal["Awaiting Trial", "Rejected"],
         extra_message: str = "",
     ):
         await interaction.response.defer()
@@ -383,7 +383,6 @@ class Extra(commands.Cog):
             "Questions Only",
         ],
         extra_message: str = "",
-        announce: bool = False,
     ):
         await interaction.response.defer(ephemeral=True)
 
@@ -438,11 +437,7 @@ class Extra(commands.Cog):
         else:
             reward_text = "\n⚠️ Reward already claimed for this certificate"
 
-        if not announce:
-            await interaction.followup.send(
-                f"✅ Added {role.mention} to {user.mention}. {reward_text}{extra_message}\nRemember to announce it {user.mention} yourself, and include the coins they were given!",
-                ephemeral=True,
-            )
+        try:
             dm = await user.create_dm()
             await dm.send(
                 f"🔔 Your application has been approved, and you have been awarded {certificate} certificate.{reward_text}.{extra_message}"
@@ -451,26 +446,16 @@ class Extra(commands.Cog):
                 f"✅ Added {role.mention} to {user.mention}. {reward_text}{extra_message}\nMessage sent via DM.",
                 ephemeral=True,
             )
-        else:
-            try:
-                dm = await user.create_dm()
-                await dm.send(
-                    f"🔔 Your application has been approved, and you have been awarded {certificate} certificate.{reward_text}.{extra_message}"
+        except discord.Forbidden:
+            helper_channel = interaction.guild.get_channel(HELPER_CHANNEL_ID)
+            if helper_channel:
+                await helper_channel.send(
+                    f"{user.mention}, we tried reaching out to you through DMs, but were unable to send you a message.\n🫡 Your application has been approved and you have been awarded {certificate} certificate.{reward_text}{extra_message}"
                 )
                 await interaction.followup.send(
-                    f"✅ Added {role.mention} to {user.mention}. {reward_text}{extra_message}\nMessage sent via DM.",
+                    f"✅ Added {role.mention} to {user.mention}. {reward_text}{extra_message}\nAnnounced in the helper channel.",
                     ephemeral=True,
                 )
-            except discord.Forbidden:
-                helper_channel = interaction.guild.get_channel(HELPER_CHANNEL_ID)
-                if helper_channel:
-                    await helper_channel.send(
-                        f"{user.mention}, we tried reaching out to you through DMs, but were unable to send you a message.\n🫡 Your application has been approved and you have been awarded {certificate} certificate.{reward_text}{extra_message}"
-                    )
-                    await interaction.followup.send(
-                        f"✅ Added {role.mention} to {user.mention}. {reward_text}{extra_message}\nAnnounced in the helper channel.",
-                        ephemeral=True,
-                    )
 
         log_channel = interaction.guild.get_channel(TICKET_LOG_CHANNEL_ID)
 
