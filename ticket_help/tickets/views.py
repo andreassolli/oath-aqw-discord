@@ -35,13 +35,13 @@ from .role_claim_view import RoleClaimView
 from .utils import clear_active_ticket, set_active_ticket
 
 BOSS_TO_CERTIFICATE = {
-    # "Champion Drakath": DRAKATH_CERTIFICATE_ID,
-    # "Ultra Dage": DAGE_CERTIFICATE_ID,
-    # "Ultra Drago": DRAGO_CERTIFICATE_ID,
-    # "Ultra Darkon": DARKON_CERTIFICATE_ID,
+    "Champion Drakath": DRAKATH_CERTIFICATE_ID,
+    "Ultra Dage": DAGE_CERTIFICATE_ID,
+    "Ultra Drago": DRAGO_CERTIFICATE_ID,
+    "Ultra Darkon": DARKON_CERTIFICATE_ID,
     "Ultra Speaker": SPEAKER_CERTIFICATE_ID,
     "Ultra Gramiel": GRAMIEL_CERTIFICATE_ID,
-    # "Ultra Nulgath": NULGATH_CERTIFICATE_ID,
+    "Ultra Nulgath": NULGATH_CERTIFICATE_ID,
 }
 
 
@@ -68,7 +68,19 @@ class TicketActionView(discord.ui.View):
                 row=3,
             )
         )
-        if any(boss in ["Ultra Speaker", "Ultra Gramiel"] for boss in bosses):
+        if any(
+            boss
+            in [
+                "Ultra Speaker",
+                "Ultra Gramiel",
+                "Ultra Dage",
+                "Ultra Darkon",
+                "Ultra Drago",
+                "Ultra Nulgath",
+                "Champion Drakath",
+            ]
+            for boss in bosses
+        ):
             doc_ref = db.collection("tickets").document(ticket_name)
             doc = doc_ref.get()
 
@@ -201,7 +213,7 @@ class TicketActionView(discord.ui.View):
 
         if experienced_only:
             for cert in needed_certificates:
-                if cert not in member_role_ids:
+                if not is_requester and cert not in member_role_ids:
                     return await interaction.followup.send(
                         "🚫 You need a **Certification** for one or more of the bosses in this ticket.",
                         ephemeral=True,
