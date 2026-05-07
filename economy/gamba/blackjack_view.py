@@ -242,14 +242,7 @@ class BlackjackView(discord.ui.View):
                 self.message.edit(view=self)
             return
         # Check if the user has already hit
-        user_ref = db.collection("users").document(str(interaction.user.id))
-        doc = user_ref.get()
-        data = doc.to_dict() or {}
-
-        blackjack_data = data.get("current_blackjack", {})
-        has_hit = blackjack_data.get("has_hit")
-
-        if self.has_hit or has_hit:
+        if self.has_hit:
             return await interaction.followup.send(
                 "You can only double down before hitting.", ephemeral=True
             )
@@ -349,13 +342,7 @@ class BlackjackView(discord.ui.View):
                 self.message.edit(view=self)
             return
 
-        user_ref = db.collection("users").document(str(interaction.user.id))
-        doc = user_ref.get()
-        data = doc.to_dict() or {}
-
-        blackjack_data = data.get("current_blackjack", {})
-        has_hit = blackjack_data.get("has_hit")
-        if self.has_hit or has_hit:
+        if self.has_hit:
             return await interaction.followup.send(
                 "You can only surrender before taking a hit.", ephemeral=True
             )
