@@ -51,7 +51,7 @@ APPLICATIONS = {
         "modal": NulgathModal,
     },
     "drakath": {
-        "label": "Ultra Drakath",
+        "label": "Champion Drakath",
         "description": "Apply for Drakath",
         "emoji": "🔮",
         "modal": DrakathModal,
