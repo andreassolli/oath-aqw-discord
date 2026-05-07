@@ -14,7 +14,7 @@ from firebase_client import db
 
 
 class BlackjackView(discord.ui.View):
-    def __init__(self, user, dealer, deck, wager, game_id):
+    def __init__(self, user, dealer, deck, wager, game_id, has_hit: bool = False):
         super().__init__()
         self.user = user
         self.dealer = dealer
@@ -22,7 +22,7 @@ class BlackjackView(discord.ui.View):
         self.locked = False
         self.message = None
         self.wager = wager
-        self.has_hit = False
+        self.has_hit = has_hit
         self.game_id = game_id
         self.table_image = BG.copy()
         self.draw_initial_cards()
@@ -212,6 +212,7 @@ class BlackjackView(discord.ui.View):
                     "deck": [{"suit": c[0], "value": c[1]} for c in self.deck],
                     "status": "ongoing",
                     "game_id": self.game_id,
+                    "has_hit": True,
                 }
             },
             merge=True,
