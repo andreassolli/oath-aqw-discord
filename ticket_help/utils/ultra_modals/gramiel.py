@@ -5,7 +5,7 @@ from ticket_help.utils.cert_utils import handle_application_submission
 
 class GramielModal(discord.ui.Modal, title="Ultra Gramiel Application"):
     q1 = discord.ui.TextInput(
-        label="Q1: What's different when taunting in P1 vs. P2?",
+        label="Q1: What's different taunting in P1 vs. P2?",
         placeholder="P1, P2 = Phase 1, Phase 2. Explain both thoroughly.",
         style=discord.TextStyle.paragraph,
         max_length=1000,
@@ -17,8 +17,8 @@ class GramielModal(discord.ui.Modal, title="Ultra Gramiel Application"):
         max_length=1000,
     )
     q3 = discord.ui.TextInput(
-        label="Q3: Legion Revenant, what do we want to avoid doing?",
-        placeholder="",
+        label="Q3: LR, what do we want to avoid doing?",
+        placeholder="Legion Revenant",
         style=discord.TextStyle.paragraph,
         max_length=1000,
     )

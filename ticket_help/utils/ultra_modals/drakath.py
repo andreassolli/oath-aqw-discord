@@ -30,7 +30,7 @@ class DrakathModal(discord.ui.Modal, title="Ultra Drakath Application"):
     )
     q5 = discord.ui.TextInput(
         label="Q5: Max def/dmg resist vs. dmg reduction?*",
-        placeholder="*What would you prefer in general when fighting Drakath. Either Max defense/damage resistance, or more damage reduction, explain.",
+        placeholder="*What do you prefer, either Max defense/damage resistance, or more damage reduction, explain.",
         style=discord.TextStyle.paragraph,
         max_length=1000,
     )
