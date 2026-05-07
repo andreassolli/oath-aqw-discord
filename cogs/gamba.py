@@ -1,3 +1,4 @@
+import uuid
 from typing import Literal
 
 import discord
@@ -197,7 +198,7 @@ class Gamba(commands.Cog):
 
         doc = user_ref.get()
         data = doc.to_dict() or {}
-
+        game_id = str(uuid.uuid4())
         coins = data.get("coins", 0)
         locked = data.get("locked_coins", 0)
         current_blackjack = data.get("current_blackjack") or {"status": "completed"}
@@ -213,9 +214,10 @@ class Gamba(commands.Cog):
             user_total = get_value(user_cards)
             dealer_total = get_value(dealer_cards)
             old_wager = current_blackjack.get("wager", 1)
+            user_ref.update({"current_blackjack.game_id": game_id})
             user_string = f"Your cards: {user_total}"
 
-            view = BlackjackView(user_cards, dealer_cards, deck, old_wager)
+            view = BlackjackView(user_cards, dealer_cards, deck, old_wager, game_id)
             file = view.to_file()
             msg = await interaction.followup.send(
                 f"{user_string}",
@@ -268,11 +270,12 @@ class Gamba(commands.Cog):
                     "wager": wager,
                     "deck": [{"suit": c[0], "value": c[1]} for c in deck],
                     "status": "ongoing",
+                    "game_id": game_id,
                 },
             },
             merge=True,
         )
-        view = BlackjackView(user_cards, dealer_cards, deck, wager)
+        view = BlackjackView(user_cards, dealer_cards, deck, wager, game_id)
         file = view.to_file()
         msg = await interaction.followup.send(
             f"{user_string}",
