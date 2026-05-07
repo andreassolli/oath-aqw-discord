@@ -14,7 +14,7 @@ from firebase_client import db
 
 
 class BlackjackView(discord.ui.View):
-    def __init__(self, user, dealer, deck, wager):
+    def __init__(self, user, dealer, deck, wager, game_id):
         super().__init__()
         self.user = user
         self.dealer = dealer
@@ -23,6 +23,7 @@ class BlackjackView(discord.ui.View):
         self.message = None
         self.wager = wager
         self.has_hit = False
+        self.game_id = game_id
         self.table_image = BG.copy()
         self.draw_initial_cards()
 
@@ -69,6 +70,17 @@ class BlackjackView(discord.ui.View):
                 self.table_image.paste(img, (58 + i * 117, 52), img)
             else:
                 self.table_image.paste(CARD_BACK, (58 + i * 117, 52), CARD_BACK)
+
+    def is_active_game(self, user_id: int) -> bool:
+        user_ref = db.collection("users").document(str(user_id))
+        doc = user_ref.get()
+        data = doc.to_dict() or {}
+
+        current = data.get("current_blackjack", {})
+        return (
+            current.get("game_id") == self.game_id
+            and current.get("status") == "ongoing"
+        )
 
     # Display board
     def to_file(self):
@@ -141,6 +153,18 @@ class BlackjackView(discord.ui.View):
     @discord.ui.button(label="Hit", style=discord.ButtonStyle.success)
     async def hit(self, interaction: discord.Interaction, button: discord.ui.Button):
         await interaction.response.defer()
+        if not self.is_active_game(interaction.user.id):
+            for child in self.children:
+                child.disabled = True
+
+            await interaction.followup.send(
+                "This blackjack game is no longer active.",
+                ephemeral=True,
+            )
+
+            if self.message:
+                self.message.edit(view=self)
+            return
         self.user, self.deck = add_card(self.user, self.deck)
         self.has_hit = True
         for child in self.children:
@@ -187,6 +211,7 @@ class BlackjackView(discord.ui.View):
                     "wager": self.wager,
                     "deck": [{"suit": c[0], "value": c[1]} for c in self.deck],
                     "status": "ongoing",
+                    "game_id": self.game_id,
                 }
             },
             merge=True,
@@ -202,7 +227,18 @@ class BlackjackView(discord.ui.View):
     async def double(self, interaction: discord.Interaction, button: discord.ui.Button):
 
         await interaction.response.defer()
+        if not self.is_active_game(interaction.user.id):
+            for child in self.children:
+                child.disabled = True
 
+            await interaction.followup.send(
+                "This blackjack game is no longer active.",
+                ephemeral=True,
+            )
+
+            if self.message:
+                self.message.edit(view=self)
+            return
         # Check if the user has already hit
         if self.has_hit:
             return await interaction.followup.send(
@@ -251,12 +287,24 @@ class BlackjackView(discord.ui.View):
 
     @discord.ui.button(label="Stand", style=discord.ButtonStyle.primary)
     async def stand(self, interaction: discord.Interaction, button: discord.ui.Button):
-        if self.locked:
-            return await interaction.response.send_message(
-                "Please wait for the dealer's turn.", ephemeral=True
-            )
 
         await interaction.response.defer()
+        if not self.is_active_game(interaction.user.id):
+            for child in self.children:
+                child.disabled = True
+
+            await interaction.followup.send(
+                "This blackjack game is no longer active.",
+                ephemeral=True,
+            )
+
+            if self.message:
+                self.message.edit(view=self)
+            return
+        if self.locked:
+            return await interaction.followup.send(
+                "Please wait for the dealer's turn.", ephemeral=True
+            )
         self.locked = True
 
         user_total = get_value(self.user)
@@ -278,8 +326,21 @@ class BlackjackView(discord.ui.View):
     async def surrender(
         self, interaction: discord.Interaction, button: discord.ui.Button
     ):
+        await interaction.response.defer()
+        if not self.is_active_game(interaction.user.id):
+            for child in self.children:
+                child.disabled = True
+
+            await interaction.followup.send(
+                "This blackjack game is no longer active.",
+                ephemeral=True,
+            )
+
+            if self.message:
+                self.message.edit(view=self)
+            return
         if self.has_hit:
-            return await interaction.response.send_message(
+            return await interaction.followup.send(
                 "You can only surrender before taking a hit.", ephemeral=True
             )
 
