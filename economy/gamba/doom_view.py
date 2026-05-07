@@ -86,27 +86,36 @@ class DoomSpinView(discord.ui.View):
         multiplier = 1
         bonus_text = ""
         new_result = result
-        if any(role.id == POTW_ROLE_ID for role in interaction.user.roles):
-            multiplier = 1.125
-            new_result = int(result * multiplier)
-            bonus_text = f"\nThanks to your **<:potwBadge:1476938152861241565>Player of the Week** role, you got 12.5% bonus coins!\nTotal payout: <:oathcoin:1462999179998531614>`{new_result}`"
-        elif any(role.id == TRANSCENDED_ROLE_ID for role in interaction.user.roles):
-            multiplier = 1.11
-            new_result = int(result * multiplier)
-            bonus_text = f"\nThanks to your **<:ascended:1485289045524484126>Ascended** role, you got 11% bonus coins!\nTotal payout: <:oathcoin:1462999179998531614>`{new_result}`"
-        elif any(role.id == ASCENDED_ROLE_ID for role in interaction.user.roles):
-            multiplier = 1.1
-            new_result = int(result * multiplier)
-            bonus_text = f"\nThanks to your **<:ascended:1485289045524484126>Ascended** role, you got 10% bonus coins!\nTotal payout: <:oathcoin:1462999179998531614>`{new_result}`"
-        elif any(role.id == OFFICER_ROLE_ID for role in interaction.user.roles):
-            multiplier = 1.07
-            new_result = int(result * multiplier)
-            bonus_text = f"\nThanks to your **<:oath2:1457452511635046492>Officer** role, you got 7% bonus coins!\nTotal payout: <:oathcoin:1462999179998531614>`{new_result}`"
-        elif any(role.id == INITIATE_ROLE_ID for role in interaction.user.roles):
-            multiplier = 1.05
-            new_result = int(result * multiplier)
-            bonus_text = f"\nThanks to your **<:oath:1457451850184917122>Initiate** role, you got 5% bonus coins!\nTotal payout: <:oathcoin:1462999179998531614>`{new_result}`"
+        role_bonuses = [
+            (
+                POTW_ROLE_ID,
+                1.125,
+                "Player of the Week",
+                "<:potwBadge:1476938152861241565>",
+                12.5,
+            ),
+            (
+                TRANSCENDED_ROLE_ID,
+                1.11,
+                "Ascended",
+                "<:ascended:1485289045524484126>",
+                11,
+            ),
+            (ASCENDED_ROLE_ID, 1.1, "Ascended", "<:ascended:1485289045524484126>", 10),
+            (OFFICER_ROLE_ID, 1.07, "Officer", "<:oath2:1457452511635046492>", 7),
+            (INITIATE_ROLE_ID, 1.05, "Initiate", "<:oath:1457451850184917122>", 5),
+        ]
 
+        user_role_ids = {role.id for role in interaction.user.roles}
+
+        for role_id, multiplier, name, emoji, percent in role_bonuses:
+            if role_id in user_role_ids:
+                new_result = int(result * multiplier)
+                bonus_text = (
+                    f"\nThanks to your **{emoji}{name}** role, you got {percent}% bonus coins!"
+                    f"\nTotal payout: <:oathcoin:1462999179998531614>`{new_result}`"
+                )
+                break
         result_embed = discord.Embed(
             title="🎡 Wheel of Doom",
             description=f"You won <:oathcoin:1462999179998531614>`{result}`!{bonus_text}{drop_text}",

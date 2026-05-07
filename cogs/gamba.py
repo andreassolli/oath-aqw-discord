@@ -214,10 +214,13 @@ class Gamba(commands.Cog):
             user_total = get_value(user_cards)
             dealer_total = get_value(dealer_cards)
             old_wager = current_blackjack.get("wager", 1)
+            has_hit = current_blackjack.get("has_hit")
             user_ref.update({"current_blackjack.game_id": game_id})
             user_string = f"Your cards: {user_total}"
 
-            view = BlackjackView(user_cards, dealer_cards, deck, old_wager, game_id)
+            view = BlackjackView(
+                user_cards, dealer_cards, deck, old_wager, game_id, has_hit
+            )
             file = view.to_file()
             msg = await interaction.followup.send(
                 f"{user_string}",

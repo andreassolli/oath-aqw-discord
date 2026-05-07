@@ -153,7 +153,7 @@ class Extra(commands.Cog):
         )
 
     @app_commands.command(name="nominate", description="Nominate a player for POTW")
-    @app_commands.checks.has_role(OATHSWORN_ROLE_ID)
+    @app_commands.checks.has_any_role(OATHSWORN_ROLE_ID, TRANSCENDED_ROLE_ID)
     async def nominate(self, interaction: discord.Interaction, player: discord.Member):
         is_oath_member = any(role.id == INITIATE_ROLE_ID for role in player.roles)
         if not is_oath_member:
@@ -163,7 +163,7 @@ class Extra(commands.Cog):
             return
 
         db.collection("meta").document("potw_nominees").update(
-            {"nominees": ArrayUnion([str(player.id)])}
+            {"nominees": ArrayUnion([str(player.display_name)])}
         )
 
         await interaction.response.send_message(
