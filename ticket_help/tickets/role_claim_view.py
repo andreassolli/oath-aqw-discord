@@ -2,6 +2,7 @@ import discord
 
 from firebase_client import db
 from ticket_help.tickets.grim_guide import GUIDES
+from ticket_help.tickets.utils import set_active_ticket
 
 from .role_select import RoleSelect
 
@@ -52,11 +53,21 @@ class ConfirmRoleButton(discord.ui.Button):
             )
 
         doc_ref = db.collection("tickets").document(view.ticket_name)
+        # add user
         doc = doc_ref.get()
         data = doc.to_dict() or {}
 
         claimers = data.get("claimers", [])
         roles = data.get("claimer_roles", {})
+        max_claims = data.get("max_claims", 1)
+        ticket_name = data.get("ticket_name", "")
+
+        if not view.is_requester and view.user_id not in claimers:
+            if len(claimers) >= max_claims:
+                return await interaction.response.send_message(
+                    "🚫 This ticket is already full.",
+                    ephemeral=True,
+                )
 
         if view.selected_role in roles.values() and view.selected_role != "Fill":
             return await interaction.response.send_message(
@@ -64,11 +75,11 @@ class ConfirmRoleButton(discord.ui.Button):
                 ephemeral=True,
             )
 
-        # add user
         if view.user_id not in claimers and not view.is_requester:
             claimers.append(view.user_id)
 
         roles[str(view.user_id)] = view.selected_role
+        set_active_ticket(interaction.user.id, ticket_name)
 
         doc_ref.update(
             {
