@@ -22,11 +22,11 @@ def build_class_embed(
 
     # -------- General Section --------
     general_text = (
-        "<:forge:1456909374562898093> **Enhancements**\n"
-        f"<:swordaqw:1487004634307629056> - {general_loadout.get('sword', '—')}\n"
-        f"<:classbadge:1471256107057156117> - {general_loadout.get('class', '—')}\n"
-        f"<:helmaqw:1487000474014974054> - {general_loadout.get('helm', '—')}\n"
-        f"<:cloakaqw:1457810628168253522> - {general_loadout.get('cloak', '—')}\n"
+        "<:aqwScroll:1487000863867277432> **Enhancements**\n"
+        f"<:aqwSword:1501670723708780586> - {general_loadout.get('sword', '—')}\n"
+        f"<:aqwClass:1501670684101840906> - {general_loadout.get('class', '—')}\n"
+        f"<:aqwHelm:1487000474014974054> - {general_loadout.get('helm', '—')}\n"
+        f"<:aqwCape:1501670762174746644> - {general_loadout.get('cloak', '—')}\n"
     )
 
     # -------- Consumables --------
