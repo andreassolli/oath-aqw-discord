@@ -30,11 +30,13 @@ def build_ticket_embed(
     total_kills: str,
     drops: list[str] = [],
     claimer_roles: dict[str, str] | None = None,
+    notes: str | None = None,
 ):
     requester_member = guild.get_member(requester_id)
     claimer_roles = claimer_roles or {}
     requester_role = claimer_roles.get(
-        str(requester_id), "DPS" if "Ultra Speaker" in bosses else "Fill"
+        str(requester_id),
+        "DPS" if "Ultra Speaker" in bosses and type != "extra practice" else "Fill",
     )
 
     # Only apply role formatting in grimchallenge
@@ -96,6 +98,8 @@ def build_ticket_embed(
         name="Helpers", value=f"{len(claimers) + 1} / {max_claims + 1}", inline=True
     )
 
+    if type == "extra practice":
+        embed.add_field(name="Notes from requester", value=notes, inline=True)
     # if type == "spamming" or type == "testing":
     #    embed.add_field(
     #    name="Room",

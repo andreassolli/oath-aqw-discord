@@ -1,12 +1,6 @@
 import discord
 
-SPAM_OPTIONS = [
-    "Custom",
-    "Middle",
-    "Left",
-    "Right",
-    "All",
-]
+SPAM_OPTIONS = ["Custom", "Middle", "Left", "Right", "All", "Flame Usurper"]
 
 
 class SpamSelect(discord.ui.Select):
@@ -16,9 +10,11 @@ class SpamSelect(discord.ui.Select):
             discord.SelectOption(
                 label=spam_option,
                 value=spam_option
-                if spam_option == "Custom"
+                if spam_option in ["Custom", "Flame Usurper"]
                 else f"{spam_option} TempleShrine",
-                description=spam_option if spam_option == "Custom" else "TempleShrine",
+                description=spam_option
+                if spam_option in ["Custom", "Flame Usurper"]
+                else "TempleShrine",
             )
             for spam_option in SPAM_OPTIONS
         ]
