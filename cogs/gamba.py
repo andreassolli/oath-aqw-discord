@@ -214,7 +214,7 @@ class Gamba(commands.Cog):
             user_total = get_value(user_cards)
             dealer_total = get_value(dealer_cards)
             old_wager = current_blackjack.get("wager", 1)
-            has_hit = current_blackjack.get("has_hit")
+            has_hit = bool(current_blackjack.get("has_hit", False))
             user_ref.update({"current_blackjack.game_id": game_id})
             user_string = f"Your cards: {user_total}"
 

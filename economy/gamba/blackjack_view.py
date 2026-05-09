@@ -110,7 +110,7 @@ class BlackjackView(discord.ui.View):
             await self.payout(user_id, self.wager)
             result = (
                 f"<:GoobHeart:1459836996381048863> Dealer busted! "
-                f"You won <:oathcoin:1462999179998531614>{self.wager}!"
+                f"You won <:oathcoin:1462999179998531614>{self.wager * 2}!"
             )
 
         elif dealer_total > user_total:
@@ -125,7 +125,7 @@ class BlackjackView(discord.ui.View):
             await self.payout(user_id, self.wager)
             result = (
                 f"<:GoobShock:1463149045731299328> You won "
-                f"<:oathcoin:1462999179998531614>{self.wager}!"
+                f"<:oathcoin:1462999179998531614>{self.wager * 2}!"
             )
 
         else:
