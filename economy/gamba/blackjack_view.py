@@ -352,6 +352,6 @@ class BlackjackView(discord.ui.View):
         await self.payout(interaction.user.id, -(self.wager // 2))
 
         self.stop()
-        await interaction.response.edit_message(
+        await interaction.message.edit(
             content=f"You surrendered and got back {self.wager // 2}.", view=None
         )
