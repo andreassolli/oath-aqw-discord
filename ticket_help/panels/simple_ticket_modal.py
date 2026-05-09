@@ -5,8 +5,12 @@ from firebase_admin import firestore
 
 from config import (
     DAGE_CERTIFICATE_ID,
+    DARKON_CERTIFICATE_ID,
+    DRAGO_CERTIFICATE_ID,
+    DRAKATH_CERTIFICATE_ID,
     EXPERIENCED_HELPER_ROLE_ID,
     GRAMIEL_CERTIFICATE_ID,
+    NULGATH_CERTIFICATE_ID,
     SPEAKER_CERTIFICATE_ID,
     TICKET_CATEGORY_ID,
 )
@@ -15,6 +19,7 @@ from ticket_help.tickets.embed_utils import build_ticket_embed
 from ticket_help.tickets.ids import get_next_ticket_id
 from ticket_help.tickets.utils import set_active_ticket
 from ticket_help.tickets.views import TicketActionView
+from ticket_help.utils.ultra_modals import drakath, nulgath
 
 
 class SimpleTicketModal(discord.ui.Modal, title="Create Practice Ticket"):
@@ -57,7 +62,11 @@ class SimpleTicketModal(discord.ui.Modal, title="Create Practice Ticket"):
 
         gramiel_role = guild.get_role(GRAMIEL_CERTIFICATE_ID)
         speaker_role = guild.get_role(SPEAKER_CERTIFICATE_ID)
+        darkon_role = guild.get_role(DARKON_CERTIFICATE_ID)
         dage_role = guild.get_role(DAGE_CERTIFICATE_ID)
+        drakath_role = guild.get_role(DRAKATH_CERTIFICATE_ID)
+        nulgath_role = guild.get_role(NULGATH_CERTIFICATE_ID)
+        drago_role = guild.get_role(DRAGO_CERTIFICATE_ID)
         bosses = self._preset_bosses
         overwrites = {
             guild.default_role: discord.PermissionOverwrite(view_channel=False),
@@ -100,6 +109,7 @@ class SimpleTicketModal(discord.ui.Modal, title="Create Practice Ticket"):
                 "reminder_sent": False,
                 "auto_closed": False,
                 "claimer_roles": {str(interaction.user.id): "Lord of Order"},
+                "notes": self.notes.value,
             }
         )
 
@@ -116,6 +126,7 @@ class SimpleTicketModal(discord.ui.Modal, title="Create Practice Ticket"):
             server=self.server,
             total_kills=str(0),
             drops=[],
+            notes=self.notes.value,
         )
 
         allowed_mentioning = discord.AllowedMentions(

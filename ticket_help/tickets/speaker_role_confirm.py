@@ -1,5 +1,7 @@
 import discord
 
+from firebase_client import db
+
 from .speaker_role_select import OPTIONS
 
 
@@ -12,7 +14,6 @@ class ConfirmButton(discord.ui.Button):
 
     async def callback(self, interaction: discord.Interaction):
         view = self.view
-
         if not view.selected_role:
             return await interaction.response.send_message(
                 "Please select a role first.",

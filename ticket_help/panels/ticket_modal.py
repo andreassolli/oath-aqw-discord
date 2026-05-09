@@ -67,7 +67,10 @@ class CreateTicketModal(discord.ui.Modal):
             "spamming",
             "testing",
             "until drop",
-        } and not any("TempleShrine" in boss for boss in self._preset_bosses):
+        } and not any(
+            "TempleShrine" in boss or "Flame Usurper" in boss
+            for boss in self._preset_bosses
+        ):
             self.bosses_input = discord.ui.TextInput(
                 label="List boss rooms (comma-separated)",
                 placeholder="Ectocave,WorldEnder,Voidlair...",
@@ -83,7 +86,10 @@ class CreateTicketModal(discord.ui.Modal):
             "spamming",
             "testing",
             "until drop",
-        } and not any("TempleShrine" in boss for boss in self._preset_bosses):
+        } and not any(
+            "TempleShrine" in boss or "Flame Usurper" in boss
+            for boss in self._preset_bosses
+        ):
             self.max_claims_input = discord.ui.TextInput(
                 label="Maximum helpers",
                 placeholder="Digit between 1 and 20",
@@ -182,10 +188,11 @@ class CreateTicketModal(discord.ui.Modal):
                         points = int(total_kills_value * 1.75)
                     elif selected_spam == "Middle TempleShrine":
                         points = int(total_kills_value * 0.75)
-                    elif (
-                        selected_spam == "Right TempleShrine"
-                        or selected_spam == "Left TempleShrine"
-                    ):
+                    elif selected_spam in [
+                        "Right TempleShrine",
+                        "Left TempleShrine",
+                        "Flame Usurper",
+                    ]:
                         points = int(total_kills_value * 0.5)
                     else:
                         bosses = [
