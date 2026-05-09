@@ -191,9 +191,11 @@ class CreateTicketModal(discord.ui.Modal):
                     elif selected_spam in [
                         "Right TempleShrine",
                         "Left TempleShrine",
-                        "Flame Usurper",
                     ]:
                         points = int(total_kills_value * 0.5)
+                    elif selected_spam == "Flame Usurper":
+                        points = int(total_kills_value * 0.4)
+                        max_claims_value = 1
                     else:
                         bosses = [
                             boss.strip() for boss in self.bosses_input.value.split(",")

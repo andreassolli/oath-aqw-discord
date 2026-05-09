@@ -1,6 +1,6 @@
 import discord
 
-SPAM_OPTIONS = ["Custom", "Middle", "Left", "Right", "All", "Flame Usurper"]
+SPAM_OPTIONS = ["Flame Usurper", "All", "Middle", "Left", "Right", "Custom"]
 
 
 class SpamSelect(discord.ui.Select):
