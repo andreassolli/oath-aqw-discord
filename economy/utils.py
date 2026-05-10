@@ -1,9 +1,38 @@
 from typing import List, TypedDict
 
 import discord
+from google.cloud import firestore
 
 from config import DISCORD_MANAGER_ROLE_ID
 from firebase_client import db
+
+
+@firestore.transactional
+def donate_tx(transaction, sender_ref, receiver_ref, amount):
+    sender_doc = sender_ref.get(transaction=transaction)
+    data = sender_doc.to_dict() or {}
+
+    coins = data.get("coins", 0)
+    locked = data.get("locked_coins", 0)
+
+    if coins - locked < amount:
+        raise ValueError("Not enough available coins")
+
+    transaction.update(
+        sender_ref,
+        {
+            "coins": firestore.Increment(-amount),
+            "transactions": firestore.ArrayUnion([f"- Donated ${amount}"]),
+        },
+    )
+
+    transaction.update(
+        receiver_ref,
+        {
+            "coins": firestore.Increment(amount),
+            "transactions": firestore.ArrayUnion([f"+ Received ${amount}"]),
+        },
+    )
 
 
 class ShopItem(TypedDict):
