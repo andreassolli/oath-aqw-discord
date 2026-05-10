@@ -28,7 +28,7 @@ from economy.rocks_view import RockView
 from economy.shop import shop_embed
 from economy.shop_generation import generate_shop
 from economy.shop_view import ShopView
-from economy.utils import format_txt, rich_coins
+from economy.utils import donate_tx, format_txt, rich_coins
 from firebase_client import db
 from inventory.utils import equip_item, get_inventory, unequip_item
 from inventory.view import InventoryView
@@ -263,7 +263,7 @@ class Economy(commands.Cog):
                 f"<#{cid}>" for cid in ALLOWED_COMMANDS_CHANNELS
             )
 
-            await interaction.followup.send(
+            await interaction.response.send_message(
                 f"❌ This command can only be used in {allowed_mentions}.",
                 ephemeral=True,
             )
@@ -272,30 +272,19 @@ class Economy(commands.Cog):
             return await interaction.response.send_message(
                 "Select a number higher than 0."
             )
-        user_doc = db.collection("users").document(str(interaction.user.id)).get()
-        user_data = user_doc.to_dict() or {}
-        user_coins = user_data.get("coins", 0)
-        user_locked_coins = user_data.get("locked_coins", 0)
-        if user_coins - user_locked_coins < coins:
+
+        sender_ref = db.collection("users").document(str(interaction.user.id))
+        receiver_ref = db.collection("users").document(str(user.id))
+
+        transaction = db.transaction()
+
+        try:
+            donate_tx(transaction, sender_ref, receiver_ref, coins)
+        except ValueError:
             return await interaction.response.send_message(
-                "You cannot donate more coins you have."
+                "You cannot donate more coins than you have.",
+                ephemeral=True,
             )
-        db.collection("users").document(str(interaction.user.id)).update(
-            {
-                "coins": firestore.Increment(-coins),
-                "transactions": firestore.ArrayUnion(
-                    [f"- Donated ${coins} to {user.display_name}"]
-                ),
-            }
-        )
-        db.collection("users").document(str(user.id)).update(
-            {
-                "coins": firestore.Increment(coins),
-                "transactions": firestore.ArrayUnion(
-                    [f"+ Received ${coins} from {interaction.user.display_name}"]
-                ),
-            }
-        )
 
         return await interaction.response.send_message(
             f"{interaction.user.display_name} donated <:oathcoin:1462999179998531614>{coins} to {user.display_name}"
