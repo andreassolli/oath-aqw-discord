@@ -1,5 +1,8 @@
 import discord
 
+from config import OFFICER_CHANNEL_ID
+from user_verification.verification_modal import VerificationModal
+
 
 class TestLayout(discord.ui.LayoutView):
     def __init__(self):
@@ -11,14 +14,24 @@ class TestLayout(discord.ui.LayoutView):
                     media="https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/welco.png",
                 ),
             ),
+            discord.ui.TextDisplay(content=""),
+            discord.ui.TextDisplay(
+                content="<:wing:1503517636695425164>**Get access to the discord**"
+            ),
             discord.ui.Section(
                 discord.ui.TextDisplay(
-                    content="Verify your account to get access to the rest of the discord."
+                    content="> <a:check:1503523456468254991>Verify by entering your AQW username, and get access to the rest of the discord."
                 ),
                 accessory=VerifyButton(),
             ),
+            discord.ui.TextDisplay(content=""),
+            discord.ui.TextDisplay(
+                content="<:wing:1503517636695425164>**Join the guild**"
+            ),
             discord.ui.Section(
-                discord.ui.TextDisplay(content="Interested in joining the guild?"),
+                discord.ui.TextDisplay(
+                    content="> <:star:1503523567898460311>Join the guild, hang out with us in game, and participate in guild-only events and screenshots!"
+                ),
                 accessory=JoinGuildButton(),
             ),
             discord.ui.MediaGallery(
@@ -26,23 +39,18 @@ class TestLayout(discord.ui.LayoutView):
                     media="https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/separ.png",
                 ),
             ),
+            accent_colour=discord.Colour(7344907),
         )
 
         self.add_item(self.container1)
 
 
-import discord
-
-from config import OFFICER_CHANNEL_ID
-from user_verification.verification_modal import VerificationModal
-
-
 class VerifyButton(discord.ui.Button):
     def __init__(self):
         super().__init__(
-            label="Verify me",
+            label="Verify",
             style=discord.ButtonStyle.secondary,
-            emoji="☑️",
+            emoji="<:id:1503522726378471504>",
             custom_id="verify_me_button",
         )
 
@@ -74,7 +82,7 @@ class JoinGuildButton(discord.ui.Button):
         super().__init__(
             label="Join Oath",
             style=discord.ButtonStyle.secondary,
-            emoji="⚜️",
+            emoji="<:oath:1503523156714065960>",
             custom_id="join_oath_button",
         )
 
