@@ -8,7 +8,7 @@ class TestLayout(discord.ui.LayoutView):
         self.container1 = discord.ui.Container(
             discord.ui.MediaGallery(
                 discord.MediaGalleryItem(
-                    media="",
+                    media="https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/welco.png",
                 ),
             ),
             discord.ui.Section(
