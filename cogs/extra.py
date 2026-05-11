@@ -75,6 +75,7 @@ from extra_commands.wordle_image import generate_wordle_board
 from firebase_client import db
 from ticket_help.utils.experienced import StartView
 from user_profile.utils import fetch_inventory
+from user_verification.layout import TestLayout
 from user_verification.utils import change_roles
 
 BOSS_TO_CERTIFICATE = {
@@ -1047,6 +1048,17 @@ class Extra(commands.Cog):
             name="Using ACs", value=f"{acs}<:acaqw:1498781113127145482>", inline=False
         )
         await interaction.followup.send(embed=embed)
+
+    @app_commands.command(name="test", description="test layout")
+    @app_commands.default_permissions(manage_roles=True)
+    @app_commands.checks.has_role(BOT_GUY_ROLE_ID)
+    async def testl(self, interaction: discord.Interaction):
+        layout = TestLayout()
+
+        await interaction.response.send_message(
+            "Test layout",
+            view=layout,
+        )
 
 
 async def setup(bot: commands.Bot):
