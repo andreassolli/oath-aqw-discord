@@ -1056,7 +1056,6 @@ class Extra(commands.Cog):
         layout = TestLayout()
 
         await interaction.response.send_message(
-            "Test layout",
             view=layout,
         )
 
