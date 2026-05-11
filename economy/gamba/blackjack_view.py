@@ -353,5 +353,6 @@ class BlackjackView(discord.ui.View):
 
         self.stop()
         await self.message.edit(
-            content=f"You surrendered and got back {self.wager // 2}.", view=None
+            content=f"You surrendered and got back <:oathcoin:1462999179998531614>{self.wager // 2}.",
+            view=None,
         )
