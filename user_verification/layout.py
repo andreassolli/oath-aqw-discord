@@ -14,7 +14,7 @@ class TestLayout(discord.ui.LayoutView):
                     media="https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/welco.png",
                 ),
             ),
-            discord.ui.TextDisplay(content=""),
+            discord.ui.TextDisplay(content="‎"),
             discord.ui.TextDisplay(
                 content="<:wing:1503517636695425164>**Get access to the discord**"
             ),
@@ -24,7 +24,7 @@ class TestLayout(discord.ui.LayoutView):
                 ),
                 accessory=VerifyButton(),
             ),
-            discord.ui.TextDisplay(content=""),
+            discord.ui.TextDisplay(content="‎"),
             discord.ui.TextDisplay(
                 content="<:wing:1503517636695425164>**Join the guild**"
             ),
@@ -50,7 +50,10 @@ class VerifyButton(discord.ui.Button):
         super().__init__(
             label="Verify",
             style=discord.ButtonStyle.secondary,
-            emoji="<:id:1503522726378471504>",
+            emoji=discord.PartialEmoji(
+                name="id",
+                id=1503522726378471504,
+            ),
             custom_id="verify_me_button",
         )
 
@@ -82,7 +85,10 @@ class JoinGuildButton(discord.ui.Button):
         super().__init__(
             label="Join Oath",
             style=discord.ButtonStyle.secondary,
-            emoji="<:oath:1503523156714065960>",
+            emoji=discord.PartialEmoji(
+                name="oath",
+                id=1503523156714065960,
+            ),
             custom_id="join_oath_button",
         )
 
