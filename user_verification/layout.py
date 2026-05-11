@@ -23,7 +23,7 @@ class TestLayout(discord.ui.LayoutView):
             ),
             discord.ui.MediaGallery(
                 discord.MediaGalleryItem(
-                    media="https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/welco.png",
+                    media="https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/separ.png",
                 ),
             ),
         )
