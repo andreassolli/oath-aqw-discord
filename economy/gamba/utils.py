@@ -95,11 +95,11 @@ def lock_coins(
 def unlock_coins(user_id: int, amount: int, blackjack: bool = False):
 
     user_ref = db.collection("users").document(str(user_id))
+
     if blackjack:
         user_ref.update(
             {
                 "locked_coins": Increment(-amount),
-                "current_blackjack.status": "completed",
             }
         )
     else:
