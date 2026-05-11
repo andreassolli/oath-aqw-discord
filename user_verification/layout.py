@@ -12,12 +12,19 @@ class TestLayout(discord.ui.LayoutView):
                 ),
             ),
             discord.ui.Section(
-                discord.ui.TextDisplay(content="Verify your account below."),
+                discord.ui.TextDisplay(
+                    content="Verify your account to get access to the rest of the discord."
+                ),
                 accessory=VerifyButton(),
             ),
             discord.ui.Section(
-                discord.ui.TextDisplay(content="Interested in joining Oath?"),
+                discord.ui.TextDisplay(content="Interested in joining the guild?"),
                 accessory=JoinGuildButton(),
+            ),
+            discord.ui.MediaGallery(
+                discord.MediaGalleryItem(
+                    media="https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/welco.png",
+                ),
             ),
         )
 
@@ -34,8 +41,8 @@ class VerifyButton(discord.ui.Button):
     def __init__(self):
         super().__init__(
             label="Verify me",
-            style=discord.ButtonStyle.success,
-            emoji="✅",
+            style=discord.ButtonStyle.secondary,
+            emoji="☑️",
             custom_id="verify_me_button",
         )
 
@@ -65,9 +72,9 @@ class VerifyButton(discord.ui.Button):
 class JoinGuildButton(discord.ui.Button):
     def __init__(self):
         super().__init__(
-            label="I want to join Oath",
-            style=discord.ButtonStyle.primary,
-            emoji="🛡️",
+            label="Join Oath",
+            style=discord.ButtonStyle.secondary,
+            emoji="⚜️",
             custom_id="join_oath_button",
         )
 
