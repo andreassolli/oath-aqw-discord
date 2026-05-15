@@ -19,7 +19,12 @@ class StartApplicationView(discord.ui.View):
         user_ref = db.collection("users").document(str(interaction.user.id))
         user_doc = user_ref.get()
         user_data = user_doc.to_dict() or {}
-
+        certificate_ban = user_data.get("certificate_ban")
+        if certificate_ban:
+            return await interaction.response.send_message(
+                "You are banned from submitting applications",
+                ephemeral=True,
+            )
         await interaction.response.send_message(
             "Select which application you want to apply for:",
             view=ApplicationSelectView(user_data),
