@@ -21,6 +21,7 @@ async def finalize_ticket(
     interaction: discord.Interaction,
     ticket_name: str,
     ticket_data: dict,
+    keep_ticket: bool = False,
 ) -> None:
     await interaction.followup.send(
         "🎉 Ticket completed, adding points.", ephemeral=True
@@ -184,9 +185,13 @@ async def finalize_ticket(
         requester_after=requester_after,
         helper_changes=helper_changes,
         id=ticket_data.get("ticket_id", 0),
+        partially_completed=keep_ticket,
     )
 
-    doc_ref.update({"status": "completed"})
+    if not keep_ticket:
+        doc_ref.update({"status": "completed"})
+    if keep_ticket:
+        doc_ref.update({"partially_completed": True, "completed_kills": total_kills})
     total_points += final_reward
     ticket_stats_ref.update(
         {
@@ -200,7 +205,9 @@ async def finalize_ticket(
     await update_ticket(interaction.client)
     await update_dashboard(interaction.client)
 
-    await interaction.followup.send("🗑️ Deleting channel...", ephemeral=True)
+    if not keep_ticket:
+        await interaction.followup.send("🗑️ Deleting channel...", ephemeral=True)
+        if interaction.channel:
+            await interaction.channel.delete()
 
-    if interaction.channel:
-        await interaction.channel.delete()
+    return
