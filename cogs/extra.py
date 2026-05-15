@@ -429,8 +429,12 @@ class Extra(commands.Cog):
             update_data = {
                 "coins": firestore.Increment(coins_to_add),
                 "certificates_rewarded": ArrayUnion([certificate]),
-                f"application_statuses.{app_type}": "Approved",
             }
+            db.collection("users").document(str(user.id)).update(
+                {
+                    f"application_statuses.{app_type}": "Approved",
+                },
+            )
 
             user_ref.set(update_data, merge=True)
 
