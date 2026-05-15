@@ -26,6 +26,7 @@ def build_logging_embed(
     helper_changes: dict[int, tuple[int, int]],
     id: int,
     drops: Optional[str] = None,
+    partially_completed: bool = False,
 ) -> discord.Embed:
     """
     Pure embed builder.
@@ -33,8 +34,8 @@ def build_logging_embed(
     No mutations.
     Only formats provided data.
     """
-
-    title = f"🗑️ Cancelled Ticket {id}" if cancelled else f"🎉 Completed Ticket {id}"
+    partial = "Partially Completed" if partially_completed else "Completed"
+    title = f"🗑️ Cancelled Ticket {id}" if cancelled else f"🎉 {partial} Ticket {id}"
     embed = discord.Embed(
         title=title,
         color=discord.Color.red() if cancelled else discord.Color.blurple(),
