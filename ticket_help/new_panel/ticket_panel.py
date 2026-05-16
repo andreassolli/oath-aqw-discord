@@ -26,7 +26,7 @@ from ticket_help.modals.role_modal import RoleModal
 from ticket_help.modals.server_modal import ServerModal
 from ticket_help.panels.server_fetch import fetch_servers
 from ticket_help.tickets.boss_type import get_bosses_for_type
-from ticket_help.tickets.points import get_boss_room
+from ticket_help.tickets.points import calculate_ticket_points, get_boss_room
 from ticket_help.tickets.utils import clear_active_ticket, set_active_ticket
 
 POINTS_MAP = {
@@ -75,6 +75,7 @@ class TicketLayout(discord.ui.LayoutView):
         server: str,
         total_kills: str,
         drops: list[str] = [],
+        completed_bosses: list[str] = [],
         claimer_roles: dict[str, str] | None = None,
         notes: str | None = None,
     ):
@@ -95,6 +96,7 @@ class TicketLayout(discord.ui.LayoutView):
         self.claimer_roles = claimer_roles or {}
         self.notes = notes
         self.ticket_name = ticket_name
+        boss_list = [boss for boss in bosses if boss not in completed_bosses]
 
         self.container1 = discord.ui.Container(
             discord.ui.TextDisplay(
@@ -109,7 +111,9 @@ class TicketLayout(discord.ui.LayoutView):
                 accessory=ChangeButton(),
             ),
             discord.ui.Section(
-                discord.ui.TextDisplay(content=f"Bosses: \n>>> {', '.join(bosses)}"),
+                discord.ui.TextDisplay(
+                    content=f"Bosses: \n>>> {', '.join(boss_list)} ~~{', '.join(completed_bosses)}~~"
+                ),
                 accessory=BossButton(),
             ),
             discord.ui.Section(
@@ -150,6 +154,10 @@ class TicketLayout(discord.ui.LayoutView):
 
         if not data:
             return
+
+        points = 0
+        for boss in data["bosses"]:
+            points += calculate_ticket_points(boss)
 
         new_view = TicketLayout(
             requester_id=data["user_id"],

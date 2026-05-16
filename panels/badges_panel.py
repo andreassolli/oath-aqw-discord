@@ -74,22 +74,6 @@ class BadgesLayout(discord.ui.LayoutView):
         )
         self.add_item(self.container1)
 
-    cooldowns: dict[int, float] = {}
-
-    async def unlock_button(
-        self,
-        button: discord.ui.Button,
-        interaction: discord.Interaction,
-    ):
-        await discord.utils.sleep_until(discord.utils.utcnow() + timedelta(seconds=10))
-
-        button.disabled = False
-
-        try:
-            await interaction.response.edit_message(view=self)
-        except discord.HTTPException:
-            pass
-
 
 class BadgesButton(discord.ui.Button):
     def __init__(self):
@@ -113,25 +97,6 @@ class BadgesButton(discord.ui.Button):
             "Class Collector",
             "51% Weapons",
         ]
-        user_id = interaction.user.id
-        now = time.time()
-
-        # cooldown check
-        last_used = layout.cooldowns.get(user_id, 0)
-
-        if now - last_used < 10:
-            remaining = int(10 - (now - last_used))
-            return await interaction.response.send_message(
-                f"⏳ Please wait {remaining}s before applying again.",
-                ephemeral=True,
-            )
-
-        # set cooldown immediately
-        layout.cooldowns[user_id] = now
-
-        # disable button temporarily for THIS interaction
-        self.disabled = True
-        await interaction.response.edit_message(view=layout)
 
         # immediate feedback
         await interaction.followup.send(
@@ -143,8 +108,6 @@ class BadgesButton(discord.ui.Button):
                 "❌ No data received.",
                 ephemeral=True,
             )
-
-        asyncio.create_task(layout.unlock_button(self, interaction))
 
         values = self.selected_values
 
