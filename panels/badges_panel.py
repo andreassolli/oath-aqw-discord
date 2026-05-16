@@ -25,21 +25,21 @@ class BadgesLayout(discord.ui.LayoutView):
             ),
             discord.ui.TextDisplay(content="‎"),
             discord.ui.TextDisplay(
-                content="<:wing:1503698816300351648>** Apply for profile badges**"
+                content="<:wing:1503517636695425164>** Apply for profile badges**"
             ),
             discord.ui.Section(
                 discord.ui.TextDisplay(
-                    content=">>> <a:sparks:1503698787754053693> Freshen up your profile card with some neat badges!\nKeep the necessary items in your inventory when applying."
+                    content=">>> <a:sparks:1505157330055069706> Freshen up your profile card with some neat badges!\nKeep the necessary items in your inventory when applying."
                 ),
                 accessory=BadgesButton(),
             ),
             discord.ui.TextDisplay(content="‎"),
             discord.ui.TextDisplay(
-                content="<:wing:1503698816300351648>** Learn more about badges**"
+                content="<:wing:1503517636695425164>** Learn more about badges**"
             ),
             discord.ui.Section(
                 discord.ui.TextDisplay(
-                    content=">>> <:star:1503698784872566886> If you wish to learn more about which badges you can get and what they are, click on '**What are badges?**'"
+                    content=">>> <:star:1503523567898460311> If you wish to learn more about which badges you can get and what they are, click on '**What are badges?**'"
                 ),
                 accessory=GuideButton(),
             ),
@@ -60,7 +60,7 @@ class BadgesButton(discord.ui.Button):
             style=discord.ButtonStyle.primary,
             emoji=discord.PartialEmoji(
                 name="button_badges",
-                id=1503826987381162157,
+                id=1505158462441656450,
             ),
             custom_id="badges_button",
         )
@@ -77,6 +77,6 @@ class GuideButton(discord.ui.Button):
             label="What are badges?",
             emoji=discord.PartialEmoji(
                 name="star",
-                id=1503698784872566886,
+                id=1503523567898460311,
             ),
         )
