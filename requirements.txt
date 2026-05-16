@@ -10,7 +10,7 @@ cffi==2.0.0
 charset-normalizer==3.4.4
 cryptography==46.0.4
 curl_cffi==0.14.0
-discord.py==2.6.4
+discord.py==2.7.1
 feedparser==6.0.12
 firebase_admin==7.1.0
 frozenlist==1.8.0

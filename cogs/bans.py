@@ -10,11 +10,28 @@ from extra_commands.ban_embed import build_ban_list_embed
 from extra_commands.bans import add_ban, get_all_bans, is_user_banned, remove_ban
 from extra_commands.log_ban_embed import build_ban_log_embed
 from extra_commands.utils import is_ban_channel
+from panels.badges_panel import setup_badges
+from panels.rules_panel import setup_rules
+from panels.test_panel import setup_ticket_panel
+from panels.welcome_panel import setup_welcome
 
 
 class Bans(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
+        self._started = False
+
+    @commands.Cog.listener()
+    async def on_ready(self):
+        # Prevent double-start on reload / reconnect
+        if self._started:
+            return
+        self._started = True
+        await self.bot.wait_until_ready()
+        await setup_welcome(self.bot)
+        await setup_rules(self.bot)
+        await setup_badges(self.bot)
+        await setup_ticket_panel(self.bot)
 
     @app_commands.command(name="vet", description="View all banned users")
     @app_commands.describe(username="AQW username to check")
