@@ -39,7 +39,7 @@ def sort_bosses(bosses: list[str]) -> list[str]:
 
 
 class CreateTicketModal(discord.ui.Modal):
-    def __init__(self, ticket_type: str, username: str):
+    def __init__(self, ticket_type: str, username: str, servers):
         super().__init__(title=f"Create {ticket_type.capitalize()} Ticket")
 
         self.type = ticket_type
@@ -49,7 +49,7 @@ class CreateTicketModal(discord.ui.Modal):
         self.username = discord.ui.TextInput(label="Username", required=True)
         self.username.default = username
         self.add_item(self.username)
-        servers = fetch_servers()
+
         server_options = [
             discord.SelectOption(
                 label=server["sName"],
