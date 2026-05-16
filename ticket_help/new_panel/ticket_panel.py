@@ -222,7 +222,10 @@ class ChangeButton(discord.ui.Button):
 
         await interaction.response.send_modal(
             ServerModal(
-                ticket_name=layout.ticket_name, servers=servers, current=layout.server
+                layout=layout,
+                ticket_name=layout.ticket_name,
+                servers=servers,
+                current=layout.server,
             )
         )
 
@@ -313,6 +316,7 @@ class RoleButton(discord.ui.Button):
 
         await interaction.response.send_modal(
             RoleModal(
+                layout=layout,
                 ticket_name=layout.ticket_name,
                 roles=claimer_roles,
                 boss="Speaker" if data.get("type") == "weekly bosses" else "Grim",
@@ -426,6 +430,8 @@ class ClaimButton(discord.ui.Button):
             roles = data.get("claimer_roles", {})
             return await interaction.followup.send_modal(
                 RoleModal(
+                    layout=layout,
+                    ticket_name=layout.ticket_name,
                     roles=roles,
                     boss="Speaker" if layout.type == "weekly bosses" else "Grim",
                 )
@@ -434,6 +440,7 @@ class ClaimButton(discord.ui.Button):
         claimers.append(interaction.user.id)
         layout.doc_ref.update({"claimers": claimers})
         set_active_ticket(interaction.user.id, layout.ticket_name)
+        await layout.refresh(interaction)
 
 
 class PingButton(discord.ui.Button):
@@ -531,6 +538,7 @@ class BossButton(discord.ui.Button):
 
         await interaction.response.send_modal(
             ChangeBossModal(
+                layout=layout,
                 ticket_name=layout.ticket_name,
                 bosses=get_bosses_for_type(ticket_type),
                 current=bosses,

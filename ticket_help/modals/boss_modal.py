@@ -4,9 +4,12 @@ from firebase_client import db
 
 
 class ChangeBossModal(discord.ui.Modal, title="Change Bosses"):
-    def __init__(self, ticket_name: str, bosses: dict[str, str], current: list[str]):
+    def __init__(
+        self, layout, ticket_name: str, bosses: dict[str, str], current: list[str]
+    ):
         super().__init__()
-
+        self.layout = layout
+        self.ticket_name = ticket_name
         options = []
         for boss in bosses:
             option = discord.CheckboxGroupOption(
@@ -30,6 +33,8 @@ class ChangeBossModal(discord.ui.Modal, title="Change Bosses"):
         doc_ref = db.collection("tickets").document(self.ticket_name)
         doc_ref.update({"bosses": self.boss_selection.component.values})
         await self.view._update_ticket_embed(interaction)
+        await self.layout.refresh(interaction)
+
         await interaction.response.send_message(
             f"Current bosses: {', '.join(self.boss_selection.component.values)}",
             ephemeral=True,
