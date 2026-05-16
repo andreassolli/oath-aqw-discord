@@ -59,7 +59,7 @@ class CreateTicketModal(discord.ui.Modal):
             for server in servers
         ]
         self.server_select = discord.ui.Label(
-            text="<:server_change:1505158459728068639> Select the server you want to change to",
+            text="<:server_change:1505158459728068639> Select server",
             component=discord.ui.Select(
                 options=server_options,
                 required=True,

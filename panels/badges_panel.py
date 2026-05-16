@@ -37,7 +37,7 @@ async def setup_badges(client: discord.Client):
 
 class BadgesLayout(discord.ui.LayoutView):
     def __init__(self):
-        super().__init__()
+        super().__init__(timeout=None)
 
         self.container1 = discord.ui.Container(
             discord.ui.MediaGallery(
