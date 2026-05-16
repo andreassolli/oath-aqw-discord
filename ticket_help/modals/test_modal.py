@@ -361,19 +361,11 @@ class CreateTicketModal(discord.ui.Modal):
 
             helper_role = interaction.guild.get_role(HELPER_ROLE_ID)
 
-            if not helper_role:
-                return await interaction.response.send_message(
-                    "❌ Helper role not found.", ephemeral=True
-                )
-
-            await interaction.response.send_message(
-                "📣 Helpers have been pinged!", ephemeral=True
-            )
-
             await channel.send(
                 f"{helper_role.mention}\n⚠️ **More helpers needed for this ticket!**",
                 allowed_mentions=discord.AllowedMentions(roles=True),
             )
+
             db.collection("tickets").document(ticket_name).update(
                 {
                     "message_id": message.id,
