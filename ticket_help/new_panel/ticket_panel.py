@@ -25,6 +25,7 @@ from ticket_help.modals.confirm_modal import ConfirmModal
 from ticket_help.modals.role_modal import RoleModal
 from ticket_help.modals.server_modal import ServerModal
 from ticket_help.panels.server_fetch import fetch_servers
+from ticket_help.tickets.boss_type import get_bosses_for_type
 from ticket_help.tickets.points import get_boss_room
 from ticket_help.tickets.utils import clear_active_ticket, set_active_ticket
 
@@ -285,7 +286,7 @@ class RoleButton(discord.ui.Button):
         await interaction.response.send_modal(
             RoleModal(
                 roles=claimer_roles,
-                boss="Speaker" if data.get("type") == "Weekly" else "Grim",
+                boss="Speaker" if data.get("type") == "weekly" else "Grim",
             )
         )
 
@@ -396,7 +397,7 @@ class ClaimButton(discord.ui.Button):
             roles = data.get("claimer_roles", {})
             return await interaction.followup.send_modal(
                 RoleModal(
-                    roles=roles, boss="Speaker" if layout.type == "Weekly" else "Grim"
+                    roles=roles, boss="Speaker" if layout.type == "weekly" else "Grim"
                 )
             )
 
@@ -496,7 +497,7 @@ class BossButton(discord.ui.Button):
             )
 
         bosses = ticket_data.get("bosses", [])
-        ticket_type = ticket_data.get("type", "Weekly")
+        ticket_type = ticket_data.get("type", "weekly")
 
         await interaction.response.send_modal(
             ChangeBossModal(

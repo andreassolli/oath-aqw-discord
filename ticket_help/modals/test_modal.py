@@ -122,7 +122,7 @@ class CreateTicketModal(discord.ui.Modal):
             self.total_kills_input = None
             self.total_kills = 1
 
-        if self.type == "Weekly":
+        if self.type == "weekly":
             self.experienced_only = discord.ui.Label(
                 text="Enable certificate only.",
                 component=discord.ui.Checkbox(),
@@ -236,7 +236,11 @@ class CreateTicketModal(discord.ui.Modal):
             channel_name = "「🔖」PROXY-TESTING"
             ticket_name = "testing"
             category = interaction.guild.get_channel(TICKET_CATEGORY_ID)
-            experienced_only = self.experienced_only.component.values[0]
+            experienced_only = (
+                self.experienced_only.component.values[0]
+                if self.type == "weekly"
+                else False
+            )
 
             guild = interaction.guild
 
