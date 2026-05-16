@@ -43,8 +43,9 @@ GRIM_ROLE_EMOJIS = {
 
 
 class RoleModal(discord.ui.Modal, title="Role Selection"):
-    def __init__(self, ticket_name: str, roles: dict[str, str], boss: str):
+    def __init__(self, layout, ticket_name: str, roles: dict[str, str], boss: str):
         super().__init__()
+        self.layout = layout
         if boss == "Grim":
             OPTIONS = GRIM_OPTIONS
             ROLE_EMOJIS = GRIM_ROLE_EMOJIS
@@ -137,6 +138,7 @@ class RoleModal(discord.ui.Modal, title="Role Selection"):
             }
         )
         await self._update_ticket_embed(interaction)
+        await self.layout.refresh(interaction)
         await interaction.response.send_message(
             f"You selected: {selected_role}", ephemeral=True
         )
