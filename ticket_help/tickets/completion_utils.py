@@ -11,11 +11,17 @@ from economy.gems import reward_gems_if_needed
 from firebase_client import db
 from ticket_help.dashboard.updater import update_dashboard
 from ticket_help.panels.update_ticket_counter import update_ticket
-from ticket_help.tickets.partial_complete import get_points_for_boss
 
 from .embed_logging import build_logging_embed
 from .logging import log_ticket_event
 from .utils import clear_active_ticket, get_week_start
+
+
+def get_points_for_boss(boss: str) -> int:
+    for doc in db.collection("point_rules").stream():
+        if doc.id.lower() == boss.lower():
+            return int(doc.to_dict().get("points", 1))
+    return 1
 
 
 async def finalize_ticket(
