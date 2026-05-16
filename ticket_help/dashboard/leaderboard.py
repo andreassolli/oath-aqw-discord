@@ -34,7 +34,7 @@ async def build_leaderboard_embed(guild: discord.Guild):
         aqw_guild = data.get("guild", "")
         if aqw_guild and aqw_guild != "None":
             if aqw_guild == "Oath":
-                guild_str = "`💠 Oath` "
+                guild_str = "<:oath:1457451850184917122>`Oath` "
             else:
                 guild_str = f"`{aqw_guild}` "
         else:
@@ -53,7 +53,7 @@ async def build_leaderboard_embed(guild: discord.Guild):
     embed = discord.Embed(
         title="🏆 Ticket Leaderboard (Top 25)",
         description="\n".join(lines),
-        color=discord.Color.gold(),
+        color=discord.Colour(7344907),
     )
 
     embed.set_footer(

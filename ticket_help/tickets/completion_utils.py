@@ -196,7 +196,7 @@ async def finalize_ticket(
     embed = build_logging_embed(
         requester_id=requester_id,
         requester_display=requester_display,
-        bosses=ticket_data.get("bosses", []),
+        bosses=completed_bosses if keep_ticket else ticket_data.get("bosses", []),
         username=ticket_data.get("username", "—"),
         max_claims=ticket_data.get("max_claims", 0),
         claimers=claimers,
@@ -213,7 +213,7 @@ async def finalize_ticket(
         requester_after=requester_after,
         helper_changes=helper_changes,
         id=ticket_data.get("ticket_id", 0),
-        partially_completed=keep_ticket,
+        partially_completed=completed_bosses != ticket_data.get("bosses", []),
     )
 
     if not keep_ticket:

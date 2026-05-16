@@ -102,6 +102,7 @@ class TicketLayout(discord.ui.LayoutView):
         self.completed_bosses = completed_bosses
 
         boss_list = [boss for boss in bosses if boss not in completed_bosses]
+        self.boss_list = boss_list
         completed_string = (
             f", ~~{', '.join(completed_bosses)}~~" if completed_bosses else ""
         )
@@ -209,7 +210,7 @@ class TicketLayout(discord.ui.LayoutView):
             requester_id=data["user_id"],
             ticket_name=self.ticket_name,
             bosses=data["bosses"],
-            points=points,
+            points=data["points"],
             username=data["username"],
             room=data["room"],
             max_claims=data["max_claims"],
@@ -667,7 +668,9 @@ class CompleteButton(discord.ui.Button):
         bosses = data.get("bosses", [])
         await interaction.response.send_modal(
             ConfirmModal(
-                ticket_name=layout.ticket_name, bosses=bosses, type=layout.type
+                ticket_name=layout.ticket_name,
+                bosses=layout.boss_list,
+                type=layout.type,
             )
         )
 
