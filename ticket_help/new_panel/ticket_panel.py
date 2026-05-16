@@ -286,7 +286,7 @@ class RoleButton(discord.ui.Button):
         await interaction.response.send_modal(
             RoleModal(
                 roles=claimer_roles,
-                boss="Speaker" if data.get("type") == "weekly" else "Grim",
+                boss="Speaker" if data.get("type") == "weekly bosses" else "Grim",
             )
         )
 
@@ -397,7 +397,8 @@ class ClaimButton(discord.ui.Button):
             roles = data.get("claimer_roles", {})
             return await interaction.followup.send_modal(
                 RoleModal(
-                    roles=roles, boss="Speaker" if layout.type == "weekly" else "Grim"
+                    roles=roles,
+                    boss="Speaker" if layout.type == "weekly bosses" else "Grim",
                 )
             )
 
@@ -497,7 +498,7 @@ class BossButton(discord.ui.Button):
             )
 
         bosses = ticket_data.get("bosses", [])
-        ticket_type = ticket_data.get("type", "weekly")
+        ticket_type = ticket_data.get("type", "weekly bosses")
 
         await interaction.response.send_modal(
             ChangeBossModal(

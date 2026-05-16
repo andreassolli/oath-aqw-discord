@@ -123,7 +123,7 @@ class CreateTicketModal(discord.ui.Modal):
             self.total_kills_input = None
             self.total_kills = 1
 
-        if self.type == "weekly":
+        if self.type == "weekly bosses":
             self.experienced_only = discord.ui.Label(
                 text="Enable certificate only.",
                 component=discord.ui.Checkbox(),
@@ -239,7 +239,7 @@ class CreateTicketModal(discord.ui.Modal):
             category = interaction.guild.get_channel(TICKET_CATEGORY_ID)
             experienced_only = (
                 self.experienced_only.component.values[0]
-                if self.type == "weekly"
+                if self.type == "weekly bosses"
                 else False
             )
 
