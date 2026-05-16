@@ -68,7 +68,7 @@ class RulesLayout(discord.ui.LayoutView):
             discord.ui.Separator(visible=True, spacing=discord.SeparatorSpacing.small),
             discord.ui.TextDisplay(content="‎"),
             discord.ui.TextDisplay(
-                content="<:wing:1503698816300351648> **Make sure to report any misconduct**"
+                content="<:wing:1503517636695425164> **Make sure to report any misconduct**"
             ),
             discord.ui.TextDisplay(
                 content="> If you see any misconduct, make sure to report it to us by doing `/report`. These reports are semi-anonymous, meaning no one sees who sent any report or messages, unless it is suspected of being a false report."

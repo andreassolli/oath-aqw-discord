@@ -1,7 +1,7 @@
 import discord
 
+from panels.test_boss import BossMultiSelectView
 from ticket_help.modals.test_modal import CreateTicketModal
-from ticket_help.panels.boss_multiselect_view import BossMultiSelectView
 from ticket_help.panels.server_select import ServerSelect
 from ticket_help.panels.type_select import TypeSelect
 
