@@ -195,7 +195,9 @@ class ChangeButton(discord.ui.Button):
         servers = await fetch_servers()
 
         await interaction.response.send_modal(
-            ServerModal(servers, current=layout.server)
+            ServerModal(
+                ticket_name=layout.ticket_name, servers=servers, current=layout.server
+            )
         )
 
 

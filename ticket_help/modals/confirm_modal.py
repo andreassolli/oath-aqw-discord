@@ -1,8 +1,11 @@
 import discord
 
+from firebase_client import db
+from ticket_help.tickets.completion_utils import finalize_ticket
+
 
 class ConfirmModal(discord.ui.Modal, title="Complete Ticket"):
-    def __init__(self, bosses: list[str]):
+    def __init__(self, ticket_name: str, bosses: list[str]):
         super().__init__()
 
         options = []
@@ -24,9 +27,23 @@ class ConfirmModal(discord.ui.Modal, title="Complete Ticket"):
             component=discord.ui.Checkbox(),
         )
         self.add_item(self.keep_ticket)
+        self.ticket_name = ticket_name
 
     async def on_submit(self, interaction: discord.Interaction):
-        await interaction.response.send_message(
-            f"Completed: {', '.join(self.boss_selection.component.value)}",
-            ephemeral=True,
+        await interaction.response.defer(ephemeral=True)
+
+        doc_ref = db.collection("tickets").document(self.ticket_name)
+        doc = doc_ref.get()
+        data = doc.to_dict()
+
+        # 🔒 Hard guard
+        if data.get("status") in ("completing", "completed"):
+            return await interaction.followup.send(
+                "⚠️ This ticket has already been completed.", ephemeral=True
+            )
+
+        await finalize_ticket(
+            interaction=interaction,
+            ticket_name=self.ticket_name,
+            ticket_data=data,
         )
