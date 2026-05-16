@@ -11,6 +11,7 @@ from config import (
     spam_points,
 )
 from firebase_client import db
+from ticket_help.new_panel.ticket_panel import TicketLayout
 from ticket_help.tickets.embed_utils import build_ticket_embed
 from ticket_help.tickets.ids import get_next_ticket_id
 from ticket_help.tickets.points import calculate_ticket_points
