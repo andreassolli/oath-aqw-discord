@@ -355,6 +355,14 @@ class RoleButton(discord.ui.Button):
                 ephemeral=True,
             )
 
+        if (
+            "Grim Challenge" not in layout.bosses
+            and "Ultra Speaker" not in layout.bosses
+        ):
+            return await interaction.response.send_message(
+                "❌ Only Grim Challenge and Ultra Speaker tickets can change roles.",
+                ephemeral=True,
+            )
         requester = data.get("user_id")
         claimers = data.get("claimers", [])
         claimer_roles = data.get("claimer_roles", {})
@@ -397,6 +405,7 @@ class ClaimButton(discord.ui.Button):
                 "❌ Ticket data not found.",
                 ephemeral=True,
             )
+        await interaction.response.defer()
         claimers = data.get("claimers", [])
 
         requester_id = data.get("user_id")
@@ -518,7 +527,7 @@ class ClaimButton(discord.ui.Button):
 
         rooms_text = "".join(lines)
 
-        await interaction.followup.send(
+        return await interaction.followup.send(
             f"📋 **Room codes:**\n{rooms_text}", ephemeral=True
         )
 

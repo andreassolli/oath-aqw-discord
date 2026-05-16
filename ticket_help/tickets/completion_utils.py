@@ -208,7 +208,7 @@ async def finalize_ticket(
         closer_display=closer_display,
         cancelled=False,
         points=points,
-        total_kills=ticket_data.get("total_kills"),
+        total_kills=ticket_data.get("total_kills", 0),
         requester_before=requester_before,
         requester_after=requester_after,
         helper_changes=helper_changes,
@@ -219,7 +219,7 @@ async def finalize_ticket(
     if not keep_ticket:
         doc_ref.update({"status": "completed"})
     if keep_ticket:
-        doc_ref.update({"partially_completed": True, "completed_kills": total_kills})
+        doc_ref.update({"partially_completed": True})
     total_points += final_reward
     ticket_stats_ref.update(
         {
