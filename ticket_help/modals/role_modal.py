@@ -47,20 +47,20 @@ class RoleModal(discord.ui.Modal, title="Role Selection"):
         super().__init__()
         self.layout = layout
         if boss == "Grim":
-            OPTIONS = GRIM_OPTIONS
-            ROLE_EMOJIS = GRIM_ROLE_EMOJIS
+            options = GRIM_OPTIONS
+            role_emojis = GRIM_ROLE_EMOJIS
         else:
-            OPTIONS = SPEAKER_OPTIONS
-            ROLE_EMOJIS = SPEAKER_ROLE_EMOJIS
+            options = SPEAKER_OPTIONS
+            role_emojis = SPEAKER_ROLE_EMOJIS
 
         taken_roles = set(roles.values())
 
         available = []
         taken = []
 
-        for role, desc in OPTIONS.items():
+        for role, desc in options.items():
             option = discord.SelectOption(
-                label=f"{ROLE_EMOJIS.get(role, '❔')} {role}",
+                label=f"{role_emojis.get(role, '❔')} {role}",
                 value=role,
                 description=desc,
                 emoji="🔒" if role in taken_roles and role != "Fill" else None,

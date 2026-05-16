@@ -41,12 +41,10 @@ class TicketPanelView(discord.ui.View):
 
         await interaction.response.defer(ephemeral=True)
 
-        servers = await fetch_servers()
-
-        view = TicketCreateView(servers)
+        view = TicketCreateView()
 
         await interaction.followup.send(
-            "Select the type and server for this ticket:",
+            "Select the type for this ticket:",
             view=view,
             ephemeral=True,
         )

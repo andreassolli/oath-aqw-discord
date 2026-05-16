@@ -12,15 +12,14 @@ from config import (
 )
 from firebase_client import db
 from ticket_help.new_panel.ticket_panel import TicketLayout
-from ticket_help.tickets.embed_utils import build_ticket_embed
+from ticket_help.panels.server_fetch import fetch_servers
+from ticket_help.tickets.boss_type import get_bosses_for_type
 from ticket_help.tickets.ids import get_next_ticket_id
-from ticket_help.tickets.points import calculate_ticket_points
+from ticket_help.tickets.points import calculate_ticket_points, get_boss_room
 from ticket_help.tickets.utils import (
     find_guide_threads,
     set_active_ticket,
 )
-from ticket_help.tickets.views import TicketActionView
-from ticket_help.utils.ticket import get_overwrites
 
 CORRECT_BOSS_ORDER = [
     "Ultra Dage",
@@ -40,11 +39,10 @@ def sort_bosses(bosses: list[str]) -> list[str]:
 
 
 class CreateTicketModal(discord.ui.Modal):
-    def __init__(self, ticket_type: str, server: str, bosses: list[str], username: str):
+    def __init__(self, ticket_type: str, username: str):
         super().__init__(title=f"Create {ticket_type.capitalize()} Ticket")
 
         self.type = ticket_type
-        self.server = server
 
         self._preset_bosses = sort_bosses(bosses)
 
@@ -53,6 +51,22 @@ class CreateTicketModal(discord.ui.Modal):
         self.username = discord.ui.TextInput(label="Username", required=True)
         self.username.default = username
         self.add_item(self.username)
+        servers = fetch_servers()
+        server_options = [
+            discord.SelectOption(
+                label=server["sName"],
+                value=server["sName"],
+                description=f"{server['iCount']}/{server['iMax']} players",
+            )
+            for server in servers
+        ]
+        self.server_select = discord.ui.Label(
+            text="Select the server you want to change to",
+            component=discord.ui.Select(
+                options=server_options,
+            ),
+        )
+        self.add_item(self.server_select)
         # if self.type in {"other bosses", "spamming", "testing"}:
         #    self.room_input = discord.ui.TextInput(
         #        label="Room",
@@ -81,6 +95,7 @@ class CreateTicketModal(discord.ui.Modal):
 
         self.room = random.randint(11111, 99999)
         self.room_input = None
+        self.server = ""
 
         if self.type in {
             "other bosses",
@@ -122,7 +137,25 @@ class CreateTicketModal(discord.ui.Modal):
         else:
             self.total_kills_input = None
             self.total_kills = 1
+        if self.type in ["weekly bosses", "daily bosses", "7 man bosses"]:
+            boss_options = get_bosses_for_type(self.type)
+            options = []
+            for boss in boss_options:
+                option = discord.CheckboxGroupOption(
+                    label=boss.get("name"),
+                    value=boss.get("name"),
+                    default=boss.get("name"),
+                )
+                options.append(option)
 
+            self.boss_selection = discord.ui.Label(
+                text="Select the bosses for this ticket",
+                component=discord.ui.CheckboxGroup(
+                    options=options,
+                    required=True,
+                ),
+            )
+            self.add_item(self.boss_selection)
         if self.type == "weekly bosses":
             self.experienced_only = discord.ui.Label(
                 text="Enable certificate only.",
@@ -142,9 +175,9 @@ class CreateTicketModal(discord.ui.Modal):
                     "❌ Room must be a number.", ephemeral=True
                 )
                 return
-
+            self.server = self.server_select.component.values[0]
             drops_list = []
-            bosses = self._preset_bosses
+            bosses = self.boss_selection.component.values
             if self.total_drops_input:
                 drops_list = self.total_drops_input.value.strip().split(",")
 
@@ -331,7 +364,7 @@ class CreateTicketModal(discord.ui.Modal):
                 embed = discord.Embed(
                     title="📘 **Relevant Guides**",
                     description="\n".join(lines),
-                    color=discord.Color.teal(),
+                    color=discord.Colour(7344907),
                 )
 
                 await channel.send(embed=embed)
@@ -343,6 +376,34 @@ class CreateTicketModal(discord.ui.Modal):
             set_active_ticket(interaction.user.id, ticket_name)
             await interaction.followup.send(
                 f"✅ Ticket created: {channel.mention}", ephemeral=True
+            )
+            lines = []
+
+            for boss in bosses:
+                custom_tickets = {"spamming", "testing", "until drop"}
+                if self.type in custom_tickets:
+                    if "TempleShrine" in boss:
+                        rooms = "templeshrine"
+                    elif "Flame Usurper" in boss:
+                        rooms = "flameusurper"
+                    else:
+                        rooms = boss
+                else:
+                    rooms = get_boss_room(boss)
+
+                if not rooms:
+                    continue
+
+                # Split multiple rooms by comma
+                room_list = [r.strip() for r in rooms.split(",")]
+
+                for room in room_list:
+                    lines.append(f"```/join {room}-{layout.room}```")
+
+            rooms_text = "".join(lines)
+
+            await interaction.followup.send(
+                f"📋 **Room codes:**\n{rooms_text}", ephemeral=True
             )
 
             try:

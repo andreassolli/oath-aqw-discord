@@ -205,7 +205,11 @@ async def finalize_ticket(
     await update_ticket(interaction.client)
     await update_dashboard(interaction.client)
 
-    if not keep_ticket:
+    if keep_ticket:
+        await interaction.followup.send(
+            "Points added, keeping ticket open.", ephemeral=True
+        )
+    else:
         await interaction.followup.send("🗑️ Deleting channel...", ephemeral=True)
         if interaction.channel:
             await interaction.channel.delete()
