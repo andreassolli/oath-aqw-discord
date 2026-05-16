@@ -86,7 +86,7 @@ class BadgesLayout(discord.ui.LayoutView):
         button.disabled = False
 
         try:
-            await interaction.message.edit(view=self)
+            await interaction.response.edit_message(view=self)
         except discord.HTTPException:
             pass
 
@@ -131,7 +131,7 @@ class BadgesButton(discord.ui.Button):
 
         # disable button temporarily for THIS interaction
         self.disabled = True
-        await interaction.response.edit_message(view=self)
+        await interaction.response.edit_message(view=layout)
 
         # immediate feedback
         await interaction.followup.send(
