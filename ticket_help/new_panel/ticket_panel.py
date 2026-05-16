@@ -4,6 +4,7 @@ import discord
 from firebase_admin import firestore
 
 from config import (
+    BOT_GUY_ROLE_ID,
     DAGE_CERTIFICATE_ID,
     DARKON_CERTIFICATE_ID,
     DRAGO_CERTIFICATE_ID,
@@ -97,6 +98,9 @@ class TicketLayout(discord.ui.LayoutView):
         self.notes = notes
         self.ticket_name = ticket_name
         boss_list = [boss for boss in bosses if boss not in completed_bosses]
+        completed_string = (
+            f", ~~{', '.join(completed_bosses)}~~" if completed_bosses else ""
+        )
 
         self.container1 = discord.ui.Container(
             discord.ui.TextDisplay(
@@ -112,7 +116,7 @@ class TicketLayout(discord.ui.LayoutView):
             ),
             discord.ui.Section(
                 discord.ui.TextDisplay(
-                    content=f"Bosses: \n>>> {', '.join(boss_list)} ~~{', '.join(completed_bosses)}~~"
+                    content=f"Bosses: \n>>> {', '.join(boss_list)}{completed_string}"
                 ),
                 accessory=BossButton(),
             ),
