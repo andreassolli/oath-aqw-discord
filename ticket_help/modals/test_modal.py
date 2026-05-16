@@ -150,7 +150,7 @@ class CreateTicketModal(discord.ui.Modal):
             self.add_item(self.boss_selection)
         if self.type == "weekly bosses":
             self.experienced_only = discord.ui.Label(
-                text="Certificate only.",
+                text="Certificate only",
                 component=discord.ui.CheckboxGroup(
                     options=[discord.CheckboxGroupOption(label="Enable")],
                     required=False,
@@ -260,7 +260,7 @@ class CreateTicketModal(discord.ui.Modal):
             ticket_name = "testing"
             category = interaction.guild.get_channel(TICKET_CATEGORY_ID)
             experienced_only = (
-                self.experienced_only.component.value
+                self.experienced_only.component.values[0]
                 if self.type == "weekly bosses"
                 else False
             )
