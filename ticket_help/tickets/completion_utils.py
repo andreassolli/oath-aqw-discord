@@ -1,15 +1,17 @@
 import asyncio
+import bisect
 from datetime import datetime
 from typing import Dict, Tuple
 
 import discord
 from firebase_admin import firestore
 
-from config import WEEKLY_REQUESTER_CAP
+from config import WEEKLY_REQUESTER_CAP, spam_points
 from economy.gems import reward_gems_if_needed
 from firebase_client import db
 from ticket_help.dashboard.updater import update_dashboard
 from ticket_help.panels.update_ticket_counter import update_ticket
+from ticket_help.tickets.partial_complete import get_points_for_boss
 
 from .embed_logging import build_logging_embed
 from .logging import log_ticket_event
@@ -34,15 +36,35 @@ async def finalize_ticket(
     ticket_stats_ref = db.collection("meta").document("ticket_stats")
 
     requester_id = ticket_data["user_id"]
+    completed_bosses = ticket_data.get("completed_bosses", [])
     points = ticket_data.get("points", 1)
+    old_points = points
+    if keep_ticket:
+        for boss in completed_bosses:
+            points += get_points_for_boss(boss)
 
-    doc_ref.update(
-        {
-            "status": "completing",
-            "closed_by": interaction.user.id,
-            "closed_at": firestore.SERVER_TIMESTAMP,
-        }
-    )
+    not_completed_bosses = []
+    for boss in ticket_data.get("bosses", []):
+        if boss not in completed_bosses:
+            not_completed_bosses.append(boss)
+    if keep_ticket:
+        doc_ref.update(
+            {
+                "status": "completing",
+                "closed_by": interaction.user.id,
+                "closed_at": firestore.SERVER_TIMESTAMP,
+                "bosses": not_completed_bosses,
+                "points": old_points - points,
+            }
+        )
+    else:
+        doc_ref.update(
+            {
+                "status": "completing",
+                "closed_by": interaction.user.id,
+                "closed_at": firestore.SERVER_TIMESTAMP,
+            }
+        )
 
     claimers = [uid for uid in ticket_data.get("claimers", []) if uid != requester_id]
     total_points = points * len(ticket_data.get("claimers", []))

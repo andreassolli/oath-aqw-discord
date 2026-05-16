@@ -6,6 +6,7 @@ from firebase_admin import firestore
 
 from config import (
     GUIDE_CHANNEL_ID,
+    HELPER_ROLE_ID,
     TICKET_CATEGORY_ID,
     percentage_points,
     spam_points,
@@ -358,8 +359,26 @@ class CreateTicketModal(discord.ui.Modal):
 
                 await channel.send(embed=embed)
 
+            helper_role = interaction.guild.get_role(HELPER_ROLE_ID)
+
+            if not helper_role:
+                return await interaction.response.send_message(
+                    "❌ Helper role not found.", ephemeral=True
+                )
+
+            await interaction.response.send_message(
+                "📣 Helpers have been pinged!", ephemeral=True
+            )
+
+            await channel.send(
+                f"{helper_role.mention}\n⚠️ **More helpers needed for this ticket!**",
+                allowed_mentions=discord.AllowedMentions(roles=True),
+            )
             db.collection("tickets").document(ticket_name).update(
-                {"message_id": message.id}
+                {
+                    "message_id": message.id,
+                    "last_helper_ping": firestore.SERVER_TIMESTAMP,
+                }
             )
 
             set_active_ticket(interaction.user.id, ticket_name)
