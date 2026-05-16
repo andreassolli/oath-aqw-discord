@@ -38,7 +38,7 @@ class TicketPanelView(discord.ui.View):
 
     @discord.ui.button(label="🎫 Create Ticket", style=discord.ButtonStyle.primary)
     async def create_ticket(self, interaction: discord.Interaction, _):
-        servers = fetch_servers()
+        servers = await fetch_servers()
         await interaction.response.defer(ephemeral=True)
 
         view = TicketCreateView(servers)
