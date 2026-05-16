@@ -1,7 +1,7 @@
 import discord
 
 from firebase_client import db
-from ticket_help.new_panel.ticket_panel import TicketLayout
+from ticket_help.modals.utils import build_ticket_layout
 
 
 class ServerModal(discord.ui.Modal, title="Change Server"):
@@ -38,22 +38,9 @@ class ServerModal(discord.ui.Modal, title="Change Server"):
 
         try:
             message = await interaction.channel.fetch_message(message_id)
-            claimer_roles = ticket_data.get("claimer_roles", {})
-            total_kills = ticket_data.get("total_kills", "0")
-            layout = TicketLayout(
-                requester_id=ticket_data["user_id"],
-                bosses=ticket_data["bosses"],
-                points=ticket_data["points"],
-                username=ticket_data["username"],
-                room=ticket_data["room"],
-                max_claims=ticket_data["max_claims"],
-                claimers=ticket_data["claimers"],
-                guild=interaction.guild,
-                type=ticket_data["type"],
-                server=ticket_data["server"],
-                total_kills=total_kills,
-                claimer_roles=claimer_roles,
-                ticket_name=self.ticket_name,
+            layout = build_ticket_layout(
+                ticket_data,
+                interaction.guild,
             )
 
             await message.edit(view=layout)
