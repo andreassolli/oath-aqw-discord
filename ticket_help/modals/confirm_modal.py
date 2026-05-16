@@ -47,11 +47,8 @@ class ConfirmModal(discord.ui.Modal, title="Complete Ticket"):
             )
 
         if self.type in {"weekly bosses", "daily bosses", "7 man bosses"}:
-            completed_bosses = [
-                option.value
-                for option in self.boss_selection.component.options
-                if option.value in data.get("bosses", [])
-            ]
+            completed_bosses = self.boss_selection.component.values
+
             doc_ref.update({"completed_bosses": completed_bosses})
 
             await finalize_ticket(
