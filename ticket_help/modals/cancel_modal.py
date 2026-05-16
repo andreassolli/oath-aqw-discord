@@ -35,8 +35,8 @@ class CancelModal(discord.ui.Modal, title="Cancel ticket"):
                 "⚠️ This ticket is already closed.", ephemeral=True
             )
 
-        requester_id = self.ticket_data["user_id"]
-        claimers = self.ticket_data.get("claimers", [])
+        requester_id = data["user_id"]
+        claimers = data.get("claimers", [])
         clear_active_ticket(requester_id, self.ticket_name)
         for user_id in claimers:
             clear_active_ticket(user_id, self.ticket_name)
@@ -79,7 +79,7 @@ class CancelModal(discord.ui.Modal, title="Cancel ticket"):
             claimers=claimers,
             guild=interaction.guild,
             type=data.get("type", "unknown"),
-            created_at=self.ticket_data["created_at"],
+            created_at=data["created_at"],
             cancelled=True,
             closer_id=interaction.user.id,
             id=data.get("ticket_id", 0),

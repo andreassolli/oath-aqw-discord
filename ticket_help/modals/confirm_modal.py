@@ -23,7 +23,7 @@ class ConfirmModal(discord.ui.Modal, title="Complete Ticket"):
         self.add_item(self.boss_selection)
 
         self.keep_ticket = discord.ui.Label(
-            text="Keep ticket. Choose this if you need to replace helpers",
+            text="Keep ticket. Select if a helper has to leave",
             component=discord.ui.Checkbox(),
         )
         self.add_item(self.keep_ticket)

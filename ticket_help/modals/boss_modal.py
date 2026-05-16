@@ -32,7 +32,6 @@ class ChangeBossModal(discord.ui.Modal, title="Change Bosses"):
     async def on_submit(self, interaction: discord.Interaction):
         doc_ref = db.collection("tickets").document(self.ticket_name)
         doc_ref.update({"bosses": self.boss_selection.component.values})
-        await self.view._update_ticket_embed(interaction)
         await self.layout.refresh(interaction)
 
         await interaction.response.send_message(
