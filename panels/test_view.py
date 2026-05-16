@@ -7,10 +7,11 @@ from ticket_help.panels.type_select import TypeSelect
 
 
 class TicketCreateView(discord.ui.View):
-    def __init__(self):
+    def __init__(self, servers):
         super().__init__(timeout=120)
 
         self.selected_type = "daily bosses"
+        self.servers = servers
 
         self.add_item(TypeSelect())
 
@@ -20,5 +21,6 @@ class TicketCreateView(discord.ui.View):
             CreateTicketModal(
                 ticket_type=self.selected_type,
                 username=interaction.user.display_name,
+                servers=self.servers,
             )
         )
