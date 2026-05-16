@@ -292,7 +292,7 @@ class CreateTicketModal(discord.ui.Modal):
                 }
             )
 
-            embed = TicketLayout(
+            layout = TicketLayout(
                 requester_id=interaction.user.id,
                 bosses=bosses,
                 points=points,
@@ -314,14 +314,7 @@ class CreateTicketModal(discord.ui.Modal):
             )
 
             message = await channel.send(
-                embed=embed,
-                view=TicketActionView(
-                    ticket_name=ticket_name,
-                    max_claims=max_claims_value,
-                    room=str(room_value),
-                    bosses=bosses,
-                    kills=total_kills_value,
-                ),
+                view=layout,
                 allowed_mentions=allowed_mentioning,
             )
 
