@@ -374,7 +374,7 @@ class ClaimButton(discord.ui.Button):
 
             clear_active_ticket(interaction.user.id, layout.ticket_name)
 
-            await self._update_ticket_embed(interaction)
+            await layout.refresh(interaction)
 
             await interaction.channel.send(
                 f"🔁 {interaction.user.mention} unclaimed this ticket "
