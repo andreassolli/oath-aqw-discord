@@ -59,7 +59,7 @@ class CreateTicketModal(discord.ui.Modal):
             for server in servers
         ]
         self.server_select = discord.ui.Label(
-            text="<:server_change:1505158459728068639> Server",
+            text="Server",
             component=discord.ui.Select(
                 options=server_options,
                 required=True,
@@ -150,8 +150,11 @@ class CreateTicketModal(discord.ui.Modal):
             self.add_item(self.boss_selection)
         if self.type == "weekly bosses":
             self.experienced_only = discord.ui.Label(
-                text="Enable certificate only.",
-                component=discord.ui.Checkbox(),
+                text="Certificate only.",
+                component=discord.ui.CheckboxGroup(
+                    options=[discord.CheckboxGroupOption(label="Enable")],
+                    required=False,
+                ),
             )
             self.add_item(self.experienced_only)
 
@@ -205,18 +208,14 @@ class CreateTicketModal(discord.ui.Modal):
                         "❌ Maximum helpers must be a number between **1 and 20**.",
                         ephemeral=True,
                     )
-            elif any(
-                bossA in bossB
-                for bossA in six_helper_bosses
-                for bossB in self._preset_bosses
-            ):
+            elif any(bossA in bossB for bossA in six_helper_bosses for bossB in bosses):
                 max_claims_value = 6
             else:
                 max_claims_value = 3
 
             if self.type in {"other bosses", "spamming", "testing"}:
                 if self.type == "spamming":
-                    selected_spam = self._preset_bosses[0]
+                    selected_spam = bosses[0]
                     if selected_spam == "All TempleShrine":
                         points = int(total_kills_value * 1.75)
                     elif selected_spam == "Middle TempleShrine":
@@ -252,8 +251,6 @@ class CreateTicketModal(discord.ui.Modal):
 
                 points = min(sum(drop_rates), 12)
             else:
-                bosses = self._preset_bosses
-
                 points = 0
                 for boss in bosses:
                     points += calculate_ticket_points(boss)
