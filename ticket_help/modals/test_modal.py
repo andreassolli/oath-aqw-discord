@@ -44,8 +44,6 @@ class CreateTicketModal(discord.ui.Modal):
 
         self.type = ticket_type
 
-        self._preset_bosses = sort_bosses(bosses)
-
         self.bosses_input: discord.ui.TextInput | None = None
         username = username if username else ""
         self.username = discord.ui.TextInput(label="Username", required=True)
@@ -82,10 +80,7 @@ class CreateTicketModal(discord.ui.Modal):
             "spamming",
             "testing",
             "until drop",
-        } and not any(
-            "TempleShrine" in boss or "Flame Usurper" in boss
-            for boss in self._preset_bosses
-        ):
+        }:
             self.bosses_input = discord.ui.TextInput(
                 label="List boss rooms (comma-separated)",
                 placeholder="Ectocave,WorldEnder,Voidlair...",
@@ -102,10 +97,7 @@ class CreateTicketModal(discord.ui.Modal):
             "spamming",
             "testing",
             "until drop",
-        } and not any(
-            "TempleShrine" in boss or "Flame Usurper" in boss
-            for boss in self._preset_bosses
-        ):
+        }:
             self.max_claims_input = discord.ui.TextInput(
                 label="Maximum helpers",
                 placeholder="Digit between 1 and 20",
@@ -177,7 +169,7 @@ class CreateTicketModal(discord.ui.Modal):
                 return
             self.server = self.server_select.component.values[0]
             drops_list = []
-            bosses = self.boss_selection.component.values
+            bosses = sort_bosses(self.boss_selection.component.values)
             if self.total_drops_input:
                 drops_list = self.total_drops_input.value.strip().split(",")
 
