@@ -27,6 +27,7 @@ from ticket_help.modals.role_modal import RoleModal
 from ticket_help.modals.server_modal import ServerModal
 from ticket_help.panels.server_fetch import fetch_servers
 from ticket_help.tickets.boss_type import get_bosses_for_type
+from ticket_help.tickets.embed_utils import ROLE_EMOJIS
 from ticket_help.tickets.points import calculate_ticket_points, get_boss_room
 from ticket_help.tickets.utils import clear_active_ticket, set_active_ticket
 
@@ -101,6 +102,44 @@ class TicketLayout(discord.ui.LayoutView):
         completed_string = (
             f", ~~{', '.join(completed_bosses)}~~" if completed_bosses else ""
         )
+        requester_member = guild.get_member(requester_id)
+        claimer_roles = claimer_roles or {}
+        requester_role = claimer_roles.get(
+            str(requester_id),
+            "DPS" if "Ultra Speaker" in bosses and type != "extra practice" else "Fill",
+        )
+
+        # Only apply role formatting in grimchallenge
+        if requester_role and ("Grim Challenge" in bosses or "Ultra Speaker" in bosses):
+            requester_mention = (
+                f"**{ROLE_EMOJIS.get(requester_role, '❔')}{requester_role}:** {requester_member.mention}"
+                if requester_member
+                else f"**{ROLE_EMOJIS.get(requester_role, '❔')}{requester_role}:** <@{requester_id}>"
+            )
+        else:
+            requester_mention = (
+                requester_member.mention if requester_member else f"<@{requester_id}>"
+            )
+        if claimers:
+            helper_lines = []
+
+            for uid in claimers:
+                member = guild.get_member(uid)
+                mention = member.mention if member else f"<@{uid}>"
+
+                role = claimer_roles.get(str(uid))
+
+                # Only apply role formatting in grimchallenge
+                if role and ("Grim Challenge" in bosses or "Ultra Speaker" in bosses):
+                    helper_lines.append(
+                        f"**{ROLE_EMOJIS.get(role, '❔')}{role}:** {mention}"
+                    )
+                else:
+                    helper_lines.append(mention)
+
+            helpers = "\n".join(helper_lines)
+        else:
+            helpers = "—"
 
         self.container1 = discord.ui.Container(
             discord.ui.TextDisplay(
@@ -108,7 +147,7 @@ class TicketLayout(discord.ui.LayoutView):
             ),
             discord.ui.Separator(visible=False, spacing=discord.SeparatorSpacing.small),
             discord.ui.TextDisplay(
-                content=f"<:id2:1505158104810262558> **Requester** <@{requester_id}> ({username}){'\n >>> ' + notes if notes else ''}"
+                content=f"<:id2:1505158104810262558> **Requester** {requester_mention} ({username}){'\n >>> ' + notes if notes else ''}"
             ),
             discord.ui.Section(
                 discord.ui.TextDisplay(content=f"Selected server: \n> **{server}**"),
@@ -134,7 +173,7 @@ class TicketLayout(discord.ui.LayoutView):
             discord.ui.Separator(visible=True, spacing=discord.SeparatorSpacing.large),
             discord.ui.Section(
                 discord.ui.TextDisplay(
-                    content=f"<:hands:1505158458494681138> **Helpers** ({len(claimers)}/{max_claims})\n- {', '.join([f'<@{helper}>' for helper in claimers])}"
+                    content=f"<:hands:1505158458494681138> **Helpers** ({len(claimers)}/{max_claims})\n- {helpers}"
                 ),
                 accessory=RoleButton(),
             ),
@@ -453,6 +492,35 @@ class ClaimButton(discord.ui.Button):
         layout.doc_ref.update({"claimers": claimers})
         set_active_ticket(interaction.user.id, layout.ticket_name)
         await layout.refresh(interaction)
+        await interaction.channel.send(
+            f"✅ {interaction.user.mention} claimed this ticket "
+            f"({len(claimers) + 1}/{self.max_claims + 1})"
+        )
+
+        lines = []
+        for boss in layout.bosses:
+            custom_tickets = {"testing", "until drop"}
+            if data.get("type") in custom_tickets:
+                rooms = boss
+            elif data.get("type") == "spamming" and layout.bosses == "custom":
+                rooms = get_boss_room(boss)
+            else:
+                rooms = get_boss_room(boss)
+
+            if not rooms:
+                continue
+
+            # Split multiple rooms by comma
+            room_list = [r.strip() for r in rooms.split(",")]
+
+            for room in room_list:
+                lines.append(f"```/join {room}-{layout.room}```")
+
+        rooms_text = "".join(lines)
+
+        await interaction.followup.send(
+            f"📋 **Room codes:**\n{rooms_text}", ephemeral=True
+        )
 
 
 class PingButton(discord.ui.Button):
@@ -585,7 +653,9 @@ class CompleteButton(discord.ui.Button):
             )
         bosses = data.get("bosses", [])
         await interaction.response.send_modal(
-            ConfirmModal(ticket_name=layout.ticket_name, bosses=bosses)
+            ConfirmModal(
+                ticket_name=layout.ticket_name, bosses=bosses, type=layout.type
+            )
         )
 
 
