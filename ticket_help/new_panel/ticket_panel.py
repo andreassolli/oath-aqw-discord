@@ -145,6 +145,32 @@ class TicketLayout(discord.ui.LayoutView):
 
         self.add_item(self.container1)
 
+    async def refresh(self, interaction: discord.Interaction):
+        data = self.get_ticket_data()
+
+        if not data:
+            return
+
+        new_view = TicketLayout(
+            requester_id=data["user_id"],
+            ticket_name=self.ticket_name,
+            bosses=data["bosses"],
+            points=data["points"],
+            username=data["username"],
+            room=data["room"],
+            max_claims=data["max_claims"],
+            claimers=data.get("claimers", []),
+            guild=interaction.guild,
+            type=data["type"],
+            server=data["server"],
+            total_kills=data.get("total_kills", ""),
+            drops=data.get("drops", []),
+            claimer_roles=data.get("claimer_roles", {}),
+            notes=data.get("notes"),
+        )
+
+        await interaction.message.edit(view=new_view)
+
     def is_admin(self, interaction):
         return has_admin_role(interaction)
 
@@ -287,6 +313,7 @@ class RoleButton(discord.ui.Button):
 
         await interaction.response.send_modal(
             RoleModal(
+                ticket_name=layout.ticket_name,
                 roles=claimer_roles,
                 boss="Speaker" if data.get("type") == "weekly bosses" else "Grim",
             )
@@ -504,6 +531,7 @@ class BossButton(discord.ui.Button):
 
         await interaction.response.send_modal(
             ChangeBossModal(
+                ticket_name=layout.ticket_name,
                 bosses=get_bosses_for_type(ticket_type),
                 current=bosses,
             )
@@ -536,7 +564,9 @@ class CompleteButton(discord.ui.Button):
                 ephemeral=True,
             )
         bosses = data.get("bosses", [])
-        await interaction.response.send_modal(ConfirmModal(bosses=bosses))
+        await interaction.response.send_modal(
+            ConfirmModal(ticket_name=layout.ticket_name, bosses=bosses)
+        )
 
 
 class CancelButton(discord.ui.Button):
@@ -559,4 +589,6 @@ class CancelButton(discord.ui.Button):
                 ephemeral=True,
             )
 
-        await interaction.response.send_modal(CancelModal())
+        await interaction.response.send_modal(
+            CancelModal(ticket_name=layout.ticket_name)
+        )
