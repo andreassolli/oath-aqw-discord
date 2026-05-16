@@ -5,7 +5,7 @@ from urllib.parse import quote
 import discord
 from google.cloud import firestore
 
-from config import OFFICER_ROLE_ID, TICKET_LOG_CHANNEL_ID
+from config import OATHSWORN_ROLE_ID, TICKET_LOG_CHANNEL_ID
 from firebase_client import db
 from user_verification.embed_join_log import build_join_log_embed
 from user_verification.utils import change_roles, fetch_aqw_profile
@@ -26,7 +26,7 @@ class DidUserJoinView(discord.ui.View):
         user = interaction.user
         if not isinstance(user, discord.Member):
             return
-        if not any(role.id == OFFICER_ROLE_ID for role in user.roles):
+        if not any(role.id == OATHSWORN_ROLE_ID for role in user.roles):
             await interaction.response.send_message(
                 "❌ You are not allowed to use this button.", ephemeral=True
             )
@@ -145,7 +145,7 @@ class DidUserJoinView(discord.ui.View):
         user = interaction.user
         if not isinstance(user, discord.Member):
             return
-        if not any(role.id == OFFICER_ROLE_ID for role in user.roles):
+        if not any(role.id == OATHSWORN_ROLE_ID for role in user.roles):
             await interaction.response.send_message(
                 "❌ You are not allowed to use this button.", ephemeral=True
             )
@@ -206,7 +206,7 @@ class DidUserJoinView(discord.ui.View):
         user = interaction.user
         if not isinstance(user, discord.Member):
             return
-        if not any(role.id == OFFICER_ROLE_ID for role in user.roles):
+        if not any(role.id == OATHSWORN_ROLE_ID for role in user.roles):
             return await interaction.response.send_message(
                 "❌ You do not have permission to use this command.",
                 ephemeral=True,

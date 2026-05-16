@@ -8,7 +8,6 @@ from google.cloud import firestore
 from config import (
     NEW_TICKET_CATEGORY_ID,
     OATHSWORN_ROLE_ID,
-    OFFICER_ROLE_ID,
     TEAM_CATEGORY_ID,
     TICKET_LOG_CHANNEL_ID,
 )
@@ -195,7 +194,7 @@ class VerificationModal(discord.ui.Modal):
             await channel.set_permissions(guild_obj.default_role, view_channel=False)
             await channel.set_permissions(member, view_channel=True, send_messages=True)
 
-            officer_role = guild_obj.get_role(OFFICER_ROLE_ID)
+            officer_role = guild_obj.get_role(OATHSWORN_ROLE_ID)
             head_officer_role = guild_obj.get_role(OATHSWORN_ROLE_ID)
 
             for role in (officer_role, head_officer_role):
