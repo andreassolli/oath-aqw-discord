@@ -1,3 +1,4 @@
+from calendar import c
 from datetime import datetime, timedelta
 
 import discord
@@ -98,6 +99,8 @@ class TicketLayout(discord.ui.LayoutView):
         self.claimer_roles = claimer_roles or {}
         self.notes = notes
         self.ticket_name = ticket_name
+        self.completed_bosses = completed_bosses
+
         boss_list = [boss for boss in bosses if boss not in completed_bosses]
         completed_string = (
             f", ~~{', '.join(completed_bosses)}~~" if completed_bosses else ""
@@ -218,6 +221,7 @@ class TicketLayout(discord.ui.LayoutView):
             drops=data.get("drops", []),
             claimer_roles=data.get("claimer_roles", {}),
             notes=data.get("notes"),
+            completed_bosses=data.get("completed_bosses", []),
         )
 
         await interaction.message.edit(view=new_view)
