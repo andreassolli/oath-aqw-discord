@@ -238,7 +238,7 @@ class CreateTicketModal(discord.ui.Modal):
             ticket_name = "testing"
             category = interaction.guild.get_channel(TICKET_CATEGORY_ID)
             experienced_only = (
-                self.experienced_only.component.values[0]
+                self.experienced_only.component.value
                 if self.type == "weekly bosses"
                 else False
             )

@@ -27,6 +27,6 @@ class ConfirmModal(discord.ui.Modal, title="Complete Ticket"):
 
     async def on_submit(self, interaction: discord.Interaction):
         await interaction.response.send_message(
-            f"Completed: {', '.join(self.boss_selection.component.values[0])}",
+            f"Completed: {', '.join(self.boss_selection.component.value)}",
             ephemeral=True,
         )
