@@ -75,29 +75,6 @@ class RoleModal(discord.ui.Modal, title="Role Selection"):
         self.add_item(self.role_selection)
         self.ticket_name = ticket_name
 
-    async def _update_ticket_embed(self, interaction: discord.Interaction):
-        doc_ref = db.collection("tickets").document(self.ticket_name)
-        doc = doc_ref.get()
-        if not doc.exists:
-            return
-
-        ticket_data = doc.to_dict()
-        message_id = ticket_data.get("message_id")
-        if not message_id:
-            return
-
-        try:
-            message = await interaction.channel.fetch_message(message_id)
-            layout = build_ticket_layout(
-                ticket_data,
-                interaction.guild,
-            )
-
-            await message.edit(view=layout)
-
-        except discord.NotFound:
-            pass
-
     async def on_submit(self, interaction: discord.Interaction):
         selected_role = self.role_selection.component.values[0]
         doc_ref = db.collection("tickets").document(self.ticket_name)
@@ -137,7 +114,6 @@ class RoleModal(discord.ui.Modal, title="Role Selection"):
                 "claimer_roles": roles,
             }
         )
-        await self._update_ticket_embed(interaction)
         await self.layout.refresh(interaction)
         await interaction.response.send_message(
             f"You selected: {selected_role}", ephemeral=True
