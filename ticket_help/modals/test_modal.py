@@ -62,6 +62,7 @@ class CreateTicketModal(discord.ui.Modal):
             text="<:server_change:1505158459728068639> Select the server you want to change to",
             component=discord.ui.Select(
                 options=server_options,
+                required=True,
             ),
         )
         self.add_item(self.server_select)
@@ -136,7 +137,6 @@ class CreateTicketModal(discord.ui.Modal):
                 option = discord.CheckboxGroupOption(
                     label=boss.get("name"),
                     value=boss.get("name"),
-                    default=boss.get("name"),
                 )
                 options.append(option)
 
