@@ -1,0 +1,361 @@
+import bisect
+import random
+
+import discord
+from firebase_admin import firestore
+
+from config import (
+    GUIDE_CHANNEL_ID,
+    TICKET_CATEGORY_ID,
+    percentage_points,
+    spam_points,
+)
+from firebase_client import db
+from ticket_help.tickets.embed_utils import build_ticket_embed
+from ticket_help.tickets.ids import get_next_ticket_id
+from ticket_help.tickets.points import calculate_ticket_points
+from ticket_help.tickets.utils import (
+    find_guide_threads,
+    set_active_ticket,
+)
+from ticket_help.tickets.views import TicketActionView
+from ticket_help.utils.ticket import get_overwrites
+
+CORRECT_BOSS_ORDER = [
+    "Ultra Dage",
+    "Ultra Nulgath",
+    "Ultra Drago",
+    "Ultra Darkon",
+    "Champion Drakath",
+    "Ultra Speaker",
+    "Ultra Gramiel",
+]
+
+BOSS_ORDER_MAP = {boss: i for i, boss in enumerate(CORRECT_BOSS_ORDER)}
+
+
+def sort_bosses(bosses: list[str]) -> list[str]:
+    return sorted(bosses, key=lambda b: BOSS_ORDER_MAP.get(b, len(BOSS_ORDER_MAP)))
+
+
+class CreateTicketModal(discord.ui.Modal):
+    def __init__(self, ticket_type: str, server: str, bosses: list[str], username: str):
+        super().__init__(title=f"Create {ticket_type.capitalize()} Ticket")
+
+        self.type = ticket_type
+        self.server = server
+
+        self._preset_bosses = sort_bosses(bosses)
+
+        self.bosses_input: discord.ui.TextInput | None = None
+        username = username if username else ""
+        self.username = discord.ui.TextInput(label="Username", required=True)
+        self.username.default = username
+        self.add_item(self.username)
+        # if self.type in {"other bosses", "spamming", "testing"}:
+        #    self.room_input = discord.ui.TextInput(
+        #        label="Room",
+        #        placeholder="Private rooms need 4+ digits",
+        #        required=True
+        #    )
+        #    self.add_item(self.room_input)
+        #    self.room = None
+        # else:
+
+        if self.type in {
+            "other bosses",
+            "spamming",
+            "testing",
+            "until drop",
+        } and not any(
+            "TempleShrine" in boss or "Flame Usurper" in boss
+            for boss in self._preset_bosses
+        ):
+            self.bosses_input = discord.ui.TextInput(
+                label="List boss rooms (comma-separated)",
+                placeholder="Ectocave,WorldEnder,Voidlair...",
+                required=True,
+            )
+            self.add_item(self.bosses_input)
+
+        self.room = random.randint(11111, 99999)
+        self.room_input = None
+
+        if self.type in {
+            "other bosses",
+            "spamming",
+            "testing",
+            "until drop",
+        } and not any(
+            "TempleShrine" in boss or "Flame Usurper" in boss
+            for boss in self._preset_bosses
+        ):
+            self.max_claims_input = discord.ui.TextInput(
+                label="Maximum helpers",
+                placeholder="Digit between 1 and 20",
+                required=True,
+            )
+            self.add_item(self.max_claims_input)
+        else:
+            self.max_claims_input = None
+            self.max_claims = None
+
+        if self.type == "until drop":
+            self.total_drops_input = discord.ui.TextInput(
+                label="Drop Rate % (comma-separated)",
+                placeholder="1,2,5...",
+                required=True,
+            )
+            self.add_item(self.total_drops_input)
+        else:
+            self.total_drops_input = None
+            self.total_drops = None
+
+        if self.type == "spamming":
+            self.total_kills_input = discord.ui.TextInput(
+                label="Total kills/runs",
+                placeholder="Digit between 1 and 500",
+                required=True,
+            )
+            self.add_item(self.total_kills_input)
+        else:
+            self.total_kills_input = None
+            self.total_kills = 1
+
+        if self.type == "Weekly":
+            self.experienced_only = discord.ui.Label(
+                text="Enable certificate only.",
+                component=discord.ui.Checkbox(),
+            )
+            self.add_item(self.experienced_only)
+
+    async def on_submit(self, interaction: discord.Interaction):
+        try:
+            await interaction.response.defer(ephemeral=True)
+            try:
+                room_value = (
+                    int(self.room_input.value) if self.room_input else self.room
+                )
+            except ValueError:
+                await interaction.followup.send(
+                    "❌ Room must be a number.", ephemeral=True
+                )
+                return
+
+            drops_list = []
+            bosses = self._preset_bosses
+            if self.total_drops_input:
+                drops_list = self.total_drops_input.value.strip().split(",")
+
+            if self.total_kills_input:
+                try:
+                    total_kills_value = int(self.total_kills_input.value)
+                except ValueError:
+                    return await interaction.followup.send(
+                        "❌ Total kills must be a number.", ephemeral=True
+                    )
+            else:
+                total_kills_value = 1
+
+            six_helper_bosses = [
+                "Astral Shrine",
+                "Grim Challenge",
+                "Apex Azalith",
+                "The Beast",
+                "Void Trio",
+                "Lich King",
+                "Deimos",
+                "Azalith",
+                "Kathool Depths",
+            ]
+
+            if self.max_claims_input:
+                try:
+                    max_claims_value = int(self.max_claims_input.value)
+                    if not 1 <= max_claims_value <= 20:
+                        raise ValueError
+                except ValueError:
+                    return await interaction.followup.send(
+                        "❌ Maximum helpers must be a number between **1 and 20**.",
+                        ephemeral=True,
+                    )
+            elif any(
+                bossA in bossB
+                for bossA in six_helper_bosses
+                for bossB in self._preset_bosses
+            ):
+                max_claims_value = 6
+            else:
+                max_claims_value = 3
+
+            if self.type in {"other bosses", "spamming", "testing"}:
+                if self.type == "spamming":
+                    selected_spam = self._preset_bosses[0]
+                    if selected_spam == "All TempleShrine":
+                        points = int(total_kills_value * 1.75)
+                    elif selected_spam == "Middle TempleShrine":
+                        points = int(total_kills_value * 0.75)
+                    elif selected_spam in [
+                        "Right TempleShrine",
+                        "Left TempleShrine",
+                    ]:
+                        points = int(total_kills_value * 0.5)
+                    elif selected_spam == "Flame Usurper":
+                        points = int(total_kills_value * 0.4)
+                        max_claims_value = 1
+                    else:
+                        bosses = [
+                            boss.strip() for boss in self.bosses_input.value.split(",")
+                        ]
+                        index = bisect.bisect_left(spam_points, total_kills_value)
+                        points = index if index > 0 else 1
+            elif self.type == "until drop":
+                bosses = [boss.strip() for boss in self.bosses_input.value.split(",")]
+
+                drop_rates = []
+                for drops in self.total_drops_input.value.split(","):
+                    drops = drops.strip().replace("%", "")  # allow "5%" or "5"
+
+                    if not drops.isdigit():
+                        return await interaction.followup.send(
+                            "❌ Drop rates must be numbers like `1,2,5` (no text).",
+                            ephemeral=True,
+                        )
+
+                    drop_rates.append(percentage_points.get(int(drops), 1))
+
+                points = min(sum(drop_rates), 12)
+            else:
+                bosses = self._preset_bosses
+
+                points = 0
+                for boss in bosses:
+                    points += calculate_ticket_points(boss)
+
+            ticket_id = get_next_ticket_id()
+            channel_name = "「🔖」PROXY-TESTING"
+            ticket_name = "testing"
+            category = interaction.guild.get_channel(TICKET_CATEGORY_ID)
+            experienced_only = self.experienced_only.component.values[0]
+
+            guild = interaction.guild
+
+            base_member_perms = dict(
+                view_channel=True,
+                send_messages=True,
+                read_message_history=True,
+                mention_everyone=False,
+            )
+
+            overwrites = {
+                guild.default_role: discord.PermissionOverwrite(view_channel=False),
+                interaction.user: discord.PermissionOverwrite(**base_member_perms),
+                guild.me: discord.PermissionOverwrite(
+                    view_channel=True,
+                    send_messages=True,
+                    mention_everyone=True,
+                ),
+            }
+
+            channel = await interaction.guild.create_text_channel(
+                name=channel_name,
+                category=category,
+                overwrites=overwrites,
+            )
+            db.collection("tickets").document(ticket_name).set(
+                {
+                    "ticket_id": ticket_id,
+                    "channel_id": channel.id,
+                    "user_id": interaction.user.id,
+                    "bosses": bosses,
+                    "points": points,
+                    "drops": drops_list,
+                    "max_claims": max_claims_value,
+                    "claimers": [],
+                    "username": self.username.value,
+                    "room": room_value,
+                    "status": "open",
+                    "type": self.type,
+                    "server": self.server,
+                    "created_at": firestore.SERVER_TIMESTAMP,
+                    "reping_helpers": True,
+                    "reminder_sent": False,
+                    "auto_closed": False,
+                    "total_kills": total_kills_value,
+                    "experienced_only": experienced_only,
+                    "claimer_roles": {str(interaction.user.id): "DPS"},
+                }
+            )
+
+            embed = TicketLayout(
+                requester_id=interaction.user.id,
+                bosses=bosses,
+                points=points,
+                username=self.username.value,
+                room=str(room_value),
+                max_claims=max_claims_value,
+                claimers=[],
+                guild=interaction.guild,
+                type=self.type,
+                server=self.server,
+                total_kills=str(total_kills_value),
+                drops=drops_list,
+                ticket_name=ticket_name,
+                claimer_roles={str(interaction.user.id): "DPS"},
+            )
+
+            allowed_mentioning = discord.AllowedMentions(
+                users=True, roles=True, everyone=False
+            )
+
+            message = await channel.send(
+                embed=embed,
+                view=TicketActionView(
+                    ticket_name=ticket_name,
+                    max_claims=max_claims_value,
+                    room=str(room_value),
+                    bosses=bosses,
+                    kills=total_kills_value,
+                ),
+                allowed_mentions=allowed_mentioning,
+            )
+
+            guide_threads = await find_guide_threads(
+                guild=interaction.guild,
+                guide_channel_id=GUIDE_CHANNEL_ID,
+                bosses=bosses,
+            )
+
+            if guide_threads:
+                lines = []
+                for boss, thread in guide_threads.items():
+                    lines.append(f"• **{boss}** → [{thread.name}]({thread.jump_url})")
+                embed = discord.Embed(
+                    title="📘 **Relevant Guides**",
+                    description="\n".join(lines),
+                    color=discord.Color.teal(),
+                )
+
+                await channel.send(embed=embed)
+
+            db.collection("tickets").document(ticket_name).update(
+                {"message_id": message.id}
+            )
+
+            set_active_ticket(interaction.user.id, ticket_name)
+            await interaction.followup.send(
+                f"✅ Ticket created: {channel.mention}", ephemeral=True
+            )
+
+            try:
+                await message.pin(reason="Ticket information")
+            except discord.Forbidden:
+                # Bot is missing 'Manage Messages'
+                pass
+
+        except Exception as e:
+            await interaction.followup.send(
+                "❌ Something went wrong while creating the ticket. Please check your inputs.",
+                ephemeral=True,
+            )
+            raise e
