@@ -257,8 +257,8 @@ class CreateTicketModal(discord.ui.Modal):
                     points += calculate_ticket_points(boss)
 
             ticket_id = get_next_ticket_id()
-            channel_name = "「🔖」PROXY-TESTING"
-            ticket_name = "testing"
+            channel_name = f"「🔖」ticket-{ticket_id:03d}"
+            ticket_name = f"ticket-{ticket_id:03d}"
             category = interaction.guild.get_channel(TICKET_CATEGORY_ID)
             experienced_only = (
                 self.experienced_only.component.values[0]
