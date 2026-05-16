@@ -1,7 +1,6 @@
 import discord
 
 from firebase_client import db
-from ticket_help.modals.utils import build_ticket_layout
 
 
 class ServerModal(discord.ui.Modal, title="Change Server"):
