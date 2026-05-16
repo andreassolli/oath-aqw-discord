@@ -29,16 +29,16 @@ from ticket_help.tickets.points import get_boss_room
 from ticket_help.tickets.utils import clear_active_ticket, set_active_ticket
 
 POINTS_MAP = {
-    0: "<:0w:1504130795093364826>",
-    9: "<:9w:1504130796599115816>",
-    8: "<:8w:1504130793616834650>",
-    7: "<:7w:1504130791826002073>",
-    6: "<:6w:1504130790164795412>",
-    5: "<:5w:1504130788646719489>",
-    4: "<:4w:1504130787740614767>",
-    3: "<:3w:1504130786465415218>",
-    2: "<:2w:1504130785421299793>",
-    1: "<:1w:1504130784263667822>",
+    0: "<:0w:1505157488008499351>",
+    9: "<:9w:1505157489006612640>",
+    8: "<:8w:1505157486632763423>",
+    7: "<:7w:1505157484833407076>",
+    6: "<:6w:1505157490831265903>",
+    5: "<:5w:1505157496531058759>",
+    4: "<:4w:1505157498569621534>",
+    3: "<:3w:1505157500197015723>",
+    2: "<:2w:1505157501367226518>",
+    1: "<:1w:1505157502428381225>",
 }
 
 BOSS_TO_CERTIFICATE = {
@@ -97,11 +97,11 @@ class TicketLayout(discord.ui.LayoutView):
 
         self.container1 = discord.ui.Container(
             discord.ui.TextDisplay(
-                content=f"<:medal:1503886971238355165> **Points:** \n>    {format_points(points)}"
+                content=f"<:medal:1505158451179819119> **Points:** \n>    {format_points(points)}"
             ),
             discord.ui.Separator(visible=False, spacing=discord.SeparatorSpacing.small),
             discord.ui.TextDisplay(
-                content=f"<:requester:1503809695859609676> **Requester** <@{requester_id}> ({username}){'\n >>> ' + notes if notes else ''}"
+                content=f"<:id2:1505158104810262558> **Requester** <@{requester_id}> ({username}){'\n >>> ' + notes if notes else ''}"
             ),
             discord.ui.Section(
                 discord.ui.TextDisplay(content=f"Selected server: \n> **{server}**"),
@@ -125,7 +125,7 @@ class TicketLayout(discord.ui.LayoutView):
             discord.ui.Separator(visible=True, spacing=discord.SeparatorSpacing.large),
             discord.ui.Section(
                 discord.ui.TextDisplay(
-                    content=f"<:hands:1503809699227766945> **Helpers** ({len(claimers)}/{max_claims})\n- {', '.join([f'<@{helper}>' for helper in claimers])}"
+                    content=f"<:hands:1505158458494681138> **Helpers** ({len(claimers)}/{max_claims})\n- {', '.join([f'<@{helper}>' for helper in claimers])}"
                 ),
                 accessory=RoleButton(),
             ),
@@ -205,7 +205,7 @@ class RoomButton(discord.ui.Button):
             style=discord.ButtonStyle.secondary,
             emoji=discord.PartialEmoji(
                 name="clips",
-                id=1504106997988200479,
+                id=1505158447845609593,
             ),
             custom_id="room_code_button",
         )
@@ -258,7 +258,7 @@ class RoleButton(discord.ui.Button):
             style=discord.ButtonStyle.secondary,
             emoji=discord.PartialEmoji(
                 name="change_role",
-                id=1504438473250046083,
+                id=1505157332630376498,
             ),
             custom_id="role_button",
         )
@@ -297,7 +297,7 @@ class ClaimButton(discord.ui.Button):
             style=discord.ButtonStyle.success,
             emoji=discord.PartialEmoji(
                 name="claiming",
-                id=1503809696824430745,
+                id=1505158455412002846,
             ),
             custom_id="claim_ticket_button",
         )
@@ -412,7 +412,7 @@ class PingButton(discord.ui.Button):
             style=discord.ButtonStyle.secondary,
             emoji=discord.PartialEmoji(
                 name="notifi",
-                id=1504083597676511285,
+                id=1505158449414013008,
             ),
             custom_id="ping_helpers_button",
         )
@@ -475,7 +475,7 @@ class BossButton(discord.ui.Button):
             style=discord.ButtonStyle.secondary,
             emoji=discord.PartialEmoji(
                 name="chuckless",
-                id=1504106516708589628,
+                id=1505158446084001884,
             ),
             custom_id="change_bosses_button",
         )
@@ -513,7 +513,7 @@ class CompleteButton(discord.ui.Button):
             style=discord.ButtonStyle.success,
             emoji=discord.PartialEmoji(
                 name="complete_ticket",
-                id=1504781934608257024,
+                id=1505157129252634706,
             ),
             custom_id="complete_ticket_button",
         )
@@ -542,7 +542,7 @@ class CancelButton(discord.ui.Button):
             style=discord.ButtonStyle.danger,
             emoji=discord.PartialEmoji(
                 name="cancel_ticket",
-                id=1504781936411938877,
+                id=1505157128069976284,
             ),
             custom_id="cancel_ticket_button",
         )

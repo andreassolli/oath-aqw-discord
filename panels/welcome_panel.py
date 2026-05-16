@@ -25,21 +25,21 @@ class WelcomeLayout(discord.ui.LayoutView):
             ),
             discord.ui.TextDisplay(content="‎"),
             discord.ui.TextDisplay(
-                content="<:wing:1503698816300351648> **Get access to the discord**"
+                content="<:wing:1503517636695425164> **Get access to the discord**"
             ),
             discord.ui.Section(
                 discord.ui.TextDisplay(
-                    content="> <a:redcheck:1503698783718998086> Verify by entering your AQW username, and get access to the rest of the discord. Click '**Verify**' to get started!"
+                    content="> <a:redcheck:1503523456468254991> Verify by entering your AQW username, and get access to the rest of the discord. Click '**Verify**' to get started!"
                 ),
                 accessory=VerifyButton(),
             ),
             discord.ui.TextDisplay(content="‎"),
             discord.ui.TextDisplay(
-                content="<:wing:1503698816300351648>** Join the guild**"
+                content="<:wing:1503517636695425164>** Join the guild**"
             ),
             discord.ui.Section(
                 discord.ui.TextDisplay(
-                    content="> <:star:1503698784872566886> Come hang out with us in game, participate in guild-only events and screenshots. Click '**Join Oath**' to get started!"
+                    content="> <:star:1503523567898460311> Come hang out with us in game, participate in guild-only events and screenshots. Click '**Join Oath**' to get started!"
                 ),
                 accessory=JoinGuildButton(),
             ),
@@ -61,7 +61,7 @@ class VerifyButton(discord.ui.Button):
             style=discord.ButtonStyle.primary,
             emoji=discord.PartialEmoji(
                 name="verify_button",
-                id=1503826985825079296,
+                id=1505158460814262464,
             ),
             custom_id="verify_me_button",
         )
