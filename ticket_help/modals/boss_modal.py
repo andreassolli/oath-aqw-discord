@@ -2,13 +2,15 @@ import discord
 
 
 class ChangeBossModal(discord.ui.Modal, title="Change Bosses"):
-    def __init__(self, bosses: list[str], current: list[str]):
+    def __init__(self, bosses: dict[str, str], current: dict[str, str]):
         super().__init__()
 
         options = []
         for boss in bosses:
             option = discord.CheckboxGroupOption(
-                label=boss, value=boss, default=boss in current
+                label=boss.get("name"),
+                value=boss.get("name"),
+                default=boss.get("name") in current,
             )
             options.append(option)
 

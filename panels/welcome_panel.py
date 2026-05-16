@@ -1,6 +1,7 @@
 import discord
 
-from config import SPAM_CMD_CHANNEL_ID
+from config import OFFICER_CHANNEL_ID, SPAM_CMD_CHANNEL_ID
+from user_verification.verification_modal import VerificationModal
 
 
 async def setup_welcome(client: discord.Client):
@@ -15,7 +16,7 @@ async def setup_welcome(client: discord.Client):
 
 class WelcomeLayout(discord.ui.LayoutView):
     def __init__(self):
-        super().__init__()
+        super().__init__(timeout=None)
 
         self.container1 = discord.ui.Container(
             discord.ui.MediaGallery(
@@ -67,7 +68,23 @@ class VerifyButton(discord.ui.Button):
         )
 
     async def callback(self, interaction: discord.Interaction):
-        await interaction.response.send_message("Hi")
+        account_age = (discord.utils.utcnow() - interaction.user.created_at).days
+        if account_age < 10:
+            guild = interaction.guild
+            if not guild:
+                return
+            oathsword_channel = guild.get_channel(OFFICER_CHANNEL_ID)
+            if oathsword_channel and isinstance(oathsword_channel, discord.TextChannel):
+                await oathsword_channel.send(
+                    f"{interaction.user.mention} is trying to verify but their account is too new."
+                )
+
+            await interaction.response.send_message(
+                "Your account was recently created. You cannot verify at this momeny.",
+                ephemeral=True,
+            )
+            return
+        await interaction.response.send_modal(VerificationModal(action="verify"))
 
 
 class JoinGuildButton(discord.ui.Button):
@@ -83,4 +100,20 @@ class JoinGuildButton(discord.ui.Button):
         )
 
     async def callback(self, interaction: discord.Interaction):
-        await interaction.response.send_message("Hi")
+        account_age = (discord.utils.utcnow() - interaction.user.created_at).days
+        if account_age < 10:
+            guild = interaction.guild
+            if not guild:
+                return
+            oathsword_channel = guild.get_channel(OFFICER_CHANNEL_ID)
+            if oathsword_channel and isinstance(oathsword_channel, discord.TextChannel):
+                await oathsword_channel.send(
+                    f"{interaction.user.mention} is trying to verify but their account is too new."
+                )
+
+            await interaction.response.send_message(
+                "Your account was recently created. You cannot verify at this momeny.",
+                ephemeral=True,
+            )
+            return
+        await interaction.response.send_modal(VerificationModal(action="join"))

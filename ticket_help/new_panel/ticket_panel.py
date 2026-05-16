@@ -78,7 +78,7 @@ class TicketLayout(discord.ui.LayoutView):
         claimer_roles: dict[str, str] | None = None,
         notes: str | None = None,
     ):
-        super().__init__()
+        super().__init__(timeout=None)
 
         self.requester_id = requester_id
         self.bosses = bosses
