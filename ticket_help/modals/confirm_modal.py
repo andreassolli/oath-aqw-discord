@@ -6,7 +6,11 @@ from ticket_help.tickets.completion_utils import finalize_ticket
 
 class ConfirmModal(discord.ui.Modal, title="Complete Ticket"):
     def __init__(
-        self, ticket_name: str, bosses: list[str], type: str = "weekly bosses"
+        self,
+        ticket_name: str,
+        bosses: list[str],
+        type: str = "weekly bosses",
+        kills: int = 0,
     ):
         super().__init__()
         self.type = type
@@ -15,6 +19,16 @@ class ConfirmModal(discord.ui.Modal, title="Complete Ticket"):
         for boss in bosses:
             option = discord.CheckboxGroupOption(label=boss, value=boss, default=True)
             options.append(option)
+
+        if type == "spamming":
+            self.kills = discord.ui.Label(
+                text="Completed kills/runs",
+                component=discord.ui.TextInput(
+                    placeholder=str(kills),
+                    required=True,
+                ),
+            )
+            self.add_item(self.kills)
 
         if type in {"weekly bosses", "daily bosses", "7 man bosses"}:
             self.boss_selection = discord.ui.Label(
@@ -46,6 +60,10 @@ class ConfirmModal(discord.ui.Modal, title="Complete Ticket"):
                 "⚠️ This ticket has already been completed.", ephemeral=True
             )
 
+        if self.type == "spamming":
+            completed_kills = int(self.kills.component.value)
+
+            doc_ref.update({"total_kills": completed_kills})
         if self.type in {"weekly bosses", "daily bosses", "7 man bosses"}:
             completed_bosses = self.boss_selection.component.values
 

@@ -32,6 +32,15 @@ CORRECT_BOSS_ORDER = [
     "Ultra Gramiel",
 ]
 
+TYPE_TO_IMAGE = {
+    "weekly bosses": "https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/weeklyticket.png",
+    "daily bosses": "https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/dailyticket.png",
+    "7 man bosses": "https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/7manticket.png",
+    "spamming": "https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/spamticket.png",
+    "until drop": "https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/spamticket.png",
+    "extra practice": "https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/practiceticket.png",
+}
+
 BOSS_ORDER_MAP = {boss: i for i, boss in enumerate(CORRECT_BOSS_ORDER)}
 
 
@@ -290,6 +299,13 @@ class CreateTicketModal(discord.ui.Modal):
                 category=category,
                 overwrites=overwrites,
             )
+            embed = discord.Embed(
+                color=discord.Colour(7344907),
+            )
+
+            embed.set_image(url=TYPE_TO_IMAGE[self.type])
+
+            await channel.send(embed=embed)
             db.collection("tickets").document(ticket_name).set(
                 {
                     "ticket_id": ticket_id,
