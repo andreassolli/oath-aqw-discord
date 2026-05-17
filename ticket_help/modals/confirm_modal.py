@@ -71,6 +71,8 @@ class ConfirmModal(discord.ui.Modal, title="Complete Ticket"):
 
             doc_ref.update({"completed_bosses": completed_bosses})
 
+            data = doc_ref.get().to_dict()
+
             await finalize_ticket(
                 interaction=interaction,
                 ticket_name=self.ticket_name,

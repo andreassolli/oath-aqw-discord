@@ -43,15 +43,26 @@ async def finalize_ticket(
 
     requester_id = ticket_data["user_id"]
     completed_bosses = ticket_data.get("completed_bosses", [])
-    points = ticket_data.get("points", 1)
+
+    full_points = ticket_data.get("points", 1)
+
+    if keep_ticket:
+        completed_points = sum(get_points_for_boss(boss) for boss in completed_bosses)
+
+        remaining_points = sum(
+            get_points_for_boss(boss)
+            for boss in ticket_data.get("bosses", [])
+            if boss not in completed_bosses
+        )
+
+        points = completed_points
+    else:
+        points = full_points
+        remaining_points = 0
+
     if ticket_data.get("type") == "spamming":
         index = bisect.bisect_left(spam_points, ticket_data.get("total_kills", 1))
-        points = index if index > 0 else 1
-
-    old_points = points
-    if keep_ticket:
-        for boss in completed_bosses:
-            points += get_points_for_boss(boss)
+        full_points = index if index > 0 else 1
 
     not_completed_bosses = []
     for boss in ticket_data.get("bosses", []):
@@ -64,7 +75,7 @@ async def finalize_ticket(
                 "closed_by": interaction.user.id,
                 "closed_at": firestore.SERVER_TIMESTAMP,
                 "bosses": not_completed_bosses,
-                "points": old_points - points,
+                "points": remaining_points,
             }
         )
     else:
