@@ -269,11 +269,12 @@ class CreateTicketModal(discord.ui.Modal):
             channel_name = f"「🔖」ticket-{ticket_id:03d}"
             ticket_name = f"ticket-{ticket_id:03d}"
             category = interaction.guild.get_channel(TICKET_CATEGORY_ID)
-            experienced_only = (
-                self.experienced_only.component.values[0]
-                if self.type == "weekly bosses"
-                else False
-            )
+            experienced_only = False
+            if (
+                self.type == "weekly bosses"
+                and len(self.experienced_only.component.values) > 0
+            ):
+                experienced_only = self.experienced_only.component.values[0]
 
             guild = interaction.guild
 
