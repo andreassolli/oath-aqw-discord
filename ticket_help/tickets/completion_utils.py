@@ -44,21 +44,18 @@ async def finalize_ticket(
     requester_id = ticket_data["user_id"]
     completed_bosses = ticket_data.get("completed_bosses", [])
 
+    all_bosses = ticket_data.get("bosses", [])
     full_points = ticket_data.get("points", 1)
 
-    if keep_ticket:
-        completed_points = sum(get_points_for_boss(boss) for boss in completed_bosses)
+    completed_points = sum(get_points_for_boss(boss) for boss in completed_bosses)
 
-        remaining_points = sum(
-            get_points_for_boss(boss)
-            for boss in ticket_data.get("bosses", [])
-            if boss not in completed_bosses
-        )
+    remaining_points = sum(
+        get_points_for_boss(boss) for boss in all_bosses if boss not in completed_bosses
+    )
 
-        points = completed_points
-    else:
-        points = full_points
-        remaining_points = 0
+    is_partial = set(completed_bosses) != set(all_bosses)
+
+    points = completed_points if is_partial else full_points
 
     if ticket_data.get("type") == "spamming":
         index = bisect.bisect_left(spam_points, ticket_data.get("total_kills", 1))
@@ -68,10 +65,10 @@ async def finalize_ticket(
     for boss in ticket_data.get("bosses", []):
         if boss not in completed_bosses:
             not_completed_bosses.append(boss)
-    if keep_ticket:
+    if keep_ticket and is_partial:
         doc_ref.update(
             {
-                "status": "completing",
+                "status": "open",
                 "closed_by": interaction.user.id,
                 "closed_at": firestore.SERVER_TIMESTAMP,
                 "bosses": not_completed_bosses,
@@ -109,7 +106,8 @@ async def finalize_ticket(
         display = member.display_name if member else f"User {user_id}"
         helper_displays[user_id] = display
 
-        clear_active_ticket(user_id, ticket_name)
+        if not keep_ticket:
+            clear_active_ticket(user_id, ticket_name)
 
         if helper_doc.exists:
             user_ref.update(
@@ -212,7 +210,7 @@ async def finalize_ticket(
     embed = build_logging_embed(
         requester_id=requester_id,
         requester_display=requester_display,
-        bosses=completed_bosses if keep_ticket else ticket_data.get("bosses", []),
+        bosses=completed_bosses if is_partial else all_bosses,
         username=ticket_data.get("username", "—"),
         max_claims=ticket_data.get("max_claims", 0),
         claimers=claimers,
@@ -229,13 +227,13 @@ async def finalize_ticket(
         requester_after=requester_after,
         helper_changes=helper_changes,
         id=ticket_data.get("ticket_id", 0),
-        partially_completed=completed_bosses != ticket_data.get("bosses", []),
+        partially_completed=is_partial,
     )
 
-    if not keep_ticket:
-        doc_ref.update({"status": "completed"})
-    if keep_ticket:
+    if keep_ticket and is_partial:
         doc_ref.update({"partially_completed": True})
+    else:
+        doc_ref.update({"status": "completed"})
     total_points += final_reward
     ticket_stats_ref.update(
         {
