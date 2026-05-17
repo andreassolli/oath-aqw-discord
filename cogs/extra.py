@@ -1063,6 +1063,19 @@ class Extra(commands.Cog):
             view=layout,
         )
 
+    @app_commands.command(name="css", description="CSS tutorial")
+    async def css(self, interaction: discord.Interaction):
+        url = "https://youtu.be/LekEuqIP3dw?si=_IbmPrNTd96_q8ZU"
+        embed = discord.Embed(
+            title="Alvii's guide to Chrono ShadowSlayer",
+            description=f"Click here to view the video on how to use CSS: {url}",
+            color=discord.Color.green(),
+        )
+        embed.set_image(
+            url="https://www.artix.com/media/5921/promo-2024calendar-pre-order.jpg?width=1170px&height=658px&mode=crop"
+        )
+        await interaction.response.send_message(embed=embed)
+
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(Extra(bot))
