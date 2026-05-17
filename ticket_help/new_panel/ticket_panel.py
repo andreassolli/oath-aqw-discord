@@ -174,9 +174,7 @@ class TicketLayout(discord.ui.LayoutView):
                 accessory=ChangeButton(),
             ),
             discord.ui.Section(
-                discord.ui.TextDisplay(
-                    content=f"Bosses: \n>>> {', '.join(boss_list)}{completed_string}"
-                ),
+                discord.ui.TextDisplay(content=f"Bosses: \n>>> {boss_string}"),
                 accessory=BossButton(),
             ),
             discord.ui.Section(
