@@ -7,6 +7,7 @@ from ticket_help.tickets.completion_utils import finalize_ticket
 class ConfirmModal(discord.ui.Modal, title="Complete Ticket"):
     def __init__(
         self,
+        layout,
         ticket_name: str,
         bosses: list[str],
         type: str = "weekly bosses",
@@ -14,6 +15,7 @@ class ConfirmModal(discord.ui.Modal, title="Complete Ticket"):
     ):
         super().__init__()
         self.type = type
+        self.layout = layout
 
         options = []
         for boss in bosses:
@@ -82,3 +84,4 @@ class ConfirmModal(discord.ui.Modal, title="Complete Ticket"):
                 ticket_data=data,
                 keep_ticket=False,
             )
+        await self.layout.refresh(interaction)
