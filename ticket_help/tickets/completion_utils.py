@@ -44,6 +44,10 @@ async def finalize_ticket(
     requester_id = ticket_data["user_id"]
     completed_bosses = ticket_data.get("completed_bosses", [])
     points = ticket_data.get("points", 1)
+    if ticket_data.get("type") == "spamming":
+        index = bisect.bisect_left(spam_points, ticket_data.get("total_kills", 1))
+        points = index if index > 0 else 1
+
     old_points = points
     if keep_ticket:
         for boss in completed_bosses:
@@ -73,6 +77,7 @@ async def finalize_ticket(
         )
 
     claimers = [uid for uid in ticket_data.get("claimers", []) if uid != requester_id]
+
     total_points = points * len(ticket_data.get("claimers", []))
 
     helper_changes: Dict[int, Tuple[int, int]] = {}

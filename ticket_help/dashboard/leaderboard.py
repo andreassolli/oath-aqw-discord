@@ -33,7 +33,7 @@ async def build_leaderboard_embed(guild: discord.Guild):
             prefix = f"`{position:02}`"
         aqw_guild = data.get("guild", "")
         if aqw_guild and aqw_guild != "None":
-            if aqw_guild == "Oath":
+            if aqw_guild == " Oath":
                 guild_str = "<:oath:1457451850184917122>`Oath` "
             else:
                 guild_str = f"`{aqw_guild}` "
