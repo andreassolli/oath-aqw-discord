@@ -6,19 +6,26 @@ from ticket_help.tickets.points import calculate_ticket_points
 
 class ChangeBossModal(discord.ui.Modal, title="Change Bosses"):
     def __init__(
-        self, layout, ticket_name: str, bosses: dict[str, str], current: list[str]
+        self,
+        layout,
+        ticket_name: str,
+        bosses: dict[str, str],
+        completed_bosses: list[str],
+        current: list[str],
     ):
         super().__init__()
         self.layout = layout
         self.ticket_name = ticket_name
         options = []
         for boss in bosses:
-            option = discord.CheckboxGroupOption(
-                label=boss.get("name"),
-                value=boss.get("name"),
-                default=boss.get("name") in current,
-            )
-            options.append(option)
+            name = boss.get("name")
+            if name not in completed_bosses:
+                option = discord.CheckboxGroupOption(
+                    label=name,
+                    value=name,
+                    default=name in current,
+                )
+                options.append(option)
 
         self.boss_selection = discord.ui.Label(
             text="Select the bosses for this ticket",
@@ -42,7 +49,7 @@ class ChangeBossModal(discord.ui.Modal, title="Change Bosses"):
                 "points": points,
             }
         )
-
+        await self.layout.refresh(interaction)
         await interaction.response.send_message(
             f"Current bosses: {', '.join(self.boss_selection.component.values)}, points: {points}",
             ephemeral=True,

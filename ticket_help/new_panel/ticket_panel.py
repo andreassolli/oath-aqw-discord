@@ -651,7 +651,8 @@ class BossButton(discord.ui.Button):
                 layout=layout,
                 ticket_name=layout.ticket_name,
                 bosses=get_bosses_for_type(ticket_type),
-                current=bosses,
+                completed_bosses=layout.completed_bosses,
+                current=layout.boss_list,
             )
         )
         await layout.refresh(interaction)
@@ -685,6 +686,7 @@ class CompleteButton(discord.ui.Button):
         bosses = data.get("bosses", [])
         await interaction.response.send_modal(
             ConfirmModal(
+                layout=layout,
                 ticket_name=layout.ticket_name,
                 bosses=layout.boss_list,
                 type=layout.type,
