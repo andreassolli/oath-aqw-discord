@@ -687,6 +687,7 @@ class CompleteButton(discord.ui.Button):
                 ticket_name=layout.ticket_name,
                 bosses=layout.boss_list,
                 type=layout.type,
+                kills=data.get("total_kills", 0),
             )
         )
 
