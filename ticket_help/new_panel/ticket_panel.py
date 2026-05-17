@@ -103,6 +103,22 @@ class TicketLayout(discord.ui.LayoutView):
 
         boss_list = [boss for boss in bosses if boss not in completed_bosses]
         self.boss_list = boss_list
+        boss_string = ""
+        x = 0
+        for boss in boss_list:
+            boss_string += f"{boss}, "
+            x += 1
+            if x % 3 == 0:
+                boss_string += "\n"
+
+        for boss in completed_bosses:
+            boss_string += f"~~{boss}~~, "
+            x += 1
+            if x % 3 == 0:
+                boss_string += "\n"
+
+        boss_string = boss_string[:-2]
+
         completed_string = (
             f", ~~{', '.join(completed_bosses)}~~" if completed_bosses else ""
         )
