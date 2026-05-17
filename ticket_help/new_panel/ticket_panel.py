@@ -226,7 +226,7 @@ class TicketLayout(discord.ui.LayoutView):
             requester_id=data["user_id"],
             ticket_name=self.ticket_name,
             bosses=data["bosses"],
-            points=data["points"],
+            points=points,
             username=data["username"],
             room=data["room"],
             max_claims=data["max_claims"],
