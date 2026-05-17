@@ -654,6 +654,7 @@ class BossButton(discord.ui.Button):
                 current=bosses,
             )
         )
+        await layout.refresh(interaction)
 
 
 class CompleteButton(discord.ui.Button):

@@ -1,6 +1,7 @@
 import discord
 
 from firebase_client import db
+from ticket_help.tickets.points import calculate_ticket_points
 
 
 class ChangeBossModal(discord.ui.Modal, title="Change Bosses"):
@@ -31,10 +32,15 @@ class ChangeBossModal(discord.ui.Modal, title="Change Bosses"):
 
     async def on_submit(self, interaction: discord.Interaction):
         doc_ref = db.collection("tickets").document(self.ticket_name)
-        doc_ref.update({"bosses": self.boss_selection.component.values})
-        await self.layout.refresh(interaction)
+        points = calculate_ticket_points(self.boss_selection.component.values)
+        doc_ref.update(
+            {
+                "bosses": self.boss_selection.component.values,
+                "points": points,
+            }
+        )
 
         await interaction.response.send_message(
-            f"Current bosses: {', '.join(self.boss_selection.component.values)}",
+            f"Current bosses: {', '.join(self.boss_selection.component.values)}, points: {points}",
             ephemeral=True,
         )
