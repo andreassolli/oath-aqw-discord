@@ -32,7 +32,10 @@ class ChangeBossModal(discord.ui.Modal, title="Change Bosses"):
 
     async def on_submit(self, interaction: discord.Interaction):
         doc_ref = db.collection("tickets").document(self.ticket_name)
-        points = calculate_ticket_points(self.boss_selection.component.values)
+        points = 0
+        for boss in self.boss_selection.component.values:
+            points += calculate_ticket_points(boss)
+
         doc_ref.update(
             {
                 "bosses": self.boss_selection.component.values,
