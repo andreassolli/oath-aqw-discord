@@ -161,54 +161,103 @@ class TicketLayout(discord.ui.LayoutView):
         else:
             helpers = "—"
 
-        self.container1 = discord.ui.Container(
+        restricted_types = {"spamming", "until drop", "testing"}
+
+        items: list[discord.ui.Item] = [
             discord.ui.TextDisplay(
                 content=f"<:medal:1505158451179819119> **Points:** \n>    {format_points(points)}"
             ),
-            discord.ui.Separator(visible=False, spacing=discord.SeparatorSpacing.small),
+            discord.ui.Separator(
+                visible=False,
+                spacing=discord.SeparatorSpacing.small,
+            ),
             discord.ui.TextDisplay(
                 content=f"<:id2:1505158104810262558> **Requester** {requester_mention} ({username}){'\n >>> ' + notes if notes else ''}"
             ),
-            discord.ui.Section(
-                discord.ui.TextDisplay(content=f"Selected server: \n> **{server}**"),
-                accessory=ChangeButton(),
-            ),
-            discord.ui.Section(
-                discord.ui.TextDisplay(content=f"Bosses: \n>>> {boss_string}"),
-                accessory=BossButton(),
-            ),
-            discord.ui.Section(
-                discord.ui.TextDisplay(
-                    content="Still in need of help? **Ping helpers!**"
+        ]
+
+        if type in restricted_types:
+            items.append(
+                discord.ui.TextDisplay(content=f"Selected server: \n> **{server}**")
+            )
+        else:
+            items.append(
+                discord.ui.Section(
+                    discord.ui.TextDisplay(
+                        content=f"Selected server: \n> **{server}**"
+                    ),
+                    accessory=ChangeButton(),
+                )
+            )
+
+        if type in restricted_types:
+            items.append(discord.ui.TextDisplay(content=f"Bosses: \n>>> {boss_string}"))
+        else:
+            items.append(
+                discord.ui.Section(
+                    discord.ui.TextDisplay(content=f"Bosses: \n>>> {boss_string}"),
+                    accessory=BossButton(),
+                )
+            )
+
+        items.extend(
+            [
+                discord.ui.Section(
+                    discord.ui.TextDisplay(
+                        content="Still in need of help? **Ping helpers!**"
+                    ),
+                    accessory=PingButton(),
                 ),
-                accessory=PingButton(),
-            ),
-            discord.ui.TextDisplay(content="Finished with the ticket?"),
-            discord.ui.ActionRow(
-                CompleteButton(),
-                CancelButton(),
-            ),
-            discord.ui.Separator(visible=True, spacing=discord.SeparatorSpacing.large),
-            discord.ui.Section(
+                discord.ui.TextDisplay(content="Finished with the ticket?"),
+                discord.ui.ActionRow(
+                    CompleteButton(),
+                    CancelButton(),
+                ),
+                discord.ui.Separator(
+                    visible=True,
+                    spacing=discord.SeparatorSpacing.large,
+                ),
+            ]
+        )
+
+        if type in restricted_types:
+            items.append(
                 discord.ui.TextDisplay(
                     content=f"<:hands:1505158458494681138> **Helpers** ({len(claimers)}/{max_claims})\n- {helpers}"
+                )
+            )
+        else:
+            items.append(
+                discord.ui.Section(
+                    discord.ui.TextDisplay(
+                        content=f"<:hands:1505158458494681138> **Helpers** ({len(claimers)}/{max_claims})\n- {helpers}"
+                    ),
+                    accessory=RoleButton(),
+                )
+            )
+
+        items.extend(
+            [
+                discord.ui.Section(
+                    discord.ui.TextDisplay(
+                        content="Forgot room codes? Click **Room codes**!"
+                    ),
+                    accessory=RoomButton(),
                 ),
-                accessory=RoleButton(),
-            ),
-            discord.ui.Section(
-                discord.ui.TextDisplay(
-                    content="Forgot room codes? Click **Room codes**!"
+                discord.ui.Section(
+                    discord.ui.TextDisplay(
+                        content="Claim the ticket, and get room codes!"
+                    ),
+                    accessory=ClaimButton(),
                 ),
-                accessory=RoomButton(),
-            ),
-            discord.ui.Section(
-                discord.ui.TextDisplay(content="Claim the ticket, and get room codes!"),
-                accessory=ClaimButton(),
-            ),
+            ]
+        )
+        self.container = discord.ui.Container(
+            *items,
             accent_colour=discord.Colour(7344907),
         )
 
-        self.add_item(self.container1)
+        self.add_item(self.container)
 
     async def refresh(self, interaction: discord.Interaction):
         data = self.get_ticket_data()
@@ -424,7 +473,6 @@ class ClaimButton(discord.ui.Button):
                 "❌ Ticket data not found.",
                 ephemeral=True,
             )
-        await interaction.response.defer()
         claimers = data.get("claimers", [])
 
         requester_id = data.get("user_id")
@@ -454,7 +502,7 @@ class ClaimButton(discord.ui.Button):
             return
 
         if len(claimers) >= layout.max_claims:
-            return await interaction.followup.send(
+            return await interaction.response.send_message(
                 "🚫 No more spots available.", ephemeral=True
             )
 
@@ -464,12 +512,12 @@ class ClaimButton(discord.ui.Button):
             user_doc.to_dict().get("active_ticket") if user_doc.exists else None
         )
         if user_doc.exists and active_ticket and active_ticket != layout.ticket_name:
-            return await interaction.followup.send(
+            return await interaction.response.send_message(
                 "🚫 You are already helping on another ticket.", ephemeral=True
             )
 
         if is_requester:
-            return await interaction.followup.send(
+            return await interaction.response.send_message(
                 "🚫 Ticket creator cannot claim their own ticket.",
                 ephemeral=True,
             )
@@ -495,19 +543,19 @@ class ClaimButton(discord.ui.Button):
         if experienced_only:
             for cert in needed_certificates:
                 if not is_requester and cert not in member_role_ids:
-                    return await interaction.followup.send(
+                    return await interaction.response.send_message(
                         "🚫 You need a **Certification** for one or more of the bosses in this ticket.",
                         ephemeral=True,
                     )
         else:
             if not has_helper and not has_bot_guy:
-                return await interaction.followup.send(
+                return await interaction.response.send_message(
                     "🚫 You must be a helper to claim this ticket.",
                     ephemeral=True,
                 )
         if "Grim Challenge" in layout.bosses or "Ultra Speaker" in layout.bosses:
             roles = data.get("claimer_roles", {})
-            return await interaction.followup.send_modal(
+            return await interaction.response.send_modal(
                 RoleModal(
                     layout=layout,
                     ticket_name=layout.ticket_name,

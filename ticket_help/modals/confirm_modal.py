@@ -66,6 +66,8 @@ class ConfirmModal(discord.ui.Modal, title="Complete Ticket"):
             completed_kills = int(self.kills.component.value)
 
             doc_ref.update({"total_kills": completed_kills})
+            data = doc_ref.get().to_dict()
+
         if self.type in {"weekly bosses", "daily bosses", "7 man bosses"}:
             completed_bosses = self.boss_selection.component.values
 
