@@ -182,7 +182,15 @@ class CreateTicketModal(discord.ui.Modal):
                 return
             self.server = self.server_select.component.values[0]
             drops_list = []
-            bosses = sort_bosses(self.boss_selection.component.values)
+            if self.type in {"weekly bosses", "daily bosses", "7 man bosses"}:
+                bosses = sort_bosses(self.boss_selection.component.values)
+            else:
+                bosses = [
+                    boss.strip()
+                    for boss in self.bosses_input.value.split(",")
+                    if boss.strip()
+                ]
+
             if self.total_drops_input:
                 drops_list = self.total_drops_input.value.strip().split(",")
 
