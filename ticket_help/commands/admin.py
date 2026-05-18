@@ -3,11 +3,12 @@ from typing import List
 
 import discord
 from discord import app_commands
-from ticket_help.new_panel.ticket_panel import TicketLayout
+
 from config import ALLOWED_COMMANDS_CHANNELS, TICKET_LOG_CHANNEL_ID
 from firebase_client import db, firestore
 from ticket_help.commands.permissions import has_admin_role, has_oathsworn_role
 from ticket_help.dashboard.updater import update_dashboard
+from ticket_help.new_panel.ticket_panel import TicketLayout
 from ticket_help.tickets.confirm_cancel_view import ConfirmCancelView
 from ticket_help.tickets.confirm_complete_view import ConfirmCompleteView
 from ticket_help.tickets.embed_utils import build_ticket_embed
@@ -190,31 +191,29 @@ async def remove_claimer(
     if channel_id and message_id:
         channel = interaction.guild.get_channel(channel_id)
         if channel:
-            try:
-                message = await channel.fetch_message(message_id)
+            message = await channel.fetch_message(message_id)
 
-                layout = TicketLayout(
-                    requester_id=data["user_id"],
-                    bosses=data["bosses"],
-                    points=data["points"],
-                    username=data["username"],
-                    room=str(data["room"]),
-                    max_claims=data["max_claims"],
-                    claimers=data.get("claimers", []),
-                    guild=channel.guild,
-                    type=data["type"],
-                    server=data["server"],
-                    total_kills=str(data.get("total_kills", 1)),
-                    drops=data.get("drops", []),
-                    claimer_roles=data.get("claimer_roles", {}),
-                    certificate_only=data.get("certificate_only", False),
-                    notes=data.get("notes", None),
-                    completed_bosses=data.get("completed_bosses", []),
-                    ticket_name=doc.id,
-                )
+            layout = TicketLayout(
+                requester_id=data["user_id"],
+                bosses=data["bosses"],
+                points=data["points"],
+                username=data["username"],
+                room=str(data["room"]),
+                max_claims=data["max_claims"],
+                claimers=data.get("claimers", []),
+                guild=channel.guild,
+                type=data["type"],
+                server=data["server"],
+                total_kills=str(data.get("total_kills", 1)),
+                drops=data.get("drops", []),
+                claimer_roles=data.get("claimer_roles", {}),
+                certificate_only=data.get("certificate_only", False),
+                notes=data.get("notes", None),
+                completed_bosses=data.get("completed_bosses", []),
+                ticket_name=doc.id,
+            )
 
-                await message.edit(view=layout)
-
+            await message.edit(view=layout)
 
     if interaction.channel:
         await interaction.channel.send(
