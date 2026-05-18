@@ -370,7 +370,7 @@ class CertificateButton(discord.ui.Button):
         layout.doc_ref.update({"experienced_only": not layout.certificate_only})
         await layout.refresh(interaction)
         return await interaction.response.send_message(
-            content=f"Certificate only has been set to {layout.certificate_only}."
+            content=f"Certificate only has been set to {not layout.certificate_only}."
         )
 
 
@@ -520,7 +520,7 @@ class ClaimButton(discord.ui.Button):
 
             await layout.refresh(interaction)
             image = await generate_claim(
-                interaction.user.name,
+                interaction.user.display_name,
                 False,
                 f"({len(claimers) + 1}/{layout.max_claims + 1})",
                 interaction.user,
@@ -597,7 +597,7 @@ class ClaimButton(discord.ui.Button):
         set_active_ticket(interaction.user.id, layout.ticket_name)
         await layout.refresh(interaction)
         image = await generate_claim(
-            interaction.user.name,
+            interaction.user.display_name,
             True,
             f"({len(claimers) + 1}/{layout.max_claims + 1})",
             interaction.user,
@@ -625,7 +625,7 @@ class ClaimButton(discord.ui.Button):
 
         rooms_text = "".join(lines)
 
-        return await interaction.followup.send(
+        return await interaction.response.send_message(
             f"📋 **Room codes:**\n{rooms_text}", ephemeral=True
         )
 

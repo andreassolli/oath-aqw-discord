@@ -22,7 +22,7 @@ class CreateTicketLayout(discord.ui.LayoutView):
         self.container1 = discord.ui.Container(
             discord.ui.MediaGallery(
                 discord.MediaGalleryItem(
-                    media="https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/tickets.png",
+                    media="https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/bountyboard0.png",
                 ),
             ),
             discord.ui.TextDisplay(content="‎"),
@@ -41,14 +41,9 @@ class CreateTicketLayout(discord.ui.LayoutView):
             ),
             discord.ui.Section(
                 discord.ui.TextDisplay(
-                    content=">>> <a:sparks:1505157330055069706> Create a ticket using the **Create ticket** button!\nHelpers will be with you shortly to help you❤️"
+                    content=">>> <a:sparks:1505157330055069706> Create a ticket using the '**Create ticket**' button!\nHelpers will be with you shortly to help you❤️"
                 ),
                 accessory=CreateTicketButton(),
-            ),
-            discord.ui.MediaGallery(
-                discord.MediaGalleryItem(
-                    media="https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/bountyboard0.png",
-                ),
             ),
             accent_colour=discord.Colour(7344907),
         )
@@ -61,18 +56,16 @@ class GuideButton(discord.ui.Button):
             url="https://discord.com/channels/1455651278590972019/1473074765182009468",
             style=discord.ButtonStyle.link,
             label=" Ticket Guide",
-            emoji=discord.PartialEmoji(
-                name="star",
-                id=1503523567898460311,
-            ),
+            emoji="🎫",
         )
 
 
 class CreateTicketButton(discord.ui.Button):
     def __init__(self):
         super().__init__(
-            label="Create Ticket",
+            label=" Create Ticket",
             style=discord.ButtonStyle.primary,
+            emoji=discord.PartialEmoji(name="claiming", id=1505158455412002846),
             custom_id="create_ticket_button",
         )
 

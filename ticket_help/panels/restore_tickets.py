@@ -1,6 +1,7 @@
 import discord
 
 from firebase_client import db
+from ticket_help.new_panel.ticket_panel import TicketLayout
 from ticket_help.tickets.embed_utils import build_ticket_embed
 from ticket_help.tickets.views import TicketActionView
 
@@ -30,8 +31,7 @@ async def restore_tickets(bot: discord.Client):
         except:
             continue
 
-        # 🔥 Rebuild embed from DB state
-        embed = build_ticket_embed(
+        layout = TicketLayout(
             requester_id=data["user_id"],
             bosses=data["bosses"],
             points=data["points"],
@@ -45,15 +45,10 @@ async def restore_tickets(bot: discord.Client):
             total_kills=str(data.get("total_kills", 1)),
             drops=data.get("drops", []),
             claimer_roles=data.get("claimer_roles", {}),
-        )
-
-        # 🔥 Rebuild view from DB state
-        view = TicketActionView(
+            certificate_only=data.get("certificate_only", False),
+            notes=data.get("notes", None),
+            completed_bosses=data.get("completed_bosses", []),
             ticket_name=doc.id,
-            max_claims=data["max_claims"],
-            room=str(data["room"]),
-            bosses=data["bosses"],
-            kills=data.get("total_kills", 1),
         )
 
-        await message.edit(embed=embed, view=view)
+        await message.edit(view=layout)
