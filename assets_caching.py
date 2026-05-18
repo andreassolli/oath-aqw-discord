@@ -69,7 +69,7 @@ BADGE_TO_IMAGE = {
 }
 
 
-def initialize_assets():
+async def initialize_assets():
     from PIL import Image, ImageFont
 
     def load(name, size=None):
