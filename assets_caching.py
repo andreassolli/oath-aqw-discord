@@ -125,6 +125,7 @@ def initialize_assets():
     FONTS["xsmall_bold"] = ImageFont.truetype(FONTS_DIR / "Urbanist-Bold.ttf", 24)
     FONTS["xsmall_light"] = ImageFont.truetype(FONTS_DIR / "Urbanist-Light.ttf", 21)
     FONTS["claim_font"] = ImageFont.truetype(FONTS_DIR / "Urbanist-Regular.ttf", 44)
+    FONTS["gif_claim"] = ImageFont.truetype(FONTS_DIR / "Urbanist-Regular.ttf", 23)
 
     ROCK_SIZE = (150, 150)
 
