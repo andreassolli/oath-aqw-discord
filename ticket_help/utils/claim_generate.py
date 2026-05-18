@@ -22,7 +22,7 @@ async def generate_claim(
     bg = BG.copy()
     font_big = FONTS["claim_font"]
     claim_text = "claimed" if claimed else "unclaimed"
-    avatar_url = user.display_avatar.replace(format="png", size=100).url
+    avatar_url = user.display_avatar.replace(format="png", size=128).url
     avatar_task = fetch_avatar(avatar_url)
     avatar = await asyncio.gather(avatar_task)
     draw = ImageDraw.Draw(bg)
