@@ -18,6 +18,7 @@ from extra_commands.wordle_share import generate_wordle_share
 from firebase_client import db, firestore
 from inventory.utils import add_item
 from request_utils import get_session
+from ticket_help.utils.claim_generate import generate_claim
 from user_profile.image_test import generate_test_card
 from user_profile.utils import fetch_inventory
 from user_verification.utils import fetch_aqw_profile
@@ -732,10 +733,15 @@ async def test_blackjack():
     )
 
 
+async def test_claim():
+    await generate_claim("Proxy", True, "(2/4)")
+    await generate_claim("Proxy", False, "(1/4)")
+
+
 if __name__ == "__main__":
     # asyncio.run(post_kofi_summary())
     # asyncio.run(add_killer_card())
-    asyncio.run(test_blackjack())
+    asyncio.run(test_claim())
     # reset_coins()
     # migrate_shop_prices()
     # backfill_wordle_stats()

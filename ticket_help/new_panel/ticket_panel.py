@@ -31,6 +31,7 @@ from ticket_help.tickets.boss_type import get_bosses_for_type
 from ticket_help.tickets.embed_utils import ROLE_EMOJIS
 from ticket_help.tickets.points import calculate_ticket_points, get_boss_room
 from ticket_help.tickets.utils import clear_active_ticket, set_active_ticket
+from ticket_help.utils.claim_generate import generate_claim
 
 POINTS_MAP = {
     0: "<:0w:1505157488008499351>",
@@ -518,11 +519,13 @@ class ClaimButton(discord.ui.Button):
             clear_active_ticket(interaction.user.id, layout.ticket_name)
 
             await layout.refresh(interaction)
-
-            await interaction.channel.send(
-                f"🔁 {interaction.user.mention} unclaimed this ticket "
-                f"({len(claimers) + 1}/{layout.max_claims + 1})"
+            image = await generate_claim(
+                interaction.user.name,
+                False,
+                f"({len(claimers) + 1}/{layout.max_claims + 1})",
+                interaction.user,
             )
+            await interaction.channel.send(file=discord.File(image, "claim.png"))
             return
 
         if len(claimers) >= layout.max_claims:
@@ -579,6 +582,7 @@ class ClaimButton(discord.ui.Button):
                 )
         if "Grim Challenge" in layout.bosses or "Ultra Speaker" in layout.bosses:
             roles = data.get("claimer_roles", {})
+
             return await interaction.response.send_modal(
                 RoleModal(
                     layout=layout,
@@ -592,10 +596,13 @@ class ClaimButton(discord.ui.Button):
         layout.doc_ref.update({"claimers": claimers})
         set_active_ticket(interaction.user.id, layout.ticket_name)
         await layout.refresh(interaction)
-        await interaction.channel.send(
-            f"✅ {interaction.user.mention} claimed this ticket "
-            f"({len(claimers) + 1}/{self.max_claims + 1})"
+        image = await generate_claim(
+            interaction.user.name,
+            True,
+            f"({len(claimers) + 1}/{layout.max_claims + 1})",
+            interaction.user,
         )
+        await interaction.channel.send(file=discord.File(image, "claim.png"))
 
         lines = []
         for boss in layout.bosses:
