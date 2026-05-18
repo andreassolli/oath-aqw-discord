@@ -279,8 +279,12 @@ class TicketLayout(discord.ui.LayoutView):
             return
 
         points = 0
+
         for boss in data["bosses"]:
-            points += calculate_ticket_points(boss)
+            if data.get("type") == "practice":
+                points += 1
+            else:
+                points += calculate_ticket_points(boss)
 
         new_view = TicketLayout(
             requester_id=data["user_id"],
@@ -540,7 +544,7 @@ class ClaimButton(discord.ui.Button):
                 await interaction.channel.send(file=discord.File(image, "claim.gif"))
             else:
                 image = await generate_claim(
-                    interaction.user.display_name,
+                    data.get("aqw_username", interaction.user.display_name),
                     False,
                     f"({len(claimers) + 1}/{layout.max_claims + 1})",
                     interaction.user,
@@ -626,7 +630,7 @@ class ClaimButton(discord.ui.Button):
             await interaction.channel.send(file=discord.File(image, "claim.gif"))
         else:
             image = await generate_claim(
-                interaction.user.display_name,
+                data.get("aqw_username", interaction.user.display_name),
                 True,
                 f"({len(claimers) + 1}/{layout.max_claims + 1})",
                 interaction.user,
