@@ -211,9 +211,3 @@ class Profile(commands.Cog):
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(Profile(bot))
-
-    async def post_panel():
-        await bot.wait_until_ready()
-        await setup_verification_panel(bot)
-
-    bot.loop.create_task(post_panel())

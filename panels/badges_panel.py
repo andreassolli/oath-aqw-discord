@@ -5,7 +5,7 @@ from typing import Any, Dict, cast
 
 import discord
 
-from config import BADGES, SPAM_CMD_CHANNEL_ID, TICKET_LOG_CHANNEL_ID
+from config import BADGE_CHANNEL_ID, BADGES, SPAM_CMD_CHANNEL_ID, TICKET_LOG_CHANNEL_ID
 from firebase_client import db
 from user_profile.embed_badges_log import build_badge_log_embed
 from user_profile.utils import (
@@ -26,7 +26,7 @@ from user_profile.utils import (
 
 
 async def setup_badges(client: discord.Client):
-    channel = client.get_channel(SPAM_CMD_CHANNEL_ID)
+    channel = client.get_channel(BADGE_CHANNEL_ID)
 
     if not channel:
         print("❌ Ticket panel channel not found. Check TICKET_CHANNEL_ID.")

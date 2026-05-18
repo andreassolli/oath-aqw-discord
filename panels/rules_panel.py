@@ -1,10 +1,10 @@
 import discord
 
-from config import SPAM_CMD_CHANNEL_ID
+from config import RULES_CHANNEL_ID, SPAM_CMD_CHANNEL_ID
 
 
 async def setup_rules(client: discord.Client):
-    channel = client.get_channel(SPAM_CMD_CHANNEL_ID)
+    channel = client.get_channel(RULES_CHANNEL_ID)
 
     if not channel:
         print("❌ Ticket panel channel not found. Check TICKET_CHANNEL_ID.")
