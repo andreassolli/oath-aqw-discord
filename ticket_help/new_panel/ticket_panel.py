@@ -510,6 +510,9 @@ class ClaimButton(discord.ui.Button):
 
         requester_id = data.get("user_id")
         is_requester = interaction.user.id == requester_id
+        user_ref = db.collection("users").document(str(interaction.user.id))
+        user_doc = user_ref.get()
+        claim_image = user_doc.to_dict().get("claim_image", None)
         if interaction.user.id in claimers:
             claimers.remove(interaction.user.id)
 
@@ -527,7 +530,7 @@ class ClaimButton(discord.ui.Button):
             clear_active_ticket(interaction.user.id, layout.ticket_name)
 
             await layout.refresh(interaction)
-            if interaction.user.display_name == "Proxy":
+            if interaction.user.display_name == "Proxy" and claim_image is not None:
                 image = await gif_claim(
                     interaction.user.display_name,
                     False,
@@ -541,6 +544,7 @@ class ClaimButton(discord.ui.Button):
                     False,
                     f"({len(claimers) + 1}/{layout.max_claims + 1})",
                     interaction.user,
+                    claim_image,
                 )
                 await interaction.channel.send(file=discord.File(image, "claim.png"))
             return
@@ -550,8 +554,6 @@ class ClaimButton(discord.ui.Button):
                 "🚫 No more spots available.", ephemeral=True
             )
 
-        user_ref = db.collection("users").document(str(interaction.user.id))
-        user_doc = user_ref.get()
         active_ticket = (
             user_doc.to_dict().get("active_ticket") if user_doc.exists else None
         )
@@ -611,9 +613,10 @@ class ClaimButton(discord.ui.Button):
 
         claimers.append(interaction.user.id)
         layout.doc_ref.update({"claimers": claimers})
+
         set_active_ticket(interaction.user.id, layout.ticket_name)
         await layout.refresh(interaction)
-        if interaction.user.display_name == "Proxy":
+        if interaction.user.display_name == "Proxy" and claim_image is not None:
             image = await gif_claim(
                 interaction.user.display_name,
                 True,
@@ -627,6 +630,7 @@ class ClaimButton(discord.ui.Button):
                 True,
                 f"({len(claimers) + 1}/{layout.max_claims + 1})",
                 interaction.user,
+                claim_image,
             )
             await interaction.channel.send(file=discord.File(image, "claim.png"))
 
