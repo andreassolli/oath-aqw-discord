@@ -53,10 +53,13 @@ def sort_bosses(bosses: list[str]) -> list[str]:
 
 
 class CreateTicketModal(discord.ui.Modal):
-    def __init__(self, ticket_type: str, username: str, servers):
+    def __init__(
+        self, ticket_type: str, username: str, servers, is_practice: bool = False
+    ):
         super().__init__(title=f"Create {ticket_type.capitalize()} Ticket")
 
         self.type = ticket_type
+        self.is_practice = is_practice
 
         self.bosses_input: discord.ui.TextInput | None = None
         username = username if username else ""
@@ -234,6 +237,12 @@ class CreateTicketModal(discord.ui.Modal):
                 max_claims_value = 6
             else:
                 max_claims_value = 3
+
+            points = 0
+            if self.is_practice:
+                self.type = "practice"
+                for boss in bosses:
+                    points += 1
 
             if self.type in {"other bosses", "spamming", "testing"}:
                 if self.type == "spamming":

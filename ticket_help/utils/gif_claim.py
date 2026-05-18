@@ -34,7 +34,7 @@ async def gif_claim(
 
         d.text(
             (130, 34),
-            f"{username} {claim_text} - {status}",
+            f"{username} {claim_text} {status}",
             font=font_big,
             fill="#FFFFFF",
         )

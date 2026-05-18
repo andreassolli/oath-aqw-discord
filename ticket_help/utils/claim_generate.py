@@ -24,6 +24,7 @@ async def generate_claim(
     else:
         bg = ASSET_CACHE["claim"]
 
+    bg = bg.copy()
     font_big = FONTS["claim_font"]
     claim_text = "claimed" if claimed else "unclaimed"
     avatar_url = user.display_avatar.replace(format="png", size=128).url
@@ -34,7 +35,7 @@ async def generate_claim(
     draw = ImageDraw.Draw(bg)
     draw.text(
         (130, 34),
-        f"{username} {claim_text} - {status}",
+        f"{username} {claim_text} {status}",
         font=font_big,
         fill="#12DD4F" if claimed else "#FF0400",
     )

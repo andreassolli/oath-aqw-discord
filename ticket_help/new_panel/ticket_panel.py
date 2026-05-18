@@ -122,7 +122,7 @@ class TicketLayout(discord.ui.LayoutView):
                 boss_string += "\n"
 
         boss_string = boss_string.rstrip(", \n")
-        if total_kills != 0:
+        if int(total_kills) > 1:
             boss_string += f" ({total_kills} kills)"
 
         completed_string = (
