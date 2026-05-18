@@ -57,5 +57,5 @@ class PracticeSelect(discord.ui.Select):
 
     async def callback(self, interaction: discord.Interaction):
 
-        self.view.selected_type = self.values[0]
+        self.view.selected_practice = self.values[0]
         await interaction.response.defer()
