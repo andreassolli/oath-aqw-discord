@@ -3,7 +3,7 @@ from typing import List
 
 import discord
 from discord import app_commands
-
+from ticket_help.new_panel.ticket_panel import TicketLayout
 from config import ALLOWED_COMMANDS_CHANNELS, TICKET_LOG_CHANNEL_ID
 from firebase_client import db, firestore
 from ticket_help.commands.permissions import has_admin_role, has_oathsworn_role
@@ -193,30 +193,28 @@ async def remove_claimer(
             try:
                 message = await channel.fetch_message(message_id)
 
-                view = TicketActionView(
-                    ticket_name=ticket_name,
-                    max_claims=data.get("max_claims"),
-                    room=data.get("room"),
-                    bosses=data.get("bosses"),
-                )
-
-                embed = build_ticket_embed(
+                layout = TicketLayout(
                     requester_id=data["user_id"],
                     bosses=data["bosses"],
                     points=data["points"],
                     username=data["username"],
-                    room=data["room"],
+                    room=str(data["room"]),
                     max_claims=data["max_claims"],
-                    claimers=claimers,
-                    guild=interaction.guild,
+                    claimers=data.get("claimers", []),
+                    guild=channel.guild,
                     type=data["type"],
                     server=data["server"],
-                    total_kills=data["total_kills"],
+                    total_kills=str(data.get("total_kills", 1)),
+                    drops=data.get("drops", []),
+                    claimer_roles=data.get("claimer_roles", {}),
+                    certificate_only=data.get("certificate_only", False),
+                    notes=data.get("notes", None),
+                    completed_bosses=data.get("completed_bosses", []),
+                    ticket_name=doc.id,
                 )
 
-                await message.edit(embed=embed, view=view)
-            except discord.NotFound:
-                pass
+                await message.edit(view=layout)
+
 
     if interaction.channel:
         await interaction.channel.send(

@@ -27,3 +27,35 @@ class TypeSelect(discord.ui.Select):
 
         self.view.selected_type = self.values[0]
         await interaction.response.defer()
+
+
+import discord
+
+from ticket_help.tickets.types import get_type_choices
+
+
+class PracticeSelect(discord.ui.Select):
+    def __init__(self):
+        options = [
+            discord.SelectOption(
+                label="Practice ticket",
+                value="practice",
+            ),
+            discord.SelectOption(
+                label="Standard ticket",
+                value="standard",
+            ),
+        ]
+
+        super().__init__(
+            placeholder="Standard ticket",
+            min_values=1,
+            max_values=1,
+            options=options,
+            row=1,
+        )
+
+    async def callback(self, interaction: discord.Interaction):
+
+        self.view.selected_type = self.values[0]
+        await interaction.response.defer()
