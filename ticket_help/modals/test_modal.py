@@ -240,7 +240,6 @@ class CreateTicketModal(discord.ui.Modal):
 
             points = 0
             if self.is_practice:
-                self.type = "practice"
                 for boss in bosses:
                     points += 1
 
@@ -332,6 +331,7 @@ class CreateTicketModal(discord.ui.Modal):
                     "total_kills": total_kills_value,
                     "experienced_only": experienced_only,
                     "claimer_roles": {str(interaction.user.id): "DPS"},
+                    "is_practice": self.is_practice,
                 }
             )
 
@@ -351,6 +351,7 @@ class CreateTicketModal(discord.ui.Modal):
                 ticket_name=ticket_name,
                 claimer_roles={str(interaction.user.id): "DPS"},
                 certificate_only=experienced_only,
+                is_practice=self.is_practice,
             )
 
             allowed_mentioning = discord.AllowedMentions(

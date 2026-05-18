@@ -84,6 +84,7 @@ class TicketLayout(discord.ui.LayoutView):
         claimer_roles: dict[str, str] | None = None,
         notes: str | None = None,
         certificate_only: bool = False,
+        is_practice: bool = False,
     ):
         super().__init__(timeout=None)
 
@@ -104,6 +105,7 @@ class TicketLayout(discord.ui.LayoutView):
         self.ticket_name = ticket_name
         self.completed_bosses = completed_bosses
         self.certificate_only = certificate_only
+        self.is_practice = is_practice
 
         boss_list = [boss for boss in bosses if boss not in completed_bosses]
         self.boss_list = boss_list
@@ -281,7 +283,7 @@ class TicketLayout(discord.ui.LayoutView):
         points = 0
 
         for boss in data["bosses"]:
-            if data.get("type") == "practice":
+            if self.is_practice:
                 points += 1
             else:
                 points += calculate_ticket_points(boss)
@@ -304,6 +306,7 @@ class TicketLayout(discord.ui.LayoutView):
             notes=data.get("notes"),
             completed_bosses=data.get("completed_bosses", []),
             certificate_only=data.get("experienced_only", False),
+            is_practice=self.is_practice,
         )
 
         await interaction.message.edit(view=new_view)
