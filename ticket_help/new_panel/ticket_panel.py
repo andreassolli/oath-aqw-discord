@@ -176,7 +176,12 @@ class TicketLayout(discord.ui.LayoutView):
                     accessory=CertificateButton(certificate_only=certificate_only),
                 )
             )
-
+        else:
+            items.append(
+                discord.ui.TextDisplay(
+                    content=f"<:medal:1505158451179819119> **Points:** \n>    {format_points(points)}"
+                ),
+            )
         items.extend(
             [
                 discord.ui.Separator(
