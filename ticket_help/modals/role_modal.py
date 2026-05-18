@@ -2,6 +2,7 @@ import discord
 
 from firebase_client import db
 from ticket_help.tickets.utils import set_active_ticket
+from ticket_help.utils.claim_generate import generate_claim
 
 SPEAKER_OPTIONS = {
     "DPS": "CSH, VDK, Guardian ++",
@@ -118,3 +119,10 @@ class RoleModal(discord.ui.Modal, title="Role Selection"):
         await interaction.response.send_message(
             f"You selected: {selected_role}", ephemeral=True
         )
+        image = await generate_claim(
+            interaction.user.name,
+            True,
+            f"({len(claimers) + 1}/{max_claims + 1})",
+            interaction.user,
+        )
+        return await interaction.channel.send(file=discord.File(image, "claim.png"))

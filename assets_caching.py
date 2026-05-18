@@ -107,7 +107,7 @@ def initialize_assets():
     ASSET_CACHE["potw_flare"] = load("potw_flare.webp", (42, 42))
 
     ASSET_CACHE["default_bg"] = load("default.png")
-
+    ASSET_CACHE["claim"] = load("claim.png")
     # --- Badges ---
     for name, path in BADGE_TO_IMAGE.items():
         img = Image.open(path).convert("RGBA")
@@ -124,6 +124,7 @@ def initialize_assets():
     FONTS["xsmall"] = ImageFont.truetype(FONTS_DIR / "Urbanist-Regular.ttf", 24)
     FONTS["xsmall_bold"] = ImageFont.truetype(FONTS_DIR / "Urbanist-Bold.ttf", 24)
     FONTS["xsmall_light"] = ImageFont.truetype(FONTS_DIR / "Urbanist-Light.ttf", 21)
+    FONTS["claim_font"] = ImageFont.truetype(FONTS_DIR / "Urbanist-Regular.ttf", 44)
 
     ROCK_SIZE = (150, 150)
 
