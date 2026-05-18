@@ -378,6 +378,7 @@ class CreateTicketModal(discord.ui.Modal):
                 drops=drops_list,
                 ticket_name=ticket_name,
                 claimer_roles={str(interaction.user.id): "DPS"},
+                certificate_only=experienced_only,
             )
 
             allowed_mentioning = discord.AllowedMentions(
