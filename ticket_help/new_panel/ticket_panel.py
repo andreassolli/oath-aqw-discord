@@ -530,7 +530,7 @@ class ClaimButton(discord.ui.Button):
             if interaction.user.display_name == "Proxy":
                 image = await gif_claim(
                     interaction.user.display_name,
-                    True,
+                    False,
                     f"({len(claimers) + 1}/{layout.max_claims + 1})",
                     interaction.user,
                 )

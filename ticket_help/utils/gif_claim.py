@@ -19,7 +19,7 @@ async def gif_claim(
     user: discord.User,
 ):
     im = Image.open(ASSETS_DIR / "akame.gif")
-    font_big = FONTS["claim_font"]
+    font_big = FONTS["gif_claim"]
     claim_text = "claimed" if claimed else "unclaimed"
     avatar_url = user.display_avatar.replace(format="png", size=128).url
     avatar = await fetch_avatar(avatar_url)
@@ -27,10 +27,11 @@ async def gif_claim(
 
     # A list of the frames to be outputted
     frames = []
-    # Loop over each frame in the animated image
     for frame in ImageSequence.Iterator(im):
-        # Draw the text on the frame
+        frame = frame.copy().convert("RGBA")
+
         d = ImageDraw.Draw(frame)
+
         d.text(
             (66, 17),
             f"{username} {claim_text} - {status}",
@@ -38,20 +39,8 @@ async def gif_claim(
             fill="#12DD4F" if claimed else "#FF0400",
         )
 
-        del d
-
-        # However, 'frame' is still the animated image with many frames
-        # It has simply been seeked to a later frame
-        # For our list of frames, we only want the current frame
-
-        # Saving the image without 'save_all' will turn it into a single frame image, and we can then re-open it
-        # To be efficient, we will save it to a stream, rather than to file
-        b = BytesIO()
-        frame.save(b, format="GIF")
-        frame = Image.open(b)
         frame.paste(avatar, (5, 5), avatar)
 
-        # Then append the single frame image to a list of frames
         frames.append(frame)
     # Save the frames as a new image
     buffer = BytesIO()
