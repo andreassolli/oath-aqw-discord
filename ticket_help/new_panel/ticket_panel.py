@@ -119,7 +119,7 @@ class TicketLayout(discord.ui.LayoutView):
             if x % 3 == 0:
                 boss_string += "\n"
 
-        boss_string = boss_string[:-2]
+        boss_string = boss_string.rstrip(", \n")
 
         completed_string = (
             f", ~~{', '.join(completed_bosses)}~~" if completed_bosses else ""
@@ -165,37 +165,33 @@ class TicketLayout(discord.ui.LayoutView):
 
         restricted_types = {"spamming", "until drop", "testing"}
 
-        items: list[discord.ui.Item] = [
-            discord.ui.TextDisplay(
-                content=f"<:medal:1505158451179819119> **Points:** \n>    {format_points(points)}"
-            ),
-            discord.ui.Separator(
-                visible=False,
-                spacing=discord.SeparatorSpacing.small,
-            ),
-        ]
-
+        items: list[discord.ui.Item] = []
         if type == "weekly bosses":
             items.append(
                 discord.ui.Section(
                     discord.ui.TextDisplay(
-                        content=f"<:id2:1505158104810262558> **Requester** {requester_mention} ({username}){'\n >>> ' + notes if notes else ''}"
+                        content=f"<:medal:1505158451179819119> **Points:** \n>    {format_points(points)}"
                     ),
                     accessory=CertificateButton(certificate_only=certificate_only),
                 )
             )
-        else:
-            items.append(
+
+        items.extend(
+            [
+                discord.ui.Separator(
+                    visible=False,
+                    spacing=discord.SeparatorSpacing.small,
+                ),
                 discord.ui.TextDisplay(
                     content=f"<:id2:1505158104810262558> **Requester** {requester_mention} ({username}){'\n >>> ' + notes if notes else ''}"
-                )
-            )
-
-        items.append(
-            discord.ui.Section(
-                discord.ui.TextDisplay(content=f"Selected server: \n> **{server}**"),
-                accessory=ChangeButton(),
-            )
+                ),
+                discord.ui.Section(
+                    discord.ui.TextDisplay(
+                        content=f"Selected server: \n> **{server}**"
+                    ),
+                    accessory=ChangeButton(),
+                ),
+            ]
         )
 
         if type in restricted_types:
@@ -372,6 +368,9 @@ class CertificateButton(discord.ui.Button):
         layout: TicketLayout = self.view
         layout.doc_ref.update({"experienced_only": not layout.certificate_only})
         await layout.refresh(interaction)
+        return await interaction.response.send_message(
+            content=f"Certificate only has been set to {layout.certificate_only}."
+        )
 
 
 class RoomButton(discord.ui.Button):
