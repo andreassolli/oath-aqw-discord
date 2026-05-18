@@ -13,6 +13,7 @@ def env_int(name: str) -> int:
     return int(value)
 
 
+VERY_TEMP_CHANNEL = 1505883810514862140
 BOT_GUY_ROLE_ID = env_int("BOT_GUY_ROLE_ID")
 EVENT_CHANNEL_ID = env_int("EVENT_CHANNEL_ID")
 TOKEN = os.getenv("DISCORD_TOKEN")

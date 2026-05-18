@@ -5,9 +5,12 @@ import discord
 from firebase_admin import firestore
 
 from config import (
+    ADMIN_ROLE_ID,
     GUIDE_CHANNEL_ID,
     HELPER_ROLE_ID,
+    OATHSWORN_ROLE_ID,
     TICKET_CATEGORY_ID,
+    TICKET_OFFICER_ROLE_ID,
     percentage_points,
     spam_points,
 )
@@ -302,6 +305,26 @@ class CreateTicketModal(discord.ui.Modal):
                     mention_everyone=True,
                 ),
             }
+            role_configs = {
+                OATHSWORN_ROLE_ID: {
+                    **base_member_perms,
+                    "mention_everyone": True,
+                },
+                TICKET_OFFICER_ROLE_ID: {
+                    **base_member_perms,
+                    "manage_messages": True,
+                },
+                ADMIN_ROLE_ID: {
+                    **base_member_perms,
+                    "mention_everyone": True,
+                    "manage_channels": True,
+                },
+            }
+
+            for role_id, perms in role_configs.items():
+                role = guild.get_role(role_id)
+                if role:
+                    overwrites[role] = discord.PermissionOverwrite(**perms)
 
             channel = await interaction.guild.create_text_channel(
                 name=channel_name,
