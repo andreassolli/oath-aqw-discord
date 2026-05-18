@@ -23,8 +23,10 @@ async def generate_claim(
     font_big = FONTS["claim_font"]
     claim_text = "claimed" if claimed else "unclaimed"
     avatar_url = user.display_avatar.replace(format="png", size=128).url
-    avatar_task = fetch_avatar(avatar_url)
-    avatar = await asyncio.gather(avatar_task)
+    avatar = await fetch_avatar(avatar_url)
+
+    avatar = circle_crop(avatar, 100)
+    bg.paste(avatar, (10, 10), avatar)
     draw = ImageDraw.Draw(bg)
     draw.text(
         (130, 34),
@@ -33,7 +35,6 @@ async def generate_claim(
         fill="#12DD4F" if claimed else "#FF0400",
     )
     avatar = circle_crop(avatar, 100)
-    bg.paste(avatar, (10, 10), avatar)
     buffer = BytesIO()
 
     bg.save(buffer, format="PNG")
