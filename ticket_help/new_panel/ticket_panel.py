@@ -530,7 +530,7 @@ class ClaimButton(discord.ui.Button):
             clear_active_ticket(interaction.user.id, layout.ticket_name)
 
             await layout.refresh(interaction)
-            if interaction.user.display_name == "Proxy" and claim_image is not None:
+            if interaction.user.display_name == "Proxy" and claim_image is None:
                 image = await gif_claim(
                     interaction.user.display_name,
                     False,
@@ -616,7 +616,7 @@ class ClaimButton(discord.ui.Button):
 
         set_active_ticket(interaction.user.id, layout.ticket_name)
         await layout.refresh(interaction)
-        if interaction.user.display_name == "Proxy" and claim_image is not None:
+        if interaction.user.display_name == "Proxy" and claim_image is None:
             image = await gif_claim(
                 interaction.user.display_name,
                 True,
