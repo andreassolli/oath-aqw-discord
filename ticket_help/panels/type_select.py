@@ -8,13 +8,12 @@ class TypeSelect(discord.ui.Select):
         options = []
 
         for type in get_type_choices():
-            if type not in {"extra practice", "until drop"}:
-                options.append(
-                    discord.SelectOption(
-                        label=type["id"].title(),
-                        value=type["id"],
-                    )
+            options.append(
+                discord.SelectOption(
+                    label=type["id"].title(),
+                    value=type["id"],
                 )
+            )
 
         super().__init__(
             placeholder="Daily Bosses",
