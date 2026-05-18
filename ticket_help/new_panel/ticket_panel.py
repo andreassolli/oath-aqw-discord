@@ -32,6 +32,7 @@ from ticket_help.tickets.embed_utils import ROLE_EMOJIS
 from ticket_help.tickets.points import calculate_ticket_points, get_boss_room
 from ticket_help.tickets.utils import clear_active_ticket, set_active_ticket
 from ticket_help.utils.claim_generate import generate_claim
+from ticket_help.utils.gif_claim import gif_claim
 
 POINTS_MAP = {
     0: "<:0w:1505157488008499351>",
@@ -121,6 +122,8 @@ class TicketLayout(discord.ui.LayoutView):
                 boss_string += "\n"
 
         boss_string = boss_string.rstrip(", \n")
+        if total_kills != 0:
+            boss_string += f" ({total_kills} kills)"
 
         completed_string = (
             f", ~~{', '.join(completed_bosses)}~~" if completed_bosses else ""
@@ -524,12 +527,20 @@ class ClaimButton(discord.ui.Button):
             clear_active_ticket(interaction.user.id, layout.ticket_name)
 
             await layout.refresh(interaction)
-            image = await generate_claim(
-                interaction.user.display_name,
-                False,
-                f"({len(claimers) + 1}/{layout.max_claims + 1})",
-                interaction.user,
-            )
+            if interaction.user.display_name == "Proxy":
+                image = await gif_claim(
+                    interaction.user.display_name,
+                    True,
+                    f"({len(claimers) + 1}/{layout.max_claims + 1})",
+                    interaction.user,
+                )
+            else:
+                image = await generate_claim(
+                    interaction.user.display_name,
+                    False,
+                    f"({len(claimers) + 1}/{layout.max_claims + 1})",
+                    interaction.user,
+                )
             await interaction.channel.send(file=discord.File(image, "claim.png"))
             return
 
@@ -601,12 +612,20 @@ class ClaimButton(discord.ui.Button):
         layout.doc_ref.update({"claimers": claimers})
         set_active_ticket(interaction.user.id, layout.ticket_name)
         await layout.refresh(interaction)
-        image = await generate_claim(
-            interaction.user.display_name,
-            True,
-            f"({len(claimers) + 1}/{layout.max_claims + 1})",
-            interaction.user,
-        )
+        if interaction.user.display_name == "Proxy":
+            image = await gif_claim(
+                interaction.user.display_name,
+                True,
+                f"({len(claimers) + 1}/{layout.max_claims + 1})",
+                interaction.user,
+            )
+        else:
+            image = await generate_claim(
+                interaction.user.display_name,
+                True,
+                f"({len(claimers) + 1}/{layout.max_claims + 1})",
+                interaction.user,
+            )
         await interaction.channel.send(file=discord.File(image, "claim.png"))
 
         lines = []

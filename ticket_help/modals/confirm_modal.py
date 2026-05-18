@@ -16,6 +16,7 @@ class ConfirmModal(discord.ui.Modal, title="Complete Ticket"):
         super().__init__()
         self.type = type
         self.layout = layout
+        self.boss_list = bosses
 
         options = []
         for boss in bosses:
@@ -65,7 +66,9 @@ class ConfirmModal(discord.ui.Modal, title="Complete Ticket"):
         if self.type == "spamming":
             completed_kills = int(self.kills.component.value)
 
-            doc_ref.update({"total_kills": completed_kills})
+            doc_ref.update(
+                {"total_kills": completed_kills, "completed_bosses": self.boss_list}
+            )
             data = doc_ref.get().to_dict()
 
         if self.type in {"weekly bosses", "daily bosses", "7 man bosses"}:
