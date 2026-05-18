@@ -1,12 +1,12 @@
 import discord
 
-from config import VERY_TEMP_CHANNEL
+from config import TICKET_CHANNEL_ID
 from panels.test_view import TicketCreateView
 from ticket_help.panels.server_fetch import fetch_servers
 
 
 async def setup_new_tickets(client: discord.Client):
-    channel = client.get_channel(VERY_TEMP_CHANNEL)
+    channel = client.get_channel(TICKET_CHANNEL_ID)
 
     if not channel:
         print("❌ Ticket panel channel not found. Check TICKET_CHANNEL_ID.")
