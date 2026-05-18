@@ -18,12 +18,12 @@ async def gif_claim(
     status: str,
     user: discord.User,
 ):
-    im = Image.open(ASSETS_DIR / "akame.gif")
-    font_big = FONTS["gif_claim"]
+    im = Image.open(ASSETS_DIR / "akame-claim.gif")
+    font_big = FONTS["claim_font"]
     claim_text = "claimed" if claimed else "unclaimed"
     avatar_url = user.display_avatar.replace(format="png", size=128).url
     avatar = await fetch_avatar(avatar_url)
-    avatar = circle_crop(avatar, 51)
+    avatar = circle_crop(avatar, 100)
 
     # A list of the frames to be outputted
     frames = []
@@ -33,13 +33,13 @@ async def gif_claim(
         d = ImageDraw.Draw(frame)
 
         d.text(
-            (66, 17),
+            (130, 34),
             f"{username} {claim_text} - {status}",
             font=font_big,
             fill="#FFFFFF",
         )
 
-        frame.paste(avatar, (5, 5), avatar)
+        frame.paste(avatar, (10, 10), avatar)
 
         frames.append(frame)
     # Save the frames as a new image

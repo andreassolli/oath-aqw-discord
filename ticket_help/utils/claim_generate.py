@@ -17,10 +17,13 @@ async def generate_claim(
     claimed: bool,
     status: str,
     user: discord.User,
+    image: str | None = None,
 ):
-    BG = ASSET_CACHE["claim"]
+    if image is not None:
+        bg = Image.open(ASSETS_DIR / image)
+    else:
+        bg = ASSET_CACHE["claim"]
 
-    bg = BG.copy()
     font_big = FONTS["claim_font"]
     claim_text = "claimed" if claimed else "unclaimed"
     avatar_url = user.display_avatar.replace(format="png", size=128).url
