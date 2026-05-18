@@ -26,6 +26,7 @@ MANUAL_BADGES = [
 class Profile(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
+        initialize_assets()
 
     async def badge_autocomplete(
         self,
