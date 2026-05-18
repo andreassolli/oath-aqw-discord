@@ -10,7 +10,6 @@ from user_profile.utils import circle_crop, fetch_avatar
 
 ASSETS_DIR = Path(__file__).parent.parent.parent / "assets"
 FONTS_DIR = Path(__file__).parent.parent.parent / "assets" / "fonts"
-BG = ASSET_CACHE["claim"]
 
 
 async def generate_claim(
@@ -19,6 +18,8 @@ async def generate_claim(
     status: str,
     user: discord.User,
 ):
+    BG = ASSET_CACHE["claim"]
+
     bg = BG.copy()
     font_big = FONTS["claim_font"]
     claim_text = "claimed" if claimed else "unclaimed"
