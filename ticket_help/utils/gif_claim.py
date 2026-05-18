@@ -23,7 +23,7 @@ async def gif_claim(
     claim_text = "claimed" if claimed else "unclaimed"
     avatar_url = user.display_avatar.replace(format="png", size=128).url
     avatar = await fetch_avatar(avatar_url)
-    avatar = circle_crop(avatar, 100)
+    avatar = circle_crop(avatar, 51)
 
     # A list of the frames to be outputted
     frames = []
@@ -32,7 +32,7 @@ async def gif_claim(
         # Draw the text on the frame
         d = ImageDraw.Draw(frame)
         d.text(
-            (130, 34),
+            (66, 17),
             f"{username} {claim_text} - {status}",
             font=font_big,
             fill="#12DD4F" if claimed else "#FF0400",
@@ -49,7 +49,7 @@ async def gif_claim(
         b = BytesIO()
         frame.save(b, format="GIF")
         frame = Image.open(b)
-        frame.paste(avatar, (10, 10), avatar)
+        frame.paste(avatar, (5, 5), avatar)
 
         # Then append the single frame image to a list of frames
         frames.append(frame)
