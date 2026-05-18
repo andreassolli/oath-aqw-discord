@@ -520,6 +520,5 @@ class VerificationCog(commands.Cog):
         )
 
 
-# ✅ MUST be at file level
 async def setup(bot: commands.Bot):
     await bot.add_cog(VerificationCog(bot))

@@ -237,7 +237,7 @@ class TicketLayout(discord.ui.LayoutView):
         else:
             items.append(
                 discord.ui.TextDisplay(
-                    content=f"<:hands:1505158458494681138> **Helpers** ({len(claimers)}/{max_claims})\n{helpers}"
+                    content=f"<:hands:1505158458494681138> **Helpers** ({len(claimers)}/{max_claims})\n- {helpers}"
                 )
             )
 

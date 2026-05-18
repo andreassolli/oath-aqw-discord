@@ -1,11 +1,11 @@
 import discord
 
-from config import OFFICER_CHANNEL_ID, SPAM_CMD_CHANNEL_ID
+from config import OFFICER_CHANNEL_ID, VERIFICATION_CHANNEL_ID
 from user_verification.verification_modal import VerificationModal
 
 
 async def setup_welcome(client: discord.Client):
-    channel = client.get_channel(SPAM_CMD_CHANNEL_ID)
+    channel = client.get_channel(VERIFICATION_CHANNEL_ID)
 
     if not channel:
         print("❌ Ticket panel channel not found. Check TICKET_CHANNEL_ID.")

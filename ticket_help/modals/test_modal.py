@@ -24,6 +24,7 @@ from ticket_help.tickets.utils import (
     find_guide_threads,
     set_active_ticket,
 )
+from ticket_help.utils.ticket import get_overwrites
 
 CORRECT_BOSS_ORDER = [
     "Ultra Dage",
@@ -287,45 +288,7 @@ class CreateTicketModal(discord.ui.Modal):
             ):
                 experienced_only = self.experienced_only.component.values[0]
 
-            guild = interaction.guild
-
-            base_member_perms = dict(
-                view_channel=True,
-                send_messages=True,
-                read_message_history=True,
-                mention_everyone=False,
-            )
-
-            overwrites = {
-                guild.default_role: discord.PermissionOverwrite(view_channel=False),
-                interaction.user: discord.PermissionOverwrite(**base_member_perms),
-                guild.me: discord.PermissionOverwrite(
-                    view_channel=True,
-                    send_messages=True,
-                    mention_everyone=True,
-                ),
-            }
-            role_configs = {
-                OATHSWORN_ROLE_ID: {
-                    **base_member_perms,
-                    "mention_everyone": True,
-                },
-                TICKET_OFFICER_ROLE_ID: {
-                    **base_member_perms,
-                    "manage_messages": True,
-                },
-                ADMIN_ROLE_ID: {
-                    **base_member_perms,
-                    "mention_everyone": True,
-                    "manage_channels": True,
-                },
-            }
-
-            for role_id, perms in role_configs.items():
-                role = guild.get_role(role_id)
-                if role:
-                    overwrites[role] = discord.PermissionOverwrite(**perms)
-
+            overwrites = get_overwrites(interaction)
             channel = await interaction.guild.create_text_channel(
                 name=channel_name,
                 category=category,
