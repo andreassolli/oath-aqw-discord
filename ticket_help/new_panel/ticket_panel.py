@@ -534,6 +534,7 @@ class ClaimButton(discord.ui.Button):
                     f"({len(claimers) + 1}/{layout.max_claims + 1})",
                     interaction.user,
                 )
+                await interaction.channel.send(file=discord.File(image, "claim.gif"))
             else:
                 image = await generate_claim(
                     interaction.user.display_name,
@@ -541,7 +542,7 @@ class ClaimButton(discord.ui.Button):
                     f"({len(claimers) + 1}/{layout.max_claims + 1})",
                     interaction.user,
                 )
-            await interaction.channel.send(file=discord.File(image, "claim.png"))
+                await interaction.channel.send(file=discord.File(image, "claim.png"))
             return
 
         if len(claimers) >= layout.max_claims:
@@ -619,6 +620,7 @@ class ClaimButton(discord.ui.Button):
                 f"({len(claimers) + 1}/{layout.max_claims + 1})",
                 interaction.user,
             )
+            await interaction.channel.send(file=discord.File(image, "claim.gif"))
         else:
             image = await generate_claim(
                 interaction.user.display_name,
@@ -626,7 +628,7 @@ class ClaimButton(discord.ui.Button):
                 f"({len(claimers) + 1}/{layout.max_claims + 1})",
                 interaction.user,
             )
-        await interaction.channel.send(file=discord.File(image, "claim.png"))
+            await interaction.channel.send(file=discord.File(image, "claim.png"))
 
         lines = []
         for boss in layout.bosses:

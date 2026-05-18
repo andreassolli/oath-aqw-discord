@@ -29,10 +29,10 @@ class Bans(commands.Cog):
             return
         self._started = True
         await self.bot.wait_until_ready()
-        await setup_welcome(self.bot)
-        await setup_rules(self.bot)
+        # await setup_welcome(self.bot)
+        # await setup_rules(self.bot)
         await setup_badges(self.bot)
-        await setup_ticket_panel(self.bot)
+        # wait setup_ticket_panel(self.bot)
         await setup_new_tickets(self.bot)
 
     @app_commands.command(name="vet", description="View all banned users")
