@@ -49,6 +49,7 @@ async def restore_tickets(bot: discord.Client):
             notes=data.get("notes", None),
             completed_bosses=data.get("completed_bosses", []),
             ticket_name=doc.id,
+            is_practice=data.get("is_practice", False),
         )
 
         await message.edit(view=layout)
