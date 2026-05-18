@@ -160,7 +160,7 @@ class TicketLayout(discord.ui.LayoutView):
                 else:
                     helper_lines.append(mention)
 
-            helpers = "\n".join(helper_lines)
+            helpers = "\n- ".join(helper_lines)
         else:
             helpers = "—"
 
@@ -237,7 +237,7 @@ class TicketLayout(discord.ui.LayoutView):
         else:
             items.append(
                 discord.ui.TextDisplay(
-                    content=f"<:hands:1505158458494681138> **Helpers** ({len(claimers)}/{max_claims})\n- {helpers}"
+                    content=f"<:hands:1505158458494681138> **Helpers** ({len(claimers)}/{max_claims})\n{helpers}"
                 )
             )
 
