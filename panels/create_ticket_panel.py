@@ -73,7 +73,7 @@ class CreateTicketButton(discord.ui.Button):
         super().__init__(
             label="Create Ticket",
             style=discord.ButtonStyle.primary,
-            custom_id="",
+            custom_id="create_ticket_button",
         )
 
     async def callback(self, interaction: discord.Interaction):
