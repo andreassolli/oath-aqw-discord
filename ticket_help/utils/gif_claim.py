@@ -36,7 +36,7 @@ async def gif_claim(
             (66, 17),
             f"{username} {claim_text} - {status}",
             font=font_big,
-            fill="#12DD4F" if claimed else "#FF0400",
+            fill="#FFFFFF",
         )
 
         frame.paste(avatar, (5, 5), avatar)
