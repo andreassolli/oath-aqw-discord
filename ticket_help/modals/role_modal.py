@@ -3,6 +3,7 @@ import discord
 from firebase_client import db
 from ticket_help.tickets.utils import set_active_ticket
 from ticket_help.utils.claim_generate import generate_claim
+from ticket_help.utils.gif_claim import gif_claim
 
 SPEAKER_OPTIONS = {
     "DPS": "CSH, VDK, Guardian ++",
@@ -108,7 +109,9 @@ class RoleModal(discord.ui.Modal, title="Role Selection"):
 
         roles[str(user_id)] = selected_role
         set_active_ticket(interaction.user.id, ticket_name)
-
+        user_ref = db.collection("users").document(str(interaction.user.id))
+        user_doc = user_ref.get()
+        claim_image = user_doc.to_dict().get("claim_image", None)
         doc_ref.update(
             {
                 "claimers": claimers,
@@ -119,10 +122,21 @@ class RoleModal(discord.ui.Modal, title="Role Selection"):
         await interaction.response.send_message(
             f"You selected: {selected_role}", ephemeral=True
         )
-        image = await generate_claim(
-            interaction.user.name,
-            True,
-            f"({len(claimers) + 1}/{max_claims + 1})",
-            interaction.user,
-        )
-        return await interaction.channel.send(file=discord.File(image, "claim.png"))
+        if interaction.user.display_name == "Proxy" and claim_image is None:
+            image = await gif_claim(
+                interaction.user.display_name,
+                True,
+                f"({len(claimers) + 1}/{max_claims + 1})",
+                interaction.user,
+            )
+            await interaction.channel.send(file=discord.File(image, "claim.gif"))
+        else:
+            image = await generate_claim(
+                data.get("aqw_username", interaction.user.display_name),
+                True,
+                f"({len(claimers) + 1}/{max_claims + 1})",
+                interaction.user,
+                claim_image,
+            )
+            await interaction.channel.send(file=discord.File(image, "claim.png"))
+        return
