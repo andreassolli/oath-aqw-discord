@@ -36,7 +36,7 @@ class QuestsLayout(discord.ui.LayoutView):
         self.container1 = discord.ui.Container(
             discord.ui.MediaGallery(
                 discord.MediaGalleryItem(
-                    media="https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/quests.png",
+                    media="https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/quests1.png",
                 ),
             ),
             discord.ui.TextDisplay(content="‎"),
@@ -44,7 +44,7 @@ class QuestsLayout(discord.ui.LayoutView):
                 content="<:wing:1503517636695425164>** What are quests?**"
             ),
             discord.ui.TextDisplay(
-                content=">>> <a:sparks:1505157330055069706> Quests are a way to earn coins to use for discord stuff like profile background, among other things. Each Weekly Quest rewards <:oathcoin:1462999179998531614>1000, while the Sporadic Quests rewards <:oathcoin:1462999179998531614>150."
+                content=">>> <a:sparks:1505157330055069706> Quests are a way to earn coins to use for discord stuff like profile background. Each Weekly Quest rewards <:oathcoin:1462999179998531614>1000, while the Sporadic Quests rewards <:oathcoin:1462999179998531614>150."
             ),
             discord.ui.Separator(
                 visible=True,
@@ -82,7 +82,7 @@ class QuestsLayout(discord.ui.LayoutView):
                 spacing=discord.SeparatorSpacing.large,
             ),
             discord.ui.TextDisplay(
-                content="<:queststart:1491012167170920560> **Gathered the required items?**"
+                content="<:proxySip:1504987230018736160> **Gathered the required items?**"
             ),
             discord.ui.Section(
                 discord.ui.TextDisplay(
