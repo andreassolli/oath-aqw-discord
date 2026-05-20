@@ -1,4 +1,5 @@
 import random
+import re
 
 import discord
 from google.cloud import firestore
@@ -14,10 +15,12 @@ async def process_count_message(message):
     last_number = state.get("last_number", 0)
     last_user = state.get("last_user")
 
-    if not message.content.isdigit():
+    match = re.match(r"^\s*(\d+)", message.content)
+
+    if not match:
         return False
 
-    number = int(message.content)
+    number = int(match.group(1))
 
     if number != last_number + 1:
         return False
