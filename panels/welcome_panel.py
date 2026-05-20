@@ -11,6 +11,10 @@ async def setup_welcome(client: discord.Client):
         print("❌ Ticket panel channel not found. Check TICKET_CHANNEL_ID.")
         return
 
+    async for msg in channel.history(limit=3):
+        if msg.author == client.user:
+            await msg.delete()
+
     await channel.send(view=WelcomeLayout())
 
 
