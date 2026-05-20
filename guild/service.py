@@ -15,16 +15,31 @@ async def process_log(message: discord.Message):
     }:
         return
 
-    embed = message.embeds[0]
-    description = str(embed.description)
-    match = re.search(r"Member\(s\):\s*(.+)", description)
-    username = ""
     guild = message.guild
     if not guild:
         return
-    if match:
-        username = match.group(1).split("\n")[0].strip()
+
+    embed = message.embeds[0]
+    description = str(embed.description)
+    match = re.search(r"Member\(s\):\s*(.+)", description)
+    if not match:
+        return
+
+    raw_member = match.group(1).split("\n")[0].strip()
+
+    username_match = re.search(r"\[([^\]]+)\]", raw_member)
+    username = ""
+    if username_match:
+        username = username_match.group(1).strip().lower()
         print(username)
+
+    if username == "":
+        return
+
+    if embed.title == "AQW Guild Member(s) Joined":
+        await update_guild_members_count(guild, join=True)
+    elif embed.title == "AQW Guild Member(s) Left":
+        await update_guild_members_count(guild, join=False)
 
     user_query = (
         db.collection("users")
@@ -41,10 +56,6 @@ async def process_log(message: discord.Message):
     if user:
         member = guild.get_member(int(user.id))
         if not member:
-            if embed.title == "AQW Guild Member(s) Joined":
-                await update_guild_members_count(guild, join=True)
-            elif embed.title == "AQW Guild Member(s) Left":
-                await update_guild_members_count(guild, join=False)
             return
         initiate_role = discord.utils.get(member.guild.roles, id=INITIATE_ROLE_ID)
         unsworn_role = discord.utils.get(member.guild.roles, id=UNSWORN_ROLE_ID)
@@ -59,7 +70,6 @@ async def process_log(message: discord.Message):
             await member.remove_roles(
                 unsworn_role,
             )
-            await update_guild_members_count(guild, join=True)
             user_ref.update({"guild": "Oath"})
 
         elif (
@@ -71,7 +81,6 @@ async def process_log(message: discord.Message):
             await member.add_roles(
                 unsworn_role,
             )
-            await update_guild_members_count(guild, join=False)
             user_ref.update({"guild": ""})
 
 
