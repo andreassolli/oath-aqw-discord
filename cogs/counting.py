@@ -11,8 +11,6 @@ class CountingCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
-        if message.author.bot:
-            return
 
         if message.channel.id == COUNTING_CHANNEL_ID:
             await handle_counting_message(message)
