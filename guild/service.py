@@ -26,14 +26,25 @@ async def process_log(message: discord.Message):
         username = match.group(1).split("\n")[0].strip()
         print(username)
 
-    user = (
-        db.collection("users").where("aqw_username", "==", username).limit(1).get()[0]
+    user_query = (
+        db.collection("users")
+        .where("aqw_username_lower", "==", username)
+        .limit(1)
+        .get()
     )
+    if not user_query:
+        return
+
+    user = user_query[0]
     user_ref = user.reference
 
     if user:
         member = guild.get_member(int(user.id))
         if not member:
+            if embed.title == "AQW Guild Member(s) Joined":
+                await update_guild_members_count(guild, join=True)
+            elif embed.title == "AQW Guild Member(s) Left":
+                await update_guild_members_count(guild, join=False)
             return
         initiate_role = discord.utils.get(member.guild.roles, id=INITIATE_ROLE_ID)
         unsworn_role = discord.utils.get(member.guild.roles, id=UNSWORN_ROLE_ID)
