@@ -4,7 +4,6 @@ from datetime import timedelta
 from typing import Any, Dict, cast
 
 import discord
-from discord.types.components import SeparatorSpacing
 
 from config import (
     BADGES,
