@@ -1,0 +1,62 @@
+import random
+import re
+
+import discord
+from google.cloud import firestore
+
+from config import GUILD_MEMBERS_COUNT, INITIATE_ROLE_ID
+from firebase_client import db
+
+
+async def process_log(message: discord.Message):
+    if not message.embeds or message.embeds[0].title not in {
+        "AQW Guild Member(s) Joined",
+        "AQW Guild Member(s) Left",
+    }:
+        return
+
+    embed = message.embeds[0]
+    description = str(embed.description)
+    match = re.search(r"Member\(s\):\s*(.+)", description)
+    username = ""
+    guild = message.guild
+    if not guild:
+        return
+    if match:
+        username = match.group(1).split("\n")[0].strip()
+        print(username)
+
+    user = (
+        db.collection("users").where("aqw_username", "==", username).limit(1).get()[0]
+    )
+    user_ref = user.reference
+
+    if user:
+        member = guild.get_member(int(user.id))
+        if not member:
+            return
+        initiate_role = discord.utils.get(member.guild.roles, id=INITIATE_ROLE_ID)
+        if embed.title == "AQW Guild Member(s) Joined" and initiate_role:
+            await member.add_roles(
+                initiate_role,
+            )
+            await update_guild_members_count(guild, join=True)
+            user_ref.update({"guild": "Oath"})
+
+        elif embed.title == "AQW Guild Member(s) Left" and initiate_role:
+            await member.add_roles(
+                initiate_role,
+            )
+            await update_guild_members_count(guild, join=False)
+            user_ref.update({"guild": ""})
+
+
+async def update_guild_members_count(guild: discord.Guild, join: bool = True):
+    channel = guild.get_channel(GUILD_MEMBERS_COUNT)
+    channel_name = channel.name if channel else ""
+    count = channel_name.split(": ")[1] if channel_name else None
+    add = 1 if join else -1
+    new_count = int(count) + add if count else 1
+    if not channel:
+        return
+    await channel.edit(name=f"Guild Members: {new_count}")
