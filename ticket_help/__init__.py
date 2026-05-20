@@ -22,4 +22,3 @@ async def setup_ticket_system(bot):
     await setup_ticket_panel(bot)
     await update_dashboard(bot)
     await update_ticket(bot)
-    await setup_quests(bot)

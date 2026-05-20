@@ -243,7 +243,7 @@ class CreateTicketModal(discord.ui.Modal):
                 for boss in bosses:
                     points += 1
 
-            if self.type in {"other bosses", "spamming", "testing"}:
+            elif self.type in {"other bosses", "spamming", "testing"}:
                 if self.type == "spamming":
                     selected_spam = bosses[0]
                     if selected_spam == "All TempleShrine":
@@ -306,7 +306,10 @@ class CreateTicketModal(discord.ui.Modal):
                 color=discord.Colour(7344907),
             )
 
-            embed.set_image(url=TYPE_TO_IMAGE[self.type])
+            if self.is_practice:
+                embed.set_image(url=TYPE_TO_IMAGE["practice"])
+            else:
+                embed.set_image(url=TYPE_TO_IMAGE[self.type])
 
             await channel.send(embed=embed)
             db.collection("tickets").document(ticket_name).set(

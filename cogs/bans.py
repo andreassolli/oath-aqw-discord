@@ -12,6 +12,7 @@ from extra_commands.log_ban_embed import build_ban_log_embed
 from extra_commands.utils import is_ban_channel
 from panels.badges_panel import setup_badges
 from panels.create_ticket_panel import setup_new_tickets
+from panels.quests_panel import setup_quests
 from panels.rules_panel import setup_rules
 from panels.test_panel import setup_ticket_panel
 from panels.welcome_panel import setup_welcome
@@ -29,8 +30,11 @@ class Bans(commands.Cog):
             return
         self._started = True
         await self.bot.wait_until_ready()
-
+        await setup_badges(self.bot)
+        await setup_rules(self.bot)
+        await setup_welcome(self.bot)
         await setup_new_tickets(self.bot)
+        await setup_quests(self.bot)
 
     @app_commands.command(name="vet", description="View all banned users")
     @app_commands.describe(username="AQW username to check")
