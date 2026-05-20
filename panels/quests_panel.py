@@ -44,7 +44,7 @@ class QuestsLayout(discord.ui.LayoutView):
                 content="<:wing:1503517636695425164>** What are quests?**"
             ),
             discord.ui.TextDisplay(
-                content=">>> <a:sparks:1505157330055069706> Quests are a way to earn coins to use for discord stuff like profile background, among other things.\nEach Weekly Quest rewards <:oathcoin:1462999179998531614>1000, while the Sporadic Quests rewards <:oathcoin:1462999179998531614>150."
+                content=">>> <a:sparks:1505157330055069706> Quests are a way to earn coins to use for discord stuff like profile background, among other things. Each Weekly Quest rewards <:oathcoin:1462999179998531614>1000, while the Sporadic Quests rewards <:oathcoin:1462999179998531614>150."
             ),
             discord.ui.Separator(
                 visible=True,
@@ -54,7 +54,7 @@ class QuestsLayout(discord.ui.LayoutView):
                 content="<:queststart:1491012167170920560> **Weekly Quest 1**"
             ),
             discord.ui.TextDisplay(
-                content=">>> <:aqwDagger:1487000631653961779> Brutal Sword and Shield<:tagAC:1498781113127145482>\n<:aqwGauntlet:1487000801695109160> Brutal Sword and Shield Gauntlet<:tagAC:1498781113127145482>\n🗽 Enraged Undead Warrior Guard<:tagAC:1498781113127145482>\n🗽 Undead Warrior Guard<:tagAC:1498781113127145482>"
+                content=">>> <:aqwDagger:1487000631653961779> Brutal Sword and Shield<:tagAC:1498781113127145482>\n<:aqwGauntlet:1487000801695109160> Brutal Sword and Shield Gauntlet<:tagAC:1498781113127145482>\n🪑 Enraged Undead Warrior Guard<:tagAC:1498781113127145482>\n🪑 Undead Warrior Guard<:tagAC:1498781113127145482>"
             ),
             discord.ui.TextDisplay(content="‎"),
             discord.ui.TextDisplay(
@@ -68,7 +68,7 @@ class QuestsLayout(discord.ui.LayoutView):
                 content="<:queststart:1491012167170920560> **Sporadic Quest 1**"
             ),
             discord.ui.TextDisplay(
-                content=">>> 🗽 Discarded Combat Droid Guard<:tagAC:1498781113127145482><:tagSeasonal:1498781292689625158>\n🗽 Standalonian Combat Droid<:tagAC:1498781113127145482><:tagRare:1498781237777535126>\n🗽 Standalonian Droid<:tagAC:1498781113127145482><:tagSeasonal:1498781292689625158>"
+                content=">>> 🪑 Discarded Combat Droid Guard<:tagAC:1498781113127145482><:tagSeasonal:1498781292689625158>\n🪑 Standalonian Combat Droid<:tagAC:1498781113127145482><:tagRare:1498781237777535126>\n🪑 Standalonian Droid<:tagAC:1498781113127145482><:tagSeasonal:1498781292689625158>"
             ),
             discord.ui.TextDisplay(content="‎"),
             discord.ui.TextDisplay(
