@@ -72,6 +72,7 @@ async def main():
             "cogs.forge",
             "cogs.bosses",
             "cogs.quests",
+            "cogs.guild",
         ):
             await bot.load_extension(ext)
         await bot.start(os.environ["DISCORD_TOKEN"])
