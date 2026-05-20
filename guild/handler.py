@@ -1,3 +1,5 @@
+import discord
+
 from config import GUILD_LOG_CHANNEL_ID
 from firebase_client import db
 from guild.service import process_log
