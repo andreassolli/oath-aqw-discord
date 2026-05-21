@@ -11,7 +11,7 @@ class TicketCreateView(discord.ui.View):
         super().__init__(timeout=120)
 
         self.selected_type = "daily bosses"
-        self.selected_practice = "practice"
+        self.selected_practice = "standard"
         self.servers = servers
 
         self.add_item(TypeSelect())

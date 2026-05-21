@@ -29,11 +29,6 @@ class TypeSelect(discord.ui.Select):
         await interaction.response.defer()
 
 
-import discord
-
-from ticket_help.tickets.types import get_type_choices
-
-
 class PracticeSelect(discord.ui.Select):
     def __init__(self):
         options = [
