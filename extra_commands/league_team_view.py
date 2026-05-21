@@ -85,6 +85,7 @@ class TeamSelect(discord.ui.Select):
                 await interaction.response.send_message(
                     f"You joined {team_data['team_name']} as {slot}!"
                 )
+                db.collection("lfg_lol").document(str(user.id)).delete()
                 return
 
         await interaction.response.send_message(
