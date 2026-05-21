@@ -42,8 +42,7 @@ class PracticeSelect(discord.ui.Select):
                 value="practice",
             ),
             discord.SelectOption(
-                label="Standard ticket",
-                value="standard",
+                label="Standard ticket", value="standard", default=True
             ),
         ]
 

@@ -31,6 +31,28 @@ def normalize_filename(name: str | None) -> str | None:
     return name.strip().lower()
 
 
+def get_user_team(user_id: int):
+    team_docs = db.collection("league_teams").stream()
+
+    slots = [
+        "player1",
+        "player2",
+        "player3",
+        "player4",
+        "player5",
+        "substitute",
+    ]
+
+    for doc in team_docs:
+        data = doc.to_dict()
+
+        for slot in slots:
+            if data.get(slot) == user_id:
+                return data
+
+    return None
+
+
 async def send_winner_embed(
     interaction: discord.Interaction,
     user: discord.Member,

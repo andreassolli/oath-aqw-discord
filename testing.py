@@ -733,15 +733,67 @@ async def test_blackjack():
     )
 
 
-async def test_claim():
-    await generate_claim("Proxy", True, "(2/4)")
-    await generate_claim("Proxy", False, "(1/4)")
+def migrate_aqw_usernames_lower():
+    users_ref = db.collection("users").stream()
+
+    batch = db.batch()
+    operation_count = 0
+    updated_count = 0
+    skipped_count = 0
+
+    for user_doc in users_ref:
+        user_data = user_doc.to_dict()
+
+        aqw_username = user_data.get("aqw_username")
+
+        # Skip users without usernames
+        if not aqw_username:
+            skipped_count += 1
+            continue
+
+        aqw_username_lower = aqw_username.lower()
+
+        # Optional: skip if already correct
+        existing_lower = user_data.get("aqw_username_lower")
+        if existing_lower == aqw_username_lower:
+            skipped_count += 1
+            continue
+
+        # Add update to batch
+        batch.update(
+            user_doc.reference,
+            {
+                "aqw_username_lower": aqw_username_lower,
+            },
+        )
+
+        operation_count += 1
+        updated_count += 1
+
+        # Commit batch when limit reached
+        if operation_count >= BATCH_LIMIT:
+            batch.commit()
+            print(f"✅ Committed {operation_count} updates")
+
+            batch = db.batch()
+            operation_count = 0
+
+    # Commit remaining updates
+    if operation_count > 0:
+        batch.commit()
+        print(f"✅ Committed final {operation_count} updates")
+
+    print(
+        f"🎉 Migration complete. "
+        f"Updated {updated_count} users. "
+        f"Skipped {skipped_count} users."
+    )
 
 
 if __name__ == "__main__":
     # asyncio.run(post_kofi_summary())
     # asyncio.run(add_killer_card())
-    asyncio.run(test_claim())
+    migrate_aqw_usernames_lower()
     # reset_coins()
     # migrate_shop_prices()
     # backfill_wordle_stats()

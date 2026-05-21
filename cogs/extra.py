@@ -32,11 +32,14 @@ from config import (
     TICKET_INSPECTORS_CHANNEL_ID,
     TICKET_LOG_CHANNEL_ID,
     TRANSCENDED_ROLE_ID,
+    UNSWORN_ROLE_ID,
 )
 from economy.gamba.coinflip import run_coinflip
 from economy.gamba.doom_view import DoomSpinView
 from economy.gamba.utils import has_spun_today
 from economy.gamba.yanken_accept_view import RPSAcceptView
+from extra_commands.league_team_view import TeamView
+from extra_commands.league_teams_embed import LeagueTeamsLayout
 from extra_commands.memes import (
     m_bigrig,
     m_dryage,
@@ -59,6 +62,7 @@ from extra_commands.utils import (
     count_messages,
     elect_potw,
     format_duration,
+    get_user_team,
     has_any_role,
     is_oath_or_allowed_user,
     manual_leaderboard_post,
@@ -1065,16 +1069,110 @@ class Extra(commands.Cog):
 
     @app_commands.command(name="css", description="CSS tutorial")
     async def css(self, interaction: discord.Interaction):
-        url = "https://youtu.be/LekEuqIP3dw?si=_IbmPrNTd96_q8ZU"
+        basic_url = "https://youtu.be/ky-MIAIdrfU?si=665iAMcKfJIzkNYr"
+        ultra_url = "https://youtu.be/LekEuqIP3dw?si=_IbmPrNTd96_q8ZU"
         embed = discord.Embed(
             title="Alvii's guide to Chrono ShadowSlayer",
-            description=f"Click here to view the video on how to use CSS: {url}",
+            description=f"Check out this video for the basics: {basic_url}\n\nCheck out this video for Ultras: {ultra_url}",
             color=discord.Color.green(),
         )
         embed.set_image(
             url="https://www.artix.com/media/5921/promo-2024calendar-pre-order.jpg?width=1170px&height=658px&mode=crop"
         )
         await interaction.response.send_message(embed=embed)
+
+    @app_commands.command(
+        name="register-lol-team", description="Register your team for LoL Tourney"
+    )
+    @app_commands.checks.has_any_role(INITIATE_ROLE_ID, UNSWORN_ROLE_ID)
+    async def register_team(self, interaction: discord.Interaction, team_name: str):
+        user = interaction.user
+
+        team_ref = db.collection("league_teams").document(team_name)
+        team_doc = team_ref.get()
+
+        # Team already exists
+        if team_doc.exists:
+            await interaction.response.send_message(
+                f"{team_name} is already registered for LoL Tourney!", ephemeral=True
+            )
+            return
+
+        # Create team
+        team_ref.set(
+            {
+                "team_name": team_name,
+                "captain": user.id,
+                "player1": user.id,
+                "player2": None,
+                "player3": None,
+                "player4": None,
+                "player5": None,
+                "substitute": None,
+            }
+        )
+
+        await interaction.response.send_message(
+            f"{team_name} has been registered for LoL Tourney!"
+        )
+
+    @app_commands.command(
+        name="lfg-lol", description="Mark yourself as available for LoL Tourney"
+    )
+    @app_commands.checks.has_any_role(INITIATE_ROLE_ID, UNSWORN_ROLE_ID)
+    async def lfg_lol(self, interaction: discord.Interaction):
+
+        user = interaction.user
+
+        # Prevent LFG if already on team
+        existing_team = get_user_team(user.id)
+
+        if existing_team:
+            await interaction.response.send_message(
+                f"You are already on {existing_team['team_name']}!", ephemeral=True
+            )
+            return
+
+        lfg_ref = db.collection("lfg_lol").document(str(user.id))
+        lfg_doc = lfg_ref.get()
+
+        # Already in LFG
+        if lfg_doc.exists:
+            await interaction.response.send_message(
+                "You are already in the LoL LFG list!", ephemeral=True
+            )
+            return
+
+        lfg_ref.set(
+            {
+                "user_id": user.id,
+                "display_name": user.display_name,
+                "status": "available",
+            }
+        )
+
+        await interaction.response.send_message(
+            "You have been added to the LoL LFG list!"
+        )
+
+    @app_commands.command(name="join-lol-team", description="Join an existing LoL team")
+    @app_commands.checks.has_any_role(INITIATE_ROLE_ID, UNSWORN_ROLE_ID)
+    async def join_lol_team(self, interaction: discord.Interaction):
+
+        teams = db.collection("league_teams").stream()
+
+        await interaction.response.send_message(
+            "Select a team to join:", view=TeamView(teams), ephemeral=True
+        )
+
+    @app_commands.command(
+        name="view-lol-teams", description="View all registered LoL teams"
+    )
+    @app_commands.checks.has_any_role(INITIATE_ROLE_ID, UNSWORN_ROLE_ID)
+    async def view_lol_teams(self, interaction: discord.Interaction):
+        teams = db.collection("league_teams").get()
+        layout = LeagueTeamsLayout(teams)
+        await interaction.response.send_message(view=layout)
 
 
 async def setup(bot: commands.Bot):
