@@ -38,7 +38,7 @@ class LeagueTeamsLayout(discord.ui.LayoutView):
             items.append(
                 discord.ui.TextDisplay(
                     content=(
-                        f"<:id2:1505158104810262558> "
+                        f"<:button_badges:1505158462441656450> "
                         f"**{team_data['team_name']}**\n"
                         f">>> {players_string}"
                     ),

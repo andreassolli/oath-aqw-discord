@@ -25,6 +25,7 @@ from config import (
     GRAMIEL_CERTIFICATE_ID,
     HELPER_CHANNEL_ID,
     INITIATE_ROLE_ID,
+    LFG_LOL_ID,
     NULGATH_CERTIFICATE_ID,
     OATHSWORN_ROLE_ID,
     SPEAKER_CERTIFICATE_ID,
@@ -40,6 +41,7 @@ from economy.gamba.utils import has_spun_today
 from economy.gamba.yanken_accept_view import RPSAcceptView
 from extra_commands.league_team_view import TeamView
 from extra_commands.league_teams_embed import LeagueTeamsLayout
+from extra_commands.lfg_players import LFGPlayersLayout
 from extra_commands.memes import (
     m_bigrig,
     m_dryage,
@@ -1055,7 +1057,7 @@ class Extra(commands.Cog):
         embed.add_field(
             name="Using ACs", value=f"{acs}<:acaqw:1498781113127145482>", inline=False
         )
-        await interaction.followup.send(embed=embed)
+        return await interaction.followup.send(embed=embed)
 
     @app_commands.command(name="test", description="test layout")
     @app_commands.default_permissions(manage_roles=True)
@@ -1079,7 +1081,7 @@ class Extra(commands.Cog):
         embed.set_image(
             url="https://www.artix.com/media/5921/promo-2024calendar-pre-order.jpg?width=1170px&height=658px&mode=crop"
         )
-        await interaction.response.send_message(embed=embed)
+        return await interaction.response.send_message(embed=embed)
 
     @app_commands.command(
         name="register-lol-team", description="Register your team for LoL Tourney"
@@ -1112,7 +1114,7 @@ class Extra(commands.Cog):
             }
         )
 
-        await interaction.response.send_message(
+        return await interaction.response.send_message(
             f"{team_name} has been registered for LoL Tourney!"
         )
 
@@ -1155,6 +1157,21 @@ class Extra(commands.Cog):
             "You have been added to the LoL LFG list!"
         )
 
+    @app_commands.command(
+        name="view-lfg", description="View all users looking for team"
+    )
+    @app_commands.checks.has_any_role(INITIATE_ROLE_ID, UNSWORN_ROLE_ID)
+    async def view_lfg(self, interaction: discord.Interaction):
+        channel_id = interaction.channel_id
+        if channel_id != LFG_LOL_ID:
+            await interaction.response.send_message(
+                "This command can only be used in the LoL LFG channel!", ephemeral=True
+            )
+            return
+        users = db.collection("lfg_lol").where("status", "==", "available").get()
+        layout = LFGPlayersLayout(users)
+        return await interaction.response.send_message(view=layout)
+
     @app_commands.command(name="join-lol-team", description="Join an existing LoL team")
     @app_commands.checks.has_any_role(INITIATE_ROLE_ID, UNSWORN_ROLE_ID)
     async def join_lol_team(self, interaction: discord.Interaction):
@@ -1170,9 +1187,16 @@ class Extra(commands.Cog):
     )
     @app_commands.checks.has_any_role(INITIATE_ROLE_ID, UNSWORN_ROLE_ID)
     async def view_lol_teams(self, interaction: discord.Interaction):
+        channel_id = interaction.channel_id
+        if channel_id != LFG_LOL_ID:
+            await interaction.response.send_message(
+                "This command can only be used in the LoL LFG channel!", ephemeral=True
+            )
+            return
+
         teams = db.collection("league_teams").get()
         layout = LeagueTeamsLayout(teams)
-        await interaction.response.send_message(view=layout)
+        return await interaction.response.send_message(view=layout)
 
 
 async def setup(bot: commands.Bot):
