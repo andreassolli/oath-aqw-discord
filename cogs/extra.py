@@ -923,7 +923,10 @@ class Extra(commands.Cog):
                 "This command can only be used in the LoL LFG channel!", ephemeral=True
             )
             return
-        users = db.collection("lfg_lol").where("status", "==", "available").get()
+        users = [
+            doc.to_dict()
+            for doc in db.collection("lfg_lol").where("status", "==", "available").get()
+        ]
         layout = LFGPlayersLayout(users)
         return await interaction.response.send_message(view=layout)
 
