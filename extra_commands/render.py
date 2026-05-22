@@ -220,7 +220,7 @@ async def render_png(username: str):
     image = Image.open(BytesIO(png)).convert("RGBA")
 
     output = BytesIO()
-
+    image = crop_image(image)
     image.save(output, format="PNG")
 
     output.seek(0)
