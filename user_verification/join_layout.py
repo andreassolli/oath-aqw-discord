@@ -55,7 +55,7 @@ class JoinedButton(discord.ui.Button):
         return
 
     async def callback(self, interaction: discord.Interaction):
-        layout = self.view
+        layout: JoinLayoutView = self.view
         await interaction.response.defer()
         ticket_channel = interaction.channel
         encoded_name = quote(layout.ign, safe="")
@@ -169,7 +169,7 @@ class DetailsButton(discord.ui.Button):
         )
 
     async def callback(self, interaction: discord.Interaction):
-        layout = self.view
+        layout: JoinLayoutView = self.view
         channel_id = str(interaction.channel_id)
 
         doc_ref = db.collection("join_tickets").document(
@@ -183,7 +183,7 @@ class DetailsButton(discord.ui.Button):
                 ephemeral=True,
             )
 
-        ticket = docs[0].to_dict()
+        ticket = doc.to_dict()
 
         if not ticket:
             return await interaction.response.send_message(
@@ -223,10 +223,9 @@ class NoJoinButton(discord.ui.Button):
             style=discord.ButtonStyle.red,
             custom_id="join_ticket_no",
         )
-        return
 
     async def callback(self, interaction: discord.Interaction):
-        layout = self.view
+        layout: JoinLayoutView = self.view
         await interaction.response.defer()
         ticket_channel = interaction.channel
         if not isinstance(ticket_channel, discord.TextChannel):

@@ -80,6 +80,7 @@ from extra_commands.wordle import (
 )
 from extra_commands.wordle_image import generate_wordle_board
 from firebase_client import db
+from ticket_help.tickets.points import get_boss_room
 from ticket_help.utils.experienced import StartView
 from user_profile.utils import fetch_inventory
 from user_verification.layout import TestLayout
@@ -929,7 +930,7 @@ class Extra(commands.Cog):
             for doc in db.collection("lfg_lol").where("status", "==", "available").get()
         ]
         layout = LFGPlayersLayout(users)
-        return await interaction.response.send_message(view=layout)
+        return await interaction.response.send_message(view=layout, ephemeral=True)
 
     @app_commands.command(name="join-lol-team", description="Join an existing LoL team")
     @app_commands.checks.has_any_role(INITIATE_ROLE_ID, UNSWORN_ROLE_ID)
@@ -955,7 +956,7 @@ class Extra(commands.Cog):
 
         teams = db.collection("league_teams").get()
         layout = LeagueTeamsLayout(teams)
-        return await interaction.response.send_message(view=layout)
+        return await interaction.response.send_message(view=layout, ephemeral=True)
 
     @app_commands.command(name="png", description="Render AQW PNG")
     @app_commands.describe(username="AQW username")
@@ -973,6 +974,52 @@ class Extra(commands.Cog):
 
         except Exception as e:
             await interaction.followup.send(f"Error: {e}")
+
+    @app_commands.command(
+        name="room-codes", description="Get room codes for your claimed ticket"
+    )
+    async def room_codes_command(self, interaction: discord.Interaction):
+        user = interaction.user
+        user_data = db.collection("users").document(str(user.id)).get()
+        active_ticket = user_data.get("active_ticket")
+
+        if not active_ticket:
+            return await interaction.response.send_message(
+                "❌ You must claim a ticket first!", ephemeral=True
+            )
+
+        ticket_data = db.collection("tickets").document(active_ticket).get()
+
+        bosses = ticket_data.get("bosses")
+        room_code = ticket_data.get("room")
+        lines = []
+
+        for boss in bosses:
+            custom_tickets = {"spamming", "testing", "until drop"}
+            if ticket_data.get("type") in custom_tickets:
+                if "TempleShrine" in boss:
+                    rooms = "templeshrine"
+                elif "Flame Usurper" in boss:
+                    rooms = "flameusurper"
+                else:
+                    rooms = boss
+            else:
+                rooms = get_boss_room(boss)
+
+            if not rooms:
+                continue
+
+            # Split multiple rooms by comma
+            room_list = [r.strip() for r in rooms.split(",")]
+
+            for room in room_list:
+                lines.append(f"```/join {room}-{room_code}```")
+
+        rooms_text = "".join(lines)
+
+        await interaction.response.send_message(
+            f"📋 **Room codes:**\n{rooms_text}", ephemeral=True
+        )
 
 
 async def setup(bot: commands.Bot):
