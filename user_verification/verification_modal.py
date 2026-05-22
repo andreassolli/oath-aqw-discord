@@ -21,6 +21,7 @@ from user_profile.utils import (
 )
 from user_verification.close_ticket import CloseTicketView
 from user_verification.embed_verify_log import build_verification_log_embed
+from user_verification.join_layout import JoinLayoutView
 from user_verification.utils import (
     build_join_ticket_embed,
     change_roles,
@@ -187,7 +188,7 @@ class VerificationModal(discord.ui.Modal):
                 )
 
             channel = await guild_obj.create_text_channel(
-                name=f"join-{member.name}",
+                name=f"join-{self.username.value}",
                 category=category,
                 topic=f"Join request | IGN: {self.username.value} | Discord: {member.id}",
             )
@@ -205,19 +206,28 @@ class VerificationModal(discord.ui.Modal):
                         role, view_channel=True, send_messages=True
                     )
 
-            embed = build_join_ticket_embed(
-                guild=guild_obj,
-                discord_id=interaction.user.id,
-                ign=self.username.value,
+            image = await render_png(self.username.value)
+
+            filename = f"{self.username.value}.png"
+
+            file = discord.File(image, filename=filename)
+
+            embed = discord.Embed(
+                title=f"{member.mention} ({self.username.value})",
+                color=discord.Colour(7344907),
             )
+
+            embed.set_image(url=f"attachment://{filename}")
 
             message = await channel.send(
                 officer_role.mention if officer_role else "@Officer",
                 embed=embed,
-                view=DidUserJoinView(
-                    discord_id=interaction.user.id,
-                    ign=self.username.value,
-                ),
+                file=file,
+            )
+            await channel.send(
+                view=JoinLayoutView(
+                    username=self.username.value, discord_id=interaction.user.id
+                )
             )
 
             identifier = f"{self.username.value}:{interaction.user.id}"
@@ -240,7 +250,7 @@ class VerificationModal(discord.ui.Modal):
             )
 
             await interaction.followup.send(
-                f"✅ Ticket created: {channel.mention}",
+                f"✅ Ticket created: {channel.mention}\nLet an officer know in the channel if you are online or not, and if so what server!",
                 ephemeral=True,
             )
             await interaction.followup.send(
@@ -248,9 +258,4 @@ class VerificationModal(discord.ui.Modal):
                 f"AQW Username: **{self.username.value}**\n\n"
                 "An officer will review your request.",
                 ephemeral=True,
-            )
-            image = await render_png(self.username.value)
-
-            await interaction.followup.send(
-                file=discord.File(image, filename=f"{self.username.value}.png")
             )
