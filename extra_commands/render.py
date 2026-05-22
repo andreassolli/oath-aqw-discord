@@ -12,11 +12,13 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 
-from request_utils import rate_limited_get_text
+from config import PROXY_SERVICE
+from http_client import get_session
+from request_utils import HEADERS, rate_limited_get_text
 
 WIDTH = 715
 HEIGHT = 455
-
+ASSET_CACHE = {}
 _server_started = False
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -46,6 +48,24 @@ async def start_server():
     app.router.add_get("/render.html", render_html)
 
     app.router.add_get("/testing2.swf", testing2)
+
+    async def local_asset(request):
+
+        path = request.match_info["path"]
+
+        data = await fetch_asset(path)
+
+        return web.Response(
+            body=data,
+            headers={
+                "Access-Control-Allow-Origin": "*",
+            },
+        )
+
+    app.router.add_get(
+        "/game/gamefiles/{path:.*}",
+        local_asset,
+    )
 
     runner = web.AppRunner(app)
 
@@ -136,6 +156,29 @@ async def get_canvas(driver):
     raise Exception("Canvas not found")
 
 
+async def fetch_asset(path: str):
+
+    if path in ASSET_CACHE:
+        return ASSET_CACHE[path]
+
+    url = f"https://game.aq.com/game/gamefiles/{path}"
+
+    session = await get_session()
+
+    async with session.get(
+        url,
+        proxy=PROXY_SERVICE,
+        headers=HEADERS,
+    ) as resp:
+        resp.raise_for_status()
+
+        data = await resp.read()
+
+        ASSET_CACHE[path] = data
+
+        return data
+
+
 async def setup_page(username: str):
 
     await start_server()
@@ -143,6 +186,7 @@ async def setup_page(username: str):
     flash_vars = await get_flashvars(username)
 
     driver = get_driver()
+    flash_vars += "&serverFilePath=http://127.0.0.1:8765"
 
     encoded = quote(flash_vars)
 
