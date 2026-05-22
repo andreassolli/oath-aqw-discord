@@ -18,25 +18,24 @@ class JoinLayoutView(discord.ui.LayoutView):
         self.discord_id = discord_id
 
         self.container1 = discord.ui.Container(
-            discord.ui.TextDisplay(content="‎"),
             discord.ui.TextDisplay(
                 content=f"<:hands:1505158458494681138> **{username} wants to join the guild!**"
             ),
             discord.ui.Section(
                 discord.ui.TextDisplay(
-                    content=f"> <:star:1503523567898460311> View more details about {username}"
+                    content=f"<:star:1503523567898460311> View more details about {username}"
                 ),
                 accessory=DetailsButton(),
             ),
             discord.ui.Section(
                 discord.ui.TextDisplay(
-                    content="> Invite them to the guild and click '**User joined**' once they've accepted!"
+                    content="Invite them to the guild! Approve upon joining."
                 ),
                 accessory=JoinedButton(),
             ),
             discord.ui.Section(
                 discord.ui.TextDisplay(
-                    content="> ** Did the user change their mind or break any rules?**"
+                    content="Did the user change their mind or break any rules?"
                 ),
                 accessory=NoJoinButton(),
             ),
@@ -49,7 +48,7 @@ class JoinLayoutView(discord.ui.LayoutView):
 class JoinedButton(discord.ui.Button):
     def __init__(self):
         super().__init__(
-            label="✅ User joined",
+            label="✅ Approve",
             style=discord.ButtonStyle.green,
             custom_id="join_ticket_yes",
         )
@@ -118,7 +117,7 @@ class JoinedButton(discord.ui.Button):
         channel_id = ticket_channel.id
 
         doc_ref = db.collection("join_tickets").document(
-            f"{layout.username}:{layout.discord_id}"
+            f"{layout.ign}:{layout.discord_id}"
         )
         doc = doc_ref.get()
 
@@ -174,7 +173,7 @@ class DetailsButton(discord.ui.Button):
         channel_id = str(interaction.channel_id)
 
         doc_ref = db.collection("join_tickets").document(
-            f"{layout.username}:{layout.discord_id}"
+            f"{layout.ign}:{layout.discord_id}"
         )
         doc = doc_ref.get()
 
@@ -220,7 +219,7 @@ class DetailsButton(discord.ui.Button):
 class NoJoinButton(discord.ui.Button):
     def __init__(self):
         super().__init__(
-            label="❌ User did not join",
+            label="❌ Deny",
             style=discord.ButtonStyle.red,
             custom_id="join_ticket_no",
         )
@@ -239,7 +238,7 @@ class NoJoinButton(discord.ui.Button):
         channel_id = ticket_channel.id
 
         doc_ref = db.collection("join_tickets").document(
-            f"{layout.username}:{layout.discord_id}"
+            f"{layout.ign}:{layout.discord_id}"
         )
         doc = doc_ref.get()
 
