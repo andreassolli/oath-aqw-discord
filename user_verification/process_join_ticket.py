@@ -70,6 +70,7 @@ async def process_join_ticket(
         db.collection("users").document(str(discord_id)).set(
             {
                 "aqw_username": ign,
+                "aqw_username_lower": ign.lower(),
                 "ccid": ccid,
                 "guild": guild_name,
                 "verified": True,
