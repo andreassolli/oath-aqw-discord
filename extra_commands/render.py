@@ -3,16 +3,15 @@ from io import BytesIO
 from pathlib import Path
 from urllib.parse import quote
 
-import aiohttp
 from aiohttp import web
 from PIL import Image
-from playwright.async_api import async_playwright
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
 
 WIDTH = 715
 HEIGHT = 455
 
-_browser = None
-_playwright = None
 _server_started = False
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -54,84 +53,47 @@ async def start_server():
     print("Render server started")
 
 
-async def get_browser():
+_driver = None
 
-    global _browser
-    global _playwright
 
-    if _browser is None:
-        _playwright = await async_playwright().start()
+def get_driver():
 
-        _browser = await _playwright.chromium.launch(headless=True)
+    global _driver
 
-    return _browser
+    if _driver is None:
+        options = Options()
+
+        options.add_argument("--headless=new")
+
+        options.add_argument("--no-sandbox")
+
+        options.add_argument("--disable-dev-shm-usage")
+
+        options.add_argument("--window-size=715,455")
+
+        options.add_argument("--disable-gpu")
+
+        _driver = webdriver.Chrome(options=options)
+
+    return _driver
 
 
 async def get_flashvars(username: str):
 
-    browser = await get_browser()
+    driver = get_driver()
 
-    page = await browser.new_page()
+    driver.get(f"https://account.aq.com/CharPage?id={username}")
 
-    await page.goto(f"https://account.aq.com/CharPage?id={username}")
+    await asyncio.sleep(5)
 
-    # AQW loads slowly
-    await page.wait_for_timeout(5000)
+    param = driver.find_element(By.CSS_SELECTOR, 'param[name="FlashVars"]')
 
-    flashvars = await page.evaluate("""
-    () => {
-
-        const param =
-            document.querySelector(
-                'param[name="FlashVars"]'
-            );
-
-        if (!param) {
-            return null;
-        }
-
-        return param.getAttribute(
-            "value"
-        );
-    }
-    """)
-
-    await page.close()
+    flashvars = param.get_attribute("value")
 
     if not flashvars:
         raise Exception("FlashVars not found")
 
     return flashvars
-
-
-async def get_canvas(page):
-
-    for _ in range(200):
-        ruffle = await page.query_selector("ruffle-embed, ruffle-object")
-
-        if ruffle:
-            handle = await ruffle.evaluate_handle(
-                """
-                    (el) => {
-
-                        return (
-                            el.shadowRoot
-                                ?.querySelector(
-                                    "canvas"
-                                )
-                        );
-                    }
-                    """
-            )
-
-            canvas = handle.as_element()
-
-            if canvas:
-                return canvas
-
-        await asyncio.sleep(0.1)
-
-    raise Exception("Canvas not found")
 
 
 def crop_image(image):
@@ -150,31 +112,25 @@ async def setup_page(username: str):
 
     flash_vars = await get_flashvars(username)
 
-    browser = await get_browser()
-
-    page = await browser.new_page(viewport={"width": WIDTH, "height": HEIGHT})
+    driver = get_driver()
 
     encoded = quote(flash_vars)
 
     url = f"http://127.0.0.1:8765/render.html?flashVars={encoded}"
 
-    await page.goto(url)
+    driver.get(url)
 
-    # AQW assets can take awhile
-    await page.wait_for_timeout(200)
+    # AQW assets load slowly
+    await asyncio.sleep(5)
 
-    canvas = await get_canvas(page)
-
-    return page, canvas
+    return driver
 
 
 async def render_png(username: str):
 
-    page, canvas = await setup_page(username)
+    driver = await setup_page(username)
 
-    png = await canvas.screenshot(type="png", omit_background=True)
-
-    await page.close()
+    png = driver.get_screenshot_as_png()
 
     image = Image.open(BytesIO(png)).convert("RGBA")
 
@@ -191,21 +147,22 @@ async def render_png(username: str):
 
 async def render_gif(username: str):
 
-    page, canvas = await setup_page(username)
+    driver = await setup_page(username)
 
     frames = []
-    await asyncio.sleep(0.2)
+
+    await asyncio.sleep(1)
 
     for _ in range(40):
-        png = await canvas.screenshot(type="png", omit_background=True)
+        png = driver.get_screenshot_as_png()
 
         frame = Image.open(BytesIO(png)).convert("RGBA")
 
-        frames.append(frame)
+        frame = crop_image(frame)
+
+        frames.append(frame.copy())
 
         await asyncio.sleep(0.05)
-
-    await page.close()
 
     output = BytesIO()
 
