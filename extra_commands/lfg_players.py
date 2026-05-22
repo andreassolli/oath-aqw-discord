@@ -15,7 +15,7 @@ class LFGPlayersLayout(discord.ui.LayoutView):
         ]
 
         users_string = "\n".join(
-            [f"<@{user.user_id}> ({user.display_name})" for user in users]
+            [f"<@{user['user_id']}> ({user['display_name']})" for user in users]
         )
         items.append(
             discord.ui.TextDisplay(
