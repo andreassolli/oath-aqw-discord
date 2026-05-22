@@ -382,6 +382,13 @@ class CertificateButton(discord.ui.Button):
 
     async def callback(self, interaction: discord.Interaction):
         layout: TicketLayout = self.view
+
+        if not layout.can_manage_ticket(interaction):
+            return await interaction.response.send_message(
+                "🚫 Only the ticket creator or admin can do this.",
+                ephemeral=True,
+            )
+
         layout.doc_ref.update({"experienced_only": not layout.certificate_only})
         await layout.refresh(interaction)
         return await interaction.response.send_message(
