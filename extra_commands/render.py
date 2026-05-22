@@ -21,7 +21,9 @@ _server_started = False
 
 BASE_DIR = Path(__file__).resolve().parent
 
-SWF_PATH = BASE_DIR.parent / "testing2.swf"
+SWF_PATH = BASE_DIR.parent / "assets/testing2.swf"
+
+HTML_PATH = BASE_DIR.parent / "extra_commands/render.html"
 
 
 async def start_server():
@@ -35,7 +37,7 @@ async def start_server():
 
     async def render_html(request):
 
-        return web.FileResponse("render.html")
+        return web.FileResponse(HTML_PATH)
 
     async def testing2(request):
 

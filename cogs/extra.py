@@ -59,6 +59,7 @@ from extra_commands.memes import (
 )
 from extra_commands.record_holder import record_holder
 from extra_commands.record_view import LeaderboardView
+from extra_commands.render import render_png
 from extra_commands.utils import (
     check_missing_badges,
     count_messages,
@@ -955,6 +956,23 @@ class Extra(commands.Cog):
         teams = db.collection("league_teams").get()
         layout = LeagueTeamsLayout(teams)
         return await interaction.response.send_message(view=layout)
+
+    @app_commands.command(name="png", description="Render AQW PNG")
+    @app_commands.describe(username="AQW username")
+    @app_commands.checks.has_any_role(BOT_GUY_ROLE_ID)
+    async def png_command(self, interaction: discord.Interaction, username: str):
+
+        await interaction.response.defer()
+
+        try:
+            image = await render_png(username)
+
+            await interaction.followup.send(
+                file=discord.File(image, filename=f"{username}.png")
+            )
+
+        except Exception as e:
+            await interaction.followup.send(f"Error: {e}")
 
 
 async def setup(bot: commands.Bot):
