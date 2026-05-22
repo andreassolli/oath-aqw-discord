@@ -127,7 +127,7 @@ class RoleModal(discord.ui.Modal, title="Role Selection"):
         await interaction.response.send_message(
             f"You selected: {selected_role}", ephemeral=True
         )
-        if interaction.user.display_name == "Proxy" and claim_image is None:
+        if interaction.user.display_name in {"Proxy", "Mapril"} and claim_image is None:
             image = await gif_claim(
                 interaction.user.display_name,
                 True,
