@@ -118,6 +118,11 @@ class RoleModal(discord.ui.Modal, title="Role Selection"):
                 "claimer_roles": roles,
             }
         )
+        user_ref.update(
+            {
+                "active_ticket": ticket_name,
+            }
+        )
         await self.layout.refresh(interaction)
         await interaction.response.send_message(
             f"You selected: {selected_role}", ephemeral=True
