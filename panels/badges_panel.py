@@ -93,6 +93,7 @@ class BadgesButton(discord.ui.Button):
 
     async def callback(self, interaction: discord.Interaction):
         layout: BadgesLayout = self.view
+        await interaction.response.defer()
         self.selected_values: list[str] = [
             "Founder",
             "Whale",
