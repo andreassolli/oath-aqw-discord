@@ -151,7 +151,7 @@ async def setup_page(username: str):
     await run_blocking(driver.get, url)
 
     # AQW assets load slowly
-    await asyncio.sleep(5)
+    await asyncio.sleep(7)
 
     return driver
 
