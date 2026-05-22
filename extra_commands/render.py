@@ -186,7 +186,6 @@ async def setup_page(username: str):
     flash_vars = await get_flashvars(username)
 
     driver = get_driver()
-    flash_vars += "&serverFilePath=http://127.0.0.1:8765"
 
     encoded = quote(flash_vars)
 
