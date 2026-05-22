@@ -18,11 +18,6 @@ class JoinLayoutView(discord.ui.LayoutView):
         self.discord_id = discord_id
 
         self.container1 = discord.ui.Container(
-            discord.ui.MediaGallery(
-                discord.MediaGalleryItem(
-                    media="https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/welcome.png",
-                ),
-            ),
             discord.ui.TextDisplay(content="‎"),
             discord.ui.TextDisplay(
                 content=f"<:hands:1505158458494681138> **{username} wants to join the guild!**"
@@ -122,15 +117,13 @@ class JoinedButton(discord.ui.Button):
         user_ref.set(updates, merge=True)
         channel_id = ticket_channel.id
 
-        docs = list(
-            db.collection("join_tickets")
-            .where("channel_id", "==", channel_id)
-            .limit(1)
-            .stream()
+        doc_ref = db.collection("join_tickets").document(
+            f"{layout.username}:{layout.discord_id}"
         )
+        doc = doc_ref.get()
 
-        if docs:
-            docs[0].reference.delete()
+        if doc.exists:
+            doc_ref.delete()
 
         guild = interaction.guild
         if guild is None:
@@ -177,18 +170,15 @@ class DetailsButton(discord.ui.Button):
         )
 
     async def callback(self, interaction: discord.Interaction):
+        layout = self.view
         channel_id = str(interaction.channel_id)
 
-        query = (
-            db.collection("join_tickets")
-            .where("channel_id", "==", channel_id)
-            .limit(1)
-            .get()
+        doc_ref = db.collection("join_tickets").document(
+            f"{layout.username}:{layout.discord_id}"
         )
+        doc = doc_ref.get()
 
-        docs = list(query)
-
-        if not docs:
+        if not doc.exists:
             return await interaction.response.send_message(
                 "❌ This button can only be used inside a ticket.",
                 ephemeral=True,
@@ -248,15 +238,13 @@ class NoJoinButton(discord.ui.Button):
 
         channel_id = ticket_channel.id
 
-        docs = list(
-            db.collection("join_tickets")
-            .where("channel_id", "==", channel_id)
-            .limit(1)
-            .stream()
+        doc_ref = db.collection("join_tickets").document(
+            f"{layout.username}:{layout.discord_id}"
         )
+        doc = doc_ref.get()
 
-        if docs:
-            docs[0].reference.delete()
+        if doc.exists:
+            doc_ref.delete()
 
         guild = interaction.guild
         if guild is None:
