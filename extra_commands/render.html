@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+    <body style="margin: 0; background: transparent; overflow: hidden">
+        <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+
+        <script>
+            const params = new URLSearchParams(location.search);
+
+            const flashVars = decodeURIComponent(params.get("flashVars") || "");
+
+            window.RufflePlayer.config = {
+                autoplay: "on",
+                unmuteOverlay: "hidden",
+                backgroundColor: "#00000000",
+                preferredRenderer: "canvas",
+            };
+
+            const object = document.createElement("object");
+
+            object.width = 715;
+            object.height = 455;
+
+            // MOVIE
+
+            const movie = document.createElement("param");
+
+            movie.name = "movie";
+
+            movie.value = "/testing2.swf";
+
+            object.appendChild(movie);
+
+            // FLASHVARS
+
+            const flashvars = document.createElement("param");
+
+            flashvars.name = "FlashVars";
+
+            flashvars.value = flashVars;
+
+            object.appendChild(flashvars);
+
+            // QUALITY
+
+            const quality = document.createElement("param");
+
+            quality.name = "quality";
+
+            quality.value = "high";
+
+            object.appendChild(quality);
+
+            // LOOP
+
+            const loop = document.createElement("param");
+
+            loop.name = "loop";
+
+            loop.value = "true";
+
+            object.appendChild(loop);
+
+            // SCALE
+
+            const scale = document.createElement("param");
+
+            scale.name = "scale";
+
+            scale.value = "showall";
+
+            object.appendChild(scale);
+
+            // ALLOW SCRIPT ACCESS
+
+            const allowScriptAccess = document.createElement("param");
+
+            allowScriptAccess.name = "allowScriptAccess";
+
+            allowScriptAccess.value = "always";
+
+            object.appendChild(allowScriptAccess);
+
+            // MENU
+
+            const menu = document.createElement("param");
+
+            menu.name = "menu";
+
+            menu.value = "true";
+
+            object.appendChild(menu);
+
+            // WMODE
+
+            const wmode = document.createElement("param");
+
+            wmode.name = "wmode";
+
+            wmode.value = "transparent";
+
+            object.appendChild(wmode);
+
+            document.body.appendChild(object);
+        </script>
+    </body>
+</html>

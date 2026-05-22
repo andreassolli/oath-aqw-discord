@@ -11,6 +11,7 @@ from config import (
     TEAM_CATEGORY_ID,
     TICKET_LOG_CHANNEL_ID,
 )
+from extra_commands.render import render_png
 from firebase_client import db
 from update_badges import get_total_badges
 from user_profile.utils import (
@@ -76,6 +77,7 @@ class VerificationModal(discord.ui.Modal):
 
             updates: dict[str, Any] = {
                 "aqw_username": self.username.value,
+                "aqw_username_lower": self.username.value.lower(),
                 "ccid": user["ccid"],
                 "guild": user["guild"],
                 "verified": True,
@@ -218,7 +220,6 @@ class VerificationModal(discord.ui.Modal):
                 ),
             )
 
-            # 🔥 Now store ticket AFTER message exists
             identifier = f"{self.username.value}:{interaction.user.id}"
             db.collection("join_tickets").document(identifier).set(
                 {
@@ -247,4 +248,9 @@ class VerificationModal(discord.ui.Modal):
                 f"AQW Username: **{self.username.value}**\n\n"
                 "An officer will review your request.",
                 ephemeral=True,
+            )
+            image = await render_png(self.username.value)
+
+            await interaction.followup.send(
+                file=discord.File(image, filename=f"{self.username.value}.png")
             )
