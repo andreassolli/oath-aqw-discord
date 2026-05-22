@@ -1,4 +1,7 @@
 import asyncio
+import base64
+import html
+import re
 from io import BytesIO
 from pathlib import Path
 from urllib.parse import quote
@@ -16,7 +19,7 @@ _server_started = False
 
 BASE_DIR = Path(__file__).resolve().parent
 
-SWF_PATH = BASE_DIR.parent / "assets" / "testing2.swf"
+SWF_PATH = BASE_DIR.parent / "testing2.swf"
 
 
 async def start_server():
@@ -53,45 +56,52 @@ async def start_server():
     print("Render server started")
 
 
-_driver = None
-
-
 def get_driver():
 
-    global _driver
+    options = Options()
 
-    if _driver is None:
-        options = Options()
+    options.add_argument("--headless=new")
 
-        options.add_argument("--headless=new")
+    options.add_argument("--no-sandbox")
 
-        options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
 
-        options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--window-size=715,455")
 
-        options.add_argument("--window-size=715,455")
+    options.add_argument("--disable-gpu")
 
-        options.add_argument("--disable-gpu")
+    options.add_argument("--force-device-scale-factor=1")
 
-        _driver = webdriver.Chrome(options=options)
+    options.add_argument("--hide-scrollbars")
 
-    return _driver
+    options.page_load_strategy = "eager"
+
+    driver = webdriver.Chrome(options=options)
+
+    driver.set_page_load_timeout(20)
+
+    return driver
 
 
 async def get_flashvars(username: str):
 
     driver = get_driver()
 
-    driver.get(f"https://account.aq.com/CharPage?id={username}")
+    await run_blocking(driver.get, f"https://account.aq.com/CharPage?id={username}")
 
     await asyncio.sleep(5)
 
-    param = driver.find_element(By.CSS_SELECTOR, 'param[name="FlashVars"]')
+    source = driver.page_source
 
-    flashvars = param.get_attribute("value")
+    match = re.search(r'flashvars="([^"]+)"', source, re.IGNORECASE)
 
-    if not flashvars:
+    if not match:
+        with open("debug.html", "w", encoding="utf-8") as f:
+            f.write(source)
+
         raise Exception("FlashVars not found")
+
+    flashvars = html.unescape(match.group(1))
 
     return flashvars
 
@@ -106,6 +116,26 @@ def crop_image(image):
     return image
 
 
+async def get_canvas(driver):
+
+    for _ in range(200):
+        try:
+            ruffle = await run_blocking(
+                driver.find_element, By.CSS_SELECTOR, "ruffle-embed, ruffle-object"
+            )
+
+            canvas = await run_blocking(
+                lambda: ruffle.shadow_root.find_element(By.CSS_SELECTOR, "canvas")
+            )
+
+            return canvas
+
+        except Exception:
+            await asyncio.sleep(0.1)
+
+    raise Exception("Canvas not found")
+
+
 async def setup_page(username: str):
 
     await start_server()
@@ -118,7 +148,7 @@ async def setup_page(username: str):
 
     url = f"http://127.0.0.1:8765/render.html?flashVars={encoded}"
 
-    driver.get(url)
+    await run_blocking(driver.get, url)
 
     # AQW assets load slowly
     await asyncio.sleep(5)
@@ -126,11 +156,23 @@ async def setup_page(username: str):
     return driver
 
 
+async def run_blocking(func, *args):
+    return await asyncio.to_thread(func, *args)
+
+
 async def render_png(username: str):
 
     driver = await setup_page(username)
 
-    png = driver.get_screenshot_as_png()
+    canvas = await get_canvas(driver)
+
+    # get the canvas as a PNG base64 string
+    canvas_base64 = driver.execute_script(
+        "return arguments[0].toDataURL('image/png').substring(21);", canvas
+    )
+
+    # decode
+    png = base64.b64decode(canvas_base64)
 
     image = Image.open(BytesIO(png)).convert("RGBA")
 
@@ -141,7 +183,7 @@ async def render_png(username: str):
     image.save(output, format="PNG")
 
     output.seek(0)
-
+    driver.quit()
     return output
 
 
@@ -154,7 +196,13 @@ async def render_gif(username: str):
     await asyncio.sleep(1)
 
     for _ in range(40):
-        png = driver.get_screenshot_as_png()
+        canvas = await get_canvas(driver)
+
+        canvas_base64 = driver.execute_script(
+            "return arguments[0].toDataURL('image/png').substring(21);", canvas
+        )
+
+        png = base64.b64decode(canvas_base64)
 
         frame = Image.open(BytesIO(png)).convert("RGBA")
 
@@ -177,5 +225,5 @@ async def render_gif(username: str):
     )
 
     output.seek(0)
-
+    driver.quit()
     return output
