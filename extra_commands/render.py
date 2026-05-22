@@ -151,7 +151,39 @@ async def setup_page(username: str):
     await run_blocking(driver.get, url)
 
     # AQW assets load slowly
-    await asyncio.sleep(5)
+    for _ in range(200):
+        try:
+            canvas = await get_canvas(driver)
+
+            has_pixels = await run_blocking(
+                driver.execute_script,
+                """
+                const canvas = arguments[0];
+
+                const ctx = canvas.getContext('2d');
+
+                if (!ctx) return false;
+
+                const data = ctx.getImageData(
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.height
+                ).data;
+
+                return data.some(v => v !== 0);
+                """,
+                canvas,
+            )
+
+            if has_pixels:
+                print("Canvas rendered")
+                break
+
+        except Exception:
+            pass
+
+        await asyncio.sleep(0.1)
 
     return driver
 
@@ -167,16 +199,16 @@ async def render_png(username: str):
     canvas = await get_canvas(driver)
 
     # get the canvas as a PNG base64 string
-    canvas_base64 = driver.execute_script(
-        "return arguments[0].toDataURL('image/png').substring(21);", canvas
+    canvas_base64 = await run_blocking(
+        driver.execute_script,
+        "return arguments[0].toDataURL('image/png').substring(21);",
+        canvas,
     )
 
     # decode
     png = base64.b64decode(canvas_base64)
 
     image = Image.open(BytesIO(png)).convert("RGBA")
-
-    image = crop_image(image)
 
     output = BytesIO()
 
@@ -198,15 +230,15 @@ async def render_gif(username: str):
     for _ in range(40):
         canvas = await get_canvas(driver)
 
-        canvas_base64 = driver.execute_script(
-            "return arguments[0].toDataURL('image/png').substring(21);", canvas
+        canvas_base64 = await run_blocking(
+            driver.execute_script,
+            "return arguments[0].toDataURL('image/png').substring(21);",
+            canvas,
         )
 
         png = base64.b64decode(canvas_base64)
 
         frame = Image.open(BytesIO(png)).convert("RGBA")
-
-        frame = crop_image(frame)
 
         frames.append(frame.copy())
 
