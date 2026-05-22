@@ -18,7 +18,8 @@ async def gif_claim(
     status: str,
     user: discord.User,
 ):
-    im = Image.open(ASSETS_DIR / "akame-claim.gif")
+
+    im = Image.open(ASSETS_DIR / "saber-claim.gif")
     font_big = FONTS["claim_font"]
     claim_text = "claimed" if claimed else "unclaimed"
     avatar_url = user.display_avatar.replace(format="png", size=128).url
