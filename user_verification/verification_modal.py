@@ -206,6 +206,12 @@ class VerificationModal(discord.ui.Modal):
                         role, view_channel=True, send_messages=True
                     )
 
+            await interaction.followup.send(
+                f"🛡️ **Request to join submitted**\n"
+                f"AQW Username: **{self.username.value}**\n\n"
+                "An officer will review your request.",
+                ephemeral=True,
+            )
             image = await render_png(self.username.value)
 
             filename = f"{self.username.value}.png"
@@ -213,7 +219,7 @@ class VerificationModal(discord.ui.Modal):
             file = discord.File(image, filename=filename)
 
             embed = discord.Embed(
-                title=f"{member.mention} ({self.username.value})",
+                title=f"{self.username.value}",
                 color=discord.Colour(7344907),
             )
 
@@ -249,13 +255,6 @@ class VerificationModal(discord.ui.Modal):
                 }
             )
 
-            await interaction.followup.send(
-                f"✅ Ticket created: {channel.mention}\nLet an officer know in the channel if you are online or not, and if so what server!",
-                ephemeral=True,
-            )
-            await interaction.followup.send(
-                f"🛡️ **Request to join submitted**\n"
-                f"AQW Username: **{self.username.value}**\n\n"
-                "An officer will review your request.",
-                ephemeral=True,
+            await channel.send(
+                f"Hi {interaction.user.mention} <:GoobHeart:1459836996381048863>\nLet an officer know if you are online or not, and if so what server!",
             )
