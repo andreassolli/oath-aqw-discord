@@ -12,6 +12,8 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 
+from request_utils import rate_limited_get_text
+
 WIDTH = 715
 HEIGHT = 455
 
@@ -85,13 +87,9 @@ def get_driver():
 
 async def get_flashvars(username: str):
 
-    driver = get_driver()
-
-    await run_blocking(driver.get, f"https://account.aq.com/CharPage?id={username}")
-
-    await asyncio.sleep(5)
-
-    source = driver.page_source
+    source = await rate_limited_get_text(
+        f"https://account.aq.com/CharPage?id={username}"
+    )
 
     match = re.search(r'flashvars="([^"]+)"', source, re.IGNORECASE)
 

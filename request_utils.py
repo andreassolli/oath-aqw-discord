@@ -49,6 +49,41 @@ limiter = RollingRateLimiter(
 )
 
 
+async def rate_limited_get_text(url: str):
+
+    session = await get_session()
+
+    for attempt in range(1, MAX_RETRIES + 1):
+        try:
+            await limiter.wait()
+
+            async with session.get(
+                url,
+                headers=HEADERS,
+                proxy=PROXY_SERVICE,
+            ) as resp:
+                if resp.status == 429:
+                    raise ClientResponseError(
+                        resp.request_info,
+                        resp.history,
+                        status=429,
+                        message="Rate limited",
+                    )
+
+                resp.raise_for_status()
+
+                return await resp.text()
+
+        except ClientResponseError as e:
+            if e.status == 429:
+                wait_time = 2**attempt
+                await asyncio.sleep(wait_time)
+            else:
+                raise
+
+    raise Exception(f"Max retries exceeded for {url}")
+
+
 async def rate_limited_get_json(url: str):
 
     session = await get_session()
