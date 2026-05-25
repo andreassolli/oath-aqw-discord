@@ -43,7 +43,7 @@ async def gif_claim(
         )
 
         frame.paste(avatar, (10, 10), avatar)
-        frame.paste(icon, (30, frame.width - 30), icon)
+        frame.paste(icon, (frame.width - 10, 10), icon)
 
         frames.append(frame)
     # Save the frames as a new image
