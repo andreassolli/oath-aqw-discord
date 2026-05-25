@@ -26,7 +26,7 @@ async def gif_claim(
     avatar_url = user.display_avatar.replace(format="png", size=128).url
     avatar = await fetch_avatar(avatar_url)
     avatar = circle_crop(avatar, 100)
-    icon = Image.open(ASSET_CACHE["plus"] if claimed else ASSET_CACHE["minus"])
+    icon = ASSET_CACHE["plus"] if claimed else ASSET_CACHE["minus"]
 
     # A list of the frames to be outputted
     frames = []
