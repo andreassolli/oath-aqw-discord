@@ -102,6 +102,8 @@ def initialize_assets():
     ASSET_CACHE["aqwordle"] = load("aqwordle.webp", (26, 26))
     ASSET_CACHE["average"] = load("average.png", (27, 27))
     ASSET_CACHE["ticket"] = load("ticket.png", (25, 25))
+    ASSET_CACHE["plus"] = load("plus.png", (60, 60))
+    ASSET_CACHE["minus"] = load("minus.png", (60, 60))
 
     ASSET_CACHE["potw_border"] = load("potw_border.webp", (226, 241))
     ASSET_CACHE["potw_flare"] = load("potw_flare.webp", (42, 42))

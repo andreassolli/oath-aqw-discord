@@ -1024,13 +1024,16 @@ class Extra(commands.Cog):
 
     @app_commands.command(name="test-claim", description="Test claim gif")
     async def test_claim(
-        self, interaction: discord.Interaction, gif: str = "akame-claim.gif"
+        self,
+        interaction: discord.Interaction,
+        gif: str = "akame-claim.gif",
+        is_claiming: bool = True,
     ):
 
         if interaction.user.display_name in {"Proxy", "Mapril"}:
             image = await gif_claim(
                 interaction.user.display_name,
-                True,
+                is_claiming,
                 "(1/7)",
                 interaction.user,
                 gif,
