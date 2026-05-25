@@ -82,6 +82,7 @@ from extra_commands.wordle_image import generate_wordle_board
 from firebase_client import db
 from ticket_help.tickets.points import get_boss_room
 from ticket_help.utils.experienced import StartView
+from ticket_help.utils.gif_claim import gif_claim
 from user_profile.utils import fetch_inventory
 from user_verification.layout import TestLayout
 from user_verification.utils import change_roles
@@ -1020,6 +1021,25 @@ class Extra(commands.Cog):
         await interaction.response.send_message(
             f"📋 **Room codes:**\n{rooms_text}", ephemeral=True
         )
+
+    @app_commands.command(name="test-claim", description="Test claim gif")
+    async def test_claim(
+        self, interaction: discord.Interaction, gif: str = "akame-claim.gif"
+    ):
+
+        if interaction.user.display_name in {"Proxy", "Mapril"}:
+            image = await gif_claim(
+                interaction.user.display_name,
+                True,
+                "(1/7)",
+                interaction.user,
+                gif,
+            )
+            await interaction.channel.send(file=discord.File(image, "claim.gif"))
+        else:
+            await interaction.response.send_message(
+                "You are not eligible to test.", ephemeral=True
+            )
 
 
 async def setup(bot: commands.Bot):

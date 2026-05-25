@@ -802,11 +802,11 @@ if __name__ == "__main__":
     # choose_new_word()
     asyncio.run(
         add_item(
-            "620750060233293824",
-            "Eldrazi Titans",
+            "696254108788719627",
+            "Esdeath Card",
             "card",
-            "groot1_card.png",
-            "groot1_card_item.png",
+            "esdeath_card.png",
+            "esdeath_card_item.png",
             "legendary",
         )
     )
