@@ -24,6 +24,7 @@ async def generate_claim(
     else:
         bg = ASSET_CACHE["claim"]
 
+    icon = ASSET_CACHE["plus"] if claimed else ASSET_CACHE["minus"]
     bg = bg.copy()
     font_big = FONTS["claim_font"]
     claim_text = "claimed" if claimed else "unclaimed"
@@ -31,13 +32,15 @@ async def generate_claim(
     avatar = await fetch_avatar(avatar_url)
 
     avatar = circle_crop(avatar, 100)
+
     bg.paste(avatar, (10, 10), avatar)
+    bg.paste(icon, (bg.width - 110, 10), icon)
     draw = ImageDraw.Draw(bg)
     draw.text(
         (130, 34),
         f"{username} {claim_text} {status}",
         font=font_big,
-        fill="#12DD4F" if claimed else "#FF0400",
+        fill="#FFFFFF",
     )
     avatar = circle_crop(avatar, 100)
     buffer = BytesIO()

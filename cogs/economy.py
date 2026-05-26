@@ -21,12 +21,14 @@ from economy.gamba.doom_view import DoomSpinView
 from economy.gamba.utils import format_time, has_spun_today
 from economy.generate_rocks import generate_rocks
 from economy.helpers import paginate_items
+from economy.inv_panel import InventoryLayout
 from economy.inventory import generate_inventory
 from economy.operations import buy_item, get_shop, list_item, unlist_item
 from economy.rock_breaking import get_break_cooldown
 from economy.rocks_view import RockView
 from economy.shop import shop_embed
 from economy.shop_generation import generate_shop
+from economy.shop_panel import ShopLayout
 from economy.shop_view import ShopView
 from economy.utils import donate_tx, format_txt, rich_coins
 from firebase_client import db
@@ -95,6 +97,7 @@ class Economy(commands.Cog):
         has_discord_manager_role = any(
             role.id == DISCORD_MANAGER_ROLE_ID for role in interaction.user.roles
         )
+
         items = await get_shop()
         owned_items = await get_inventory(str(interaction.user.id))
         owned_ids = {item.get("image") for item in owned_items}
@@ -126,22 +129,9 @@ class Economy(commands.Cog):
             filtered, key=lambda x: x.get("priority", 0), reverse=True
         )
 
-        total_pages = max(1, math.ceil(len(sorted_filtered) / 8))
-        page_items = paginate_items(sorted_filtered, 0, 8)
-
-        image = await generate_shop(
-            items=page_items,
-            userId=str(interaction.user.id),
-            page=0,
-            total_pages=total_pages,
-        )
-
-        file = discord.File(image, filename="shop.png")
-
-        view = ShopView(interaction.user.id, sorted_filtered)
+        view = ShopLayout(sorted_filtered, interaction.user)
 
         await interaction.followup.send(
-            file=file,
             view=view,
             ephemeral=True,
         )
@@ -296,62 +286,12 @@ class Economy(commands.Cog):
     )
     async def inventory(self, interaction: discord.Interaction):
         await interaction.response.defer(ephemeral=True)
-        user_doc = db.collection("users").document(str(interaction.user.id)).get()
 
-        if not user_doc.exists:
-            return await interaction.followup.send(
-                "You don't own any items yet.", ephemeral=True
-            )
+        user = interaction.user
 
-        data = user_doc.to_dict() or {}
-        inventory = data.get("inventory", [])
-        equipped_card = data.get("card", None)
-        equipped_border = data.get("border", None)
-        equipped_role = data.get("highlighted_role", None)
-
-        if not inventory:
-            return await interaction.followup.send(
-                "Your inventory is empty.", ephemeral=True
-            )
-
-        total_pages = max(1, math.ceil(len(inventory) / 8))
-        page_items = paginate_items(inventory, 0, 8)
-
-        image = await generate_inventory(
-            total_items=len(inventory),
-            items=page_items,
-            userId=str(interaction.user.id),
-            page=0,
-            total_pages=total_pages,
-        )
-        file = discord.File(image, filename="inventory.png")
-
-        borders = []
-        backgrounds = []
-        borders.append("None")
-        backgrounds.append("None")
-
-        for item in inventory:
-            item_id = item.get("id")
-            item_type = item.get("type")
-
-            if item_type == "border":
-                borders.append(item_id)
-
-            if item_type == "card":
-                backgrounds.append(item_id)
-
-        view = InventoryView(
-            user_id=interaction.user.id,
-            items=inventory,
-            interaction=interaction,
-            equipped_card=equipped_card,
-            equipped_border=equipped_border,
-            equipped_role=equipped_role,
-        )
+        view = InventoryLayout(user)
 
         await interaction.followup.send(
-            file=file,
             view=view,
             ephemeral=True,
         )
