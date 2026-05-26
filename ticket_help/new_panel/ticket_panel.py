@@ -527,7 +527,8 @@ class ClaimButton(discord.ui.Button):
         is_requester = interaction.user.id == requester_id
         user_ref = db.collection("users").document(str(interaction.user.id))
         user_doc = user_ref.get()
-        claim_image = user_doc.to_dict().get("claim_image", None)
+        claim = user_doc.to_dict().get("claim", None)
+        claim_image = claim.get("image", None)
         if interaction.user.id in claimers:
             claimers.remove(interaction.user.id)
 
