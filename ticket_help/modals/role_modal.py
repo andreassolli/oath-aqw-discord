@@ -111,7 +111,8 @@ class RoleModal(discord.ui.Modal, title="Role Selection"):
         set_active_ticket(interaction.user.id, ticket_name)
         user_ref = db.collection("users").document(str(interaction.user.id))
         user_doc = user_ref.get()
-        claim_image = user_doc.to_dict().get("claim_image", None)
+        claim = user_doc.to_dict().get("claim", None)
+        claim_image = claim.get("image", None)
         doc_ref.update(
             {
                 "claimers": claimers,
