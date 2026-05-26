@@ -280,13 +280,14 @@ class TicketLayout(discord.ui.LayoutView):
         if not data:
             return
 
-        points = 0
+        points = data.get("points", 1)
+        # points = 0
 
-        for boss in data["bosses"]:
-            if self.is_practice:
-                points += 1
-            else:
-                points += calculate_ticket_points(boss)
+        # for boss in data["bosses"]:
+        #    if self.is_practice:
+        #        points += 1
+        #    else:
+        #        points += calculate_ticket_points(boss)
 
         new_view = TicketLayout(
             requester_id=data["user_id"],
@@ -544,15 +545,13 @@ class ClaimButton(discord.ui.Button):
             clear_active_ticket(interaction.user.id, layout.ticket_name)
 
             await layout.refresh(interaction)
-            if (
-                interaction.user.display_name in {"Proxy", "Mapril"}
-                and claim_image is None
-            ):
+            if claim_image is not None:
                 image = await gif_claim(
                     interaction.user.display_name,
                     False,
                     f"({len(claimers) + 1}/{layout.max_claims + 1})",
                     interaction.user,
+                    claim_image,
                 )
                 await interaction.channel.send(file=discord.File(image, "claim.gif"))
             else:
@@ -633,12 +632,13 @@ class ClaimButton(discord.ui.Button):
 
         set_active_ticket(interaction.user.id, layout.ticket_name)
         await layout.refresh(interaction)
-        if interaction.user.display_name in {"Proxy", "Mapril"} and claim_image is None:
+        if claim_image is not None:
             image = await gif_claim(
                 interaction.user.display_name,
                 True,
                 f"({len(claimers) + 1}/{layout.max_claims + 1})",
                 interaction.user,
+                claim_image,
             )
             await interaction.channel.send(file=discord.File(image, "claim.gif"))
         else:
@@ -657,7 +657,7 @@ class ClaimButton(discord.ui.Button):
             if data.get("type") in custom_tickets:
                 rooms = boss
             elif data.get("type") == "spamming" and layout.bosses == "custom":
-                rooms = get_boss_room(boss)
+                rooms = boss
             else:
                 rooms = get_boss_room(boss)
 

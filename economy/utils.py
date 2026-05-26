@@ -42,6 +42,7 @@ class ShopItem(TypedDict):
     image: str
     display: str
     quantity: int
+    rarity: str
 
 
 def format_txt(t: str):

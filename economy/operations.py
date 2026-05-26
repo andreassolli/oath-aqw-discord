@@ -14,7 +14,7 @@ async def list_item(
     coin_price: int,
     shard_price: int,
     image: str,
-    type: Literal["card", "border", "item"],
+    type: Literal["card", "border", "claim", "item"],
     quantity: int | None = None,
     priority: int | None = None,
     invisible: bool = False,

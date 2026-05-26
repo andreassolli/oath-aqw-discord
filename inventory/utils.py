@@ -32,25 +32,26 @@ async def add_item(
     doc_ref.update({"inventory": inventory})
 
 
-async def equip_item(user_id: str, item_id: str):
+async def equip_item(
+    item,
+    user_id: str,
+):
     doc_ref = db.collection("users").document(user_id)
 
     doc = doc_ref.get()
     if not doc:
         return
 
-    data = doc.to_dict() or {}
-    inventory = data.get("inventory", [])
-
-    item = next((i for i in inventory if i["id"] == item_id), None)
-
-    if not item:
-        return "Item not found in inventory."
-
     item_type = item["type"]
 
     doc_ref.update(
-        {item_type: {"id": item_id, "image": item["image"], "display": item["display"]}}
+        {
+            item_type: {
+                "id": item["id"],
+                "image": item["image"],
+                "display": item["display"],
+            }
+        }
     )
 
     return f"Equipped {item['id']}."
