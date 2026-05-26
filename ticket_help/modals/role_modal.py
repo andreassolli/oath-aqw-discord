@@ -112,7 +112,10 @@ class RoleModal(discord.ui.Modal, title="Role Selection"):
         user_ref = db.collection("users").document(str(interaction.user.id))
         user_doc = user_ref.get()
         claim = user_doc.to_dict().get("claim", None)
-        claim_image = claim.get("image", None)
+        if claim is not None:
+            claim_image = claim.get("image", None)
+        else:
+            claim_image = None
         doc_ref.update(
             {
                 "claimers": claimers,
