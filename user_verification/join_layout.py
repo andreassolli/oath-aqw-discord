@@ -142,7 +142,7 @@ class JoinedButton(discord.ui.Button):
 
         embed = build_join_log_embed(
             guild=guild,
-            discord_id=self.discord_id,
+            discord_id=layout.discord_id,
             ign=layout.ign,
             handled_by_id=interaction.user.id,
             status="approved",
