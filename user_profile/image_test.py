@@ -55,6 +55,16 @@ BADGE_TO_IMAGE = {
     "Whale II": ASSETS_DIR / "whale2.webp",
     "Whale III": ASSETS_DIR / "whale3.webp",
     "Whale IV": ASSETS_DIR / "whale4.webp",
+    "Infinity: Funded it Myself!": ASSETS_DIR / "dollarbacker.png",
+    "Infinity Founder": ASSETS_DIR / "infinitybacker.png",
+    "Infinity Epic Founder": ASSETS_DIR / "epicbacker.png",
+    "Infinity Underworld Founder": ASSETS_DIR / "underworldbacker.png",
+    "Infinity Legendary Founder": ASSETS_DIR / "legendarybacker.png",
+    "Infinity Immortalized Founder": ASSETS_DIR / "immortalbacker.png",
+    "Infinity Benevolent Founder": ASSETS_DIR / "benevolentbacker.png",
+    "Infinity Weapon Designer": ASSETS_DIR / "weaponbacker.png",
+    "Infinity Set Designer": ASSETS_DIR / "armorbacker.png",
+    "Infinity Mysterious Founder": ASSETS_DIR / "mysteriousbacker.png",
 }
 
 
@@ -215,11 +225,18 @@ async def generate_test_card(
     for badge in badges:
         if badge in BADGE_TO_IMAGE:
             badge_img = Image.open(BADGE_TO_IMAGE[badge]).convert("RGBA")
-            badge_img = badge_img.resize((69, 69), Image.Resampling.LANCZOS)
-            if x == 3:
-                y += 1
-                x = 0
-            bg.paste(badge_img, (36 + 81 * x, 291 + 81 * y), badge_img)
+            if "Infinity" in badge:
+                badge_img = badge_img.resize((65, 65), Image.Resampling.LANCZOS)
+                if x == 3:
+                    y += 1
+                    x = 0
+                bg.paste(badge_img, (38 + 81 * x, 292 + 81 * y), badge_img)
+            else:
+                badge_img = badge_img.resize((69, 69), Image.Resampling.LANCZOS)
+                if x == 3:
+                    y += 1
+                    x = 0
+                bg.paste(badge_img, (36 + 81 * x, 291 + 81 * y), badge_img)
             x += 1
     # bg.paste(forge, (29, 224), forge)
     # bg.paste(sword, (73, 224), sword)

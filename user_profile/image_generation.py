@@ -329,7 +329,10 @@ async def generate_profile_card(
                 y += 1
                 x = 0
             badge_img = BADGE_CACHE[badge]
-            bg.paste(badge_img, (36 + 81 * x, 291 + 81 * y), badge_img)
+            if "Infinity" in badge:
+                bg.paste(badge_img, (38 + 81 * x, 292 + 81 * y), badge_img)
+            else:
+                bg.paste(badge_img, (36 + 81 * x, 291 + 81 * y), badge_img)
             x += 1
 
     bg.paste(coin, (312, 308), coin)

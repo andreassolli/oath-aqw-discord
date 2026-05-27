@@ -66,6 +66,16 @@ BADGE_TO_IMAGE = {
     "Whale III": ASSETS_DIR / "whale3.webp",
     "Whale IV": ASSETS_DIR / "whale4.webp",
     "Oath Pillar": ASSETS_DIR / "oath_pillar.png",
+    "Infinity: Funded it Myself!": ASSETS_DIR / "dollarbacker.png",
+    "Infinity Founder": ASSETS_DIR / "infinitybacker.png",
+    "Infinity Epic Founder": ASSETS_DIR / "epicbacker.png",
+    "Infinity Underworld Founder": ASSETS_DIR / "underworldbacker.png",
+    "Infinity Legendary Founder": ASSETS_DIR / "legendarybacker.png",
+    "Infinity Immortalized Founder": ASSETS_DIR / "immortalbacker.png",
+    "Infinity Benevolent Founder": ASSETS_DIR / "benevolentbacker.png",
+    "Infinity Weapon Designer": ASSETS_DIR / "weaponbacker.png",
+    "Infinity Set Designer": ASSETS_DIR / "armorbacker.png",
+    "Infinity Mysterious Founder": ASSETS_DIR / "mysteriousbacker.png",
 }
 
 
