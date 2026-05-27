@@ -13,7 +13,6 @@ from user_profile.utils import (
     calculate_class_count,
     calculate_epic_badges,
     calculate_founder,
-    calculate_highest_kickstarter_badge,
     calculate_total_badges,
     calculate_weapon_count,
     calculate_whale_badges,
@@ -21,6 +20,7 @@ from user_profile.utils import (
     define_whale,
     fetch_badges,
     fetch_inventory,
+    find_highest_kickstarter_badge,
     get_badge_category,
     get_highest_from_category,
 )
@@ -180,7 +180,7 @@ class BadgesButton(discord.ui.Button):
 
         class_count = await calculate_class_count(inventory)
 
-        highest_kickstarter = calculate_highest_kickstarter_badge(badges)
+        highest_kickstarter = find_highest_kickstarter_badge(badges)
 
         category_counts = {
             "51% Weapons": weapon_count,
