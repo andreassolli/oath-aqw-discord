@@ -777,6 +777,7 @@ def migrate_aqw_usernames_lower():
 
 
 if __name__ == "__main__":
+    asyncio.run(generate_test_card())
     # asyncio.run(post_kofi_summary())
     # asyncio.run(add_killer_card())
     # migrate_aqw_usernames_lower()
@@ -786,7 +787,7 @@ if __name__ == "__main__":
     # asyncio.run(find_users_with_doom_card())
     # get_all_users()
     # choose_new_word()
-    #asyncio.run(
+    # asyncio.run(
     #    add_item(
     #        "696254108788719627",
     #        "Esdeath Card",
@@ -795,7 +796,7 @@ if __name__ == "__main__":
     #        "esdeath_card_item.png",
     #        "legendary",
     #    )
-    #)
+    # )
     # asyncio.run(test_fetch_call())
 # asyncio.run(generate_inventory(userId="292040660696039424"))
 # asyncio.run(backfill_ccids())

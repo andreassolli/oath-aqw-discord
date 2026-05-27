@@ -28,6 +28,16 @@ BADGE_EMOJIS = {
     "Whale IV": "<:whale:1501948452660183090>",
     "Guild Founder": "<:oathcoin:1462999179998531614>",
     "AQW Founder": "<:aqwfounder:1471269208791978034>",
+    "Infinity: Funded it Myself!": "<:dollarbacker:1509215944445137016>",
+    "Infinity Founder": "<:infinitybacker:1509215864220680272>",
+    "Infinity Epic Founder": "<:epicbacker:1509216718873034923>",
+    "Infinity Underworld Founder": "<:underworldbacker:1509215869778264206>",
+    "Infinity Legendary Founder": "<:legendarybacker:1509215866204721372>",
+    "Infinity Immortalized Founder": "<:immortalbacker:1509215862853468180>",
+    "Infinity Benevolent Founder": "<:benevolentbacker:1509216002670596278>",
+    "Infinity Weapon Designer": "<:weaponbacker:1509215871434752140>",
+    "Infinity Set Designer": "<:armorbacker:1509216001185812611>",
+    "Infinity Mysterious Founder": "<:mysteriousbacker:1509215867664339104>",
 }
 
 BADGES_DESCRIPTIONS = {
@@ -57,6 +67,16 @@ BADGES_DESCRIPTIONS = {
     "Guild Founder": "Awarded to those who helped found or support the Oath discord server from the beginning.",
     "AQW Founder": "Awarded to those who have the founder or beta-tester badge in AQW.",
     "Oath Pillar": "Awarded to those who keep Oath standing by donating at least $10 to events.",
+    "Infinity: Funded it Myself!": "Awarded to those who supported AQW:Infinity with atleast $1 through the Kickstarter campaign.",
+    "Infinity Founder": "Awarded to those who supported AQW:Infinity with atleast $25 through the Kickstarter campaign.",
+    "Infinity Epic Founder": "Awarded to those who supported AQW:Infinity with atleast $50 through the Kickstarter campaign.",
+    "Infinity Underworld Founder": "Awarded to those who supported AQW:Infinity with atleast $60 through the Kickstarter campaign.",
+    "Infinity Legendary Founder": "Awarded to those who supported AQW:Infinity with atleast $125 through the Kickstarter campaign.",
+    "Infinity Immortalized Founder": "Awarded to those who supported AQW:Infinity with atleast $250 through the Kickstarter campaign.",
+    "Infinity Benevolent Founder": "Awarded to those who supported AQW:Infinity with atleast $400 through the Kickstarter campaign.",
+    "Infinity Weapon Designer": "Awarded to those who supported AQW:Infinity with atleast $500 through the Kickstarter campaign.",
+    "Infinity Set Designer": "Awarded to those who supported AQW:Infinity with atleast $1500 through the Kickstarter campaign.",
+    "Infinity Mysterious Founder": "Awarded to those who supported AQW:Infinity with atleast $5000 through the Kickstarter campaign.",
 }
 
 

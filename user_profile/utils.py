@@ -122,6 +122,28 @@ def calculate_epic_badges(badges: list[dict]) -> int:
     return sum(1 for badge in badges if badge.get("sCategory") == "Epic Hero")
 
 
+def find_highest_kickstarter_badge(badges: list[dict]) -> str:
+    if "Infinity Set Designer" in [badge.get("sTitle") for badge in badges]:
+        return "Infinity Set Designer"
+    elif "Infinity Weapon Designer" in [badge.get("sTitle") for badge in badges]:
+        return "Infinity Weapon Designer"
+    elif "Infinity Benevolent Founder" in [badge.get("sTitle") for badge in badges]:
+        return "Infinity Benevolent Founder"
+    elif "Infinity Immortalized Founder" in [badge.get("sTitle") for badge in badges]:
+        return "Infinity Immortalized Founder"
+    elif "Infinity Legendary Founder" in [badge.get("sTitle") for badge in badges]:
+        return "Infinity Legendary Founder"
+    elif "Infinity Underworld Founder" in [badge.get("sTitle") for badge in badges]:
+        return "Infinity Underworld Founder"
+    elif "Infinity Epic Founder" in [badge.get("sTitle") for badge in badges]:
+        return "Infinity Epic Founder"
+    elif "Infinity Founder" in [badge.get("sTitle") for badge in badges]:
+        return "Infinity Founder"
+    elif "Infinity: Funded it Myself!" in [badge.get("sTitle") for badge in badges]:
+        return "Infinity: Funded it Myself!"
+    return ""
+
+
 def calculate_total_badges(badges: list[dict]) -> int:
     return len(badges)
 

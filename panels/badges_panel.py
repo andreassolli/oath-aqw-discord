@@ -13,6 +13,7 @@ from user_profile.utils import (
     calculate_class_count,
     calculate_epic_badges,
     calculate_founder,
+    calculate_highest_kickstarter_badge,
     calculate_total_badges,
     calculate_weapon_count,
     calculate_whale_badges,
@@ -179,12 +180,15 @@ class BadgesButton(discord.ui.Button):
 
         class_count = await calculate_class_count(inventory)
 
+        highest_kickstarter = calculate_highest_kickstarter_badge(badges)
+
         category_counts = {
             "51% Weapons": weapon_count,
             "Epic Journey": calculate_epic_badges(badges),
             "Achievement Badges": calculate_total_badges(badges),
             "Class Collector": class_count,
             "Whale": whale_stats["whale_badges"],
+            "Kickstarter": highest_kickstarter,
         }
 
         if "Founder" in values:
@@ -198,6 +202,9 @@ class BadgesButton(discord.ui.Button):
 
             else:
                 failed.append("AQW Founder")
+
+        if highest_kickstarter == "":
+            failed.append("Kickstarter")
 
         current_highest_per_category: dict[str, str] = {}
 
@@ -264,6 +271,12 @@ class BadgesButton(discord.ui.Button):
                     passed.append(f"{existing_whale} → {whale_badge}")
                 else:
                     passed.append(whale_badge)
+
+        if highest_kickstarter in current_discord_badges:
+            skipped.append(highest_kickstarter)
+        else:
+            updated_discord_badges.append(highest_kickstarter)
+            passed.append(highest_kickstarter)
 
         if updated_discord_badges != current_discord_badges:
             user_ref.set(
