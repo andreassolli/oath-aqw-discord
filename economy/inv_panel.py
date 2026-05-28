@@ -43,7 +43,7 @@ class InventoryLayout(discord.ui.LayoutView):
         self.all_items = inventory
         self.current_items = inventory
         self.page = 0
-        self.per_page = 2
+        self.per_page = 3
 
         self.container = self.build_container()
         self.add_item(self.container)

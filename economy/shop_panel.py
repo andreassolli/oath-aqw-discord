@@ -34,7 +34,7 @@ class ShopLayout(discord.ui.LayoutView):
         self.all_shop_items = shop_items
         self.shop_items = shop_items
         self.page = 0
-        self.per_page = 2
+        self.per_page = 3
 
         self.container = self.build_container()
         self.add_item(self.container)
