@@ -853,7 +853,7 @@ def fix_gems_awarded_points():
 
 
 if __name__ == "__main__":
-    fix_gems_awarded_points()
+    migrate_points_to_gems()
     # asyncio.run(post_kofi_summary())
     # asyncio.run(add_killer_card())
     # migrate_aqw_usernames_lower()
