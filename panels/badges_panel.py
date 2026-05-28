@@ -203,7 +203,7 @@ class BadgesButton(discord.ui.Button):
             else:
                 failed.append("AQW Founder")
 
-        if highest_kickstarter == "":
+        if highest_kickstarter == "" or highest_kickstarter == " ":
             failed.append("Kickstarter")
 
         current_highest_per_category: dict[str, str] = {}
@@ -275,8 +275,9 @@ class BadgesButton(discord.ui.Button):
         if highest_kickstarter in current_discord_badges:
             skipped.append(highest_kickstarter)
         else:
-            updated_discord_badges.append(highest_kickstarter)
-            passed.append(highest_kickstarter)
+            if highest_kickstarter != "" and highest_kickstarter != " ":
+                updated_discord_badges.append(highest_kickstarter)
+                passed.append(highest_kickstarter)
 
         if updated_discord_badges != current_discord_badges:
             user_ref.set(
