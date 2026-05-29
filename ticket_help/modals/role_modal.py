@@ -81,7 +81,7 @@ class RoleModal(discord.ui.Modal, title="Role Selection"):
         user_ref = db.collection("users").document(str(interaction.user.id))
         user_doc = user_ref.get()
         active_ticket = user_doc.to_dict().get("active_ticket", None)
-        if active_ticket != "" and active_ticket != self.ticket_name:
+        if active_ticket and active_ticket != "" and active_ticket != self.ticket_name:
             return await interaction.response.send_message(
                 "🚫 You are already in a different ticket.",
                 ephemeral=True,
