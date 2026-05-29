@@ -577,7 +577,12 @@ class ClaimButton(discord.ui.Button):
         active_ticket = (
             user_doc.to_dict().get("active_ticket") if user_doc.exists else None
         )
-        if user_doc.exists and active_ticket and active_ticket != layout.ticket_name:
+        if (
+            user_doc.exists
+            and active_ticket
+            and active_ticket != ""
+            and active_ticket != layout.ticket_name
+        ):
             return await interaction.response.send_message(
                 "🚫 You are already helping on another ticket.", ephemeral=True
             )
