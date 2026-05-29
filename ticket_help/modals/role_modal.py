@@ -78,6 +78,15 @@ class RoleModal(discord.ui.Modal, title="Role Selection"):
         self.ticket_name = ticket_name
 
     async def on_submit(self, interaction: discord.Interaction):
+        user_ref = db.collection("users").document(str(interaction.user.id))
+        user_doc = user_ref.get()
+        active_ticket = user_doc.to_dict().get("active_ticket", None)
+        if active_ticket != "" and active_ticket != self.ticket_name:
+            return await interaction.response.send_message(
+                "🚫 You are already in a different ticket.",
+                ephemeral=True,
+            )
+
         selected_role = self.role_selection.component.values[0]
         doc_ref = db.collection("tickets").document(self.ticket_name)
         # add user
@@ -87,7 +96,7 @@ class RoleModal(discord.ui.Modal, title="Role Selection"):
         claimers = data.get("claimers", [])
         roles = data.get("claimer_roles", {})
         max_claims = data.get("max_claims", 1)
-        ticket_name = data.get("ticket_name", "")
+        ticket_name = doc_ref.id
         user_id = interaction.user.id
         is_requester = data.get("user_id", False) == user_id
 
@@ -108,9 +117,7 @@ class RoleModal(discord.ui.Modal, title="Role Selection"):
             claimers.append(user_id)
 
         roles[str(user_id)] = selected_role
-        set_active_ticket(interaction.user.id, ticket_name)
-        user_ref = db.collection("users").document(str(interaction.user.id))
-        user_doc = user_ref.get()
+
         claim = user_doc.to_dict().get("claim", None)
         if claim is not None:
             claim_image = claim.get("image", None)

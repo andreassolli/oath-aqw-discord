@@ -329,8 +329,10 @@ async def generate_profile_card(
                 y += 1
                 x = 0
             badge_img = BADGE_CACHE[badge]
-            if "Infinity" in badge:
-                bg.paste(badge_img, (38 + 81 * x, 292 + 81 * y), badge_img)
+            if badge == "Guild Founder":
+                bg.paste(badge_img, (29 + 81 * x, 275 + 81 * y), badge_img)
+            elif "Infinity Benevolent Founder" in badge:
+                bg.paste(badge_img, (35 + 81 * x, 289 + 81 * y), badge_img)
             else:
                 bg.paste(badge_img, (36 + 81 * x, 291 + 81 * y), badge_img)
             x += 1
