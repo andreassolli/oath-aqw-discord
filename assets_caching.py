@@ -40,9 +40,9 @@ SUIT_MAP = {
 }
 
 BADGE_TO_IMAGE = {
-    "Beta Tester White": ASSETS_DIR / "beta.png",
-    "Beta Tester Black": ASSETS_DIR / "beta.png",
-    "Beta Tester Green": ASSETS_DIR / "beta.png",
+    "Beta Tester White": ASSETS_DIR / "betabadge.png",
+    "Beta Tester Black": ASSETS_DIR / "betabadge.png",
+    "Beta Tester Green": ASSETS_DIR / "betabadge.png",
     "Guild Founder": ASSETS_DIR / "founder.png",
     "AQW Founder": ASSETS_DIR / "founderaqw.png",
     "Achievement Badges I": ASSETS_DIR / "aqwbadges1.png",
