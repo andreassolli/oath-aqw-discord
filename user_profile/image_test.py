@@ -30,10 +30,11 @@ def load_font(name, size):
 
 
 BADGE_TO_IMAGE = {
-    "Beta Tester1": ASSETS_DIR / "beta_tester1.png",
-    "Beta Tester2": ASSETS_DIR / "beta_tester2.png",
-    "Beta Tester3": ASSETS_DIR / "beta_tester3.png",
-    "Guild Founder": ASSETS_DIR / "oathfounder.png",
+    "Beta Tester W": ASSETS_DIR / "beta.png",
+    "Beta Tester B": ASSETS_DIR / "beta.png",
+    "Beta Tester G": ASSETS_DIR / "beta.png",
+    "Guild Founder": ASSETS_DIR / "founder.png",
+    "Oath Pillar": ASSETS_DIR / "pillar.png",
     "AQW Founder": ASSETS_DIR / "founderaqw.png",
     "Achievement Badges I": ASSETS_DIR / "aqwbadges1.png",
     "Achievement Badges II": ASSETS_DIR / "aqwbadges2.png",
@@ -47,14 +48,14 @@ BADGE_TO_IMAGE = {
     "Class Collector II": ASSETS_DIR / "class2.png",
     "Class Collector III": ASSETS_DIR / "class3.png",
     "Class Collector IV": ASSETS_DIR / "class4.png",
-    "51% Weapons I": ASSETS_DIR / "weapon1.png",
-    "51% Weapons II": ASSETS_DIR / "weapon2.png",
-    "51% Weapons III": ASSETS_DIR / "weapon3.png",
-    "51% Weapons IV": ASSETS_DIR / "weapon4.png",
-    "Whale I": ASSETS_DIR / "whale1.webp",
-    "Whale II": ASSETS_DIR / "whale2.webp",
-    "Whale III": ASSETS_DIR / "whale3.webp",
-    "Whale IV": ASSETS_DIR / "whale4.webp",
+    "51% Weapons I": ASSETS_DIR / "weapons1.png",
+    "51% Weapons II": ASSETS_DIR / "weapons2.png",
+    "51% Weapons III": ASSETS_DIR / "weapons3.png",
+    "51% Weapons IV": ASSETS_DIR / "weapons4.png",
+    "Whale I": ASSETS_DIR / "whale1.png",
+    "Whale II": ASSETS_DIR / "whale2.png",
+    "Whale III": ASSETS_DIR / "whale3.png",
+    "Whale IV": ASSETS_DIR / "whale4.png",
     "Infinity: Funded it Myself!": ASSETS_DIR / "dollarbacker.png",
     "Infinity Founder": ASSETS_DIR / "infinitybacker.png",
     "Infinity Epic Founder": ASSETS_DIR / "epicbacker.png",
@@ -112,7 +113,7 @@ async def generate_test_card(
     border = data.get("border", {})
     card = data.get("card", {})
     gems = data.get("gems", 0)
-    bg = Image.open(ASSETS_DIR / "green_card.png").convert("RGBA")
+    bg = Image.open(ASSETS_DIR / "guts_card.png").convert("RGBA")
     role = data.get("highlighted_role", "None")
 
     # if border:
@@ -225,12 +226,18 @@ async def generate_test_card(
     for badge in badges:
         if badge in BADGE_TO_IMAGE:
             badge_img = Image.open(BADGE_TO_IMAGE[badge]).convert("RGBA")
-            if "Infinity" in badge:
-                badge_img = badge_img.resize((65, 65), Image.Resampling.LANCZOS)
+            if badge == "Guild Founder":
+                badge_img = badge_img.resize((83, 85), Image.Resampling.LANCZOS)
                 if x == 3:
                     y += 1
                     x = 0
-                bg.paste(badge_img, (38 + 81 * x, 292 + 81 * y), badge_img)
+                bg.paste(badge_img, (29 + 81 * x, 275 + 81 * y), badge_img)
+            elif "Infinity Benevolent Founder" in badge:
+                badge_img = badge_img.resize((70, 70), Image.Resampling.LANCZOS)
+                if x == 3:
+                    y += 1
+                    x = 0
+                bg.paste(badge_img, (36 + 81 * x, 290 + 81 * y), badge_img)
             else:
                 badge_img = badge_img.resize((69, 69), Image.Resampling.LANCZOS)
                 if x == 3:

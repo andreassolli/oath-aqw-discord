@@ -123,11 +123,12 @@ def initialize_assets():
     # --- Badges ---
     for name, path in BADGE_TO_IMAGE.items():
         img = Image.open(path).convert("RGBA")
-        if "Infinity" in name:
-            img = img.resize((65, 65), Image.Resampling.LANCZOS)
+        if name == "Guild Founder":
+            img = img.resize((83, 85), Image.Resampling.LANCZOS)
+        elif "Infinity Benevolent Founder" in name:
+            img = img.resize((71, 71), Image.Resampling.LANCZOS)
         else:
-            img = img.resize((70, 70), Image.Resampling.LANCZOS)
-            img = rounded_crop(img, 69, 14)
+            img = img.resize((69, 69), Image.Resampling.LANCZOS)
         BADGE_CACHE[name] = img
 
     # --- Fonts ---
