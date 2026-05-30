@@ -156,4 +156,7 @@ class RoleModal(discord.ui.Modal, title="Role Selection"):
                 claim_image,
             )
             await interaction.channel.send(file=discord.File(image, "claim.png"))
+        await interaction.response.send_message(
+            f"{interaction.user.mention}: `{selected_role}`"
+        )
         return

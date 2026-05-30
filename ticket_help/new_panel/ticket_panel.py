@@ -393,7 +393,7 @@ class CertificateButton(discord.ui.Button):
         layout.doc_ref.update({"experienced_only": not layout.certificate_only})
         await layout.refresh(interaction)
         return await interaction.response.send_message(
-            content=f"Certificate only has been set to {not layout.certificate_only}."
+            content=f"Certificate only has been set to {not layout.certificate_only} by {interaction.user.mention}."
         )
 
 

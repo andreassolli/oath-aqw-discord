@@ -50,7 +50,7 @@ class ChangeBossModal(discord.ui.Modal, title="Change Bosses"):
             }
         )
         await self.layout.refresh(interaction)
-        await interaction.response.send_message(
-            f"Current bosses: {', '.join(self.boss_selection.component.values)}, points: {points}",
+        return await interaction.response.send_message(
+            f"Current bosses set to `{', '.join(self.boss_selection.component.values)}` by {interaction.user.mention}.",
             ephemeral=True,
         )

@@ -249,6 +249,9 @@ async def finalize_ticket(
 
     if keep_ticket:
         await interaction.followup.send(
+            f"Ticket partially completed by {interaction.user.mention}, keeping open.",
+        )
+        await interaction.followup.send(
             "Points added, keeping ticket open.", ephemeral=True
         )
     else:
