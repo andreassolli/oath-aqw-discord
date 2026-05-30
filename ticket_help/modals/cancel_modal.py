@@ -98,4 +98,4 @@ class CancelModal(discord.ui.Modal, title="Cancel ticket"):
         await log_ticket_event(interaction.client, embed=embed)
 
         await update_dashboard(interaction.client)
-        await interaction.channel.delete()
+        return await interaction.channel.delete()
