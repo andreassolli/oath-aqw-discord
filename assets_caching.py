@@ -118,7 +118,7 @@ def initialize_assets():
     ASSET_CACHE["potw_border"] = load("potw_border.webp", (226, 241))
     ASSET_CACHE["potw_flare"] = load("potw_flare.webp", (42, 42))
 
-    ASSET_CACHE["default_bg"] = load("default.png")
+    ASSET_CACHE["default_card"] = load("default_card.png")
     ASSET_CACHE["claim"] = load("claim.png")
     # --- Badges ---
     for name, path in BADGE_TO_IMAGE.items():
