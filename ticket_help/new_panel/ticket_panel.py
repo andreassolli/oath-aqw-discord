@@ -512,6 +512,7 @@ class ClaimButton(discord.ui.Button):
         )
 
     async def callback(self, interaction: discord.Interaction):
+
         layout: TicketLayout = self.view
 
         data = layout.get_ticket_data()
