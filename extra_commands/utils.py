@@ -470,44 +470,44 @@ async def manual_leaderboard_post(interaction: discord.Interaction):
     if channel is None:
         channel = await guild.fetch_channel(LEADERBOARD_HISTORY_CHANNEL_ID)
     users = {
-        "Aidest": 2187,
-        "Fird": 1870,
-        "OG San": 1430,
-        "Samdal": 1348,
-        "AxelAnimations": 511,
-        "Paboloso": 477,
-        "Muhr So": 450,
-        "Z e ta": 359,
-        "L1ght0": 336,
-        "Bookworm": 336,
-        "Quincy Dao": 320,
-        "Krydoom": 308,
-        "cyore": 307,
-        "Maou": 301,
-        "Proxy": 268,
+        "OG San": 4003,
+        "Maou": 2307,
+        "Paboloso": 1930,
+        "Kid_": 1547,
+        "Fird": 1058,
+        "Aidest": 905,
+        "Lil_Girl0": 660,
+        "Smoked Out": 652,
+        "Z e ta": 561,
+        "tytthegame": 515,
+        "melonwatermelon": 512,
+        "MJP": 469,
+        "HecticArch": 463,
+        "Bookworm": 452,
+        "AxelAnimations": 434,
     }
     medals = ["🥇", "🥈", "🥉"]
     lines = []
 
     for i, (display_name, points) in enumerate(users.items()):
         position = i + 1
-        guild = "💠 Oath"
+        guild = "<:oath:1457451850184917122> `Oath`"
         if display_name == "AxelAnimations":
-            guild = "On Gouache"
-        elif display_name == "NEGGS":
-            guild = "Vanaheim"
+            guild = "`On Gouache`"
+        elif display_name == "Aidest":
+            guild = "`Stars`"
         elif display_name == "cyore":
-            guild = "LunchBox"
+            guild = "`LunchBox`"
 
         if i < 3:
             prefix = medals[i]
         else:
             prefix = f"`{position:02}`"
 
-        lines.append(f"{prefix} **{display_name}** `{guild}` — `{points}` points")
+        lines.append(f"{prefix} **{display_name}** {guild} — `{points}` points")
 
     embed = discord.Embed(
-        title="🏆 Leaderboard for April 2026 (Top 15)",
+        title="🏆 Leaderboard for May 2026 (Top 15)",
         description="\n".join(lines),
         color=discord.Color.gold(),
         timestamp=datetime.now(UTC),
