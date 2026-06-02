@@ -233,7 +233,7 @@ class CreateTicketModal(discord.ui.Modal):
                         "❌ Maximum helpers must be a number between **1 and 20**.",
                         ephemeral=True,
                     )
-            elif any(bossA in bossB for bossA in six_helper_bosses for bossB in bosses):
+            elif self.type == "7 man bosses":
                 max_claims_value = 6
             else:
                 max_claims_value = 3
