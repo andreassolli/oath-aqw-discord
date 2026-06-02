@@ -16,7 +16,6 @@ from user_profile.utils import (
     calculate_total_badges,
     calculate_weapon_count,
     calculate_whale_badges,
-    check_for_ioda,
     define_whale,
     fetch_badges,
     fetch_inventory,
@@ -170,11 +169,9 @@ class BadgesButton(discord.ui.Button):
 
         is_founder = calculate_founder(badges)
 
-        ioda = await check_for_ioda(inventory)
-
         whale_stats = calculate_whale_badges(badges)
 
-        whale_badge = define_whale(badges, ioda)
+        whale_badge = define_whale(badges)
 
         weapon_count = await calculate_weapon_count(inventory)
 

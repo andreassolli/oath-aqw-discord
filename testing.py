@@ -852,8 +852,34 @@ def fix_gems_awarded_points():
     print(f"Overpaid users: {overpaid_count}")
 
 
+def show_over_50_points():
+    snapshot_ref = db.collection("points_archive").document("2026-06-01_16-05-49")
+    snapshot_doc = snapshot_ref.get()
+
+    if not snapshot_doc.exists:
+        print("Snapshot not found.")
+        return
+
+    snapshot_users = snapshot_doc.to_dict().get("users", {})
+
+    users = []
+
+    for user_id, snapshot_user_data in snapshot_users.items():
+        snapshot_points = snapshot_user_data.get("points", 0)
+
+        doc_ref = db.collection("users").document(user_id)
+        doc = doc_ref.get().to_dict()
+        username = doc.get("aqw_username")
+
+        if snapshot_points >= 50:
+            users.append(username)
+
+    for user in users:
+        print(user)
+
+
 if __name__ == "__main__":
-    asyncio.run(generate_test_card())
+    show_over_50_points()
     # asyncio.run(post_kofi_summary())
     # asyncio.run(add_killer_card())
     # migrate_aqw_usernames_lower()

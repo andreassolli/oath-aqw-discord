@@ -316,14 +316,7 @@ def sort_badges(badges: list[str]) -> list[str]:
     return sorted(badges, key=badge_key)
 
 
-async def check_for_ioda(inventory: list[dict]) -> bool:
-
-    return any(
-        "Item of Digital Awesomeness" in item.get("strName", "") for item in inventory
-    )
-
-
-def define_whale(badges: list[dict], ioda: bool) -> str | None:
+def define_whale(badges: list[dict]) -> str | None:
 
     whaling = calculate_whale_badges(badges)
     print("Upholder badges:", whaling["upholder_badges"])
@@ -335,7 +328,6 @@ def define_whale(badges: list[dict], ioda: bool) -> str | None:
         and whaling["medium_gifting"]
         and whaling["platinum_badges"] >= 2
         and (whaling["upholder_badges"] >= 8 or whaling["platinum_badges"] >= 3)
-        and ioda
     ):
         return "Whale IV"
 
