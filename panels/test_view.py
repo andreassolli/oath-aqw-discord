@@ -19,11 +19,17 @@ class TicketCreateView(discord.ui.View):
 
     @discord.ui.button(label="Next", style=discord.ButtonStyle.primary, row=2)
     async def next_step(self, interaction: discord.Interaction, _):
+        if self.selected_type == "infinity" and self.selected_type != "spamming":
+            return await interaction.response.send_message(
+                "You can only create spamming tickets for AQW:I."
+            )
+
         await interaction.response.send_modal(
             CreateTicketModal(
                 ticket_type=self.selected_type,
                 username=interaction.user.display_name,
                 servers=self.servers,
                 is_practice=self.selected_practice == "practice",
+                is_infinity=self.selected_type == "infinity",
             )
         )

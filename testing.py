@@ -870,12 +870,11 @@ def show_over_50_points():
         doc_ref = db.collection("users").document(user_id)
         doc = doc_ref.get().to_dict()
         username = doc.get("aqw_username")
+        is_qualified = doc.get("qualified_helper", False)
 
-        if snapshot_points >= 50:
-            users.append(username)
+        if snapshot_points >= 30 and not is_qualified:
+            print(username)
 
-    for user in users:
-        print(user)
 
 
 if __name__ == "__main__":

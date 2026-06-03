@@ -43,6 +43,7 @@ TYPE_TO_IMAGE = {
     "spamming": "https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/spamticket.png",
     "until drop": "https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/spamticket.png",
     "practice": "https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/practiceticket.png",
+    "infinity": "https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/aqwi.png",
 }
 
 BOSS_ORDER_MAP = {boss: i for i, boss in enumerate(CORRECT_BOSS_ORDER)}
@@ -54,12 +55,18 @@ def sort_bosses(bosses: list[str]) -> list[str]:
 
 class CreateTicketModal(discord.ui.Modal):
     def __init__(
-        self, ticket_type: str, username: str, servers, is_practice: bool = False
+        self,
+        ticket_type: str,
+        username: str,
+        servers,
+        is_practice: bool = False,
+        is_infinity: bool = False,
     ):
         super().__init__(title=f"Create {ticket_type.capitalize()} Ticket")
 
         self.type = ticket_type
         self.is_practice = is_practice
+        self.is_infinity = is_infinity
 
         self.bosses_input: discord.ui.TextInput | None = None
         username = username if username else ""
@@ -169,7 +176,7 @@ class CreateTicketModal(discord.ui.Modal):
             self.experienced_only = discord.ui.Label(
                 text="Certificate only",
                 component=discord.ui.CheckboxGroup(
-                    options=[discord.CheckboxGroupOption(label="Enable")],
+                    options=[discord.CheckboxGroupOption(label="Enable", default=True)],
                     required=False,
                 ),
             )
@@ -308,6 +315,8 @@ class CreateTicketModal(discord.ui.Modal):
 
             if self.is_practice:
                 embed.set_image(url=TYPE_TO_IMAGE["practice"])
+            elif self.is_infinity:
+                embed.set_image(url=TYPE_TO_IMAGE["infinity"])
             else:
                 embed.set_image(url=TYPE_TO_IMAGE[self.type])
 
