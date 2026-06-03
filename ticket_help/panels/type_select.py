@@ -39,7 +39,7 @@ class PracticeSelect(discord.ui.Select):
                 label="Practice ticket",
                 value="practice",
             ),
-            discord.SelectOption(label="AQW:Infinity", value="infinity", default=True),
+            discord.SelectOption(label="AQW:Infinity", value="infinity"),
         ]
 
         super().__init__(
