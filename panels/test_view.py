@@ -21,7 +21,7 @@ class TicketCreateView(discord.ui.View):
     async def next_step(self, interaction: discord.Interaction, _):
         if self.selected_practice == "infinity" and self.selected_type != "spamming":
             return await interaction.response.send_message(
-                "You can only create spamming tickets for AQW:I."
+                "You can only create spamming tickets for AQW:I.", ephemeral=True
             )
 
         await interaction.response.send_modal(
