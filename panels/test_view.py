@@ -30,6 +30,6 @@ class TicketCreateView(discord.ui.View):
                 username=interaction.user.display_name,
                 servers=self.servers,
                 is_practice=self.selected_practice == "practice",
-                is_infinity=self.selected_type == "infinity",
+                is_infinity=self.selected_practice == "infinity",
             )
         )
