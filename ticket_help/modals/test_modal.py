@@ -74,14 +74,33 @@ class CreateTicketModal(discord.ui.Modal):
         self.username.default = username
         self.add_item(self.username)
 
-        server_options = [
-            discord.SelectOption(
-                label=server["sName"],
-                value=server["sName"],
-                description=f"{server['iCount']}/{server['iMax']} players",
-            )
-            for server in servers
-        ]
+        if self.is_infinity:
+            server_options = [
+                discord.SelectOption(
+                    label="Alpha 1",
+                    value="Alpha 1",
+                    description="Kaira's Server",
+                ),
+                discord.SelectOption(
+                    label="Alpha 2",
+                    value="Alpha 2",
+                    description="Secundus' Server",
+                ),
+                discord.SelectOption(
+                    label="Alpha 3",
+                    value="Alpha 3",
+                    description="Waldo's Server",
+                ),
+            ]
+        else:
+            server_options = [
+                discord.SelectOption(
+                    label=server["sName"],
+                    value=server["sName"],
+                    description=f"{server['iCount']}/{server['iMax']} players",
+                )
+                for server in servers
+            ]
         self.server_select = discord.ui.Label(
             text="Server",
             component=discord.ui.Select(
