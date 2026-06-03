@@ -33,12 +33,13 @@ class PracticeSelect(discord.ui.Select):
     def __init__(self):
         options = [
             discord.SelectOption(
+                label="Standard ticket", value="standard", default=True
+            ),
+            discord.SelectOption(
                 label="Practice ticket",
                 value="practice",
             ),
-            discord.SelectOption(
-                label="Standard ticket", value="standard", default=True
-            ),
+            discord.SelectOption(label="AQW:Infinity", value="infinity", default=True),
         ]
 
         super().__init__(
