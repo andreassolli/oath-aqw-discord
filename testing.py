@@ -622,28 +622,27 @@ async def post_kofi_summary():
     payload = {
         "embeds": [
             {
-                "title": "Oath Ko-Fi April '26 ☕️",
+                "title": "Oath Ko-Fi May '26 ☕️",
                 "description": (
                     "We want to be as open and transparent about the fundings, as well as spendings, for our community. "
                     "In order to do so we will be posting a summary each month of inventory, donations received, and prizes spent.\n\n"
                     "**Donations received 💵**\n"
-                    "- Total: **$1046**\n"
-                    "- After fees: **$935**\n\n"
+                    "- Total: **$615**\n"
+                    "- After fees: **$551**\n\n"
                     "**Total spendings 💸**\n"
-                    "- Total: **$943**, $8 above\n\n"
+                    "- Total: **$478**, $73 remaining\n\n"
                     "**Expenses 🧾**\n"
-                    "- Hosting expense, April/May: **$26**\n"
-                    "- Pay artists: **$22**\n"
-                    "- Set aside for commission: **$50**\n\n"
+                    "- Hosting expense: **$13**\n"
+                    f"- Artix Points: **{478 - 13 - 300 - 50}**\n"
+                    "- Pay artists: **$300**\n"
+                    "- External Bot Service: **$50**\n\n"
                     "**Inventory 🧳**\n"
                     "```diff\n"
-                    "+ 73 000 Artix Points ($365)\n"
-                    "+ 23 HeroPoints ($55)\n"
-                    "+ 11 HeroMart Items ($276)\n"
-                    "+ 6 AQW:I Founder ($150)\n"
+                    f"+ 60 000 Artix Points ($300)\n"
+                    "+ 23 HeroMart Items ($175)\n"
                     "```\n"
-                    "Stay tuned for when we will distribute some of the prizes acquired! "
-                    "<a:Twilly_fire:1457144099432825095>"
+                    "Remember to check the Events channel for giveaways! "
+                    "<:GoobHeart:1459836996381048863>"
                 ),
                 "color": 0x34B4EB,
                 "timestamp": timestamp,
@@ -777,7 +776,7 @@ def migrate_aqw_usernames_lower():
 
 
 def fix_gems_awarded_points():
-    snapshot_ref = db.collection("points_archive").document("2026-05-01_16-04-08")
+    snapshot_ref = db.collection("points_archive").document("2026-06-01_16-05-49")
     snapshot_doc = snapshot_ref.get()
 
     if not snapshot_doc.exists:
@@ -876,10 +875,9 @@ def show_over_50_points():
             print(username)
 
 
-
 if __name__ == "__main__":
-    show_over_50_points()
-    # asyncio.run(post_kofi_summary())
+    # fix_gems_awarded_points()
+    asyncio.run(post_kofi_summary())
     # asyncio.run(add_killer_card())
     # migrate_aqw_usernames_lower()
     # reset_coins()

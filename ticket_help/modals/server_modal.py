@@ -1,6 +1,7 @@
 import discord
 
 from firebase_client import db
+from ticket_help.utils.message_logging import log_ticket_message_event
 
 
 class ServerModal(discord.ui.Modal, title="Change Server"):
@@ -30,6 +31,11 @@ class ServerModal(discord.ui.Modal, title="Change Server"):
         doc_ref = db.collection("tickets").document(self.ticket_name)
         doc_ref.update({"server": self.server.component.values[0]})
         await self.layout.refresh(interaction)
+        await log_ticket_message_event(
+            interaction.client,
+            self.ticket_name,
+            f"🌐 {interaction.user.mention} changed the server to `{self.server.component.values[0]}`",
+        )
         return await interaction.response.send_message(
             f"Server changed to `{self.server.component.values[0]}` by {interaction.user.mention}."
         )

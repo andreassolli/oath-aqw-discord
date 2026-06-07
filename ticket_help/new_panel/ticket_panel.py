@@ -33,6 +33,7 @@ from ticket_help.tickets.points import calculate_ticket_points, get_boss_room
 from ticket_help.tickets.utils import clear_active_ticket, set_active_ticket
 from ticket_help.utils.claim_generate import generate_claim
 from ticket_help.utils.gif_claim import gif_claim
+from ticket_help.utils.message_logging import log_ticket_message_event
 
 POINTS_MAP = {
     0: "<:0w:1505157488008499351>",
@@ -392,6 +393,11 @@ class CertificateButton(discord.ui.Button):
 
         layout.doc_ref.update({"experienced_only": not layout.certificate_only})
         await layout.refresh(interaction)
+        await log_ticket_message_event(
+            interaction.client,
+            layout.ticket_name,
+            f"🔒 {interaction.user.mention} set certificate only to `{not layout.certificate_only}`",
+        )
         return await interaction.response.send_message(
             content=f"Certificate only has been set to {not layout.certificate_only} by {interaction.user.mention}."
         )
@@ -568,6 +574,11 @@ class ClaimButton(discord.ui.Button):
                     claim_image,
                 )
                 await interaction.channel.send(file=discord.File(image, "claim.png"))
+            await log_ticket_message_event(
+                interaction.client,
+                layout.ticket_name,
+                f"❌ {interaction.user.mention} unclaimed the ticket",
+            )
             return
 
         if len(claimers) >= layout.max_claims:
@@ -681,6 +692,11 @@ class ClaimButton(discord.ui.Button):
                 lines.append(f"```/join {room}-{layout.room}```")
 
         rooms_text = "".join(lines)
+        await log_ticket_message_event(
+            interaction.client,
+            layout.ticket_name,
+            f"✅ {interaction.user.mention} claimed the ticket",
+        )
 
         return await interaction.response.send_message(
             f"📋 **Room codes:**\n{rooms_text}", ephemeral=True
@@ -742,6 +758,11 @@ class PingButton(discord.ui.Button):
 
         await interaction.response.send_message(
             "📣 Helpers have been pinged!", ephemeral=True
+        )
+        await log_ticket_message_event(
+            interaction.client,
+            layout.ticket_name,
+            f"📣 {interaction.user.mention} pinged helpers",
         )
 
         await interaction.channel.send(

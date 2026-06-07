@@ -91,4 +91,5 @@ class ConfirmModal(discord.ui.Modal, title="Complete Ticket"):
                 ticket_data=data,
                 keep_ticket=False,
             )
+
         return await self.layout.refresh(interaction)
