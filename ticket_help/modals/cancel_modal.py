@@ -104,7 +104,7 @@ class CancelModal(discord.ui.Modal, title="Cancel ticket"):
             interaction.client,
             thread_id=ticket["thread_id"],
             author=interaction.user.display_name,
-            content="Cancelled the ticket.",
+            content="❌ Cancelled the ticket.",
             event="cancel",
         )
 
