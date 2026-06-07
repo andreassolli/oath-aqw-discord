@@ -16,16 +16,18 @@ from config import (
     spam_points,
 )
 from firebase_client import db
+from ticket_help.new_panel.log_panel import LogLayout
 from ticket_help.new_panel.ticket_panel import TicketLayout
 from ticket_help.panels.server_fetch import fetch_servers
 from ticket_help.tickets.boss_type import get_bosses_for_type
 from ticket_help.tickets.ids import get_next_ticket_id
 from ticket_help.tickets.points import calculate_ticket_points, get_boss_room
+from ticket_help.tickets.ticket_cache import ticket_cache
 from ticket_help.tickets.utils import (
     find_guide_threads,
     set_active_ticket,
 )
-from ticket_help.utils.message_logging import log_ticket_message_event
+from ticket_help.utils.message_logging import log_ticket_view_event
 from ticket_help.utils.ticket import get_overwrites
 
 CORRECT_BOSS_ORDER = [
@@ -330,13 +332,26 @@ class CreateTicketModal(discord.ui.Modal):
                 category=category,
                 overwrites=overwrites,
             )
-            thread_channel = interaction.guild.get_channel(TICKET_MESSAGES_CHANNEL_ID)
-            thread_obj = await thread_channel.create_thread(
-                name=ticket_name,
-                content=f"History thread for {ticket_name}",
+
+            log_layout = LogLayout(
+                requester_id=interaction.user.id,
+                bosses=bosses,
+                points=points,
+                username=self.username.value,
+                room=str(room_value),
+                max_claims=max_claims_value,
+                claimers=[],
+                guild=interaction.guild,
+                type=self.type,
+                server=self.server,
+                total_kills=str(total_kills_value),
+                drops=drops_list,
+                ticket_name=ticket_name,
+                claimer_roles={str(interaction.user.id): "DPS"},
+                certificate_only=experienced_only,
+                is_practice=self.is_practice,
             )
 
-            thread = thread_obj.thread
             embed = discord.Embed(
                 color=discord.Colour(7344907),
             )
@@ -349,6 +364,16 @@ class CreateTicketModal(discord.ui.Modal):
                 embed.set_image(url=TYPE_TO_IMAGE[self.type])
 
             await channel.send(embed=embed)
+            thread_channel = interaction.guild.get_channel(TICKET_MESSAGES_CHANNEL_ID)
+            thread_obj = await thread_channel.create_thread(
+                name=ticket_name,
+                embed=embed,
+            )
+
+            thread = thread_obj.thread
+            await log_ticket_view_event(
+                interaction.client, ticket_name, view=log_layout
+            )
             db.collection("tickets").document(ticket_name).set(
                 {
                     "ticket_id": ticket_id,
@@ -423,23 +448,7 @@ class CreateTicketModal(discord.ui.Modal):
                 await channel.send(embed=embed)
 
             helper_role = interaction.guild.get_role(HELPER_ROLE_ID)
-            await log_ticket_message_event(
-                interaction.client,
-                ticket_name,
-                (
-                    f"🎫 Ticket created\n"
-                    f"Requester: {interaction.user.mention} ({self.username.value})\n"
-                    f"Type: {self.type}\n"
-                    f"Bosses: {', '.join(bosses)}\n"
-                    f"Room: {room_value}\n"
-                    f"Server: {self.server}\n"
-                    f"Total kills: {total_kills_value}\n"
-                    f"Experienced only: {experienced_only}\n"
-                    f"Points: {points}\n"
-                    f"Is practice: {self.is_practice}\n"
-                    f"Is infinity: {self.is_infinity}"
-                ),
-            )
+
             await channel.send(
                 f"{helper_role.mention}\n⚠️ **More helpers needed for this ticket!**",
                 allowed_mentions=discord.AllowedMentions(roles=True),
@@ -451,6 +460,11 @@ class CreateTicketModal(discord.ui.Modal):
                     "last_helper_ping": firestore.SERVER_TIMESTAMP,
                 }
             )
+
+            ticket_cache[channel.id] = {
+                "ticket_name": ticket_name,
+                "thread_id": thread.id,
+            }
 
             set_active_ticket(interaction.user.id, ticket_name)
             await interaction.followup.send(

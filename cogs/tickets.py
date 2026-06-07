@@ -17,6 +17,7 @@ from ticket_help.commands.admin import (
     set_boss_points,
     set_user_points,
 )
+from ticket_help.tickets.ticket_cache import ticket_cache
 from ticket_help.utils.experienced_panel import setup_application_panel
 from ticket_help.utils.message_logging import log_ticket_message_event
 
@@ -55,33 +56,22 @@ class Tickets(commands.Cog):
         # await setup_ticket_system(self.bot)
 
     @commands.Cog.listener()
-    async def on_message(self, message: discord.Message):
+    async def on_message(self, message):
 
-        if isinstance(message.channel, discord.Thread):
+        ticket = ticket_cache.get(message.channel.id)
+
+        if not ticket:
             return
-
-        if not isinstance(message.channel, discord.TextChannel):
-            return
-
-        docs = (
-            db.collection("tickets")
-            .where("channel_id", "==", message.channel.id)
-            .limit(1)
-            .get()
-        )
-
-        if not docs:
-            return
-
-        ticket_name = docs[0].id
 
         files = [await a.to_file() for a in message.attachments]
 
         await log_ticket_message_event(
             self.bot,
-            ticket_name,
-            f"💬 {message.author.display_name}: {message.content}",
-            files,
+            thread_id=ticket["thread_id"],
+            author=message.author.display_name,
+            content=message.content,
+            event="message",
+            files=files,
         )
 
     @commands.Cog.listener()
@@ -91,26 +81,14 @@ class Tickets(commands.Cog):
         if before.content == after.content and before.attachments == after.attachments:
             return
 
-        docs = (
-            db.collection("tickets")
-            .where("channel_id", "==", after.channel.id)
-            .limit(1)
-            .get()
-        )
-
-        if not docs:
-            return
-
-        ticket_name = docs[0].id
+        ticket = ticket_cache.get(after.channel.id)
 
         await log_ticket_message_event(
             self.bot,
-            ticket_name,
-            (
-                f"✏️ {after.author.display_name} edited a message\n"
-                f"Before: {before.content or '*empty*'}\n"
-                f"After: {after.content or '*empty*'}"
-            ),
+            thread_id=ticket["thread_id"],
+            author=after.author.display_name,
+            content=f"Edited a message\nBefore: {before.content or '*empty*'}\nAfter: {after.content or '*empty*'}",
+            event="edit",
         )
 
 

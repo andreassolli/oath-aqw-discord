@@ -160,9 +160,5 @@ class RoleModal(discord.ui.Modal, title="Role Selection"):
         await interaction.response.send_message(
             f"{interaction.user.mention}: `{selected_role}`"
         )
-        await log_ticket_message_event(
-            interaction.client,
-            self.ticket_name,
-            f"✅ {interaction.user.mention} claimed the ticket as {selected_role}",
-        )
+
         return

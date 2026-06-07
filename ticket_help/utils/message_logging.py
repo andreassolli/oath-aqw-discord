@@ -14,10 +14,10 @@ def get_ticket_name_from_channel(channel_id: int):
     return docs[0].id
 
 
-async def log_ticket_message_event(
+async def log_ticket_view_event(
     bot: discord.Client,
     ticket_name: str,
-    content: str,
+    view: discord.ui.View,
     files: list[discord.File] | None = None,
 ):
     doc = db.collection("tickets").document(ticket_name).get()
@@ -40,7 +40,54 @@ async def log_ticket_message_event(
             return
 
     await thread.send(
-        content,
+        view=view,
         files=files or [],
         allowed_mentions=discord.AllowedMentions.none(),
     )
+
+
+async def log_ticket_message_event(
+    bot: discord.Client,
+    thread_id: int,
+    author: str,
+    content: str,
+    event: str,
+    files: list[discord.File] | None = None,
+):
+
+    thread = bot.get_channel(thread_id)
+
+    if not thread:
+        try:
+            thread = await bot.fetch_channel(thread_id)
+        except Exception:
+            return
+
+    color = discord.Color.lighter_gray()
+    if event == "boss change":
+        color = discord.Color.blue()
+    elif event == "complete":
+        color = discord.Color.green()
+    elif event == "cancel":
+        color = discord.Color.red()
+    if author == "Oath Bot":
+        color = discord.Color.purple()
+
+    embed = discord.Embed(
+        title=author,
+        description=content,
+        color=color,
+    )
+
+    if embed:
+        await thread.send(
+            embed=embed,
+            files=files or [],
+            allowed_mentions=discord.AllowedMentions.none(),
+        )
+    else:
+        await thread.send(
+            content,
+            files=files or [],
+            allowed_mentions=discord.AllowedMentions.none(),
+        )
