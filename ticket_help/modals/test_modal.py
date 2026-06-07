@@ -331,11 +331,12 @@ class CreateTicketModal(discord.ui.Modal):
                 overwrites=overwrites,
             )
             thread_channel = interaction.guild.get_channel(TICKET_MESSAGES_CHANNEL_ID)
-            thread = await thread_channel.create_thread(
-                name=f"{ticket_name}",
-                auto_archive_duration=10080,
+            thread_obj = await thread_channel.create_thread(
+                name=ticket_name,
+                content=f"History thread for {ticket_name}",
             )
 
+            thread = thread_obj.thread
             embed = discord.Embed(
                 color=discord.Colour(7344907),
             )
