@@ -374,6 +374,10 @@ class CreateTicketModal(discord.ui.Modal):
             await log_ticket_view_event(
                 interaction.client, ticket_name, view=log_layout
             )
+            ticket_cache[channel.id] = {
+                "ticket_name": ticket_name,
+                "thread_id": thread.id,
+            }
             db.collection("tickets").document(ticket_name).set(
                 {
                     "ticket_id": ticket_id,
@@ -460,11 +464,6 @@ class CreateTicketModal(discord.ui.Modal):
                     "last_helper_ping": firestore.SERVER_TIMESTAMP,
                 }
             )
-
-            ticket_cache[channel.id] = {
-                "ticket_name": ticket_name,
-                "thread_id": thread.id,
-            }
 
             set_active_ticket(interaction.user.id, ticket_name)
             await interaction.followup.send(
