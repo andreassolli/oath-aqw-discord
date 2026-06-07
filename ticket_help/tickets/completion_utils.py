@@ -11,6 +11,7 @@ from economy.gems import reward_gems_if_needed
 from firebase_client import db
 from ticket_help.dashboard.updater import update_dashboard
 from ticket_help.panels.update_ticket_counter import update_ticket
+from ticket_help.utils.message_logging import log_ticket_message_event
 
 from .embed_logging import build_logging_embed
 from .logging import log_ticket_event
@@ -193,8 +194,6 @@ async def finalize_ticket(
         updates["total_points"] = final_reward
         requester_ref.set(updates)
 
-    clear_active_ticket(requester_id, ticket_name)
-
     requester_after = requester_before + final_reward
 
     requester_member = guild.get_member(requester_id)
@@ -234,6 +233,7 @@ async def finalize_ticket(
         doc_ref.update({"partially_completed": True})
     else:
         doc_ref.update({"status": "completed"})
+        clear_active_ticket(requester_id, ticket_name)
     total_points += final_reward
     ticket_stats_ref.update(
         {
@@ -254,8 +254,18 @@ async def finalize_ticket(
         await interaction.followup.send(
             "Points added, keeping ticket open.", ephemeral=True
         )
+        await log_ticket_message_event(
+            interaction.client,
+            ticket_name,
+            f"Ticket partially completed by {interaction.user.mention}, keeping open.\nPoints added, keeping ticket open.",
+        )
     else:
         await interaction.followup.send("🗑️ Deleting channel...", ephemeral=True)
+        await log_ticket_message_event(
+            interaction.client,
+            ticket_name,
+            f"Ticket completed by {interaction.user.mention}, channel deleted.",
+        )
         if interaction.channel:
             await interaction.channel.delete()
 

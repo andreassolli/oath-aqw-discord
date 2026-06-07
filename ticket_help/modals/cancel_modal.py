@@ -7,6 +7,7 @@ from ticket_help.dashboard.updater import update_dashboard
 from ticket_help.tickets.embed_logging import build_logging_embed
 from ticket_help.tickets.logging import log_ticket_event
 from ticket_help.tickets.utils import clear_active_ticket
+from ticket_help.utils.message_logging import log_ticket_message_event
 
 
 class CancelModal(discord.ui.Modal, title="Cancel ticket"):
@@ -96,6 +97,11 @@ class CancelModal(discord.ui.Modal, title="Cancel ticket"):
         await interaction.response.send_message(content="🗑️ Ticket cancelled.")
 
         await log_ticket_event(interaction.client, embed=embed)
+        await log_ticket_message_event(
+            interaction.client,
+            self.ticket_name,
+            f"❌ {interaction.user.mention} cancelled the ticket.",
+        )
 
         await update_dashboard(interaction.client)
         return await interaction.channel.delete()

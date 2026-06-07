@@ -10,6 +10,7 @@ from config import (
     HELPER_ROLE_ID,
     OATHSWORN_ROLE_ID,
     TICKET_CATEGORY_ID,
+    TICKET_MESSAGES_CHANNEL_ID,
     TICKET_OFFICER_ROLE_ID,
     percentage_points,
     spam_points,
@@ -24,6 +25,7 @@ from ticket_help.tickets.utils import (
     find_guide_threads,
     set_active_ticket,
 )
+from ticket_help.utils.message_logging import log_ticket_message_event
 from ticket_help.utils.ticket import get_overwrites
 
 CORRECT_BOSS_ORDER = [
@@ -328,6 +330,12 @@ class CreateTicketModal(discord.ui.Modal):
                 category=category,
                 overwrites=overwrites,
             )
+            thread_channel = interaction.guild.get_channel(TICKET_MESSAGES_CHANNEL_ID)
+            thread = await thread_channel.create_thread(
+                name=f"{ticket_name}",
+                auto_archive_duration=10080,
+            )
+
             embed = discord.Embed(
                 color=discord.Colour(7344907),
             )
@@ -344,6 +352,7 @@ class CreateTicketModal(discord.ui.Modal):
                 {
                     "ticket_id": ticket_id,
                     "channel_id": channel.id,
+                    "thread_id": thread.id,
                     "user_id": interaction.user.id,
                     "bosses": bosses,
                     "points": points,
@@ -413,7 +422,23 @@ class CreateTicketModal(discord.ui.Modal):
                 await channel.send(embed=embed)
 
             helper_role = interaction.guild.get_role(HELPER_ROLE_ID)
-
+            await log_ticket_message_event(
+                interaction.client,
+                ticket_name,
+                (
+                    f"🎫 Ticket created\n"
+                    f"Requester: {interaction.user.mention} ({self.username.value})\n"
+                    f"Type: {self.type}\n"
+                    f"Bosses: {', '.join(bosses)}\n"
+                    f"Room: {room_value}\n"
+                    f"Server: {self.server}\n"
+                    f"Total kills: {total_kills_value}\n"
+                    f"Experienced only: {experienced_only}\n"
+                    f"Points: {points}\n"
+                    f"Is practice: {self.is_practice}\n"
+                    f"Is infinity: {self.is_infinity}"
+                ),
+            )
             await channel.send(
                 f"{helper_role.mention}\n⚠️ **More helpers needed for this ticket!**",
                 allowed_mentions=discord.AllowedMentions(roles=True),

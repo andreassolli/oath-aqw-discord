@@ -6,6 +6,8 @@ import discord
 from economy.utils import ShopItem
 from firebase_client import db
 from inventory.utils import equip_item, unequip_item
+from ticket_help.new_panel.ticket_panel import RoleButton
+from user_profile.image_utils import ROLES_COLOR_MAP
 
 RARITY_EMOJIS = {
     "common": "🟢",
@@ -17,9 +19,10 @@ RARITY_EMOJIS = {
 
 
 class InventoryLayout(discord.ui.LayoutView):
-    def __init__(self, user: discord.User):
+    def __init__(self, user: discord.Member):
         super().__init__(timeout=None)
         self.user = user
+        roles = ["None"]
         self.enabled_filters = {
             "card",
             "border",
@@ -29,12 +32,20 @@ class InventoryLayout(discord.ui.LayoutView):
         doc = db.collection("users").document(str(user.id)).get()
         data = doc.to_dict() or {}
         inventory = data.get("inventory", [])
+        user_role_names = {role.name for role in user.roles}
+
+        for role_name in ROLES_COLOR_MAP.keys():
+            if role_name in user_role_names:
+                roles.append(role_name)
 
         self.coins = data.get("coins", 0)
         self.gems = data.get("gems", 0)
         equipped_card = data.get("card", None)
         equipped_border = data.get("border", None)
         equipped_claim = data.get("claim", None)
+        equipped_role = data.get("highlighted_role", None)
+        self.roles = roles
+        self.equipped_role = equipped_role
         self.equipped_card = equipped_card
         self.equipped_border = equipped_border
         self.equipped_claim = equipped_claim
@@ -68,6 +79,17 @@ class InventoryLayout(discord.ui.LayoutView):
         items: list[discord.ui.Item] = [
             discord.ui.TextDisplay(
                 content=f"**Inventory** (Page {self.page + 1}/{total_pages})\nYour purse: <:oathcoin:1462999179998531614>{self.coins}, <:gems:1485660490376937502>{self.gems}"
+            ),
+            discord.ui.Separator(
+                visible=False,
+                spacing=discord.SeparatorSpacing.small,
+            ),
+            discord.ui.Section(
+                discord.ui.TextDisplay(content="Highlight role"),
+                accessory=RoleSelect(
+                    roles=self.roles,
+                    equipped_role=self.equipped_role,
+                ),
             ),
             discord.ui.Separator(
                 visible=False,
@@ -226,6 +248,58 @@ class EquipButton(discord.ui.Button):
             ephemeral=True,
         )
         await view.update(interaction)
+
+
+class RoleSelect(discord.ui.Select):
+    def __init__(self, roles: list[str], equipped_role: str | None):
+        options = [
+            discord.SelectOption(
+                label=role,
+                value=role,
+                default=role == (equipped_role or "None"),
+            )
+            for role in roles
+        ]
+
+        super().__init__(
+            placeholder=equipped_role or "None",
+            min_values=1,
+            max_values=1,
+            options=options,
+        )
+
+    async def callback(self, interaction: discord.Interaction):
+        view: InventoryLayout = self.view
+
+        selected_role = self.values[0]
+
+        if selected_role == "None":
+            selected_role = None
+
+        db.collection("users").document(str(interaction.user.id)).update(
+            {
+                "highlighted_role": selected_role,
+            }
+        )
+
+        view.equipped_role = selected_role
+
+        await interaction.response.defer(ephemeral=True)
+
+        view.container = view.build_container()
+        view.clear_items()
+        view.add_item(view.container)
+
+        await interaction.edit_original_response(view=view)
+
+        await interaction.followup.send(
+            (
+                "✨ Highlight role removed."
+                if selected_role is None
+                else f"✨ Equipped role: **{selected_role}**"
+            ),
+            ephemeral=True,
+        )
 
 
 class NextPageButton(discord.ui.Button):

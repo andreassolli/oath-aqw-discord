@@ -2,6 +2,7 @@ import discord
 
 from firebase_client import db
 from ticket_help.tickets.points import calculate_ticket_points
+from ticket_help.utils.message_logging import log_ticket_message_event
 
 
 class ChangeBossModal(discord.ui.Modal, title="Change Bosses"):
@@ -50,6 +51,11 @@ class ChangeBossModal(discord.ui.Modal, title="Change Bosses"):
             }
         )
         await self.layout.refresh(interaction)
+        await log_ticket_message_event(
+            interaction.client,
+            self.ticket_name,
+            f"💀 {interaction.user.mention} changed the bosses to `{', '.join(self.boss_selection.component.values)}`",
+        )
         return await interaction.response.send_message(
             f"Current bosses set to `{', '.join(self.boss_selection.component.values)}` by {interaction.user.mention}.",
             ephemeral=True,
