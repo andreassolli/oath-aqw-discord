@@ -6,6 +6,7 @@ from ticket_help.commands.permissions import has_admin_role
 from ticket_help.dashboard.updater import update_dashboard
 from ticket_help.tickets.embed_logging import build_logging_embed
 from ticket_help.tickets.logging import log_ticket_event
+from ticket_help.tickets.ticket_cache import ticket_cache
 from ticket_help.tickets.utils import clear_active_ticket
 from ticket_help.utils.message_logging import log_ticket_message_event
 
@@ -97,10 +98,14 @@ class CancelModal(discord.ui.Modal, title="Cancel ticket"):
         await interaction.response.send_message(content="🗑️ Ticket cancelled.")
 
         await log_ticket_event(interaction.client, embed=embed)
+        ticket = ticket_cache.get(interaction.channel_id)
+
         await log_ticket_message_event(
             interaction.client,
-            self.ticket_name,
-            f"❌ {interaction.user.mention} cancelled the ticket.",
+            thread_id=ticket["thread_id"],
+            author=interaction.user.display_name,
+            content="Cancelled the ticket.",
+            event="cancel",
         )
 
         await update_dashboard(interaction.client)

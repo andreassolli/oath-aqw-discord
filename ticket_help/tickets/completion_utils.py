@@ -11,6 +11,7 @@ from economy.gems import reward_gems_if_needed
 from firebase_client import db
 from ticket_help.dashboard.updater import update_dashboard
 from ticket_help.panels.update_ticket_counter import update_ticket
+from ticket_help.tickets.ticket_cache import ticket_cache
 from ticket_help.utils.message_logging import log_ticket_message_event
 
 from .embed_logging import build_logging_embed
@@ -254,17 +255,25 @@ async def finalize_ticket(
         await interaction.followup.send(
             "Points added, keeping ticket open.", ephemeral=True
         )
+        ticket = ticket_cache.get(interaction.channel_id)
+
         await log_ticket_message_event(
             interaction.client,
-            ticket_name,
-            f"Ticket partially completed by {interaction.user.mention}, keeping open.\nPoints added, keeping ticket open.",
+            thread_id=ticket["thread_id"],
+            author=interaction.user.display_name,
+            content=f"Ticket partially completed.\nPoints added, keeping ticket open.",
+            event="complete",
         )
     else:
         await interaction.followup.send("🗑️ Deleting channel...", ephemeral=True)
+        ticket = ticket_cache.get(interaction.channel_id)
+
         await log_ticket_message_event(
             interaction.client,
-            ticket_name,
-            f"Ticket completed by {interaction.user.mention}, channel deleted.",
+            thread_id=ticket["thread_id"],
+            author=interaction.user.display_name,
+            content=f"Ticket completed.\nChannel deleted.",
+            event="complete",
         )
         if interaction.channel:
             await interaction.channel.delete()
