@@ -371,9 +371,7 @@ class CreateTicketModal(discord.ui.Modal):
             )
 
             thread = thread_obj.thread
-            await log_ticket_view_event(
-                interaction.client, ticket_name, view=log_layout
-            )
+            await log_ticket_view_event(interaction.client, thread.id, view=log_layout)
             ticket_cache[channel.id] = {
                 "ticket_name": ticket_name,
                 "thread_id": thread.id,

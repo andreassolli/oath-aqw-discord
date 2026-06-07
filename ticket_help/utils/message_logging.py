@@ -16,19 +16,9 @@ def get_ticket_name_from_channel(channel_id: int):
 
 async def log_ticket_view_event(
     bot: discord.Client,
-    ticket_name: str,
+    thread_id: int,
     view: discord.ui.LayoutView,
 ):
-    doc = db.collection("tickets").document(ticket_name).get()
-
-    if not doc.exists:
-        return
-
-    data = doc.to_dict()
-
-    thread_id = data.get("thread_id")
-    if not thread_id:
-        return
 
     thread = bot.get_channel(thread_id)
 
