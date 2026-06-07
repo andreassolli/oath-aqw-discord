@@ -18,7 +18,6 @@ async def log_ticket_view_event(
     bot: discord.Client,
     ticket_name: str,
     view: discord.ui.LayoutView,
-    files: list[discord.File] | None = None,
 ):
     doc = db.collection("tickets").document(ticket_name).get()
 
@@ -41,7 +40,6 @@ async def log_ticket_view_event(
 
     await thread.send(
         view=view,
-        files=files or [],
         allowed_mentions=discord.AllowedMentions.none(),
     )
 

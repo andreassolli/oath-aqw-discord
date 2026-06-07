@@ -261,7 +261,7 @@ async def finalize_ticket(
             interaction.client,
             thread_id=ticket["thread_id"],
             author=interaction.user.display_name,
-            content=f"Ticket partially completed.\nPoints added, keeping ticket open.",
+            content=f"✅ Ticket partially completed.\nPoints added, keeping ticket open.",
             event="complete",
         )
     else:
@@ -272,7 +272,7 @@ async def finalize_ticket(
             interaction.client,
             thread_id=ticket["thread_id"],
             author=interaction.user.display_name,
-            content=f"Ticket completed.\nChannel deleted.",
+            content=f"✅ Ticket completed.\nChannel deleted.",
             event="complete",
         )
         if interaction.channel:

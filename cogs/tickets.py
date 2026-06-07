@@ -69,7 +69,7 @@ class Tickets(commands.Cog):
             self.bot,
             thread_id=ticket["thread_id"],
             author=message.author.display_name,
-            content=message.content,
+            content=f"💬 {message.content}",
             event="message",
             files=files,
         )
@@ -87,7 +87,7 @@ class Tickets(commands.Cog):
             self.bot,
             thread_id=ticket["thread_id"],
             author=after.author.display_name,
-            content=f"Edited a message\nBefore: {before.content or '*empty*'}\nAfter: {after.content or '*empty*'}",
+            content=f"✏️ Edited a message\nBefore: {before.content or '*empty*'}\nAfter: {after.content or '*empty*'}",
             event="edit",
         )
 
