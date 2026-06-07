@@ -18,7 +18,7 @@ from ticket_help.commands.admin import (
     set_user_points,
 )
 from ticket_help.utils.experienced_panel import setup_application_panel
-from ticket_help.utils.message_logging import log_ticket_event
+from ticket_help.utils.message_logging import log_ticket_message_event
 
 
 class Tickets(commands.Cog):
@@ -77,7 +77,7 @@ class Tickets(commands.Cog):
 
         files = [await a.to_file() for a in message.attachments]
 
-        await log_ticket_event(
+        await log_ticket_message_event(
             self.bot,
             ticket_name,
             f"💬 {message.author.display_name}: {message.content}",
@@ -103,7 +103,7 @@ class Tickets(commands.Cog):
 
         ticket_name = docs[0].id
 
-        await log_ticket_event(
+        await log_ticket_message_event(
             self.bot,
             ticket_name,
             (
