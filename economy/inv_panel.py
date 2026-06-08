@@ -84,9 +84,9 @@ class InventoryLayout(discord.ui.LayoutView):
                 visible=False,
                 spacing=discord.SeparatorSpacing.small,
             ),
-            discord.ui.Section(
-                discord.ui.TextDisplay(content="Highlight role"),
-                accessory=RoleSelect(
+            discord.ui.TextDisplay(content="Highlight role"),
+            discord.ui.ActionRow(
+                RoleSelect(
                     roles=self.roles,
                     equipped_role=self.equipped_role,
                 ),
