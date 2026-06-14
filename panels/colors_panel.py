@@ -29,33 +29,37 @@ class RoleLayout(discord.ui.LayoutView):
             content="All members can claim one of these base colors to make your name stand out:"
         ),
         discord.ui.Separator(visible=False),
-        discord.ui.TextDisplay(content=f"<@&{VERDANT_ROLE_ID}>"),
         discord.ui.Section(
-            discord.ui.TextDisplay(content="> Embrace natures verdant color."),
+            discord.ui.TextDisplay(
+                content=f"<@&{VERDANT_ROLE_ID}>\n> Embrace natures verdant color."
+            ),
             accessory=RoleButton(
                 label="🌱 Verdant",
                 role_id=VERDANT_ROLE_ID,
             ),
         ),
-        discord.ui.TextDisplay(content=f"<@&{CRIMSON_FLAME_ROLE_ID}>"),
         discord.ui.Section(
-            discord.ui.TextDisplay(content="> Engulf yourself in crimson flames."),
+            discord.ui.TextDisplay(
+                content=f"<@&{CRIMSON_FLAME_ROLE_ID}>\n> Engulf yourself in crimson flames."
+            ),
             accessory=RoleButton(
                 label="🔥 Crimson Flame",
                 role_id=CRIMSON_FLAME_ROLE_ID,
             ),
         ),
-        discord.ui.TextDisplay(content=f"<@&{VOID_ROLE_ID}>"),
         discord.ui.Section(
-            discord.ui.TextDisplay(content="> Slip into the void, slowly."),
+            discord.ui.TextDisplay(
+                content=f"<@&{VOID_ROLE_ID}>\n> Slip into the void, slowly."
+            ),
             accessory=RoleButton(
                 label="🔮 Void",
                 role_id=VOID_ROLE_ID,
             ),
         ),
-        discord.ui.TextDisplay(content=f"<@&{CELESTIAL_ROLE_ID}>"),
         discord.ui.Section(
-            discord.ui.TextDisplay(content="> To the skies and beyond."),
+            discord.ui.TextDisplay(
+                content=f"<@&{CELESTIAL_ROLE_ID}>\n> To the skies and beyond."
+            ),
             accessory=RoleButton(
                 label="🪽 Celestial",
                 role_id=CELESTIAL_ROLE_ID,
@@ -65,6 +69,7 @@ class RoleLayout(discord.ui.LayoutView):
         discord.ui.TextDisplay(
             content="Boost the server to unlock extra colors, including exclusive gradient options!"
         ),
+        accent_colour=discord.Colour(7344907),
     )
 
 
