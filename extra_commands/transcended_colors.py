@@ -2,13 +2,12 @@ import discord
 
 from config import (
     ASCENDED_ROLE_CHANNEL_ID,
+    COLOR_ROLES,
     MIDNIGHT_MOSS,
     ROYAL_VANGUARD,
     TRANSCENDED_ROLE_ID,
     VERDANT_EMBER,
 )
-
-COLOR_ROLES = [MIDNIGHT_MOSS, VERDANT_EMBER, ROYAL_VANGUARD]
 
 
 class ColorRoleView(discord.ui.View):
