@@ -2,6 +2,7 @@ import discord
 
 from config import ROLES_CHANNEL_ID
 from firebase_client import db
+from panels.colors_panel import RoleLayout
 from ticket_help.utils.certified import ApplicationSelectView
 
 
@@ -33,6 +34,7 @@ class StartApplicationView(discord.ui.View):
 
 
 async def setup_application_panel(client: discord.Client):
+    color_layout = RoleLayout()
     channel = client.get_channel(ROLES_CHANNEL_ID)
 
     if channel is None:
@@ -67,4 +69,5 @@ async def setup_application_panel(client: discord.Client):
         text="❗️Certifications allows you to help if 'Certified Only' is toggled on by the requester. (Only Gramiel and Speaker for now, rest will be enabled very soon!)"
     )
 
+    await channel.send(view=color_layout)
     await channel.send(embed=embed, view=StartApplicationView())
