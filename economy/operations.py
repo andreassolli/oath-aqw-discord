@@ -38,7 +38,11 @@ async def list_item(
 
         priority = highest + 1
 
-    image_path = f"{image}.png"
+    if type == "claim":
+        image_path = f"{image}.gif"
+    else:
+        image_path = f"{image}.png"
+
     display_path = f"{image}_item.png"
 
     db.collection("shop_items").document(name).set(

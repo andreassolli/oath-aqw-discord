@@ -43,11 +43,6 @@ async def setup_application_panel(client: discord.Client):
     if not isinstance(channel, discord.TextChannel):
         return
 
-    # Delete old bot messages (optional)
-    async for msg in channel.history(limit=5):
-        if msg.author == client.user:
-            await msg.delete()
-
     embed = discord.Embed(
         title="Ultra Certificate Application",
         description=(
@@ -69,5 +64,20 @@ async def setup_application_panel(client: discord.Client):
         text="❗️Certifications allows you to help if 'Certified Only' is toggled on by the requester. (Only Gramiel and Speaker for now, rest will be enabled very soon!)"
     )
 
-    await channel.send(view=color_layout)
-    await channel.send(embed=embed, view=StartApplicationView())
+    try:
+        color_msg = await channel.fetch_message(1515795016294076487)
+        await color_msg.edit(view=color_layout)
+    except discord.NotFound:
+        color_msg = await channel.send(view=color_layout)
+
+    try:
+        application_msg = await channel.fetch_message(1515795019372560424)
+        await application_msg.edit(
+            embed=embed,
+            view=StartApplicationView(),
+        )
+    except discord.NotFound:
+        application_msg = await channel.send(
+            embed=embed,
+            view=StartApplicationView(),
+        )
