@@ -160,7 +160,7 @@ def calculate_founder(badges: list[dict]) -> bool:
 
 def calculate_whale_badges(badges: list[dict]) -> dict:
 
-    badge_categories = {"HeroMart", "Support", "Exclusive"}
+    badge_categories = {"HeroMart", "Support", "Exclusive", "Legendary"}
 
     pet_badges = {"15 Years Played", "AC Loyalty", "Member Loyalty"}
 
