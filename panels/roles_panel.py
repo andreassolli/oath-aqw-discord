@@ -42,7 +42,7 @@ class RoleLayout(discord.ui.LayoutView):
                     apply_text=f":white_check_mark: Added role <@&{role['id']}>",
                     remove_text=f":negative_squared_cross_mark: Removed role <@&{role['id']}>",
                     emoji=role["emoji"],
-                    custom=role["emoji_id"] is not None,
+                    emoji_id=role["emoji_id"],
                 ),
             )
             for role in role_data
@@ -60,8 +60,7 @@ class RoleButton(discord.ui.Button):
         apply_text,
         remove_text,
         emoji,
-        emoji_id: int = 0,
-        custom: bool = False,
+        emoji_id,
     ):
         self.role_id = role_id
         self.apply_text = apply_text
@@ -74,7 +73,7 @@ class RoleButton(discord.ui.Button):
                 name=emoji,
                 id=emoji_id,
             )
-            if custom
+            if emoji_id is not None
             else emoji,
         )
 
