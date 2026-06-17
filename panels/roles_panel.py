@@ -70,12 +70,12 @@ class RoleButton(discord.ui.Button):
             label=label,
             style=discord.ButtonStyle.secondary,
             custom_id=f"role_{role_id}",
-            emoji=emoji
-            if custom
-            else discord.PartialEmoji(
+            emoji=discord.PartialEmoji(
                 name=emoji,
                 id=emoji_id,
-            ),
+            )
+            if custom
+            else emoji,
         )
 
     async def callback(self, interaction: discord.Interaction):
