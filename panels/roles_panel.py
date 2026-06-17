@@ -2,7 +2,7 @@ from typing import TypedDict
 
 import discord
 
-from config import COLOR_ROLES
+from config import COLOR_ROLE_DATA
 
 
 class RoleData(TypedDict):
@@ -112,7 +112,8 @@ async def handle_role_toggle(
         )
         return
 
-    is_color_role = role_id in COLOR_ROLES
+    COLOR_ROLE_IDS = [rid for _, rid in COLOR_ROLE_DATA]
+    is_color_role = role_id in COLOR_ROLE_IDS
 
     if target_role in user.roles:
         await user.remove_roles(target_role)
@@ -121,7 +122,7 @@ async def handle_role_toggle(
 
     if is_color_role:
         # Only allow one color role at a time
-        roles_to_remove = [r for r in user.roles if r.id in COLOR_ROLES]
+        roles_to_remove = [r for r in user.roles if r.id in COLOR_ROLE_IDS]
         if roles_to_remove:
             await user.remove_roles(*roles_to_remove)
             await user.add_roles(target_role)
