@@ -3,6 +3,8 @@ import os
 
 from dotenv import load_dotenv
 
+from panels.roles_panel import RoleData
+
 load_dotenv()
 
 
@@ -145,8 +147,19 @@ LFG_LOL_ID = env_int("LFG_LOL_ID")
 TICKET_MESSAGES_CHANNEL_ID = env_int("TICKET_MESSAGES_CHANNEL_ID")
 VERDANT_ROLE_ID = env_int("VERDANT_ROLE_ID")
 CRIMSON_FLAME_ROLE_ID = env_int("CRIMSON_FLAME_ROLE_ID")
-CELESTIAL_ROLE_ID = env_int("CELESTIAL_ROLE_ID")
 VOID_ROLE_ID = env_int("VOID_ROLE_ID")
+CELESTIAL_ROLE_ID = env_int("CELESTIAL_ROLE_ID")
+
+GOLF_GAMES_ROLE_ID = env_int("GOLF_GAMES_ROLE_ID")
+MOVIES_ROLE_ID = env_int("MOVIES_ROLE_ID")
+AQWORDLE_ROLE_ID = env_int("AQWORDLE_ROLE_ID")
+
+ANNOUNCEMENTS_ROLE_ID = env_int("ANNOUNCEMENTS_ROLE_ID")
+BADGES_ROLE_ID = env_int("BADGES_ROLE_ID")
+EVENTS_ROLE_ID = env_int("EVENTS_ROLE_ID")
+SCREENIES_ROLE_ID = env_int("SCREENIES_ROLE_ID")
+BIRTHDAYS_ROLE_ID = env_int("BIRTHDAYS_ROLE_ID")
+
 
 COLOR_ROLES = {
     VERDANT_EMBER,
@@ -156,4 +169,108 @@ COLOR_ROLES = {
     CRIMSON_FLAME_ROLE_ID,
     VOID_ROLE_ID,
     CELESTIAL_ROLE_ID,
+}
+COLOR_ROLE_DATA: list[RoleData] = [
+    {
+        "name": "Verdant",
+        "id": VERDANT_ROLE_ID,
+        "emoji": "🌱",
+        "emoji_id": None,
+        "subtitle": "Embrace natures verdant color.",
+    },
+    {
+        "name": "Crimson Flame",
+        "id": CRIMSON_FLAME_ROLE_ID,
+        "emoji": "🔥",
+        "emoji_id": None,
+        "subtitle": "Engulf yourself in crimson flames.",
+    },
+    {
+        "name": "Void",
+        "id": VOID_ROLE_ID,
+        "emoji": "🔮",
+        "emoji_id": None,
+        "subtitle": "Slip into the void, slowly.",
+    },
+    {
+        "name": "Celestial",
+        "id": CELESTIAL_ROLE_ID,
+        "emoji": "leftwing",
+        "emoji_id": 1505157673249935402,
+        "subtitle": "To the skies and beyond.",
+    },
+]
+
+SOCIAL_ROLE_DATA: list[RoleData] = [
+    {
+        "name": "Golf Games",
+        "id": GOLF_GAMES_ROLE_ID,
+        "emoji": "⛳",
+        "emoji_id": None,
+        "subtitle": "Golf It, get it on Steam!",
+    },
+    {
+        "name": "Movies",
+        "id": MOVIES_ROLE_ID,
+        "emoji": "🎬",
+        "emoji_id": None,
+        "subtitle": "Cozy up and watch movies",
+    },
+    {
+        "name": "AQWordle",
+        "id": AQWORDLE_ROLE_ID,
+        "emoji": "🧩",
+        "emoji_id": None,
+        "subtitle": "Daily Wordle based on AQW",
+    },
+]
+
+NOTIFICATION_ROLE_DATA: list[RoleData] = [
+    {
+        "name": "Announcements",
+        "id": ANNOUNCEMENTS_ROLE_ID,
+        "emoji": "📢",
+        "emoji_id": None,
+        "subtitle": "Larger server changes",
+    },
+    {
+        "name": "Badges",
+        "id": BADGES_ROLE_ID,
+        "emoji": "aqwbadges4",
+        "emoji_id": 1509937420106203368,
+        "subtitle": "New AQW badge releases",
+    },
+    {
+        "name": "Events",
+        "id": EVENTS_ROLE_ID,
+        "emoji": "",
+        "emoji_id": None,
+        "subtitle": "Such as Outfit Contests",
+    },
+    {
+        "name": "Screenies",
+        "id": SCREENIES_ROLE_ID,
+        "emoji": "📸",
+        "emoji_id": None,
+        "subtitle": "Guild Screenshots",
+    },
+    {
+        "name": "Birthdays",
+        "id": BIRTHDAYS_ROLE_ID,
+        "emoji": "🎂",
+        "emoji_id": None,
+        "subtitle": "Congratulate others!",
+    },
+    {
+        "name": "Helper",
+        "id": HELPER_ROLE_ID,
+        "emoji": "hands",
+        "emoji_id": 1505158458494681138,
+        "subtitle": "See tickets, and earn points!",
+    },
+]
+ROLE_GROUPS: dict[str, list[RoleData]] = {
+    "color": COLOR_ROLE_DATA,
+    "social": SOCIAL_ROLE_DATA,
+    "notification": NOTIFICATION_ROLE_DATA,
 }
