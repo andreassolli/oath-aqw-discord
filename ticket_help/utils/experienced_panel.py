@@ -1,8 +1,8 @@
 import discord
 
-from config import ROLES_CHANNEL_ID
+from config import ROLE_GROUPS, ROLES_CHANNEL_ID
 from firebase_client import db
-from panels.colors_panel import RoleLayout
+from panels.roles_panel import RoleLayout
 from ticket_help.utils.certified import ApplicationSelectView
 
 
@@ -34,7 +34,26 @@ class StartApplicationView(discord.ui.View):
 
 
 async def setup_application_panel(client: discord.Client):
-    color_layout = RoleLayout()
+    colors = RoleLayout(
+        title="**Choose Your Color Role**",
+        image="colors.png",
+        description="All Oath members can claim one of these base colors to make your name stand out:",
+        role_data=ROLE_GROUPS["color"],
+    )
+    social = RoleLayout(
+        title="**Social Activities**",
+        subtitle="Want to socialize with the guildies? :oath:",
+        image="social.png",
+        description="Click to opt in for notifications based on which social activity you want to be notified about. You can always opt out later!",
+        role_data=ROLE_GROUPS["social"],
+    )
+    notifications = RoleLayout(
+        title="**Opt Out of Notifications**",
+        subtitle="Getting too many notifications?",
+        image="notification.png",
+        description="Just remove any roles you don't want notifications from. You can always add them back later!",
+        role_data=ROLE_GROUPS["notification"],
+    )
     channel = client.get_channel(ROLES_CHANNEL_ID)
 
     if channel is None:
@@ -64,20 +83,36 @@ async def setup_application_panel(client: discord.Client):
         text="❗️Certifications allows you to help if 'Certified Only' is toggled on by the requester. (Only Gramiel and Speaker for now, rest will be enabled very soon!)"
     )
 
-    try:
-        color_msg = await channel.fetch_message(1515795016294076487)
-        await color_msg.edit(view=color_layout)
-    except discord.NotFound:
-        color_msg = await channel.send(view=color_layout)
+    # try:
+    # color_msg = await channel.fetch_message(1515795016294076487)
+    # await color_msg.edit(view=color_layout)
+    # except discord.NotFound:
+    await channel.send(
+        view=colors,
+        allowed_mentions=discord.AllowedMentions.none(),
+    )
+    await channel.send(
+        view=social,
+        allowed_mentions=discord.AllowedMentions.none(),
+    )
+    await channel.send(
+        view=notifications,
+        allowed_mentions=discord.AllowedMentions.none(),
+    )
+    await channel.send(
+        embed=embed,
+        view=StartApplicationView(),
+        allowed_mentions=discord.AllowedMentions.none(),
+    )
 
-    try:
-        application_msg = await channel.fetch_message(1515795019372560424)
-        await application_msg.edit(
-            embed=embed,
-            view=StartApplicationView(),
-        )
-    except discord.NotFound:
-        application_msg = await channel.send(
-            embed=embed,
-            view=StartApplicationView(),
-        )
+    # try:
+    #    application_msg = await channel.fetch_message(1515795019372560424)
+    #    await application_msg.edit(
+    #        embed=embed,
+    #        view=StartApplicationView(),
+    #    )
+    # except discord.NotFound:
+    #    application_msg = await channel.send(
+    #        embed=embed,
+    #        view=StartApplicationView(),
+    #    )
