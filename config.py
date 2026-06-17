@@ -250,7 +250,7 @@ NOTIFICATION_ROLE_DATA: list[RoleData] = [
     {
         "name": "Events",
         "id": EVENTS_ROLE_ID,
-        "emoji": "",
+        "emoji": "🎉",
         "emoji_id": None,
         "subtitle": "Such as Outfit Contests",
     },
