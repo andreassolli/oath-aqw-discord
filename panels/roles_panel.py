@@ -2,15 +2,7 @@ from typing import TypedDict
 
 import discord
 
-from config import COLOR_ROLE_DATA
-
-
-class RoleData(TypedDict):
-    name: str
-    id: int
-    subtitle: str
-    emoji: str
-    emoji_id: int | None
+from config import COLOR_ROLE_DATA, RoleData
 
 
 class RoleLayout(discord.ui.LayoutView):

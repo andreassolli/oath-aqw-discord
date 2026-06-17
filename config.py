@@ -1,11 +1,18 @@
 import json
 import os
+from typing import TypedDict
 
 from dotenv import load_dotenv
 
-from panels.roles_panel import RoleData
-
 load_dotenv()
+
+
+class RoleData(TypedDict):
+    name: str
+    id: int
+    subtitle: str
+    emoji: str
+    emoji_id: int | None
 
 
 def env_int(name: str) -> int:
