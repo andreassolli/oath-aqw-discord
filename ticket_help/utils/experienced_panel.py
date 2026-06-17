@@ -36,7 +36,7 @@ class StartApplicationView(discord.ui.View):
 async def setup_application_panel(client: discord.Client):
     colors = RoleLayout(
         title="**Choose Your Color Role**",
-        image="colors.png",
+        image="color.png",
         description="All Oath members can claim one of these base colors to make your name stand out:",
         role_data=ROLE_GROUPS["color"],
     )
@@ -50,7 +50,7 @@ async def setup_application_panel(client: discord.Client):
     notifications = RoleLayout(
         title="**Opt Out of Notifications**",
         subtitle="Getting too many notifications?",
-        image="notification.png",
+        image="notifications.png",
         description="Just remove any roles you don't want notifications from. You can always add them back later!",
         role_data=ROLE_GROUPS["notification"],
     )
