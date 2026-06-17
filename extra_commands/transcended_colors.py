@@ -140,4 +140,9 @@ async def setup_color_panel(client: discord.Client):
     embed.set_thumbnail(url="attachment://oath-logo.png")
     embed.set_footer(text="Only available to those supporting through Ko-Fi ☕️")
 
-    await channel.send(file=file, embed=embed, view=ColorRoleView())
+    await channel.send(
+        file=file,
+        embed=embed,
+        view=ColorRoleView(),
+        allowed_mentions=discord.AllowedMentions.none(),
+    )
