@@ -166,8 +166,9 @@ BADGES_ROLE_ID = env_int("BADGES_ROLE_ID")
 EVENTS_ROLE_ID = env_int("EVENTS_ROLE_ID")
 SCREENIES_ROLE_ID = env_int("SCREENIES_ROLE_ID")
 BIRTHDAYS_ROLE_ID = env_int("BIRTHDAYS_ROLE_ID")
-
-
+OATHKEEPER_ROLE_ID = env_int("OATHKEEPER_ROLE_ID")
+KJ_ROLE_ID = env_int("KJ_ROLE_ID")
+GRAND_OATHSWORN_ROLE_ID = env_int("GRAND_OATHSWORN_ROLE_ID")
 COLOR_ROLES = {
     VERDANT_EMBER,
     ROYAL_VANGUARD,
@@ -202,15 +203,15 @@ COLOR_ROLE_DATA: list[RoleData] = [
     {
         "name": "Celestial",
         "id": CELESTIAL_ROLE_ID,
-        "emoji": "leftwing",
-        "emoji_id": 1505157673249935402,
+        "emoji": "celestial",
+        "emoji_id": 1517132595752730664,
         "subtitle": "To the skies and beyond.",
     },
 ]
 
 SOCIAL_ROLE_DATA: list[RoleData] = [
     {
-        "name": "Golf Games",
+        "name": "Golf It",
         "id": GOLF_GAMES_ROLE_ID,
         "emoji": "⛳",
         "emoji_id": None,
