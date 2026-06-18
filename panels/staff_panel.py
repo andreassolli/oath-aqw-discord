@@ -126,13 +126,6 @@ PREVIOUS = [
         "image": "samdalpfp",
         "period": "Mar. '26 - Jun. '26",
     },
-    {
-        "name": "Bet",
-        "discord": None,
-        "description": "Helped during the start of the Discord",
-        "image": "betpfp",
-        "period": "Jan. '26 - May. '26",
-    },
 ]
 
 
@@ -237,7 +230,7 @@ class ExLayout(discord.ui.LayoutView):
         components.extend(
             discord.ui.Section(
                 discord.ui.TextDisplay(
-                    content=f"{f'<@{user['discord']}>' if discord is not None else user['name']} *{user['period']}*"
+                    content=f"{f'<@{user['discord']}>' if user['name'] != 'TophaCouf' else user['name']} \n *{user['period']}* \n > {user['description']}"
                 ),
                 accessory=discord.ui.Thumbnail(
                     media=f"https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/{user['image']}.png",

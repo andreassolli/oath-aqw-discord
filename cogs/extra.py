@@ -1067,9 +1067,17 @@ class Extra(commands.Cog):
         embed.set_image(
             url="https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/oathstaff.png"
         )
-        await channel.send(embed=embed)
-        await channel.send(view=lead_view)
-        await channel.send(view=officer_view)
+        # await channel.send(embed=embed)
+        # await channel.send(view=lead_view)
+        # await channel.send(view=officer_view)
+        ex_embed = discord.Embed(
+            color=discord.Colour(7344907),
+        )
+
+        ex_embed.set_image(
+            url="https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/oathstaff.png"
+        )
+        await channel.send(embed=ex_embed)
         await channel.send(view=ex_view)
         await channel.send(view=end_view)
         await interaction.followup.send("Sent panels")
