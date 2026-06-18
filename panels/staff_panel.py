@@ -136,7 +136,7 @@ PREVIOUS = [
 ]
 
 
-class StaffLayout(discord.ui.LayoutView):
+class LeadLayout(discord.ui.LayoutView):
     def __init__(self):
         super().__init__()
 
@@ -181,15 +181,21 @@ class StaffLayout(discord.ui.LayoutView):
             for user in CO_LEADS
         )
 
-        components.append(
-            discord.ui.Separator(visible=True, spacing=discord.SeparatorSpacing.small)
+        container = discord.ui.Container(
+            *components, accent_colour=discord.Colour(7344907)
         )
+        self.add_item(container)
 
-        components.append(
+
+class OfficerLayout(discord.ui.LayoutView):
+    def __init__(self):
+        super().__init__()
+
+        components: list[discord.ui.Item] = [
             discord.ui.TextDisplay(
                 content=f"**Head Officers / <@{GRAND_OATHSWORN_ROLE_ID}>**"
             ),
-        )
+        ]
 
         components.extend(
             discord.ui.Section(
@@ -220,12 +226,25 @@ class StaffLayout(discord.ui.LayoutView):
         )
 
         components.append(
-            discord.ui.Separator(visible=True, spacing=discord.SeparatorSpacing.small)
+            discord.ui.MediaGallery(
+                discord.MediaGalleryItem(
+                    media="https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/bright_separator.png",
+                ),
+            ),
         )
+        container = discord.ui.Container(
+            *components, accent_colour=discord.Colour(7344907)
+        )
+        self.add_item(container)
 
-        components.append(
+
+class ExLayout(discord.ui.LayoutView):
+    def __init__(self):
+        super().__init__()
+
+        components: list[discord.ui.Item] = [
             discord.ui.TextDisplay(content="**Past Officers**"),
-        )
+        ]
 
         components.extend(
             discord.ui.Section(
@@ -239,13 +258,24 @@ class StaffLayout(discord.ui.LayoutView):
             for user in PREVIOUS
         )
 
-        components.append(
+        container = discord.ui.Container(
+            *components, accent_colour=discord.Colour(7344907)
+        )
+        self.add_item(container)
+
+
+class EndLayout(discord.ui.LayoutView):
+    def __init__(self):
+        super().__init__()
+
+        components = [
             discord.ui.MediaGallery(
                 discord.MediaGalleryItem(
                     media="https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/bright_separator.png",
                 ),
             ),
-        )
+        ]
+
         container = discord.ui.Container(
             *components, accent_colour=discord.Colour(7344907)
         )

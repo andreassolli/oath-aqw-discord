@@ -80,7 +80,13 @@ from extra_commands.wordle import (
 )
 from extra_commands.wordle_image import generate_wordle_board
 from firebase_client import db
-from panels.staff_panel import StaffLayout
+from panels.staff_panel import (
+    EndLayout,
+    ExLayout,
+    LeadLayout,
+    OfficerLayout,
+    StaffLayout,
+)
 from ticket_help.tickets.points import get_boss_room
 from ticket_help.utils.experienced import StartView
 from ticket_help.utils.gif_claim import gif_claim
@@ -1050,10 +1056,16 @@ class Extra(commands.Cog):
     @app_commands.checks.has_role(BOT_GUY_ROLE_ID)
     async def staff(self, interaction: discord.Interaction):
         await interaction.response.defer(ephemeral=True)
-        staff_view = StaffLayout()
+        lead_view = LeadLayout()
+        officer_view = OfficerLayout()
+        ex_view = ExLayout()
+        end_view = EndLayout()
         channel = interaction.channel
 
-        await channel.send(view=staff_view)
+        await channel.send(view=lead_view)
+        await channel.send(view=officer_view)
+        await channel.send(view=ex_view)
+        await channel.send(view=end_view)
 
 
 async def setup(bot: commands.Bot):
