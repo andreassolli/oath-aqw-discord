@@ -146,16 +146,16 @@ class LeadLayout(discord.ui.LayoutView):
                     media="https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/oathstaff.png",
                 ),
             ),
-            discord.ui.TextDisplay(content=f"**Leader / <@{KJ_ROLE_ID}>**"),
+            discord.ui.TextDisplay(content=f"**Leader / <@&{KJ_ROLE_ID}>**"),
         ]
 
         components.extend(
             discord.ui.Section(
                 discord.ui.TextDisplay(
-                    content=f"{f'<@&{user['discord']}>' if discord is not None else user['name']}"
+                    content=f"{f'<@{user['discord']}>' if discord is not None else user['name']}"
                 ),
                 accessory=discord.ui.Thumbnail(
-                    media=f"https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/{user['image']}",
+                    media=f"https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/{user['image']}.png",
                 ),
             )
             for user in LEADER
@@ -166,16 +166,16 @@ class LeadLayout(discord.ui.LayoutView):
         )
 
         components.append(
-            discord.ui.TextDisplay(content=f"**Co-Leads / <@{OATHKEEPER_ROLE_ID}>**"),
+            discord.ui.TextDisplay(content=f"**Co-Leads / <@&{OATHKEEPER_ROLE_ID}>**"),
         )
 
         components.extend(
             discord.ui.Section(
                 discord.ui.TextDisplay(
-                    content=f"{f'<@&{user['discord']}>' if discord is not None else user['name']}"
+                    content=f"{f'<@{user['discord']}>' if discord is not None else user['name']}"
                 ),
                 accessory=discord.ui.Thumbnail(
-                    media=f"https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/{user['image']}",
+                    media=f"https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/{user['image']}.png",
                 ),
             )
             for user in CO_LEADS
@@ -193,33 +193,33 @@ class OfficerLayout(discord.ui.LayoutView):
 
         components: list[discord.ui.Item] = [
             discord.ui.TextDisplay(
-                content=f"**Head Officers / <@{GRAND_OATHSWORN_ROLE_ID}>**"
+                content=f"**Head Officers / <@&{GRAND_OATHSWORN_ROLE_ID}>**"
             ),
         ]
 
         components.extend(
             discord.ui.Section(
                 discord.ui.TextDisplay(
-                    content=f"{f'<@&{user['discord']}>' if discord is not None else user['name']}"
+                    content=f"{f'<@{user['discord']}>' if discord is not None else user['name']}"
                 ),
                 accessory=discord.ui.Thumbnail(
-                    media=f"https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/{user['image']}",
+                    media=f"https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/{user['image']}.png",
                 ),
             )
             for user in HEAD_OFFICERS
         )
 
         components.append(
-            discord.ui.TextDisplay(content=f"**Officers / <@{OATHSWORN_ROLE_ID}>**"),
+            discord.ui.TextDisplay(content=f"**Officers / <@&{OATHSWORN_ROLE_ID}>**"),
         )
 
         components.extend(
             discord.ui.Section(
                 discord.ui.TextDisplay(
-                    content=f"{f'<@&{user['discord']}>' if discord is not None else user['name']}"
+                    content=f"{f'<@{user['discord']}>' if discord is not None else user['name']}"
                 ),
                 accessory=discord.ui.Thumbnail(
-                    media=f"https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/{user['image']}",
+                    media=f"https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/{user['image']}.png",
                 ),
             )
             for user in OFFICERS
@@ -249,7 +249,7 @@ class ExLayout(discord.ui.LayoutView):
         components.extend(
             discord.ui.Section(
                 discord.ui.TextDisplay(
-                    content=f"{f'<@&{user['discord']}>' if discord is not None else user['name']} *{user['period']}*"
+                    content=f"{f'<@{user['discord']}>' if discord is not None else user['name']} *{user['period']}*"
                 ),
                 accessory=discord.ui.Thumbnail(
                     media=f"https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/{user['image']}",

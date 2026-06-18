@@ -103,7 +103,7 @@ async def handle_role_toggle(
         )
         return
 
-    COLOR_ROLE_IDS = [rid for _, rid in COLOR_ROLE_DATA]
+    COLOR_ROLE_IDS = {role["id"] for role in COLOR_ROLE_DATA}
     is_color_role = role_id in COLOR_ROLE_IDS
 
     if target_role in user.roles:
