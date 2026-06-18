@@ -38,7 +38,7 @@ class RulesLayout(discord.ui.LayoutView):
                 content="<:leftwing:1505157673249935402><:rule1w:1505157671836454972><:rightwing:1505157674776531015> **No hate speech or political harassment**"
             ),
             discord.ui.TextDisplay(
-                content="> Refrain from controversial or offensive subjects. No slurs, this goes for all types of slurs, whether related to someones sexuality or ethnicity."
+                content="> Refrain from controversial or offensive subjects. No slurs, this goes for all types of slurs, whether related to someones sexuality or ethnicity. Do also **not** discuss politics or religion in lobby."
             ),
             discord.ui.TextDisplay(content="‎"),
             discord.ui.TextDisplay(

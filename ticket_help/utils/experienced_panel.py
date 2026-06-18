@@ -36,21 +36,21 @@ class StartApplicationView(discord.ui.View):
 async def setup_application_panel(client: discord.Client):
     colors = RoleLayout(
         title="**Choose Your Color Role**",
-        image="color.png",
+        image="newcolor.png",
         description="All Oath members can claim one of these base colors to make your name stand out:",
         role_data=ROLE_GROUPS["color"],
     )
     social = RoleLayout(
         title="**Social Activities**",
-        subtitle="Want to socialize with the guildies? :oath:",
-        image="social.png",
+        subtitle="Want to socialize with the guildies? <:oath:1457451850184917122>",
+        image="newsocial.png",
         description="Click to opt in for notifications based on which social activity you want to be notified about. You can always opt out later!",
         role_data=ROLE_GROUPS["social"],
     )
     notifications = RoleLayout(
         title="**Opt Out of Notifications**",
         subtitle="Getting too many notifications?",
-        image="notifications.png",
+        image="newnoti.png",
         description="Just remove any roles you don't want notifications from. You can always add them back later!",
         role_data=ROLE_GROUPS["notification"],
     )
@@ -84,25 +84,16 @@ async def setup_application_panel(client: discord.Client):
     )
 
     # try:
-    # color_msg = await channel.fetch_message(1515795016294076487)
-    # await color_msg.edit(view=color_layout)
-    # except discord.NotFound:
-    await channel.send(
-        view=colors,
-        allowed_mentions=discord.AllowedMentions.none(),
-    )
-    await channel.send(
-        view=social,
-        allowed_mentions=discord.AllowedMentions.none(),
-    )
-    await channel.send(
-        view=notifications,
-        allowed_mentions=discord.AllowedMentions.none(),
-    )
-    await channel.send(
+    color_msg = await channel.fetch_message(1516881734183026810)
+    social_msg = await channel.fetch_message(1516881736359874631)
+    noti_msg = await channel.fetch_message(1516881738188460153)
+    cert_msg = await channel.fetch_message(1516881740457840760)
+    await color_msg.edit(view=colors)
+    await social_msg.edit(view=social)
+    await noti_msg.edit(view=notifications)
+    await cert_msg.edit(
         embed=embed,
         view=StartApplicationView(),
-        allowed_mentions=discord.AllowedMentions.none(),
     )
 
     # try:
