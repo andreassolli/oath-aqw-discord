@@ -85,7 +85,6 @@ from panels.staff_panel import (
     ExLayout,
     LeadLayout,
     OfficerLayout,
-    StaffLayout,
 )
 from ticket_help.tickets.points import get_boss_room
 from ticket_help.utils.experienced import StartView
