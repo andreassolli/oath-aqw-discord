@@ -68,6 +68,13 @@ async def generate_profile_card(
     avg_display = f"{avg_guesses}" if games_played > 0 else "—"
     users_above = list(db.collection("users").where("points", ">", points).stream())
     rank = len(users_above) + 1
+    pod_placement = -1
+    total_badges = data.get("total_badges", 0)
+    if guild == "Oath":
+        pod_users_above = list(
+            db.collection("users").where("total_badges", ">", total_badges).stream()
+        )
+        pod_placement = len(pod_users_above) + 1
     counting_score = data.get("counting_score", 0)
     coins = data.get("coins", 0)
     wins = data.get("wins", 0)
@@ -243,6 +250,15 @@ async def generate_profile_card(
     )
 
     draw.text(
+        (535, 387),
+        f"{ordinal(pod_placement)} place",
+        font=font_xsmall,
+        fill=color,
+        stroke_fill=outline_color,
+        stroke_width=outline_width,
+    )
+
+    draw.text(
         (535, 305),
         f"{gems}",
         font=font_xsmall,
@@ -320,6 +336,7 @@ async def generate_profile_card(
     ticket = ASSET_CACHE["ticket"]
     podium = ASSET_CACHE["podium"]
     average = ASSET_CACHE["average"]
+    pod = ASSET_CACHE["whale_pod"]
 
     x = 0
     y = 0
@@ -344,6 +361,7 @@ async def generate_profile_card(
     bg.paste(ticket, (498, 430), ticket)
     bg.paste(messages, (468, 235), messages)
     bg.paste(dice, (313, 391), dice)
+    bg.paste(dice, (497, 391), pod)
     bg.paste(aqwordle, (311, 349), aqwordle)
     bg.paste(average, (497, 349), average)
     bg.paste(trophy, (313, 474), trophy)
