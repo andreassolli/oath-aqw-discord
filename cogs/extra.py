@@ -174,12 +174,15 @@ class Extra(commands.Cog):
         is_oath_member = any(role.id == INITIATE_ROLE_ID for role in player.roles)
         if not is_oath_member:
             await interaction.response.send_message(
-                f"{player.mention} is not in Oath Guild and cannot be nominated for POTW."
+                f"{player.mention} is not in Oath Guild and cannot be nominated for POTW.",
+                ephemeral=True,
             )
             return
 
         if player.id == interaction.user.id:
-            await interaction.response.send_message(f"You cannot nominate yourself.")
+            await interaction.response.send_message(
+                f"You cannot nominate yourself.", ephemeral=True
+            )
             return
 
         nominator_ref = db.collection("potw_nominators").document(
@@ -217,7 +220,7 @@ class Extra(commands.Cog):
 
         nominator_ref.set({"nominated_player": player.display_name})
         await interaction.response.send_message(
-            f"{player.mention} has been nominated for POTW!"
+            f"{player.mention} has been nominated for POTW!", ephemeral=True
         )
 
     @app_commands.command(name="elp", description="Call for ELP")
