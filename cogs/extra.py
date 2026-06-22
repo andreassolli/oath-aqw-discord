@@ -178,6 +178,10 @@ class Extra(commands.Cog):
             )
             return
 
+        if player.id == interaction.user.id:
+            await interaction.response.send_message(f"You cannot nominate yourself.")
+            return
+
         nominator_ref = db.collection("potw_nominators").document(
             str(interaction.user.id)
         )
