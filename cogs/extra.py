@@ -8,7 +8,7 @@ from discord.abc import Messageable
 from discord.ext import commands
 from google.cloud import firestore
 from google.cloud import firestore as gc_firestore
-from google.cloud.firestore import ArrayUnion
+from google.cloud.firestore import ArrayUnion, Increment
 
 from config import (
     ADMIN_ROLE_ID,
@@ -169,7 +169,7 @@ class Extra(commands.Cog):
         )
 
     @app_commands.command(name="nominate", description="Nominate a player for POTW")
-    @app_commands.checks.has_any_role(OATHSWORN_ROLE_ID, TRANSCENDED_ROLE_ID)
+    @app_commands.checks.has_any_role(INITIATE_ROLE_ID)
     async def nominate(self, interaction: discord.Interaction, player: discord.Member):
         is_oath_member = any(role.id == INITIATE_ROLE_ID for role in player.roles)
         if not is_oath_member:
@@ -178,10 +178,40 @@ class Extra(commands.Cog):
             )
             return
 
-        db.collection("meta").document("potw_nominees").update(
-            {"nominees": ArrayUnion([str(player.display_name)])}
+        nominator_ref = db.collection("potw_nominators").document(
+            str(interaction.user.id)
         )
 
+        if nominator_ref.get().exists:
+            await interaction.response.send_message(
+                "You have already used your POTW nomination.",
+                ephemeral=True,
+            )
+            return
+
+        doc_ref = db.collection("potw_nominees").document(
+            str(player.display_name.lower())
+        )
+        doc = doc_ref.get()
+
+        if doc.exists:
+            doc_ref.update(
+                {
+                    "count": Increment(1),
+                    "nominated_by": ArrayUnion([interaction.user.display_name.lower()]),
+                }
+            )
+
+        else:
+            doc_ref.set(
+                {
+                    "name": player.display_name.lower(),
+                    "count": 1,
+                    "nominated_by": [interaction.user.display_name.lower()],
+                }
+            )
+
+        nominator_ref.set({"nominated_player": player.id})
         await interaction.response.send_message(
             f"{player.mention} has been nominated for POTW!"
         )
