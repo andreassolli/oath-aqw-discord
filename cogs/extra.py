@@ -211,7 +211,7 @@ class Extra(commands.Cog):
                 }
             )
 
-        nominator_ref.set({"nominated_player": player.id})
+        nominator_ref.set({"nominated_player": player.display_name})
         await interaction.response.send_message(
             f"{player.mention} has been nominated for POTW!"
         )
