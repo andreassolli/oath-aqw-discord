@@ -361,7 +361,7 @@ async def generate_profile_card(
     bg.paste(ticket, (498, 430), ticket)
     bg.paste(messages, (468, 235), messages)
     bg.paste(dice, (313, 391), dice)
-    bg.paste(dice, (497, 391), pod)
+    bg.paste(pod, (497, 391), pod)
     bg.paste(aqwordle, (311, 349), aqwordle)
     bg.paste(average, (497, 349), average)
     bg.paste(trophy, (313, 474), trophy)
