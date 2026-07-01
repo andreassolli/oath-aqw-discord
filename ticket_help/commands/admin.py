@@ -589,13 +589,13 @@ async def reset_all_points(interaction: discord.Interaction):
 
     archive_id = datetime.utcnow().strftime("%Y-%m-%d_%H-%M-%S")
 
-    # db.collection("points_archive").document(archive_id).set(
-    #    {
-    #        "created_at": firestore.SERVER_TIMESTAMP,
-    #        "reset_by": interaction.user.id,
-    #        "users": archive_data,
-    #    }
-    # )
+    db.collection("points_archive").document(archive_id).set(
+        {
+            "created_at": firestore.SERVER_TIMESTAMP,
+            "reset_by": interaction.user.id,
+            "users": archive_data,
+        }
+    )
 
     # Sort users by points (highest first)
     leaderboard = sorted(
@@ -675,12 +675,12 @@ async def reset_all_points(interaction: discord.Interaction):
 
     await log_channel.send(embed=embed)
 
-    # batch = db.batch()
-    # for doc in users:
-    #    batch.update(
-    #        doc.reference, {"points": 0, "tickets_claimed": 0, "gems_awarded_points": 0}
-    #    )
-    # batch.commit()
+    batch = db.batch()
+    for doc in users:
+        batch.update(
+            doc.reference, {"points": 0, "tickets_claimed": 0, "gems_awarded_points": 0}
+        )
+    batch.commit()
 
     await interaction.followup.send(
         f"✅ All user points have been reset.\n📦 Archive ID: `{archive_id}`",
