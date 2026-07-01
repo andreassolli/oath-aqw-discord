@@ -1,10 +1,14 @@
-from datetime import datetime
+from datetime import UTC, datetime, timedelta
 from typing import List
 
 import discord
 from discord import app_commands
 
-from config import ALLOWED_COMMANDS_CHANNELS, TICKET_LOG_CHANNEL_ID
+from config import (
+    ALLOWED_COMMANDS_CHANNELS,
+    LEADERBOARD_HISTORY_CHANNEL_ID,
+    TICKET_LOG_CHANNEL_ID,
+)
 from firebase_client import db, firestore
 from ticket_help.commands.permissions import has_admin_role, has_oathsworn_role
 from ticket_help.dashboard.updater import update_dashboard
@@ -580,22 +584,103 @@ async def reset_all_points(interaction: discord.Interaction):
         archive_data[doc.id] = {
             "points": data.get("points", 0),
             "tickets_claimed": data.get("tickets_claimed", 0),
+            "guild": data.get("guild", ""),
         }
 
     archive_id = datetime.utcnow().strftime("%Y-%m-%d_%H-%M-%S")
 
-    db.collection("points_archive").document(archive_id).set(
-        {
-            "created_at": firestore.SERVER_TIMESTAMP,
-            "reset_by": interaction.user.id,
-            "users": archive_data,
-        }
+    # db.collection("points_archive").document(archive_id).set(
+    #    {
+    #        "created_at": firestore.SERVER_TIMESTAMP,
+    #        "reset_by": interaction.user.id,
+    #        "users": archive_data,
+    #    }
+    # )
+
+    # Sort users by points (highest first)
+    leaderboard = sorted(
+        archive_data.items(),
+        key=lambda x: x[1]["points"],
+        reverse=True,
+    )[:15]
+
+    channel = interaction.guild.get_channel(LEADERBOARD_HISTORY_CHANNEL_ID)
+    if channel is None:
+        channel = await interaction.guild.fetch_channel(LEADERBOARD_HISTORY_CHANNEL_ID)
+
+    medals = ["🥇", "🥈", "🥉"]
+    lines = []
+
+    for i, (user_id, data) in enumerate(leaderboard):
+        member = interaction.guild.get_member(int(user_id))
+
+        if member:
+            display_name = member.display_name
+        else:
+            display_name = f"Unknown ({user_id})"
+
+        points = data["points"]
+
+        if i < 3:
+            prefix = medals[i]
+        else:
+            prefix = f"`{i + 1:02}`"
+
+        # Optional: replace this with your guild/team lookup
+        aqw_guild = data.get("guild", "")
+        if aqw_guild and aqw_guild != "None":
+            if aqw_guild == "Oath":
+                guild_str = "<:oath:1457451850184917122> `Oath` "
+            else:
+                guild_str = f"`{aqw_guild}` "
+        else:
+            guild_str = ""
+
+        lines.append(f"{prefix} **{display_name}** {guild_str}— `{points}` points")
+
+    embed = discord.Embed(
+        title=f"🏆 Leaderboard for {datetime.utcnow():%B %Y} (Top 15)",
+        description="\n".join(lines),
+        color=discord.Color.gold(),
+        timestamp=datetime.now(UTC),
     )
 
-    batch = db.batch()
-    for doc in users:
-        batch.update(doc.reference, {"points": 0, "tickets_claimed": 0})
-    batch.commit()
+    await channel.send(embed=embed)
+    log_channel = interaction.guild.get_channel(TICKET_LOG_CHANNEL_ID)
+    if log_channel is None:
+        log_channel = await interaction.guild.fetch_channel(TICKET_LOG_CHANNEL_ID)
+
+    qualified = sorted(
+        (
+            (user_id, data)
+            for user_id, data in archive_data.items()
+            if data["points"] >= 50
+        ),
+        key=lambda x: x[1]["points"],
+        reverse=True,
+    )
+
+    lines = []
+    for user_id, data in qualified:
+        member = interaction.guild.get_member(int(user_id))
+        name = member.display_name if member else f"Unknown ({user_id})"
+        lines.append(f"• **{name}** — `{data['points']}` points")
+
+    embed = discord.Embed(
+        title=f"Users with 50+ Points ({len(qualified)})",
+        description="\n".join(lines) or "None",
+        color=discord.Color.green(),
+        timestamp=datetime.now(UTC),
+    )
+
+    await log_channel.send(embed=embed)
+
+    # batch = db.batch()
+    # for doc in users:
+    #    batch.update(
+    #        doc.reference, {"points": 0, "tickets_claimed": 0, "gems_awarded_points": 0}
+    #    )
+    # batch.commit()
 
     await interaction.followup.send(
         f"✅ All user points have been reset.\n📦 Archive ID: `{archive_id}`",
