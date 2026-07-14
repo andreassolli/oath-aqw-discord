@@ -147,7 +147,7 @@ class BlackjackView(discord.ui.View):
                 },
                 merge=True,
             )
-            result = f"<:mapClown:1484474701798707240> Push. Your wager was returned."
+            result = f"<:maClown:1503385683304251412> Push. Your wager was returned."
 
         return result, file, dealer_total
 

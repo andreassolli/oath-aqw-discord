@@ -18,6 +18,8 @@ async def generate_claim(
     status: str,
     user: discord.User,
     image: str | None = None,
+    role_change: bool = False,
+    selected_role: str = "",
 ):
     if image is not None:
         bg = Image.open(ASSETS_DIR / image)
@@ -27,7 +29,16 @@ async def generate_claim(
     icon = ASSET_CACHE["plus"] if claimed else ASSET_CACHE["minus"]
     bg = bg.copy()
     font_big = FONTS["claim_font"]
-    claim_text = "claimed" if claimed else "unclaimed"
+    claim_text = "claimed" if claimed else f"unclaimed {status}"
+    role_text = f"{selected_role}"
+    full_claim_text = claim_text
+    if claimed:
+        full_claim_text = (
+            f"swapped to {role_text}"
+            if role_change
+            else f"{claim_text} {role_text} {status}"
+        )
+
     avatar_url = user.display_avatar.replace(format="png", size=128).url
     avatar = await fetch_avatar(avatar_url)
 
@@ -38,7 +49,7 @@ async def generate_claim(
     draw = ImageDraw.Draw(bg)
     draw.text(
         (130, 34),
-        f"{username} {claim_text} {status}",
+        f"{username} {full_claim_text}",
         font=font_big,
         fill="#FFFFFF",
     )
