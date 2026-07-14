@@ -18,11 +18,22 @@ async def gif_claim(
     status: str,
     user: discord.User,
     gif: str = "akame-claim.gif",
+    role_changed: bool = False,
+    selected_role: str = "",
 ):
 
     im = Image.open(ASSETS_DIR / gif)
     font_big = FONTS["claim_font"]
-    claim_text = "claimed" if claimed else "unclaimed"
+    claim_text = "claimed" if claimed else f"unclaimed {status}"
+    role_text = f"{selected_role}"
+    full_claim_text = claim_text
+    if claimed:
+        full_claim_text = (
+            f"swapped to {role_text}"
+            if role_change
+            else f"{claim_text} {role_text} {status}"
+        )
+    
     avatar_url = user.display_avatar.replace(format="png", size=128).url
     avatar = await fetch_avatar(avatar_url)
     avatar = circle_crop(avatar, 100)
@@ -37,13 +48,14 @@ async def gif_claim(
 
         d.text(
             (130, 34),
-            f"{username} {claim_text} {status}",
+            f"{username} {full_claim_text}",
             font=font_big,
             fill="#FFFFFF",
         )
 
         frame.paste(avatar, (10, 10), avatar)
-        frame.paste(icon, (frame.width - 110, 10), icon)
+        if not role_changed:
+            frame.paste(icon, (frame.width - 110, 10), icon)
 
         frames.append(frame)
     # Save the frames as a new image
