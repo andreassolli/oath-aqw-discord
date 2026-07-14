@@ -32,6 +32,13 @@ async def generate_claim(
     claim_text = "claimed" if claimed else f"unclaimed {status}"
     role_text = f"{selected_role}"
     full_claim_text = claim_text
+    if not role_change:
+        if selected_role == "ArchPaladin":
+            selected_role = "AP"
+        elif selected_role == "Lord of Order":
+            selected_role = "LOO"
+        elif selected_role == "Legion Revenant":
+            selected_role = "LR"
     if claimed:
         full_claim_text = (
             f"swapped to {role_text}"
