@@ -29,9 +29,6 @@ async def generate_claim(
     icon = ASSET_CACHE["plus"] if claimed else ASSET_CACHE["minus"]
     bg = bg.copy()
     font_big = FONTS["claim_font"]
-    claim_text = "claimed" if claimed else f"unclaimed {status}"
-    role_text = f"{selected_role}"
-    full_claim_text = claim_text
     if not role_change:
         if selected_role == "ArchPaladin":
             selected_role = "AP"
@@ -39,6 +36,10 @@ async def generate_claim(
             selected_role = "LOO"
         elif selected_role == "Legion Revenant":
             selected_role = "LR"
+    claim_text = "claimed" if claimed else f"unclaimed {status}"
+    role_text = f"{selected_role}"
+    full_claim_text = claim_text
+    
     if claimed:
         full_claim_text = (
             f"swapped to {role_text}"
