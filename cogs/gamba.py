@@ -58,6 +58,11 @@ class Gamba(commands.Cog):
                 "Wager must be below <:oathcoin:1462999179998531614>25 000.",
                 ephemeral=True,
             )
+        if opponent is None and call is None:
+            return await interaction.followup.send(
+                "You must either select and opponent, or pick heads or tails",
+                ephemeral=True,
+            )
         success, error = lock_coins(interaction.user.id, wager)
 
         if not success:
@@ -250,7 +255,7 @@ class Gamba(commands.Cog):
             )
 
             if dealer_total == 21:
-                result = f"<:mapClown:1484474701798707240> Push, gained back <:oathcoin:1462999179998531614>{wager}"
+                result = f"<:maClown:1503385683304251412> Push, gained back <:oathcoin:1462999179998531614>{wager}"
 
             else:
                 user_ref.update({"coins": firestore.Increment(int(wager * 1.5))})

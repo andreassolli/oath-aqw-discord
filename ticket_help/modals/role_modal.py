@@ -139,6 +139,9 @@ class RoleModal(discord.ui.Modal, title="Role Selection"):
         await interaction.response.send_message(
             f"You selected: {selected_role}", ephemeral=True
         )
+        role_change = False
+        if interaction.user.id in claimers:
+            role_change = True
         if claim_image is not None:
             image = await gif_claim(
                 interaction.user.display_name,
@@ -146,6 +149,8 @@ class RoleModal(discord.ui.Modal, title="Role Selection"):
                 f"({len(claimers) + 1}/{max_claims + 1})",
                 interaction.user,
                 claim_image,
+                role_change,
+                selected_role,
             )
             await interaction.channel.send(file=discord.File(image, "claim.gif"))
         else:
@@ -155,6 +160,8 @@ class RoleModal(discord.ui.Modal, title="Role Selection"):
                 f"({len(claimers) + 1}/{max_claims + 1})",
                 interaction.user,
                 claim_image,
+                role_change,
+                selected_role,
             )
             await interaction.channel.send(file=discord.File(image, "claim.png"))
         await interaction.response.send_message(
