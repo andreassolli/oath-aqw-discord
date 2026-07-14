@@ -114,7 +114,9 @@ class RoleModal(discord.ui.Modal, title="Role Selection"):
                 ephemeral=True,
             )
 
-        if user_id not in claimers and not is_requester:
+        role_change = user_id in claimers or is_requester
+
+        if not role_change and not is_requester:
             claimers.append(user_id)
 
         roles[str(user_id)] = selected_role
@@ -139,9 +141,7 @@ class RoleModal(discord.ui.Modal, title="Role Selection"):
         await interaction.response.send_message(
             f"You selected: {selected_role}", ephemeral=True
         )
-        role_change = False
-        if interaction.user.id in claimers:
-            role_change = True
+       
         if claim_image is not None:
             image = await gif_claim(
                 interaction.user.display_name,
