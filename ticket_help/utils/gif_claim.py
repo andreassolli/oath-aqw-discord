@@ -18,7 +18,7 @@ async def gif_claim(
     status: str,
     user: discord.User,
     gif: str = "akame-claim.gif",
-    role_changed: bool = False,
+    role_change: bool = False,
     selected_role: str = "",
 ):
 
