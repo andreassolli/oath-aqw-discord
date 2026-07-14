@@ -61,7 +61,7 @@ async def gif_claim(
         )
 
         frame.paste(avatar, (10, 10), avatar)
-        if not role_changed:
+        if not role_change:
             frame.paste(icon, (frame.width - 110, 10), icon)
 
         frames.append(frame)
