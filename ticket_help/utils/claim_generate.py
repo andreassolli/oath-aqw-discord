@@ -45,7 +45,8 @@ async def generate_claim(
     avatar = circle_crop(avatar, 100)
 
     bg.paste(avatar, (10, 10), avatar)
-    bg.paste(icon, (bg.width - 110, 10), icon)
+    if not role_change:
+        bg.paste(icon, (bg.width - 110, 10), icon)
     draw = ImageDraw.Draw(bg)
     draw.text(
         (130, 34),
