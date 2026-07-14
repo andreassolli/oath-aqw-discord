@@ -24,6 +24,13 @@ async def gif_claim(
 
     im = Image.open(ASSETS_DIR / gif)
     font_big = FONTS["claim_font"]
+    if not role_change:
+        if selected_role == "ArchPaladin":
+            selected_role = "AP"
+        elif selected_role == "Lord of Order":
+            selected_role = "LOO"
+        elif selected_role == "Legion Revenant":
+            selected_role = "LR"
     claim_text = "claimed" if claimed else f"unclaimed {status}"
     role_text = f"{selected_role}"
     full_claim_text = claim_text
