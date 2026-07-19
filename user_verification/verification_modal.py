@@ -133,6 +133,12 @@ class VerificationModal(discord.ui.Modal):
                     ephemeral=True,
                 )
 
+            if interaction.user.id == 1186393502272196718:
+                return await interaction.followup.send(
+                    "You are banned from joining Oath.",
+                    ephemeral=True,
+                )
+
             category = guild_obj.get_channel(NEW_TICKET_CATEGORY_ID)
 
             if not isinstance(category, discord.CategoryChannel):

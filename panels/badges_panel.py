@@ -233,11 +233,23 @@ class BadgesButton(discord.ui.Button):
 
             existing = current_highest_per_category.get(selected_category)
 
-            if existing == highest_allowed:
-                skipped.append(highest_allowed)
+            # User has never earned a badge in this category
+            if existing is None:
+                updated_discord_badges.append(highest_allowed)
+                passed.append(highest_allowed)
                 continue
 
-            # remove old tier
+            badge_map = BADGE_CATEGORIES[selected_category]
+
+            existing_tier = badge_map.get(existing, 0)
+            new_tier = badge_map.get(highest_allowed, 0)
+
+            # Same or lower tier -> keep existing badge
+            if new_tier <= existing_tier:
+                skipped.append(existing)
+                continue
+
+            # Higher tier -> upgrade
             updated_discord_badges = [
                 b
                 for b in updated_discord_badges
@@ -245,8 +257,7 @@ class BadgesButton(discord.ui.Button):
             ]
 
             updated_discord_badges.append(highest_allowed)
-
-            passed.append(highest_allowed)
+            passed.append(f"{existing} → {highest_allowed}")
 
         if whale_badge:
             existing_whale = next(
