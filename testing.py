@@ -877,7 +877,7 @@ def show_over_50_points():
 
 if __name__ == "__main__":
     # fix_gems_awarded_points()
-    asyncio.run(post_kofi_summary())
+    # asyncio.run(post_kofi_summary())
     # asyncio.run(add_killer_card())
     # migrate_aqw_usernames_lower()
     # reset_coins()
@@ -886,16 +886,16 @@ if __name__ == "__main__":
     # asyncio.run(find_users_with_doom_card())
     # get_all_users()
     # choose_new_word()
-    # asyncio.run(
-    #    add_item(
-    #        "696254108788719627",
-    #        "Esdeath Card",
-    #        "card",
-    #        "esdeath_card.png",
-    #        "esdeath_card_item.png",
-    #        "legendary",
-    #    )
-    # )
+    asyncio.run(
+        add_item(
+            "799553611473616966",
+            "Secretary's Megumi",
+            "card",
+            "megumi_card.png",
+            "megumi_card_item.png",
+            "legendary",
+        )
+    )
     # asyncio.run(test_fetch_call())
 # asyncio.run(generate_inventory(userId="292040660696039424"))
 # asyncio.run(backfill_ccids())
