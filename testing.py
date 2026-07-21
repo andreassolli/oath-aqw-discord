@@ -888,11 +888,11 @@ if __name__ == "__main__":
     # choose_new_word()
     asyncio.run(
         add_item(
-            "799553611473616966",
-            "Secretary's Megumi",
-            "card",
-            "megumi_card.png",
-            "megumi_card_item.png",
+            "137666313114877952",
+            "Quincy's Trigun",
+            "claim",
+            "quincy_claim.gif",
+            "quincy_claim_item.png",
             "legendary",
         )
     )

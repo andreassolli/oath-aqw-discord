@@ -71,10 +71,19 @@ async def generate_profile_card(
     pod_placement = -1
     total_badges = data.get("total_badges", 0)
     if guild == "Oath":
-        pod_users_above = list(
-            db.collection("users").where("total_badges", ">", total_badges).stream()
+        pod_count = (
+            db.collection("users")
+            .where("total_badges", ">", total_badges)
+            .where("guild", "==", "Oath")
+            .count()
+            .get()[0][0]
+            .value
         )
-        pod_placement = len(pod_users_above) + 1
+
+        pod_placement = pod_count + 1
+    else:
+        pod_placement = "None"
+
     counting_score = data.get("counting_score", 0)
     coins = data.get("coins", 0)
     wins = data.get("wins", 0)
