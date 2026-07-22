@@ -81,8 +81,6 @@ async def generate_profile_card(
         )
 
         pod_placement = pod_count + 1
-    else:
-        pod_placement = "None"
 
     counting_score = data.get("counting_score", 0)
     coins = data.get("coins", 0)
@@ -326,14 +324,22 @@ async def generate_profile_card(
         stroke_width=outline_width,
     )
 
+    pod_text = (
+        f"{ordinal(pod_placement)} place"
+        if guild == "Oath"
+        else "—"
+    )
+
     draw.text(
-        (535, 469),
-        f"{ordinal(rank)} place",
+        (535, 387),
+        pod_text,
         font=font_xsmall,
         fill=color,
         stroke_fill=outline_color,
         stroke_width=outline_width,
     )
+
+
 
     trophy = ASSET_CACHE["trophy"]
     coin = ASSET_CACHE["coin"]
