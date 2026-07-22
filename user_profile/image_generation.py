@@ -256,14 +256,6 @@ async def generate_profile_card(
         stroke_width=outline_width,
     )
 
-    draw.text(
-        (535, 387),
-        f"{ordinal(pod_placement)} place",
-        font=font_xsmall,
-        fill=color,
-        stroke_fill=outline_color,
-        stroke_width=outline_width,
-    )
 
     draw.text(
         (535, 305),
@@ -339,7 +331,14 @@ async def generate_profile_card(
         stroke_width=outline_width,
     )
 
-
+    draw.text(
+        (535, 469),
+        f"{ordinal(rank)} place",
+        font=font_xsmall,
+        fill=color,
+        stroke_fill=outline_color,
+        stroke_width=outline_width,
+    )
 
     trophy = ASSET_CACHE["trophy"]
     coin = ASSET_CACHE["coin"]
