@@ -1066,28 +1066,6 @@ class Extra(commands.Cog):
             f"📋 **Room codes:**\n{rooms_text}", ephemeral=True
         )
 
-    @app_commands.command(name="test-claim", description="Test claim gif")
-    async def test_claim(
-        self,
-        interaction: discord.Interaction,
-        gif: str = "akame-claim.gif",
-        is_claiming: bool = True,
-    ):
-
-        if interaction.user.display_name in {"Proxy", "Mapril"}:
-            image = await gif_claim(
-                interaction.user.display_name,
-                is_claiming,
-                "(1/7)",
-                interaction.user,
-                gif,
-            )
-            await interaction.channel.send(file=discord.File(image, "claim.gif"))
-        else:
-            await interaction.response.send_message(
-                "You are not eligible to test.", ephemeral=True
-            )
-
     @app_commands.command(name="staff", description="Send staff panel")
     @app_commands.default_permissions(manage_roles=True)
     @app_commands.checks.has_role(BOT_GUY_ROLE_ID)
