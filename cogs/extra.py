@@ -29,6 +29,7 @@ from config import (
     NULGATH_CERTIFICATE_ID,
     OATHSWORN_ROLE_ID,
     SPEAKER_CERTIFICATE_ID,
+    SUGGESTIONS_CATEGORY,
     TICKET_INSPECTOR_ROLE_ID,
     TICKET_INSPECTORS_CHANNEL_ID,
     TICKET_LOG_CHANNEL_ID,
@@ -1118,6 +1119,59 @@ class Extra(commands.Cog):
         await channel.send(view=ex_view)
         await channel.send(view=end_view)
         await interaction.followup.send("Sent panels")
+
+
+    @app_commands.command(
+        name="suggest-feature",
+        description="Create a private channel to discuss a feature."
+    )
+    async def suggest_feature(
+        self,
+        interaction: discord.Interaction,
+    ):
+        await interaction.response.defer(ephemeral=True)
+
+        guild = interaction.guild
+        if guild is None:
+            return
+
+        category = guild.get_channel(SUGGESTIONS_CATEGORY)
+        oathsworn_role = guild.get_role(OATHSWORN_ROLE_ID)
+
+        overwrites = {
+            guild.default_role: discord.PermissionOverwrite(
+                view_channel=False,
+            ),
+            interaction.user: discord.PermissionOverwrite(
+                view_channel=True,
+                send_messages=True,
+                read_message_history=True,
+                attach_files=True,
+            ),
+            guild.me: discord.PermissionOverwrite(
+                view_channel=True,
+            ),
+        }
+
+        # Give all Oathsworn members access
+        if oathsworn_role:
+            overwrites[oathsworn_role] = discord.PermissionOverwrite(
+                view_channel=True,
+                send_messages=True,
+                read_message_history=True,
+            )
+
+        channel = await guild.create_text_channel(
+            name=f"feature-{interaction.user.name}".lower(),
+            category=category,
+            overwrites=overwrites,
+            reason=f"Feature suggestion by {interaction.user}",
+        )
+
+        await interaction.followup.send(
+            f"✅ Created {channel.mention}.",
+            ephemeral=True,
+        )
 
 
 async def setup(bot: commands.Bot):

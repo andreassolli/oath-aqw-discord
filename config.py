@@ -169,6 +169,8 @@ BIRTHDAYS_ROLE_ID = env_int("BIRTHDAYS_ROLE_ID")
 OATHKEEPER_ROLE_ID = env_int("OATHKEEPER_ROLE_ID")
 KJ_ROLE_ID = env_int("KJ_ROLE_ID")
 GRAND_OATHSWORN_ROLE_ID = env_int("GRAND_OATHSWORN_ROLE_ID")
+AQW_UPDATES = env_int("AQW_UPDATES")
+SUGGESTIONS_CATEGORY = env_int("SUGGESTIONS_CATEGORY")
 COLOR_ROLES = {
     VERDANT_EMBER,
     ROYAL_VANGUARD,
@@ -268,6 +270,13 @@ NOTIFICATION_ROLE_DATA: list[RoleData] = [
         "emoji": "🎂",
         "emoji_id": None,
         "subtitle": "Congratulate others!",
+    },
+    {
+        "name": "AQW Updates",
+        "id": AQW_UPDATES,
+        "emoji": "AQWMember",
+        "emoji_id": 1529482629525672107,
+        "subtitle": "Get reminders for AQW!",
     },
     {
         "name": "Helper",
