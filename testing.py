@@ -970,8 +970,62 @@ def rebuild_boss_statistics():
     print(f"Bosses tracked: {len(global_stats)}")
     print(f"Total boss clears: {sum(global_stats.values()):,}")
 
+VALID_BOSSES = {
+    "Astral Shrine",
+    "Apex Azalith",
+    "Kathool Depths",
+    "TimeInn Trio",
+    "Lavarock Shore",
+    "Ultra Tyndarius",
+    "Ultra Dage",
+    "Ultra Nulgath",
+    "Ultra Drago",
+    "Ultra Darkon",
+    "Champion Drakath",
+    "Ultra Gramiel",
+    "Ultra Speaker",
+    "Azalith",
+    "Kathool Depths",
+    "Void Trio",
+    "Grim Challenge",
+    "Temple Shrine",
+    "Legion Daily Exercise 2-4",
+    "Void Aura (mem)",
+    "Void Aura (non mem)"
+}
+
+def cleanup_boss_clears():
+    batch = db.batch()
+    writes = 0
+
+    for doc in db.collection("users").stream():
+        data = doc.to_dict() or {}
+
+        boss_clears = data.get("boss_clears", {})
+
+        cleaned = {
+            boss: count
+            for boss, count in boss_clears.items()
+            if boss in VALID_BOSSES
+        }
+
+        batch.update(doc.reference, {
+            "boss_clears": cleaned
+        })
+
+        writes += 1
+
+        if writes == 500:
+            batch.commit()
+            batch = db.batch()
+            writes = 0
+
+    if writes:
+        batch.commit()
+
+    print("Finished cleaning boss_clears.")
 if __name__ == "__main__":
-    rebuild_boss_statistics()
+    cleanup_boss_clears()
     # fix_gems_awarded_points()
     # asyncio.run(post_kofi_summary())
     # asyncio.run(add_killer_card())
