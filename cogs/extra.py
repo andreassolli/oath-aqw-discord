@@ -921,106 +921,6 @@ class Extra(commands.Cog):
         )
 
     @app_commands.command(
-        name="lfg-lol", description="Mark yourself as available for LoL Tourney"
-    )
-    @app_commands.checks.has_any_role(INITIATE_ROLE_ID, UNSWORN_ROLE_ID)
-    async def lfg_lol(self, interaction: discord.Interaction):
-
-        user = interaction.user
-
-        # Prevent LFG if already on team
-        existing_team = get_user_team(user.id)
-
-        if existing_team:
-            await interaction.response.send_message(
-                f"You are already on {existing_team['team_name']}!", ephemeral=True
-            )
-            return
-
-        lfg_ref = db.collection("lfg_lol").document(str(user.id))
-        lfg_doc = lfg_ref.get()
-
-        # Already in LFG
-        if lfg_doc.exists:
-            await interaction.response.send_message(
-                "You are already in the LoL LFG list!", ephemeral=True
-            )
-            return
-
-        lfg_ref.set(
-            {
-                "user_id": user.id,
-                "display_name": user.display_name,
-                "status": "available",
-            }
-        )
-
-        await interaction.response.send_message(
-            "You have been added to the LoL LFG list!"
-        )
-
-    @app_commands.command(
-        name="view-lfg", description="View all users looking for team"
-    )
-    @app_commands.checks.has_any_role(INITIATE_ROLE_ID, UNSWORN_ROLE_ID)
-    async def view_lfg(self, interaction: discord.Interaction):
-        channel_id = interaction.channel_id
-        if channel_id != LFG_LOL_ID:
-            await interaction.response.send_message(
-                "This command can only be used in the LoL LFG channel!", ephemeral=True
-            )
-            return
-        users = [
-            doc.to_dict()
-            for doc in db.collection("lfg_lol").where("status", "==", "available").get()
-        ]
-        layout = LFGPlayersLayout(users)
-        return await interaction.response.send_message(view=layout, ephemeral=True)
-
-    @app_commands.command(name="join-lol-team", description="Join an existing LoL team")
-    @app_commands.checks.has_any_role(INITIATE_ROLE_ID, UNSWORN_ROLE_ID)
-    async def join_lol_team(self, interaction: discord.Interaction):
-
-        teams = db.collection("league_teams").stream()
-
-        await interaction.response.send_message(
-            "Select a team to join:", view=TeamView(teams), ephemeral=True
-        )
-
-    @app_commands.command(
-        name="view-lol-teams", description="View all registered LoL teams"
-    )
-    @app_commands.checks.has_any_role(INITIATE_ROLE_ID, UNSWORN_ROLE_ID)
-    async def view_lol_teams(self, interaction: discord.Interaction):
-        channel_id = interaction.channel_id
-        if channel_id != LFG_LOL_ID:
-            await interaction.response.send_message(
-                "This command can only be used in the LoL LFG channel!", ephemeral=True
-            )
-            return
-
-        teams = db.collection("league_teams").get()
-        layout = LeagueTeamsLayout(teams)
-        return await interaction.response.send_message(view=layout, ephemeral=True)
-
-    @app_commands.command(name="png", description="Render AQW PNG")
-    @app_commands.describe(username="AQW username")
-    @app_commands.checks.has_any_role(BOT_GUY_ROLE_ID)
-    async def png_command(self, interaction: discord.Interaction, username: str):
-
-        await interaction.response.defer()
-
-        try:
-            image = await render_png(username)
-
-            await interaction.followup.send(
-                file=discord.File(image, filename=f"{username}.png")
-            )
-
-        except Exception as e:
-            await interaction.followup.send(f"Error: {e}")
-
-    @app_commands.command(
         name="room-codes", description="Get room codes for your claimed ticket"
     )
     async def room_codes_command(self, interaction: discord.Interaction):
@@ -1098,6 +998,52 @@ class Extra(commands.Cog):
         await channel.send(view=end_view)
         await interaction.followup.send("Sent panels")
 
+    @app_commands.command(
+        name="helper-stats",
+        description="View your stats for helping in tickets."
+    )
+    async def helper_stats(
+        self,
+        interaction: discord.Interaction,
+    ):
+        await interaction.response.defer()
+
+        user_ref = db.collection("users").document(str(interaction.user.id))
+        user_doc = user_ref.get()
+
+        if not user_doc.exists:
+            await interaction.followup.send(
+                "You don't have any helper statistics yet."
+            )
+            return
+
+        user_data = user_doc.to_dict() or {}
+
+        tickets_claimed = user_data.get("tickets_claimed", 0)
+        total_points = user_data.get("total_points", 0)
+        boss_clears = user_data.get("boss_clears", {})
+
+        # Sort bosses by clears (highest first)
+        sorted_bosses = sorted(
+            boss_clears.items(),
+            key=lambda x: (-x[1], x[0])
+        )
+
+        if sorted_bosses:
+            boss_text = "\n".join(
+                f"• **{boss}** — {count}"
+                for boss, count in sorted_bosses
+            )
+        else:
+            boss_text = "No bosses completed."
+
+        embed = discord.Embed(
+            title=f"{interaction.user.display_name}'s Helper Stats <:claiming:1505158455412002846>",
+            description=f"\n<:complete_ticket:1505157129252634706> **Tickets Claimed:** {tickets_claimed}\n<:sparks:1505157330055069706> **Total Points:** {total_points}\n\n**Bosses Completed**\n{boss_text}",
+            color=discord.Colour(7344907),
+        )
+
+        await interaction.followup.send(embed=embed)
 
     @app_commands.command(
         name="suggest-feature",
