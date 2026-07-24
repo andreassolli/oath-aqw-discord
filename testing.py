@@ -7,7 +7,9 @@ import discord
 import requests
 from google.cloud import firestore as gc_firestore
 from tweepy import Client as TwitterClient
-
+from collections import defaultdict
+import firebase_admin
+from firebase_admin import credentials
 from economy.gamba.blackjack import deal
 from economy.generate_rocks import generate_rocks
 from economy.inventory import generate_inventory
@@ -875,7 +877,101 @@ def show_over_50_points():
             print(username)
 
 
+
+
+def rebuild_boss_statistics():
+    """
+    Rebuilds boss clear statistics from every completed ticket.
+
+    Updates:
+      users/{user_id}.boss_clears
+      stats/boss_clears
+    """
+
+    # Initialize Firebase if needed
+
+    user_stats = defaultdict(lambda: defaultdict(int))
+    global_stats = defaultdict(int)
+
+    processed = 0
+
+    print("Reading tickets...")
+
+    for ticket in db.collection("tickets").stream():
+        data = ticket.to_dict()
+
+        # Only completed tickets count
+        if data.get("status") != "completed" or data.get("type") == "spamming":
+            continue
+
+        bosses = data.get("bosses", [])
+        if not bosses:
+            continue
+
+        participants = set()
+
+        # Ticket creator
+        creator = data.get("user_id")
+        if creator:
+            participants.add(str(creator))
+
+        # Helpers
+        for claimer in data.get("claimers", []):
+            if isinstance(claimer, dict):
+                user_id = claimer.get("user_id")
+                if user_id:
+                    participants.add(str(user_id))
+            else:
+                participants.add(str(claimer))
+
+        # Per-user boss clears
+        for user_id in participants:
+            for boss in bosses:
+                user_stats[user_id][boss] += 1
+
+        # Global boss clears (one completion per ticket)
+        for boss in bosses:
+            global_stats[boss] += 1
+
+        processed += 1
+
+    print(f"Processed {processed:,} completed tickets.")
+    print(f"Updating {len(user_stats):,} users...")
+
+    # Update users in batches
+    batch = db.batch()
+    writes = 0
+
+    for user_id, boss_counts in user_stats.items():
+        ref = db.collection("users").document(user_id)
+
+        batch.update(ref, {
+            "boss_clears": dict(boss_counts)
+        })
+
+        writes += 1
+
+        if writes == 500:
+            batch.commit()
+            batch = db.batch()
+            writes = 0
+
+    if writes:
+        batch.commit()
+
+    # Store global stats
+    db.collection("stats").document("boss_clears").set({
+        **dict(global_stats),
+        "total_clears": sum(global_stats.values())
+    })
+
+    print("Finished!")
+    print(f"Users updated: {len(user_stats):,}")
+    print(f"Bosses tracked: {len(global_stats)}")
+    print(f"Total boss clears: {sum(global_stats.values()):,}")
+
 if __name__ == "__main__":
+    rebuild_boss_statistics()
     # fix_gems_awarded_points()
     # asyncio.run(post_kofi_summary())
     # asyncio.run(add_killer_card())
@@ -886,16 +982,17 @@ if __name__ == "__main__":
     # asyncio.run(find_users_with_doom_card())
     # get_all_users()
     # choose_new_word()
-    asyncio.run(
-        add_item(
-            "137666313114877952",
-            "Quincy's Trigun",
-            "claim",
-            "quincy_claim.gif",
-            "quincy_claim_item.png",
-            "legendary",
-        )
-    )
+
+    #asyncio.run(
+    #    add_item(
+    #        "292040660696039424",
+    #        "Proxy's Ninja",
+    #        "claim",
+    #        "proxy_claim.gif",
+    #        "proxy_claim_item.png",
+    #        "legendary",
+    #    )
+    #)
     # asyncio.run(test_fetch_call())
 # asyncio.run(generate_inventory(userId="292040660696039424"))
 # asyncio.run(backfill_ccids())

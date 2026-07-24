@@ -5,7 +5,7 @@ from typing import Dict, Tuple
 
 import discord
 from firebase_admin import firestore
-
+from google.cloud.firestore_v1 import Increment
 from config import WEEKLY_REQUESTER_CAP, spam_points
 from economy.gems import reward_gems_if_needed
 from firebase_client import db
@@ -111,26 +111,22 @@ async def finalize_ticket(
         if not keep_ticket:
             clear_active_ticket(user_id, ticket_name)
 
+        updates = {
+            "username": display,
+            "points": Increment(points),
+            "tickets_claimed": Increment(1),
+            "total_claimed": Increment(1),
+            "total_points": Increment(points),
+        }
+
+        if ticket_data.get("type") != "spamming":
+            for boss in completed_bosses:
+                updates[f"boss_clears.{boss}"] = Increment(1)
+
         if helper_doc.exists:
-            user_ref.update(
-                {
-                    "username": display,
-                    "points": firestore.Increment(points),
-                    "tickets_claimed": firestore.Increment(1),
-                    "total_claimed": firestore.Increment(1),
-                    "total_points": firestore.Increment(points),
-                }
-            )
+            user_ref.update(updates)
         else:
-            user_ref.set(
-                {
-                    "username": display,
-                    "points": points,
-                    "tickets_claimed": 1,
-                    "total_claimed": 1,
-                    "total_points": points,
-                }
-            )
+            user_ref.set(updates, merge=True)
 
     requester_ref = db.collection("users").document(str(requester_id))
     requester_doc = requester_ref.get()
@@ -181,8 +177,8 @@ async def finalize_ticket(
     }
 
     if final_reward > 0:
-        updates["points"] = firestore.Increment(final_reward)
-        updates["total_points"] = firestore.Increment(final_reward)
+        updates["points"] = Increment(final_reward)
+        updates["total_points"] = Increment(final_reward)
     if len(claimers) <= 0:
         final_reward = 0
 
@@ -236,12 +232,20 @@ async def finalize_ticket(
         doc_ref.update({"status": "completed"})
         clear_active_ticket(requester_id, ticket_name)
     total_points += final_reward
-    ticket_stats_ref.update(
-        {
-            "total_completed": firestore.Increment(1),
-            "total_points": firestore.Increment(total_points),
-        }
-    )
+
+    ticket_stats_updates = {
+        "total_completed": Increment(1),
+        "total_points": Increment(total_points),
+    }
+    if ticket_data.get("type") != "spamming":
+        for boss in completed_bosses:
+            ticket_stats_updates[f"boss_clears.{boss}"] = Increment(1)
+
+        ticket_stats_updates["boss_clears.total_clears"] = Increment(
+            len(completed_bosses)
+        )
+
+    ticket_stats_ref.update(ticket_stats_updates)
 
     await log_ticket_event(interaction.client, embed=embed)
     await asyncio.sleep(0.5)
