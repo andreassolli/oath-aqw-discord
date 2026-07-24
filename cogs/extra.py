@@ -1031,7 +1031,7 @@ class Extra(commands.Cog):
 
         if sorted_bosses:
             boss_text = "\n".join(
-                f"• **{boss}** — {count}"
+                f"• {boss} — `{count}`"
                 for boss, count in sorted_bosses
             )
         else:
@@ -1039,7 +1039,7 @@ class Extra(commands.Cog):
 
         embed = discord.Embed(
             title=f"{interaction.user.display_name}'s Helper Stats <:claiming:1505158455412002846>",
-            description=f"\n<:complete_ticket:1505157129252634706> **Tickets Claimed:** {tickets_claimed}\n<:sparks:1505157330055069706> **Total Points:** {total_points}\n\n**Bosses Completed**\n{boss_text}",
+            description=f"\n<:complete_ticket:1505157129252634706> **Tickets Claimed:** `{tickets_claimed}`\n<:medal:1505158451179819119> **Total Points:** `{total_points}`\n\n<:star:1503523567898460311> **Bosses Completed**\n{boss_text}",
             color=discord.Colour(7344907),
         )
 
