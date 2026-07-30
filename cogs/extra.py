@@ -798,6 +798,37 @@ class Extra(commands.Cog):
         )
         return
 
+    @app_commands.command(name="mute", description="Mute a discord member for 1 or 5 minutes.")
+    async def mute(self, interaction: discord.Interaction, target: discord.Member, duration: Literal["1","5"]):
+        await interaction.response.defer()
+
+        guild = interaction.guild
+        if not guild:
+            return
+
+        officer_role = guild.get_role(OATHSWORN_ROLE_ID)
+        user_roles = interaction.user.roles
+        if officer_role not in user_roles:
+            return await interaction.followup.send(
+                "Only officers may mute others.",
+                ephemeral=True,
+            )
+        if target.guild_permissions.administrator:
+            return await interaction.followup.send(
+                "You cannot timeout an administrator.",
+                ephemeral=True,
+            )
+
+        duration_from_now = datetime.now(timezone.utc) + timedelta(minutes=int(duration))
+        await target.edit(
+            timed_out_until=duration_from_now, reason=f"Timed out by {interaction.user}"
+        )
+        return await interaction.followup.send(
+            f"{target.mention} has been timed out for {duration} minutes.",
+            ephemeral=True,
+        )
+
+
     @app_commands.command(
         name="ioda", description="See how much AC you need to spend for an IoDA"
     )
@@ -861,16 +892,6 @@ class Extra(commands.Cog):
         )
         return await interaction.followup.send(embed=embed)
 
-    @app_commands.command(name="test", description="test layout")
-    @app_commands.default_permissions(manage_roles=True)
-    @app_commands.checks.has_role(BOT_GUY_ROLE_ID)
-    async def testl(self, interaction: discord.Interaction):
-        layout = TestLayout()
-
-        await interaction.response.send_message(
-            view=layout,
-        )
-
     @app_commands.command(name="css", description="CSS tutorial")
     async def css(self, interaction: discord.Interaction):
         basic_url = "https://youtu.be/ky-MIAIdrfU?si=665iAMcKfJIzkNYr"
@@ -885,40 +906,6 @@ class Extra(commands.Cog):
         )
         return await interaction.response.send_message(embed=embed)
 
-    @app_commands.command(
-        name="register-lol-team", description="Register your team for LoL Tourney"
-    )
-    @app_commands.checks.has_any_role(INITIATE_ROLE_ID, UNSWORN_ROLE_ID)
-    async def register_team(self, interaction: discord.Interaction, team_name: str):
-        user = interaction.user
-
-        team_ref = db.collection("league_teams").document(team_name)
-        team_doc = team_ref.get()
-
-        # Team already exists
-        if team_doc.exists:
-            await interaction.response.send_message(
-                f"{team_name} is already registered for LoL Tourney!", ephemeral=True
-            )
-            return
-
-        # Create team
-        team_ref.set(
-            {
-                "team_name": team_name,
-                "captain": user.id,
-                "player1": user.id,
-                "player2": None,
-                "player3": None,
-                "player4": None,
-                "player5": None,
-                "substitute": None,
-            }
-        )
-
-        return await interaction.response.send_message(
-            f"{team_name} has been registered for LoL Tourney!"
-        )
 
     @app_commands.command(
         name="room-codes", description="Get room codes for your claimed ticket"
