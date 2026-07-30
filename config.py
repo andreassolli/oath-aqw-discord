@@ -291,3 +291,4 @@ ROLE_GROUPS: dict[str, list[RoleData]] = {
     "social": SOCIAL_ROLE_DATA,
     "notification": NOTIFICATION_ROLE_DATA,
 }
+GUIDE_WRITER_ROLE_ID = env_int("GUIDE_WRITER_ROLE_ID")

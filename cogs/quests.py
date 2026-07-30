@@ -4,6 +4,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 from google.cloud import firestore
+from config import GUIDE_WRITER_ROLE_ID
 from quests.new_quests import ChangeQuestModal
 from firebase_client import db
 from quests.setup_quests import setup_quests
@@ -72,6 +73,12 @@ class Quests(commands.Cog):
         quest: Literal["Weekly 1", "Weekly 2", "Frequent 1", "Frequent 2"],
     ):
         await interaction.response.defer(ephemeral=True)
+
+        user_roles = interaction.user.roles
+        guide_writer_role = interaction.guild.get_role(GUIDE_WRITER_ROLE_ID)
+        if guide_writer_role not in user_roles:
+            return await interaction.followup.send("You cannot update quests")
+
         if quest == "Weekly 1":
             quest_ref = db.collection("weekly-quests").document("quest1")
         elif quest == "Weekly 2":
