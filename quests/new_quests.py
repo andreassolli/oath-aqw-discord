@@ -87,29 +87,11 @@ class ChangeQuestModal(discord.ui.Modal, title="Change Quest Items"):
             ),
         )
 
-        # Item 3
-        self.item3 = discord.ui.TextInput(
-            label="Item 3",
-            required=False,
-            default=existing[2].get("name", ""),
-            max_length=100,
-        )
-        self.type3 = discord.ui.Label(
-            text="Type 3",
-            component=discord.ui.Select(
-                placeholder=existing[2].get("type", "Select type"),
-                options=OPTIONS,
-            ),
-        )
-
         self.add_item(self.item1)
         self.add_item(self.type1)
 
         self.add_item(self.item2)
         self.add_item(self.type2)
-
-        self.add_item(self.item3)
-        self.add_item(self.type3)
 
     async def on_submit(self, interaction: discord.Interaction):
         # Remove existing items
@@ -119,7 +101,6 @@ class ChangeQuestModal(discord.ui.Modal, title="Change Quest Items"):
         entries = [
             ("Item 1", self.item1.value.strip(), self.type1.component.values),
             ("Item 2", self.item2.value.strip(), self.type2.component.values),
-            ("Item 3", self.item3.value.strip(), self.type3.component.values),
         ]
 
 
