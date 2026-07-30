@@ -1,7 +1,7 @@
 import discord
 
 from firebase_client import db
-from quests.setup_quests import refresh_quests
+from quests.setup_quests import setup_quests
 from google.cloud import firestore
 
 ITEM_TYPES = {
@@ -197,7 +197,7 @@ class ChangeQuestModal(discord.ui.Modal, title="Change Quest Items"):
         # Reset progress for this quest
         await reset_quest_progress(self.quest_name)
 
-        await refresh_quests(self.bot)
+        await setup_quests(self.bot)
 
         await interaction.followup.send(
             f"✅ Updated **{self.quest_name}** and reset its progress for all users.",
