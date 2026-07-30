@@ -1,42 +1,115 @@
 import discord
 
 from firebase_client import db
-from quests.setup_quests import setup_quests
+from quests.setup_quests import refresh_quests
 from google.cloud import firestore
 
 ITEM_TYPES = {
-    "Axe": "<:aqwaxe:1532278309998559382> Axe",
-    "Dagger": "<:aqwdagger:1532278336687181934> Dagger",
-    "Sword": "<:sword:1532256100756361257> Sword",
-    "Mace": "<:aqwmace:1532278402482966750> Mace",
-    "Staff": "<:aqwstaff:1532278486570369024> Staff",
-    "Wand": "<:aqwwand:1532278495156109482> Wand",
-    "Gun": "<:aqwgun:1532278392312041603>Gun",
-    "Polearm": "<:aqwpolearm:1532278411601514596> Polearm",
-    "Bow": "<:aqwbow:1532278316630020127> Bow",
-    "Rifle": "<:aqwgun:1532278392312041603> Rifle",
-    "Gauntlet": "<:aqwgauntlet:1532278386141954059> Gauntlet",
-    "HandGun": "<:aqwgun:1532278392312041603> HandGun",
-    "Whip": "<:aqwwhip:1532280038953586748> Whip",
-    "Armor": "<:armor:1532256090220138688> Armor",
-    "Class": "<:class:1532256037216976916> Class",
-    "Cape": "<:cape:1532256092027879526> Cape",
-    "Helm": "<:helm:1532256093881761932> Helm",
-    "Pet": "<:pet:1532256098625523722> Pet",
-    "Quest Item": "<:scroll:1532256096063062157> Quest Item",
-    "Item": "<:misc:1532256591141929031> Item",
-    "Misc": "<:aqwnecklace:1532278409583919104> Misc",
-    "Wall Item": "<:wall:1532255983873818778> Wall Item",
-    "House": "<:aqwhouse:1532278397575893063> House",
-    "Floor Item": "<:aqwfloor:1532278339233124512> Floor Item",
+    "Axe": (
+        "Axe",
+        discord.PartialEmoji(name="aqwaxe", id=1532278309998559382),
+    ),
+    "Dagger": (
+        "Dagger",
+        discord.PartialEmoji(name="aqwdagger", id=1532278336687181934),
+    ),
+    "Sword": (
+        "Sword",
+        discord.PartialEmoji(name="sword", id=1532256100756361257),
+    ),
+    "Mace": (
+        "Mace",
+        discord.PartialEmoji(name="aqwmace", id=1532278402482966750),
+    ),
+    "Staff": (
+        "Staff",
+        discord.PartialEmoji(name="aqwstaff", id=1532278486570369024),
+    ),
+    "Wand": (
+        "Wand",
+        discord.PartialEmoji(name="aqwwand", id=1532278495156109482),
+    ),
+    "Gun": (
+        "Gun",
+        discord.PartialEmoji(name="aqwgun", id=1532278392312041603),
+    ),
+    "Polearm": (
+        "Polearm",
+        discord.PartialEmoji(name="aqwpolearm", id=1532278411601514596),
+    ),
+    "Bow": (
+        "Bow",
+        discord.PartialEmoji(name="aqwbow", id=1532278316630020127),
+    ),
+    "Rifle": (
+        "Rifle",
+        discord.PartialEmoji(name="aqwgun", id=1532278392312041603),
+    ),
+    "Gauntlet": (
+        "Gauntlet",
+        discord.PartialEmoji(name="aqwgauntlet", id=1532278386141954059),
+    ),
+    "HandGun": (
+        "HandGun",
+        discord.PartialEmoji(name="aqwgun", id=1532278392312041603),
+    ),
+    "Whip": (
+        "Whip",
+        discord.PartialEmoji(name="aqwwhip", id=1532280038953586748),
+    ),
+    "Armor": (
+        "Armor",
+        discord.PartialEmoji(name="armor", id=1532256090220138688),
+    ),
+    "Class": (
+        "Class",
+        discord.PartialEmoji(name="class", id=1532256037216976916),
+    ),
+    "Cape": (
+        "Cape",
+        discord.PartialEmoji(name="cape", id=1532256092027879526),
+    ),
+    "Helm": (
+        "Helm",
+        discord.PartialEmoji(name="helm", id=1532256093881761932),
+    ),
+    "Pet": (
+        "Pet",
+        discord.PartialEmoji(name="pet", id=1532256098625523722),
+    ),
+    "Quest Item": (
+        "Quest Item",
+        discord.PartialEmoji(name="scroll", id=1532256096063062157),
+    ),
+    "Item": (
+        "Item",
+        discord.PartialEmoji(name="misc", id=1532256591141929031),
+    ),
+    "Misc": (
+        "Misc",
+        discord.PartialEmoji(name="aqwnecklace", id=1532278409583919104),
+    ),
+    "Wall Item": (
+        "Wall Item",
+        discord.PartialEmoji(name="wall", id=1532255983873818778),
+    ),
+    "House": (
+        "House",
+        discord.PartialEmoji(name="aqwhouse", id=1532278397575893063),
+    ),
+    "Floor Item": (
+        "Floor Item",
+        discord.PartialEmoji(name="aqwfloor", id=1532278339233124512),
+    ),
 }
 
 OPTIONS = [
     discord.SelectOption(
         label=label,
         value=value,
+        emoji=emoji,
     )
-    for value, label in ITEM_TYPES.items()
+    for value, (label, emoji) in ITEM_TYPES.items()
 ]
 
 
@@ -95,6 +168,7 @@ class ChangeQuestModal(discord.ui.Modal, title="Change Quest Items"):
 
     async def on_submit(self, interaction: discord.Interaction):
         # Remove existing items
+        await interaction.response.defer(ephemeral=True)
         for doc in self.quest_ref.collection("items").stream():
             doc.reference.delete()
 
@@ -106,7 +180,7 @@ class ChangeQuestModal(discord.ui.Modal, title="Change Quest Items"):
 
         for label, name, selected in entries:
             if name and not selected:
-                return await interaction.response.send_message(
+                return await interaction.followup.send(
                     f"Please choose a type for **{label}**.",
                     ephemeral=True,
                 )
@@ -123,9 +197,9 @@ class ChangeQuestModal(discord.ui.Modal, title="Change Quest Items"):
         # Reset progress for this quest
         await reset_quest_progress(self.quest_name)
 
-        await setup_quests(self.bot)
+        await refresh_quests(self.bot)
 
-        await interaction.response.send_message(
+        await interaction.followup.send(
             f"✅ Updated **{self.quest_name}** and reset its progress for all users.",
             ephemeral=True,
         )

@@ -28,3 +28,22 @@ async def setup_quests(client: discord.Client):
             return
 
     await channel.send(embed=embed, view=QuestView())
+
+async def refresh_quests(client: discord.Client):
+    channel = client.get_channel(GAMBA_UPDATES_CHANNEL_ID)
+    if channel is None:
+        channel = await client.fetch_channel(GAMBA_UPDATES_CHANNEL_ID)
+
+    embed = await build_static_quest_embed()
+
+    async for msg in channel.history(limit=10):
+        if (
+            msg.author == client.user
+            and msg.embeds
+            and msg.embeds[0].title == "📜 Available Quests"
+        ):
+            await msg.edit(
+                embed=embed,
+                view=QuestView(),
+            )
+            return
