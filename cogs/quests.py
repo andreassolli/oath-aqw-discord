@@ -4,7 +4,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 from google.cloud import firestore
-
+from quests.new_quests import ChangeQuestModal
 from firebase_client import db
 from quests.setup_quests import setup_quests
 
@@ -253,6 +253,29 @@ class Quests(commands.Cog):
         await setup_quests(self.bot)
         await interaction.followup.send(
             f"Cleared all items from quest {quest}.", ephemeral=True
+        )
+
+    @app_commands.command(
+        name="change-quests",
+        description="Replace the items for a quest.",
+    )
+    @app_commands.default_permissions(manage_guild=True)
+    async def change_quests(
+        self,
+        interaction: discord.Interaction,
+        quest: Literal["Weekly 1", "Weekly 2", "Frequent 1", "Frequent 2"],
+    ):
+        if quest == "Weekly 1":
+            quest_ref = db.collection("weekly-quests").document("quest1")
+        elif quest == "Weekly 2":
+            quest_ref = db.collection("weekly-quests").document("quest2")
+        elif quest == "Frequent 1":
+            quest_ref = db.collection("frequent-quests").document("quest1")
+        else:
+            quest_ref = db.collection("frequent-quests").document("quest2")
+
+        await interaction.response.send_modal(
+            ChangeQuestModal(self.bot, quest_ref, quest)
         )
 
 
