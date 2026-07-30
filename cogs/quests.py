@@ -15,252 +15,51 @@ class Quests(commands.Cog):
         self.bot = bot
 
     @app_commands.command(
-        name="quests-add", description="Add item to this weeks quest."
+        name="quest-stats",
+        description="View quest completion statistics.",
     )
-    @app_commands.default_permissions(manage_guild=True)
-    async def quests_add(
+    async def quest_stats(
         self,
         interaction: discord.Interaction,
-        quest: Literal["Weekly 1", "Weekly 2", "Frequent 1", "Frequent 2"],
-        item_name: str,
-        item_type: Literal[
-            "Axe",
-            "Dagger",
-            "Sword",
-            "Mace",
-            "Staff",
-            "Gun",
-            "Polearm",
-            "Bow",
-            "Rifle",
-            "Gauntlet",
-            "HandGun",
-            "Whip",
-            "Armor",
-            "Class",
-            "Cape",
-            "Helm",
-            "Pet",
-            "Quest Item",
-            "Item",
-            "Misc",
-            "Wall Item",
-            "House",
-            "Floor Item",
-        ],
+        user: discord.Member | None = None,
     ):
-        await interaction.response.defer(ephemeral=True)
-        if quest == "Weekly 1":
-            quest_ref = db.collection("weekly-quests").document("quest1")
-        elif quest == "Weekly 2":
-            quest_ref = db.collection("weekly-quests").document("quest2")
-        elif quest == "Frequent 1":
-            quest_ref = db.collection("frequent-quests").document("quest1")
-        else:
-            quest_ref = db.collection("frequent-quests").document("quest2")
+        await interaction.response.defer()
 
-        quest_ref.collection("items").add({"name": item_name, "type": item_type})
-        await setup_quests(self.bot)
-        await interaction.followup.send(
-            f"Added {item_name} to quest {quest}.", ephemeral=True
-        )
+        target = user or interaction.user
 
-    @app_commands.command(name="quests-view", description="View items for this quest.")
-    @app_commands.default_permissions(manage_guild=True)
-    async def quests_view(
-        self,
-        interaction: discord.Interaction,
-        quest: Literal["Weekly 1", "Weekly 2", "Frequent 1", "Frequent 2"],
-    ):
-        await interaction.response.defer(ephemeral=True)
+        user_doc = db.collection("users").document(str(target.id)).get()
 
-        user_roles = interaction.user.roles
-        guide_writer_role = interaction.guild.get_role(GUIDE_WRITER_ROLE_ID)
-        if guide_writer_role not in user_roles:
-            return await interaction.followup.send("You cannot update quests")
-
-        if quest == "Weekly 1":
-            quest_ref = db.collection("weekly-quests").document("quest1")
-        elif quest == "Weekly 2":
-            quest_ref = db.collection("weekly-quests").document("quest2")
-        elif quest == "Frequent 1":
-            quest_ref = db.collection("frequent-quests").document("quest1")
-        else:
-            quest_ref = db.collection("frequent-quests").document("quest2")
-
-        items = quest_ref.collection("items").stream()
-        items_list = [doc.to_dict().get("name") for doc in items]
-        if not items_list:
-            await interaction.followup.send(
-                f"Quest {quest} has no items.", ephemeral=True
-            )
-            return
-        await interaction.followup.send(
-            f"Quest {quest} items: {', '.join([item.get('name') for item in items_list])}",
-            ephemeral=True,
-        )
-
-    @app_commands.command(name="quests-remove", description="Remove item from quest.")
-    @app_commands.default_permissions(manage_guild=True)
-    async def quests_remove(
-        self,
-        interaction: discord.Interaction,
-        quest: Literal["Weekly 1", "Weekly 2", "Frequent 1", "Frequent 2"],
-        item_name: str,
-    ):
-        await interaction.response.defer(ephemeral=True)
-        if quest == "Weekly 1":
-            quest_ref = db.collection("weekly-quests").document("quest1")
-        elif quest == "Weekly 2":
-            quest_ref = db.collection("weekly-quests").document("quest2")
-        elif quest == "Frequent 1":
-            quest_ref = db.collection("frequent-quests").document("quest1")
-        else:
-            quest_ref = db.collection("frequent-quests").document("quest2")
-
-        items = quest_ref.collection("items").where("name", "==", item_name).stream()
-
-        found = False
-        for doc in items:
-            doc.reference.delete()
-            found = True
-
-        if found:
-            await interaction.followup.send(
-                f"Removed {item_name} from quest {quest}.", ephemeral=True
-            )
-        else:
-            await interaction.followup.send(
-                f"Quest {quest} has no item named {item_name}.", ephemeral=True
+        if not user_doc.exists:
+            return await interaction.followup.send(
+                "❌ That user doesn't have a profile yet.",
+                ephemeral=True,
             )
 
-    @app_commands.command(
-        name="frequents-reset", description="Remove Frequent quests from all users."
-    )
-    @app_commands.default_permissions(manage_guild=True)
-    async def frequents_reset(self, interaction: discord.Interaction):
-        await interaction.response.defer(ephemeral=True)
+        data = user_doc.to_dict() or {}
 
-        users_ref = db.collection("users")
-        docs = users_ref.stream()
+        completed = data.get("quests_completed", [])
+        total_completed = data.get("quests_completed_count", 0)
 
-        batch = db.batch()
-        batch_count = 0
-        BATCH_LIMIT = 500
+        all_quests = [
+            "Weekly 1",
+            "Weekly 2",
+            "Frequent 1",
+            "Frequent 2",
+        ]
 
-        updated = 0
+        remaining = [q for q in all_quests if q not in completed]
 
-        for doc in docs:
-            user_data = doc.to_dict() or {}
-            quests = user_data.get("quests_completed", [])
-
-            # Skip users who don't have these quests
-            if "Frequent 1" not in quests and "Frequent 2" not in quests:
-                continue
-
-            batch.update(
-                doc.reference,
-                {
-                    "quests_completed": firestore.ArrayRemove(
-                        ["Frequent 1", "Frequent 2"]
-                    )
-                },
-            )
-
-            batch_count += 1
-            updated += 1
-
-            # 🚀 Commit every 500 writes
-            if batch_count >= BATCH_LIMIT:
-                batch.commit()
-                batch = db.batch()
-                batch_count = 0
-
-        # Final commit
-        if batch_count > 0:
-            batch.commit()
-
-        await interaction.followup.send(
-            f"✅ Removed Frequent quests from {updated} users.", ephemeral=True
+        embed = discord.Embed(
+            title=f"{interaction.user.display_name}'s Quest Stats <:queststart:1491012167170920560>",
+            description=f"\n<:misc:1532256591141929031> Total Quests Completed:`{total_completed}`\n\n<:aqwcheck:1532278320870326382> **Current Quests Completed**\n{"\n".join(f"> {q}" for q in completed)}{"\n\n<:scroll:1532256096063062157> Remaining" if len(remaining) > 0 else ""}{"\n".join(f"> {q}" for q in remaining)}",
+            color=discord.Colour(7344907),
         )
 
-    @app_commands.command(
-        name="weeklies-reset", description="Remove Weekly quests from all users."
-    )
-    @app_commands.default_permissions(manage_guild=True)
-    async def weeklies_reset(self, interaction: discord.Interaction):
-        await interaction.response.defer(ephemeral=True)
-
-        users_ref = db.collection("users")
-        docs = users_ref.stream()
-
-        batch = db.batch()
-        batch_count = 0
-        BATCH_LIMIT = 500
-
-        updated = 0
-
-        for doc in docs:
-            user_data = doc.to_dict() or {}
-            quests = user_data.get("quests_completed", [])
-
-            # Skip users who don't have these quests
-            if "Weekly 1" not in quests and "Weekly 2" not in quests:
-                continue
-
-            batch.update(
-                doc.reference,
-                {"quests_completed": firestore.ArrayRemove(["Weekly 1", "Weekly 2"])},
-            )
-
-            batch_count += 1
-            updated += 1
-
-            # 🚀 Commit every 500 writes
-            if batch_count >= BATCH_LIMIT:
-                batch.commit()
-                batch = db.batch()
-                batch_count = 0
-
-        # Final commit
-        if batch_count > 0:
-            batch.commit()
-
-        await interaction.followup.send(
-            f"✅ Removed Weekly quests from {updated} users.", ephemeral=True
+        embed.set_footer(
+            text=f"{len(completed)}/{len(all_quests)} current quests completed"
         )
 
-    @app_commands.command(
-        name="weeklies-clear", description="Clear all items from this weeks quest."
-    )
-    @app_commands.default_permissions(manage_guild=True)
-    async def weeklies_clear(
-        self,
-        interaction: discord.Interaction,
-        quest: Literal["Weekly 1", "Weekly 2", "Frequent 1", "Frequent 2"],
-    ):
-        await interaction.response.defer(ephemeral=True)
-
-        items = (
-            db.collection("weekly-quests")
-            .document(f"quest{quest}")
-            .collection("items")
-            .get()
-        )
-        if not items:
-            await interaction.followup.send(
-                f"Quest {quest} has no items.", ephemeral=True
-            )
-            return
-        for item in items:
-            db.collection("weekly-quests").document(f"quest{quest}").collection(
-                "items"
-            ).document(item.id).delete()
-
-        await setup_quests(self.bot)
-        await interaction.followup.send(
-            f"Cleared all items from quest {quest}.", ephemeral=True
-        )
+        await interaction.followup.send(embed=embed)
 
     @app_commands.command(
         name="change-quests",

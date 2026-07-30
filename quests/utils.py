@@ -5,7 +5,6 @@ from google.cloud import firestore as gc_firestore
 from firebase_client import db
 from user_profile.utils import fetch_inventory
 
-
 async def get_weekly_quests() -> dict:
     quests = {}
 
@@ -101,11 +100,10 @@ async def check_for_quest_completion(user_id: int) -> str:
     if not completed_now:
         return "❌ Missing items to complete quest: " + ", ".join(missing_items)
 
-    updated_quests = quests_completed + completed_now
-
     user_ref.update(
         {
-            "quests_completed": updated_quests,
+            "quests_completed": gc_firestore.ArrayUnion(completed_now),
+            "quests_completed_count": gc_firestore.Increment(len(completed_now)),
             "coins": gc_firestore.Increment(coins_to_reward),
             "transactions": gc_firestore.ArrayUnion(
                 [f"+ Quest reward: ${coins_to_reward}"]
