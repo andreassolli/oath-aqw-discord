@@ -2,6 +2,8 @@ import json
 from pathlib import Path
 import re
 import requests
+from datetime import date, datetime, timedelta
+import requests
 
 BASE_URL = "https://api.apps.web.id/someonlyclub/shop"
 
@@ -102,59 +104,143 @@ def archive_all_items(output_file="items.json"):
 if __name__ == "__main__":
 
 
-    def normalize(name: str) -> str:
-        """Remove all (...) groups, collapse whitespace, lowercase."""
-        name = re.sub(r"\([^)]*\)", "", name)  # Remove everything in parentheses
-        name = re.sub(r"\s+", " ", name)       # Collapse multiple spaces
-        return name.strip().lower()
 
 
-    # Load files
-    with open("items.json", "r", encoding="utf-8") as f:
-        old_items = json.load(f)
+    rotation = ["GOLD", "REP", "CLASS", "EXP"]
 
-    with open("new_items.json", "r", encoding="utf-8") as f:
-        new_items = json.load(f)
+    anchor = date.fromisoformat("2025-08-04")
 
-    # Build normalized name set for new items
-    new_names = {
-        normalize(item["Name"])
-        for item in new_items
-        if "Name" in item
+    specials = {
+        "2025-08-01": "ALL",
+        "2025-08-29": "ALL",
+        "2025-10-03": "ALL",
+        "2025-10-06": "ALL",
+        "2025-10-17": "TRIPLE",
+        "2025-10-31": "ALL",
+        "2025-11-26": "ALL",
+        "2025-11-27": "ALL",
+        "2025-11-28": "ALL",
+        "2025-11-29": "ALL",
+        "2025-11-30": "ALL",
+        "2025-12-24": "ALL",
+        "2026-01-02": "ALL",
+        "2026-01-30": "ALL",
+        "2026-02-27": "ALL",
+        "2026-03-27": "ALL",
+        "2026-05-01": "ALL",
+        "2026-05-29": "ALL",
+        "2026-06-26": "ALL",
+        "2026-07-31": "ALL",
+        "2026-08-28": "ALL",
+        "2026-09-25": "ALL",
+        "2026-10-30": "ALL",
+        "2026-11-25": "ALL",
+        "2026-11-27": "ALL",
+        "2026-12-25": "ALL",
+        "2026-12-28": "ALL",
+        "2026-12-30": "ALL",
+        "2027-01-01": "ALL",
     }
 
-    # Find missing items
-    missing = []
-    common = 0
+    EMBED_COLORS = {
+        "GOLD": 0xf1c40f,
+        "REP": 0x3498db,
+        "CLASS": 0x9b59b6,
+        "EXP": 0x2ecc71,
+        "ALL": 0xe74c3c,
+        "TRIPLE": 0xff6600,
+    }
 
-    for item in old_items:
-        if "name" not in item:
-            continue
+    EMBED_ICONS = {
+        "GEMS": "<:gems:1485660490376937502>",
+        "COINS": "<:oathcoin:1462999179998531614>",
+        "GOLD": "<:boostGold:1532786448141652069>",
+        "REP": "<:boostRep:1532786499823734974>",
+        "CLASS": "<:boostClass:1532786580215955636>",
+        "EXP": "<:boostXP:1532786387625967857>",
+        "ALL": "<:boostGold:1532786448141652069><:boostRep:1532786499823734974><:boostClass:1532786580215955636><:boostXP:1532786387625967857>",
+        "TRIPLE": "<:boostGold:1532786448141652069><:boostRep:1532786499823734974><:boostClass:1532786580215955636><:boostXP:1532786387625967857>",
+    }
 
-        if normalize(item["name"]) in new_names:
-            common += 1
-        else:
-            missing.append(item)
 
-    # Save missing items
-    with open("missing.json", "w", encoding="utf-8") as f:
-        json.dump(missing, f, indent=2, ensure_ascii=False)
+    def boost_title(boost):
+        return {
+            "GOLD": "Double Gold Boost",
+            "REP": "Double Reputation Boost",
+            "CLASS": "Double Class Points Boost",
+            "EXP": "Double Experience Boost",
+            "ALL": "Double ALL Boost",
+            "TRIPLE": "TRIPLE ALL Boost",
+            "GEMS": "Double Gems Boost",
+            "COINS": "Double Coins Boost",
+        }.get(boost, boost)
 
-    print(f"Old items: {len(old_items)}")
-    print(f"New items: {len(new_items)}")
-    print(f"Common:    {common}")
-    print(f"Missing:   {len(missing)}")
-    print("Saved missing items to missing.json")
-        # Uncomment if you want to see the matching names
-        # print("\n=== Matching Items ===")
-        # for name in sorted(common):
-        #     print(name)
 
-        # Uncomment if you want to see missing items
-        # print("\n=== Only in old ===")
-        # for name in sorted(only_old):
-        #     print(name)
+    def get_boost_info(d: date):
+        # Walk backwards until we reach the last reset day (Mon/Wed/Fri)
+        boost_date = d
+        while boost_date.weekday() not in (0, 2, 4):
+            boost_date -= timedelta(days=1)
 
-        # print("\n=== Only in new ===")
-        # for name in sorted(only_new):
-        #     print(name)
+        key = boost_date.isoformat()
+
+        weeks = (boost_date - anchor).days // 7
+
+        offset = {
+            0: 0,  # Monday
+            2: 1,  # Wednesday
+            4: 2,  # Friday
+        }[boost_date.weekday()]
+
+        slot = weeks * 3 + offset
+
+        return {
+            "boost": specials.get(key, rotation[slot % len(rotation)]),
+            "alternateBoost": "GEMS" if slot % 2 == 0 else "COINS",
+            "started": boost_date,
+        }
+
+
+    info = get_boost_info(date.today())
+    started_ts = int(
+        datetime.combine(info["started"], time.min).timestamp()
+    )
+
+    if info is None:
+        raise SystemExit("No boost today.")
+
+    payload = {
+        "embeds": [
+            {
+                "title": f"{EMBED_ICONS[info['boost']]} {boost_title(info['boost'])} & {EMBED_ICONS[info['alternateBoost']]} {boost_title(info['alternateBoost'])} Active",
+                "description": "A new server boost has just begun! Log in and make the most of it while it lasts.",
+                "color": EMBED_COLORS[info["boost"]],
+                "fields": [
+                    {
+                        "name": "Current AQW Boost",
+                        "value": boost_title(info["boost"]),
+                        "inline": True,
+                    },
+                    {
+                        "name": "Current Oath Boost",
+                        "value": boost_title(info["alternateBoost"]),
+                        "inline": True,
+                    },
+                    {
+                        "name": "Started",
+                        "value": f"<t:{started_ts}:F>",
+                        "inline": True,
+                    },
+                ],
+                "footer": {
+                    "text": "AQWorlds & Oath Boost Rotation",
+                },
+                "timestamp": datetime.utcnow().isoformat(),
+            }
+        ]
+    }
+
+    r = requests.post(WEBHOOK_URL, json=payload)
+
+    print(r.status_code)
+    print(r.text)
