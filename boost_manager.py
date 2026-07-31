@@ -14,16 +14,13 @@ class BoostSchedule:
         self.anchor = date.fromisoformat(data["anchor"]["date"])
         self.specials = data["specialBoosts"]
 
-    def get_boost(self, d: date):
+    def get_boosts(self, d: date):
         key = d.isoformat()
-
-        if key in self.specials:
-            return self.specials[key]
 
         weekday = d.weekday()
 
         if weekday not in (0, 2, 4):
-            return None
+            return None, None
 
         weeks = (d - self.anchor).days // 7
 
@@ -35,10 +32,18 @@ class BoostSchedule:
 
         slot = weeks * 3 + offset
 
-        return self.rotation[slot % 4]
+        aqw_boost = self.specials.get(key, self.rotation[slot % len(self.rotation)])
+
+        # Alternates every reset
+        secondary_boost = "COINS" if slot % 2 == 0 else "GEMS"
+
+        return aqw_boost, secondary_boost
 
     def current_boost(self):
-        return self.get_boost(datetime.now(AQ_TZ).date())
+        return self.get_boosts(datetime.now(AQ_TZ).date())[0]
+
+    def current_secondary_boost(self):
+        return self.get_boosts(datetime.now(AQ_TZ).date())[1]
 
     def gold_active(self):
         return self.current_boost() == "GOLD"
@@ -51,6 +56,16 @@ class BoostSchedule:
 
     def class_active(self):
         return self.current_boost() == "EXP"
+
+    def coins_active(self):
+        return self.current_secondary_boost() == "COINS"
+
+    def gems_active(self):
+        return self.current_secondary_boost() == "GEMS"
+
+    def triple_active(self):
+        return self.current_boost() == "TRIPLE"
+
 
 
 
