@@ -2,7 +2,7 @@ import random
 
 import discord
 from google.cloud.firestore import Increment
-
+from coin_helper import apply_gem_boost
 from assets_caching import ROCKS_CACHE
 from economy.generate_rocks import generate_rocks_from_ids
 from firebase_client import db
@@ -26,33 +26,52 @@ class RockView(discord.ui.View):
 
         elif rock_type <= 6:
             shards = random.randint(1, 3)
+            new_shards, boost_reasons = apply_gem_boost(shards)
+            boost_text = ""
 
-            user_ref.update({"gems": Increment(shards)})
+            if boost_reasons:
+                boost_text = "\n" + "\n".join(
+                    f"{reason} active!" for reason in boost_reasons
+                )
 
-            result = (
-                f"You broke the rock, and found... <:gems:1485660490376937502>{shards}"
-            )
+            result = boost_text
+
+            user_ref.update({"gems": Increment(new_shards)})
+
+            result+=f"You broke the rock, and found... <:gems:1485660490376937502>{new_shards}"
+
 
         elif rock_type == 9:
             shards = random.randint(1, 3)
             coins = random.randint(10, 50)
+            new_shards, boost_reasons = apply_gem_boost(shards)
+            boost_text = ""
 
-            user_ref.update({"gems": Increment(shards), "coins": Increment(coins)})
+            if boost_reasons:
+                boost_text = "\n" + "\n".join(
+                    f"{reason} active!" for reason in boost_reasons
+                )
 
-            result = (
-                f"You broke the rock, and found... "
-                f"<:gems:1485660490376937502>{shards} "
-                f"and <:oathcoin:1462999179998531614>{coins}"
-            )
+            result = boost_text
+
+            user_ref.update({"gems": Increment(new_shards), "coins": Increment(coins)})
+
+            result+=f"You broke the rock, and found...\n<:gems:1485660490376937502>{new_shards} and <:oathcoin:1462999179998531614>{coins}"
 
         else:
             shards = random.randint(3, 5)
+            new_shards, boost_reasons = apply_gem_boost(shards)
+            boost_text = ""
 
-            user_ref.update({"gems": Increment(shards)})
+            if boost_reasons:
+                boost_text = "\n" + "\n".join(
+                    f"{reason} active!" for reason in boost_reasons
+                )
 
-            result = (
-                f"You broke the rock, and found... <:gems:1485660490376937502>{shards}"
-            )
+            result = boost_text
+            user_ref.update({"gems": Increment(new_shards)})
+
+            result+=f"You broke the rock, and found... <:gems:1485660490376937502>{new_shards}"
 
         # Replace the chosen rock with 10–15
         if rock_type == 9:

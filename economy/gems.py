@@ -1,7 +1,7 @@
 import random
 
 from firebase_client import firestore
-
+from coin_helper import apply_gem_boost
 
 def reward_gems_if_needed(user_ref, user_data, points_added: int):
     current_points = user_data.get("points", 0)
@@ -14,10 +14,12 @@ def reward_gems_if_needed(user_ref, user_data, points_added: int):
         return
 
     gems_to_add = sum(random.randint(1, 3) for _ in range(new_chunks))
+    new_gems_to_add, reason = apply_gem_boost(gems_to_add)
+
 
     user_ref.update(
         {
-            "gems": firestore.Increment(gems_to_add),
+            "gems": firestore.Increment(new_gems_to_add),
             "gems_awarded_points": last_rewarded + (new_chunks * 15),
         }
     )

@@ -3,6 +3,7 @@ import random
 
 import discord
 from google.cloud import firestore
+from coin_helper import apply_coin_boost
 
 from config import (
     ASCENDED_ROLE_ID,
@@ -108,14 +109,30 @@ class DoomSpinView(discord.ui.View):
 
         user_role_ids = {role.id for role in interaction.user.roles}
 
+        new_result, boost_reasons = apply_coin_boost(result)
+        boost_text = ""
+
+        if boost_reasons:
+            boost_text = "\n" + "\n".join(
+                f"{reason} active!" for reason in boost_reasons
+            )
+
+        bonus_text = boost_text
+
         for role_id, multiplier, name, emoji, percent in role_bonuses:
             if role_id in user_role_ids:
-                new_result = int(result * multiplier)
-                bonus_text = (
+
+                new_result = int(new_result * multiplier)
+
+                bonus_text += (
                     f"\nThanks to your **{emoji}{name}** role, you got {percent}% bonus coins!"
-                    f"\nTotal payout: <:oathcoin:1462999179998531614>`{new_result}`"
                 )
                 break
+
+        bonus_text += (
+            f"\nTotal payout: <:oathcoin:1462999179998531614>`{new_result}`"
+        )
+
         result_embed = discord.Embed(
             title="🎡 Wheel of Doom",
             description=f"You won <:oathcoin:1462999179998531614>`{result}`!{bonus_text}{drop_text}",
