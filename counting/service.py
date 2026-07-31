@@ -1,6 +1,6 @@
 import random
 import re
-
+from coin_helper import apply_coin_boost
 import discord
 from google.cloud import firestore
 
@@ -45,11 +45,18 @@ async def process_count_message(message):
         total_reward = 200
         rewarded_users = set(recent_users)
         split = total_reward // len(rewarded_users)
+        new_split, boost_reasons = apply_coin_boost(split)
+        boost_text = ""
+
+        if boost_reasons:
+            boost_text = "\n" + "\n".join(
+                f"{reason} active!" for reason in boost_reasons
+            )
 
         for uid in rewarded_users:
             db.collection("users").document(uid).set(
                 {
-                    "coins": firestore.Increment(split),
+                    "coins": firestore.Increment(new_split),
                 },
                 merge=True,
             )
@@ -61,7 +68,7 @@ async def process_count_message(message):
             description=(
                 f"🎉 We reached **{number}**!\n\n"
                 f"The last contributors {mentions}\n"
-                f"each receive **<:oathcoin:1462999179998531614>{split}!**"
+                f"each receive **<:oathcoin:1462999179998531614>{new_split}!**{boost_text}"
             ),
             color=discord.Color.green(),
         )
@@ -83,10 +90,17 @@ async def process_count_message(message):
 
     if score % 10 == 0:
         coins = random.randint(20, 30)
+        new_coins, boost_reasons = apply_coin_boost(coins)
+        boost_text = ""
+
+        if boost_reasons:
+            boost_text = "\n" + "\n".join(
+                f"{reason} active!" for reason in boost_reasons
+            )
 
         user_ref.set(
             {
-                "coins": firestore.Increment(coins),
+                "coins": firestore.Increment(new_coins),
             },
             merge=True,
         )
@@ -95,7 +109,7 @@ async def process_count_message(message):
             title="🎉 Checkpoint reached!",
             description=(
                 f"{message.author.mention} has counted **{score}** times, "
-                f"and received **<:oathcoin:1462999179998531614>{coins}!**"
+                f"and received **<:oathcoin:1462999179998531614>{new_coins}!**{boost_text}"
             ),
             color=discord.Color.gold(),
         )

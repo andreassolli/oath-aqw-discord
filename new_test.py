@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-
+import re
 import requests
 
 BASE_URL = "https://api.apps.web.id/someonlyclub/shop"
@@ -97,5 +97,64 @@ def archive_all_items(output_file="items.json"):
             print(f"✗ Shop {shop_id}: {e}")
 
 
+
+
 if __name__ == "__main__":
-    archive_all_items()
+
+
+    def normalize(name: str) -> str:
+        """Remove all (...) groups, collapse whitespace, lowercase."""
+        name = re.sub(r"\([^)]*\)", "", name)  # Remove everything in parentheses
+        name = re.sub(r"\s+", " ", name)       # Collapse multiple spaces
+        return name.strip().lower()
+
+
+    # Load files
+    with open("items.json", "r", encoding="utf-8") as f:
+        old_items = json.load(f)
+
+    with open("new_items.json", "r", encoding="utf-8") as f:
+        new_items = json.load(f)
+
+    # Build normalized name set for new items
+    new_names = {
+        normalize(item["Name"])
+        for item in new_items
+        if "Name" in item
+    }
+
+    # Find missing items
+    missing = []
+    common = 0
+
+    for item in old_items:
+        if "name" not in item:
+            continue
+
+        if normalize(item["name"]) in new_names:
+            common += 1
+        else:
+            missing.append(item)
+
+    # Save missing items
+    with open("missing.json", "w", encoding="utf-8") as f:
+        json.dump(missing, f, indent=2, ensure_ascii=False)
+
+    print(f"Old items: {len(old_items)}")
+    print(f"New items: {len(new_items)}")
+    print(f"Common:    {common}")
+    print(f"Missing:   {len(missing)}")
+    print("Saved missing items to missing.json")
+        # Uncomment if you want to see the matching names
+        # print("\n=== Matching Items ===")
+        # for name in sorted(common):
+        #     print(name)
+
+        # Uncomment if you want to see missing items
+        # print("\n=== Only in old ===")
+        # for name in sorted(only_old):
+        #     print(name)
+
+        # print("\n=== Only in new ===")
+        # for name in sorted(only_new):
+        #     print(name)
