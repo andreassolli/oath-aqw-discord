@@ -4,13 +4,12 @@ from datetime import datetime, timedelta
 from typing import Literal
 
 import discord
-from discord import app_commands, user
+from discord import app_commands
 from discord.ext import commands
 from google.cloud import firestore
 
 from config import (
     ALLOWED_COMMANDS_CHANNELS,
-    BETA_TESTER_ROLE_ID,
     BETA_TESTING_CHANNEL_ID,
     BOT_GUY_ROLE_ID,
     DISCORD_MANAGER_ROLE_ID,
@@ -19,21 +18,13 @@ from config import (
 from economy.confirm_rocks import RockConfirmView
 from economy.gamba.doom_view import DoomSpinView
 from economy.gamba.utils import format_time, has_spun_today
-from economy.generate_rocks import generate_rocks
-from economy.helpers import paginate_items
 from economy.inv_panel import InventoryLayout
-from economy.inventory import generate_inventory
-from economy.operations import buy_item, get_shop, list_item, unlist_item
+from economy.operations import get_shop, list_item, unlist_item
 from economy.rock_breaking import get_break_cooldown
-from economy.rocks_view import RockView
-from economy.shop import shop_embed
-from economy.shop_generation import generate_shop
 from economy.shop_panel import ShopLayout
-from economy.shop_view import ShopView
 from economy.utils import donate_tx, format_txt, rich_coins
 from firebase_client import db
 from inventory.utils import equip_item, get_inventory, unequip_item
-from inventory.view import InventoryView
 
 
 class Economy(commands.Cog):
