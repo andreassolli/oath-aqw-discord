@@ -1,7 +1,7 @@
 import math
 from datetime import datetime, timedelta, timezone
 from typing import Literal
-
+import json
 import discord
 from discord import app_commands
 from discord.abc import Messageable
@@ -13,19 +13,15 @@ from google.cloud.firestore import ArrayUnion, Increment
 from config import (
     ADMIN_ROLE_ID,
     ALLOWED_COMMANDS_CHANNELS,
-    BETA_TESTER_ROLE_ID,
-    BETA_TESTING_CHANNEL_ID,
     BOT_GUY_ROLE_ID,
     DAGE_CERTIFICATE_ID,
     DARKON_CERTIFICATE_ID,
     DISCORD_MANAGER_ROLE_ID,
     DRAGO_CERTIFICATE_ID,
     DRAKATH_CERTIFICATE_ID,
-    EXPERIENCED_HELPER_ROLE_ID,
     GRAMIEL_CERTIFICATE_ID,
     HELPER_CHANNEL_ID,
     INITIATE_ROLE_ID,
-    LFG_LOL_ID,
     NULGATH_CERTIFICATE_ID,
     OATHSWORN_ROLE_ID,
     SPEAKER_CERTIFICATE_ID,
@@ -34,52 +30,18 @@ from config import (
     TICKET_INSPECTORS_CHANNEL_ID,
     TICKET_LOG_CHANNEL_ID,
     TRANSCENDED_ROLE_ID,
-    UNSWORN_ROLE_ID,
 )
-from economy.gamba.coinflip import run_coinflip
-from economy.gamba.doom_view import DoomSpinView
-from economy.gamba.utils import has_spun_today
-from economy.gamba.yanken_accept_view import RPSAcceptView
-from extra_commands.league_team_view import TeamView
-from extra_commands.league_teams_embed import LeagueTeamsLayout
-from extra_commands.lfg_players import LFGPlayersLayout
-from extra_commands.memes import (
-    m_bigrig,
-    m_dryage,
-    m_glad,
-    m_gld,
-    m_goon_greed,
-    m_juns,
-    m_mapril,
-    m_oath,
-    m_og_pro,
-    m_og_san,
-    m_rcs,
-    m_sker,
-    m_yokai,
-)
+from extra_commands.ioda_view import IodaView
 from extra_commands.record_holder import record_holder
 from extra_commands.record_view import LeaderboardView
-from extra_commands.render import render_png
 from extra_commands.utils import (
     check_missing_badges,
-    count_messages,
     elect_potw,
     format_duration,
-    get_user_team,
     has_any_role,
-    is_oath_or_allowed_user,
     manual_leaderboard_post,
     send_winner_embed,
-    update_message_counts,
 )
-from extra_commands.wordle import (
-    ShareWordleView,
-    choose_new_word,
-    get_wordle_word,
-    guess_word,
-)
-from extra_commands.wordle_image import generate_wordle_board
 from firebase_client import db
 from panels.staff_panel import (
     EndLayout,
@@ -88,11 +50,12 @@ from panels.staff_panel import (
     OfficerLayout,
 )
 from ticket_help.tickets.points import get_boss_room
-from ticket_help.utils.experienced import StartView
-from ticket_help.utils.gif_claim import gif_claim
 from user_profile.utils import fetch_inventory
-from user_verification.layout import TestLayout
-from user_verification.utils import change_roles
+with open("ioda_list.json", "r", encoding="utf-8") as ioda:
+    IODA_ITEMS = json.load(ioda)
+
+with open("kbioda_list.json", "r", encoding="utf-8") as kbioda:
+    KBIODA_ITEMS = json.load(kbioda)
 
 BOSS_TO_CERTIFICATE = {
     "Champion Drakath": DRAKATH_CERTIFICATE_ID,
@@ -151,22 +114,27 @@ class Extra(commands.Cog):
         embed = await check_missing_badges(member)
         await interaction.followup.send(embed=embed)
 
-    @app_commands.command(name="og-san")
-    async def og_san(self, interaction: discord.Interaction):
-        await m_og_san(interaction)
-
-    @app_commands.command(name="juns")
-    async def juns(self, interaction: discord.Interaction):
-        await m_juns(interaction)
-
     @app_commands.command(name="elect-potw", description="Elect a player for POTW")
     @app_commands.checks.has_role(DISCORD_MANAGER_ROLE_ID)
     async def elect_potw(
         self, interaction: discord.Interaction, player: discord.Member
     ):
         await elect_potw(player)
+
+        # Clear all nominees
+        batch = db.batch()
+        for doc in db.collection("potw_nominees").stream():
+            batch.delete(doc.reference)
+
+        # Clear all nominators
+        for doc in db.collection("potw_nominators").stream():
+            batch.delete(doc.reference)
+
+        batch.commit()
+
         await interaction.response.send_message(
-            f"🎉 {player.mention} has been elected POTW!"
+            f"🎉 {player.mention} has been elected POTW!\n"
+            "🗑️ All POTW nominations have been reset."
         )
 
     @app_commands.command(name="nominate", description="Nominate a player for POTW")
@@ -228,75 +196,6 @@ class Extra(commands.Cog):
     async def elp(self, interaction: discord.Interaction):
         await interaction.response.send_message("ELP ELLPPPPP CALL DRIADGEEEEEEEEEEEE")
 
-    @app_commands.command(name="oath", description="Call for Oath")
-    async def oath(self, interaction: discord.Interaction):
-        await m_oath(interaction)
-
-    @app_commands.command(name="dryage")
-    async def dryage(self, interaction: discord.Interaction):
-        await m_dryage(interaction)
-
-    @app_commands.command(name="movie")
-    async def movie(self, interaction: discord.Interaction):
-        message = "Producers it's time for Movies! People are trying to do Gramiel or Speaker with their feet, come to VC!"
-        await interaction.response.send_message(message)
-
-    @app_commands.command(name="rcs")
-    async def anime(self, interaction: discord.Interaction):
-        await m_rcs(interaction)
-
-    @app_commands.command(name="sker")
-    async def sker_ready(self, interaction: discord.Interaction):
-        await m_sker(interaction)
-
-    @app_commands.command(name="ecr")
-    async def ecr(self, interaction: discord.Interaction):
-        message = """East Coast Roster:\n
-    Driadge - Pot Scammer Granny Slammer\n
-    SCR - Voted most likely to be kidnapped in highschool\n
-    Veritus - King of the self-dox\n
-    Killer - Pay2Lose Enjoyer might enact slave labor and torture friends"""
-        await interaction.response.send_message(message)
-
-    @app_commands.command(name="bigrig", nsfw=True)
-    @has_any_role(ADMIN_ROLE_ID, DISCORD_MANAGER_ROLE_ID)
-    async def bigrig(self, interaction: discord.Interaction):
-        await m_bigrig(interaction)
-
-    @app_commands.command(name="mapril")
-    async def mapril(self, interaction: discord.Interaction):
-        await m_mapril(interaction)
-
-    @app_commands.command(name="greed")
-    async def greed(self, interaction: discord.Interaction):
-        await interaction.response.send_message(
-            "Is this mapril using this command? <a:mapGiggle:1478032348401373326>"
-        )
-
-    @app_commands.command(name="gld")
-    @app_commands.default_permissions(administrator=True)
-    @has_any_role(ADMIN_ROLE_ID, DISCORD_MANAGER_ROLE_ID)
-    async def glad(self, interaction: discord.Interaction):
-        await m_gld(interaction)
-
-    @app_commands.command(name="glad")
-    @app_commands.default_permissions(manage_roles=True)
-    @has_any_role(ADMIN_ROLE_ID, DISCORD_MANAGER_ROLE_ID)
-    async def eglad(self, interaction: discord.Interaction):
-        await m_glad(interaction)
-
-    @app_commands.command(name="goon-greed")
-    async def goon_greed(self, interaction: discord.Interaction):
-        await m_goon_greed(interaction)
-
-    # @app_commands.command(name="og-pro")
-    # async def og_pro(self, interaction: discord.Interaction):
-    #    await m_og_pro(interaction)
-
-    # @app_commands.command(name="yokai")
-    # async def yokai(self, interaction: discord.Interaction):
-    #    await m_yokai(interaction)
-
     @app_commands.command(name="announce-event-winner")
     @has_any_role(ADMIN_ROLE_ID, DISCORD_MANAGER_ROLE_ID)
     async def announce_event_winner(
@@ -317,11 +216,38 @@ class Extra(commands.Cog):
 
     @app_commands.command(
         name="ioda-list",
-        description="Get the link to the IoDA spreadsheet",
+        description="Show stats for most IoDA'ed items",
     )
-    async def ioda_list(self, interaction):
-        return await interaction.response.send_message(
-            "https://docs.google.com/document/d/1T4fut_U8Wptopw0coWCU29WCK5arAtGBy5lzlDpwswE/edit?tab=t.0"
+    async def ioda_list(self, interaction: discord.Interaction):
+
+        items = IODA_ITEMS
+
+        # Sort descending by count (ALREADY SORTED)
+        # items.sort(key=lambda x: x["count"], reverse=True)
+
+        view = IodaView(items)
+
+        await interaction.response.send_message(
+            embed=view.make_embed(),
+            view=view
+        )
+
+    @app_commands.command(
+        name="kbioda-list",
+        description="Show stats for most IoDA'ed items",
+    )
+    async def kbioda_list(self, interaction: discord.Interaction):
+
+        items = KBIODA_ITEMS
+
+        # Sort descending by count (ALREADY SORTED)
+        # items.sort(key=lambda x: x["count"], reverse=True)
+
+        view = IodaView(items)
+
+        await interaction.response.send_message(
+            embed=view.make_embed(),
+            view=view
         )
 
     @app_commands.command(

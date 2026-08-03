@@ -33,7 +33,7 @@ class VerificationCog(commands.Cog):
         await setup_verification_panel(self.bot)
 
     @app_commands.command(name="application-info", description="Show ticket info")
-    @app_commands.checks.has_role(OFFICER_ROLE_ID)
+    @app_commands.checks.has_role(OATHSWORN_ROLE_ID)
     async def info(self, interaction: discord.Interaction):
 
         channel_id = str(interaction.channel_id)
@@ -188,7 +188,7 @@ class VerificationCog(commands.Cog):
     @app_commands.describe(
         user="The Discord user to approve", username="Their AQW username"
     )
-    @app_commands.checks.has_role(OFFICER_ROLE_ID)
+    @app_commands.checks.has_role(OATHSWORN_ROLE_ID)
     async def join_approve(
         self,
         interaction: discord.Interaction,
@@ -235,7 +235,7 @@ class VerificationCog(commands.Cog):
     @app_commands.describe(
         user="The Discord user to reject", username="Their AQW username"
     )
-    @app_commands.checks.has_role(OFFICER_ROLE_ID)
+    @app_commands.checks.has_role(OATHSWORN_ROLE_ID)
     async def join_reject(
         self,
         interaction: discord.Interaction,
@@ -469,56 +469,6 @@ class VerificationCog(commands.Cog):
             f"Guild: **{profile.get('guild', 'None')}**",
             ephemeral=True,
         )
-
-    @app_commands.command(name="force-sync", description="Force sync with the db")
-    @app_commands.default_permissions(manage_roles=True)
-    @app_commands.checks.has_role(DISCORD_MANAGER_ROLE_ID)
-    async def force_sync(self, interaction: discord.Interaction):
-        await interaction.response.defer(ephemeral=True)
-        await interaction.followup.send("Syncing...")
-        guild = interaction.guild
-        if not guild:
-            return await interaction.followup.send("No guild")
-
-        users = list(db.collection("users").stream())
-
-        updated = 0
-        failed = 0
-        missing = 0
-
-        for user_doc in users:
-            try:
-                user_data = user_doc.to_dict()
-                discord_id = int(user_doc.id)
-
-                member = guild.get_member(discord_id)
-
-                if not member:
-                    missing += 1
-                    continue
-
-                success = await change_roles(
-                    member,
-                    is_join_event=False,
-                    verified_guild=user_data.get("guild"),
-                    verified_at_all=user_data.get("verified", False),
-                )
-
-                if success:
-                    updated += 1
-                else:
-                    failed += 1
-
-            except Exception as e:
-                failed += 1
-
-        return await interaction.followup.send(
-            f"Role sync complete.\n"
-            f"Updated: {updated}\n"
-            f"Missing: {missing}\n"
-            f"Failed: {failed}"
-        )
-
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(VerificationCog(bot))
