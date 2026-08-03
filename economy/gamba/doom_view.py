@@ -51,7 +51,7 @@ class DoomSpinView(discord.ui.View):
         self.spinning = True
         button.disabled = True
         # pick result immediately
-        drop = random.randint(1, 20)
+        drop = random.randint(1, 30)
         drop_text = ""
         if drop == 1:
             await add_item(
@@ -63,6 +63,26 @@ class DoomSpinView(discord.ui.View):
                 "legendary",
             )
             drop_text = "\n\nYou also won the **Secret Rare** Doom Card! It has been added to your inventory."
+        elif drop == 2:
+            await add_item(
+                str(interaction.user.id),
+                "Dage Card",
+                "card",
+                "dage_card.png",
+                "dage_card_item.png",
+                "legendary",
+            )
+            drop_text = "\n\nYou also won the **Secret Rare** Dage Card! It has been added to your inventory."
+        elif drop == 3:
+            await add_item(
+                str(interaction.user.id),
+                "Doom Claim",
+                "claim",
+                "doom_claim.gif",
+                "doom_claim_item.png",
+                "legendary",
+            )
+            drop_text = "\n\nYou also won the **Secret Rare** Doom Claim! It has been added to your inventory."
         result = random.randint(250, 350)
         await set_spin_today(interaction.user.id)
         embed = discord.Embed(
