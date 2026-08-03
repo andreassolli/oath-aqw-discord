@@ -2,8 +2,6 @@ import discord
 from discord.ext import commands
 
 from extra_commands.transcended_colors import setup_color_panel
-from firebase_client import db
-from ticket_help import setup_ticket_system
 from ticket_help.commands.admin import (
     add_boss,
     adjust_points,

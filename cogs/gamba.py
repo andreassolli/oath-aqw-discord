@@ -5,20 +5,18 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 from google.cloud import firestore
-from google.cloud.firestore import DELETE_FIELD, Increment
+from google.cloud.firestore import Increment
 
 from config import (
-    BETA_TESTER_ROLE_ID,
     BETA_TESTING_CHANNEL_ID,
-    BOT_GUY_ROLE_ID,
     OFFICER_ROLE_ID,
 )
 from economy.gamba.beg import beg
-from economy.gamba.blackjack import add_card, deal, get_value
+from economy.gamba.blackjack import deal, get_value
 from economy.gamba.blackjack_view import BlackjackView
 from economy.gamba.coinflip import run_coinflip
 from economy.gamba.generate_blackjack import generate_blackjack
-from economy.gamba.utils import lock_coins, unlock_coins
+from economy.gamba.utils import lock_coins
 from economy.gamba.yanken_accept_view import RPSAcceptView
 from firebase_client import db
 

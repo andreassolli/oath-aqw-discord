@@ -8,7 +8,6 @@ from config import APPLICATION_ID
 from extra_commands.twitter import check_twitter
 from http_client import close_session
 from startup import run_startup_tasks
-from utils import unlock_all_coins
 
 logging.basicConfig(level=logging.INFO)
 
@@ -43,7 +42,7 @@ async def on_ready():
         traceback.print_exc()
 
     if not check_twitter.is_running():
-        print("🚀 Starting twitter loop...")
+        print("🐦 Starting twitter loop...")
         check_twitter.start()
 
     if bot.user:

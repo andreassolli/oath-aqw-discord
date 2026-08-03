@@ -3,12 +3,8 @@ from typing import Literal
 import discord
 from discord import app_commands
 from discord.ext import commands
-from google.cloud import firestore
-from config import GUIDE_WRITER_ROLE_ID
 from quests.new_quests import ChangeQuestModal
 from firebase_client import db
-from quests.setup_quests import setup_quests
-
 
 class Quests(commands.Cog):
     def __init__(self, bot: commands.Bot):
