@@ -220,7 +220,7 @@ class Extra(commands.Cog):
     )
     async def ioda_list(self, interaction: discord.Interaction):
 
-        items = IODA_ITEMS
+        items = IODA_ITEMS['data']
 
         # Sort descending by count (ALREADY SORTED)
         # items.sort(key=lambda x: x["count"], reverse=True)
@@ -238,7 +238,7 @@ class Extra(commands.Cog):
     )
     async def kbioda_list(self, interaction: discord.Interaction):
 
-        items = KBIODA_ITEMS
+        items = KBIODA_ITEMS['data']
 
         # Sort descending by count (ALREADY SORTED)
         # items.sort(key=lambda x: x["count"], reverse=True)
