@@ -23,9 +23,9 @@ ITEM_TO_ICON = {
     "Wand": "<:aqwWand:1533725398523969667>",
     "Whip": "<:aqwGun:1533725133917782238>",
     "Misc": "<:aqwGround:1533725253019373599>",
-    "Wall": "<:aqwWall:1533725458577752134>",
+    "Wall Item": "<:aqwWall:1533725458577752134>",
     "House": "<:aqwHouse:1533725178759090328>",
-    "Floor": "<:aqwFloor:1533725305041322124>"
+    "Floor Item": "<:aqwFloor:1533725305041322124>"
 }
 
 class IodaView(discord.ui.View):
