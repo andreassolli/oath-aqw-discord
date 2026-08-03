@@ -49,7 +49,7 @@ class IodaView(discord.ui.View):
 
         for i, item in enumerate(self.items[start:end], start=start + 1):
             lines.append(
-                f"**#{i}** {ITEM_TO_ICON[item['type']]}{item['name']} — `{item['count']:,}`"
+                f"**#{i}** {ITEM_TO_ICON[item['Type']]}{item['Name']} — `{item['Count']:,}`"
             )
 
         embed.description = "\n".join(lines)
