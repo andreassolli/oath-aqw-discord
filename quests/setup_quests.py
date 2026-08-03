@@ -1,7 +1,6 @@
 import discord
 
 from config import GAMBA_UPDATES_CHANNEL_ID
-from quests.panel import build_static_quest_embed
 from panels.quests_panel import QuestsLayout
 
 async def setup_quests(client: discord.Client):
