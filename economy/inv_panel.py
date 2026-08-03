@@ -6,7 +6,6 @@ import discord
 from economy.utils import ShopItem
 from firebase_client import db
 from inventory.utils import equip_item, unequip_item
-from ticket_help.new_panel.ticket_panel import RoleButton
 from user_profile.image_utils import ROLES_COLOR_MAP
 
 RARITY_EMOJIS = {
