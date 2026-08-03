@@ -118,11 +118,11 @@ class DoomSpinView(discord.ui.View):
             (
                 TRANSCENDED_ROLE_ID,
                 1.11,
-                "Ascended",
-                "<:ascended:1485289045524484126>",
+                "Transcended",
+                "<:transcended:1533103247533801623>",
                 11,
             ),
-            (ASCENDED_ROLE_ID, 1.1, "Ascended", "<:ascended:1485289045524484126>", 10),
+            (ASCENDED_ROLE_ID, 1.1, "Ascended", "<:ascended:1533103221214810232>", 10),
             (OFFICER_ROLE_ID, 1.07, "Officer", "<:oath2:1457452511635046492>", 7),
             (INITIATE_ROLE_ID, 1.05, "Initiate", "<:oath:1457451850184917122>", 5),
         ]
