@@ -10,7 +10,7 @@ from config import WEEKLY_REQUESTER_CAP, spam_points
 from economy.gems import reward_gems_if_needed
 from firebase_client import db
 from ticket_help.dashboard.updater import update_dashboard
-from panels.create_ticket_panel import setup_new_tickets
+from ticket_help.panels.updater import refresh_ticket_panel
 from ticket_help.tickets.ticket_cache import ticket_cache
 from ticket_help.utils.message_logging import log_ticket_message_event
 
@@ -250,7 +250,7 @@ async def finalize_ticket(
 
     await log_ticket_event(interaction.client, embed=embed)
     await asyncio.sleep(0.5)
-    await setup_new_tickets(interaction.client)
+    await refresh_ticket_panel(interaction.client)
     await update_dashboard(interaction.client)
 
     if keep_ticket:
