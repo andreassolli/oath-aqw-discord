@@ -41,7 +41,7 @@ async def finalize_ticket(
         return
 
     doc_ref = db.collection("tickets").document(ticket_name)
-    ticket_stats_ref = db.collection("meta").document("ticket_stats")
+    ticket_stats_ref = db.collection("stats").document("boss_clears")
 
     requester_id = ticket_data["user_id"]
     completed_bosses = ticket_data.get("completed_bosses", [])
@@ -233,19 +233,20 @@ async def finalize_ticket(
         clear_active_ticket(requester_id, ticket_name)
     total_points += final_reward
 
-    ticket_stats_updates = {
+    stats_updates = {
         "total_completed": Increment(1),
         "total_points": Increment(total_points),
     }
+
     if ticket_data.get("type") != "spamming":
         for boss in completed_bosses:
-            ticket_stats_updates[f"boss_clears.{boss}"] = Increment(1)
+            stats_updates[boss] = Increment(1)
 
-        ticket_stats_updates["boss_clears.total_clears"] = Increment(
+        stats_updates["total_clears"] = Increment(
             len(completed_bosses)
         )
 
-    ticket_stats_ref.update(ticket_stats_updates)
+    ticket_stats_ref.update(stats_updates)
 
     await log_ticket_event(interaction.client, embed=embed)
     await asyncio.sleep(0.5)
