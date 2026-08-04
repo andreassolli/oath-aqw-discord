@@ -46,11 +46,9 @@ async def build_ticket_layout():
     total_completed = stats.get("total_completed", 0)
     total_points = stats.get("total_points", 0)
 
-    boss_clears = stats.get("boss_clears", {})
-
     total_clears = 0
-    for boss, clears in boss_clears.items():
-        if boss == "total_clears":
+    for boss, clears in stats.items():
+        if boss in ["total_clears", "total_completed", "total_points"]:
             continue
 
         multiplier = 3 if boss in TRIPLE_CLEAR_BOSSES else 1
