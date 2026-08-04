@@ -77,9 +77,9 @@ class CreateTicketLayout(discord.ui.LayoutView):
             ),
             discord.ui.TextDisplay(
                 content=(
-                    f">>> <:complete_ticket:1505157129252634706> **{total_completed}** tickets completed\n"
-                    f">>> <:medal:1505158451179819119> **{total_points}** points awarded"
-                    f">>> <:claiming:1505158455412002846> **{total_clears}** bosses slain"
+                    f">>> <:complete_ticket:1505157129252634706> **{total_completed}** tickets completed\n "
+                    f"<:medal:1505158451179819119> **{total_points}** points awarded\n "
+                    f"<:claiming:1505158455412002846> **{total_clears}** bosses slain"
                 )
             ),
             discord.ui.TextDisplay(content="‎"),
@@ -88,7 +88,7 @@ class CreateTicketLayout(discord.ui.LayoutView):
             ),
             discord.ui.Section(
                 discord.ui.TextDisplay(
-                    content=">>> <:star:1503523567898460311> Before creating a ticket please read the guide for how they work. Check it out by clicking on '**Ticket Guide**'"
+                    content=">>> <:star:1503523567898460311> Before creating a ticket, read the guide for how they work. \nCheck it out by clicking on '**Ticket Guide**'"
                 ),
                 accessory=GuideButton(),
             ),
