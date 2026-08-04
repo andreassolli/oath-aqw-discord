@@ -2,10 +2,7 @@ import discord
 
 from firebase_client import db
 from ticket_help.new_panel.ticket_panel import TicketLayout
-from ticket_help.tickets.embed_utils import build_ticket_embed
 from ticket_help.tickets.ticket_cache import ticket_cache
-from ticket_help.tickets.views import TicketActionView
-
 
 async def restore_tickets(bot: discord.Client):
     tickets = (
