@@ -61,7 +61,6 @@ class Quests(commands.Cog):
         name="change-quests",
         description="Replace the items for a quest.",
     )
-    @app_commands.default_permissions(manage_guild=True)
     async def change_quests(
         self,
         interaction: discord.Interaction,
