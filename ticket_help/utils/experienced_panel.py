@@ -1,6 +1,6 @@
 import discord
 
-from config import ROLE_GROUPS, ROLES_CHANNEL_ID
+from config import ASCENDED_ROLE_CHANNEL_ID, ROLE_GROUPS, ROLES_CHANNEL_ID
 from firebase_client import db
 from panels.roles_panel import RoleLayout
 from ticket_help.utils.certified import ApplicationSelectView
@@ -54,6 +54,12 @@ async def setup_application_panel(client: discord.Client):
         description="Just remove any roles you don't want notifications from. You can always add them back later!",
         role_data=ROLE_GROUPS["notification"],
     )
+    nitro = RoleLayout(
+        title="**Choose Your Color Role**",
+        image="newcolor.png",
+        description="All Nitro Boosters can claim one of these gradient colors to make your name stand out:",
+        role_data=ROLE_GROUPS["nitro_color"],
+    )
     channel = client.get_channel(ROLES_CHANNEL_ID)
 
     if channel is None:
@@ -88,6 +94,8 @@ async def setup_application_panel(client: discord.Client):
     social_msg = await channel.fetch_message(1516881736359874631)
     noti_msg = await channel.fetch_message(1516881738188460153)
     cert_msg = await channel.fetch_message(1516881740457840760)
+    ascended_channel = client.get_channel(ASCENDED_ROLE_CHANNEL_ID)
+    await ascended_channel.send(view=nitro)
     await color_msg.edit(view=colors)
     await social_msg.edit(view=social)
     await noti_msg.edit(view=notifications)

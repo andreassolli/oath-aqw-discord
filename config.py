@@ -171,6 +171,11 @@ KJ_ROLE_ID = env_int("KJ_ROLE_ID")
 GRAND_OATHSWORN_ROLE_ID = env_int("GRAND_OATHSWORN_ROLE_ID")
 AQW_UPDATES = env_int("AQW_UPDATES")
 SUGGESTIONS_CATEGORY = env_int("SUGGESTIONS_CATEGORY")
+VANGUARD_NATURE = env_int("VANGUARD_NATURE_ROLE")
+ROYAL_BLOOD = env_int("ROYAL_BLOOD_ROLE")
+PLEDGE_PURPLE = env_int("PLEDGE_PURPLE_ROLE")
+ETERNAL_OATH = env_int("ETERNAL_OATH_ROLE")
+REAGENT_RICH = env_int("REAGENT_RICH_ROLE")
 COLOR_ROLES = {
     VERDANT_EMBER,
     ROYAL_VANGUARD,
@@ -179,6 +184,11 @@ COLOR_ROLES = {
     CRIMSON_FLAME_ROLE_ID,
     VOID_ROLE_ID,
     CELESTIAL_ROLE_ID,
+    REAGENT_RICH,
+    VANGUARD_NATURE,
+    ROYAL_BLOOD,
+    PLEDGE_PURPLE,
+    ETERNAL_OATH
 }
 COLOR_ROLE_DATA: list[RoleData] = [
     {
@@ -286,9 +296,49 @@ NOTIFICATION_ROLE_DATA: list[RoleData] = [
         "subtitle": "See tickets, and earn points!",
     },
 ]
+
+NITRO_ROLE_DATA: list[RoleData] = [
+    {
+        "name": "Vanguard Nature",
+        "id": VANGUARD_NATURE,
+        "emoji": "🍀",
+        "emoji_id": None,
+        "subtitle": "Embrace the vibrant nature color.",
+    },
+    {
+        "name": "Royal Blood",
+        "id": ROYAL_BLOOD,
+        "emoji": "🩸",
+        "emoji_id": None,
+        "subtitle": "Let your opponents soak in dripping blood.",
+    },
+    {
+        "name": "Pledge Purple",
+        "id": PLEDGE_PURPLE,
+        "emoji": "🔮",
+        "emoji_id": None,
+        "subtitle": "Take the pledge.",
+    },
+    {
+        "name": "Reagent Rich",
+        "id": CELESTIAL_ROLE_ID,
+        "emoji": "🏆",
+        "emoji_id": None,
+        "subtitle": "Golden like no one else.",
+    },
+    {
+        "name": "Eternal Legion",
+        "id": CELESTIAL_ROLE_ID,
+        "emoji": "🌀",
+        "emoji_id": None,
+        "subtitle": "The legion has taken you in.",
+    },
+]
+
 ROLE_GROUPS: dict[str, list[RoleData]] = {
     "color": COLOR_ROLE_DATA,
     "social": SOCIAL_ROLE_DATA,
     "notification": NOTIFICATION_ROLE_DATA,
+    "nitro_color": NITRO_ROLE_DATA,
 }
 GUIDE_WRITER_ROLE_ID = env_int("GUIDE_WRITER_ROLE_ID")
