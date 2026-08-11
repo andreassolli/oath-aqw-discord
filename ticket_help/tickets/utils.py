@@ -4,8 +4,12 @@ from typing import Optional
 import discord
 from firebase_admin import firestore
 from firebase_client import db
-
-
+DIFFICULTY_MAP = {
+    "easy": "🟢⚫️⚫️⚫️",
+    "medium": "🟠🟠⚫️⚫️",
+    "hard": "🔴🔴🔴⚫️",
+    "very hard": "🟣🟣🟣🟣"
+}
 def get_week_start(dt: datetime):
     # Monday start (ISO week)
     return dt - timedelta(days=dt.weekday())
