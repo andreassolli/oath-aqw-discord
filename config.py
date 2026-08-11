@@ -321,14 +321,14 @@ NITRO_ROLE_DATA: list[RoleData] = [
     },
     {
         "name": "Reagent Rich",
-        "id": CELESTIAL_ROLE_ID,
+        "id": REAGENT_RICH,
         "emoji": "🏆",
         "emoji_id": None,
         "subtitle": "Golden like no one else.",
     },
     {
         "name": "Eternal Legion",
-        "id": CELESTIAL_ROLE_ID,
+        "id": ETERNAL_OATH,
         "emoji": "🌀",
         "emoji_id": None,
         "subtitle": "The legion has taken you in.",
