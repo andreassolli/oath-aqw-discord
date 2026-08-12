@@ -2,7 +2,7 @@ import discord
 
 from config import LEADERBOARD_CHANNEL_ID
 
-from .leaderboard import build_leaderboard_embed
+from .leaderboard import LeaderboardView, build_leaderboard_embed
 
 
 async def update_dashboard(client: discord.Client):
@@ -12,11 +12,11 @@ async def update_dashboard(client: discord.Client):
         print("❌ Leaderboard channel not found.")
         return
 
-    embed = await build_leaderboard_embed(channel.guild)
+    view = LeaderboardView(channel.guild)
 
     async for msg in channel.history(limit=10):
         if msg.author == client.user and msg.embeds:
-            await msg.edit(embed=embed)
+            await msg.edit(view=view)
             return
 
-    await channel.send(embed=embed)
+    await channel.send(view=view)
