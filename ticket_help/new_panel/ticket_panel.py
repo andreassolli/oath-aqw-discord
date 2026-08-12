@@ -317,6 +317,7 @@ class TicketLayout(discord.ui.LayoutView):
             completed_bosses=data.get("completed_bosses", []),
             certificate_only=data.get("experienced_only", False),
             is_practice=self.is_practice,
+            experience=self.experience,
         )
 
         await interaction.message.edit(view=new_view)
