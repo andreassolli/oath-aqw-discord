@@ -31,7 +31,7 @@ class Bans(commands.Cog):
         self._started = True
         await self.bot.wait_until_ready()
         await setup_badges(self.bot)
-        await setup_rules(self.bot)
+        #await setup_rules(self.bot)
         await setup_welcome(self.bot)
         await setup_new_tickets(self.bot)
         await setup_quests(self.bot)
