@@ -263,7 +263,7 @@ class CreateTicketModal(discord.ui.Modal):
                 )
                 for skill in skill_options
             ],
-            required=False,
+            required=True,
         )
 
         self.add_item(
@@ -399,12 +399,12 @@ class CreateTicketModal(discord.ui.Modal):
             ticket_name = f"ticket-{ticket_id:03d}"
             category = interaction.guild.get_channel(TICKET_CATEGORY_ID)
             skill_selection_value = self.skill_selection.value if self.skill_selection else "First time"
-            experienced_only = False
-            if (
-                self.type == "weekly bosses"
-                and len(self.experienced_only.component.values) > 0
-            ):
-                experienced_only = self.experienced_only.component.values[0]
+            #experienced_only = False
+            #if (
+            #    self.type == "weekly bosses"
+            #    and len(self.experienced_only.component.values) > 0
+            #):
+            #    experienced_only = self.experienced_only.component.values[0]
 
             overwrites = get_overwrites(interaction)
             channel = await interaction.guild.create_text_channel(
@@ -502,7 +502,7 @@ class CreateTicketModal(discord.ui.Modal):
                 drops=drops_list,
                 ticket_name=ticket_name,
                 claimer_roles={str(interaction.user.id): "DPS"},
-                certificate_only=experienced_only,
+                certificate_only=self.type == "weekly bosses",
                 is_practice=self.is_practice,
                 #badges=found_badges["others"],
                 #inventory=inventory_info,
