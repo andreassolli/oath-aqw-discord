@@ -3,7 +3,6 @@ from discord.ext import commands
 
 from extra_commands.transcended_colors import setup_color_panel
 from ticket_help.commands.admin import (
-    add_boss,
     adjust_points,
     clear_active_ticket_command,
     delete_boss,
@@ -33,7 +32,6 @@ class Tickets(commands.Cog):
         tree.add_command(set_boss_points)
         tree.add_command(reset_all_points)
         tree.add_command(set_user_points)
-        tree.add_command(add_boss)
         tree.add_command(delete_boss)
         tree.add_command(lookup_points)
         tree.add_command(delete_type)
