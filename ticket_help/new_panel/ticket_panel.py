@@ -85,6 +85,7 @@ class TicketLayout(discord.ui.LayoutView):
         notes: str | None = None,
         certificate_only: bool = False,
         is_practice: bool = False,
+        experience: str | None = None,
     ):
         super().__init__(timeout=None)
 
@@ -106,6 +107,7 @@ class TicketLayout(discord.ui.LayoutView):
         self.completed_bosses = completed_bosses
         self.certificate_only = certificate_only
         self.is_practice = is_practice
+        self.experience = experience
 
         boss_list = [boss for boss in bosses if boss not in completed_bosses]
         self.boss_list = boss_list
@@ -195,7 +197,7 @@ class TicketLayout(discord.ui.LayoutView):
                 ),
                 discord.ui.Section(
                     discord.ui.TextDisplay(
-                    content=f"<:id2:1505158104810262558> **Requester** {requester_mention} ({username}){'\n >>> ' + notes if notes else ''}"),
+                        content=f"<:id2:1505158104810262558> **Requester** {requester_mention} ({username}){f'\n >>> Experience: ' + experience if experience else ''}"),
                     accessory=RequesterInfoButton()
                 ),
                 discord.ui.Section(
