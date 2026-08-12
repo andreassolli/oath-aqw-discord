@@ -4,7 +4,8 @@ from panels.test_boss import BossMultiSelectView
 from ticket_help.modals.test_modal import CreateTicketModal
 from ticket_help.panels.server_select import ServerSelect
 from ticket_help.panels.type_select import PracticeSelect, TypeSelect
-
+from panels.spam_view import SpamCreateView
+from panels.spam_cache import SPAM_PANEL_CACHE
 
 class TicketCreateView(discord.ui.View):
     def __init__(self, servers):
@@ -23,6 +24,27 @@ class TicketCreateView(discord.ui.View):
             return await interaction.response.send_message(
                 "You can only create spamming tickets for AQW:I.", ephemeral=True
             )
+
+        if self.selected_practice != "infinity" and self.selected_type == "spamming":
+            await interaction.response.defer(ephemeral=True)
+
+            view = SpamCreateView(self.servers, self.selected_type, self.selected_practice)
+
+            message = await interaction.followup.send(
+                "Add the bosses you need help with using the command `/add-bosses <boss1> <boss2>`",
+                view=view,
+                ephemeral=True,
+                wait=True,
+            )
+
+            SPAM_PANEL_CACHE[interaction.user.id] = {
+                "channel": message.channel.id,
+                "message": message.id,
+                "is_practice": self.selected_practice,
+                "type": self.selected_type,
+                "servers": self.servers,
+            }
+            return
 
         await interaction.response.send_modal(
             CreateTicketModal(

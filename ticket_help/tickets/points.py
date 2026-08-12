@@ -1,4 +1,5 @@
 from firebase_client import db
+import json
 
 DEFAULT_POINTS = 1
 _rule_cache = None
@@ -37,6 +38,15 @@ def calculate_ticket_points(note: str) -> int:
 DEFAULT_ROOM = ""
 _rooms_cache = None
 
+INPUT_FILE = "spam_bosses.json"
+with open(INPUT_FILE, "r", encoding="utf-8") as f:
+    SPAM_BOSSES = json.load(f)
+
+def get_spam_boss_room(boss:str) -> str:
+    for spam_boss in SPAM_BOSSES:
+        if boss == spam_boss["name"]:
+            return(spam_boss["room"])
+    return ""
 
 def load_boss_rooms():
     global _rooms_cache
