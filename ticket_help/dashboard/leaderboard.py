@@ -137,7 +137,7 @@ class LeaderboardView(discord.ui.LayoutView):
             if i < 5:
                 prefix = "<:leftwing:1505157673249935402>" + medals[i] + "<:rightwing:1505157674776531015>"
             else:
-                prefix = "<:blank:1537132485601665166>" + numbers[i-6] + "<:blank:1537132485601665166>"
+                prefix = "<:blank:1537132485601665166>" + numbers[i-5] + "<:blank:1537132485601665166>"
             aqw_guild = data.get("guild", "")
             if aqw_guild and aqw_guild != "None":
                 if aqw_guild == "Oath":
