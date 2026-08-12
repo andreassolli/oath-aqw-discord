@@ -57,6 +57,11 @@ BOSS_TO_CERTIFICATE = {
     "Ultra Nulgath": NULGATH_CERTIFICATE_ID,
 }
 
+EXPERIENCE_ICON = {
+    "First time": "🆕",
+    "Done a couple times": "🕶️",
+    "Very comfortable": "💫",
+}
 
 def format_points(points: int) -> str:
     digits = str(points)
@@ -197,7 +202,7 @@ class TicketLayout(discord.ui.LayoutView):
                 ),
                 discord.ui.Section(
                     discord.ui.TextDisplay(
-                        content=f"<:id2:1505158104810262558> **Requester** {requester_mention} ({username}){f'\n >>> Experience: ' + experience if experience else ''}"),
+                        content=f"<:id2:1505158104810262558> **Requester** {requester_mention} ({username}){'\n> Experience: ' + EXPERIENCE_ICON[experience] + experience if experience else ''}"),
                     accessory=RequesterInfoButton()
                 ),
                 discord.ui.Section(
