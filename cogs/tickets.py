@@ -14,6 +14,7 @@ from ticket_help.commands.admin import (
     reset_all_points,
     set_boss_points,
     set_user_points,
+    update_spam_panel,
 )
 from ticket_help.tickets.ticket_cache import ticket_cache
 from ticket_help.utils.experienced_panel import setup_application_panel
@@ -40,6 +41,7 @@ class Tickets(commands.Cog):
         tree.add_command(adjust_points)
         tree.add_command(remove_claimer)
         tree.add_command(clear_active_ticket_command)
+        tree.add_command(update_spam_panel)
 
     @commands.Cog.listener()
     async def on_ready(self):
