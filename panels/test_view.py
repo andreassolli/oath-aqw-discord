@@ -28,21 +28,15 @@ class TicketCreateView(discord.ui.View):
         if self.selected_practice != "infinity" and self.selected_type == "spamming":
             await interaction.response.defer(ephemeral=True)
 
-            view = SpamCreateView(self.servers, self.selected_type, self.selected_practice)
-
-            message = await interaction.followup.send(
+            await interaction.followup.send(
                 "Add the bosses you need help with using the command `/add-bosses <boss1> <boss2>`",
-                view=view,
-                ephemeral=True,
-                wait=True,
             )
 
             SPAM_PANEL_CACHE[interaction.user.id] = {
-                "channel": message.channel.id,
-                "message": message.id,
                 "is_practice": self.selected_practice,
                 "type": self.selected_type,
                 "servers": self.servers,
+                "bosses": [],
             }
             return
 

@@ -46,16 +46,10 @@ async def update_spam_panel(
     if not cache:
         return await interaction.response.send_message(
             "The spam panel hasn't been created yet.",
-            ephemeral=True
+            ephemeral=True,
         )
 
-    message_id = cache.get("message")
-    channel_id = cache.get("channel")
-    servers = cache.get("servers")
-    is_practice = cache.get("is_practice")
-    ticket_type = cache.get("type")
-
-    bosses = [
+    new_bosses = [
         boss for boss in (
             monster1,
             monster2,
@@ -66,52 +60,39 @@ async def update_spam_panel(
         if boss
     ]
 
-    if not bosses:
+    if not new_bosses:
         return await interaction.response.send_message(
             "You need to provide at least one boss.",
-            ephemeral=True
+            ephemeral=True,
         )
 
-    guild = interaction.guild
+    # Get existing bosses
+    bosses = cache.get("bosses", [])
 
-    if not guild:
-        return await interaction.response.send_message(
-            "This command can only be used in a server.",
-            ephemeral=True
-        )
+    # Add new bosses
+    bosses.extend(new_bosses)
 
-    channel = guild.get_channel(channel_id)
-
-    if channel is None:
-        return await interaction.response.send_message(
-            "I couldn't find the channel.",
-            ephemeral=True
-        )
-
-    try:
-        message = await channel.fetch_message(message_id)
-    except discord.NotFound:
-        return await interaction.response.send_message(
-            "The message no longer exists.",
-            ephemeral=True
-        )
+    # Optional: remove duplicates while preserving order
+    bosses = list(dict.fromkeys(bosses))
 
     view = SpamCreateView(
-        servers=servers,
-        type=ticket_type,
-        practice=is_practice,
+        servers=cache["servers"],
+        type=cache["type"],
+        practice=cache["is_practice"],
         bosses=bosses,
     )
 
-    await message.edit(
-        content=f"Current bosses: {', '.join(bosses)}",
+    await interaction.response.send_message(
+        f"Current bosses: {', '.join(bosses)}",
         view=view,
+        ephemeral=True,
     )
 
-    await interaction.response.send_message(
-        "Bosses added.",
-        ephemeral=True
-    )
+    # Store the updated state
+    cache["bosses"] = bosses
+    cache["view"] = view
+
+    return
 
 @app_commands.command(
     name="clear-active-ticket", description="Clear active ticket for a user"
