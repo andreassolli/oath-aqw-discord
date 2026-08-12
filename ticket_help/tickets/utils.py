@@ -13,14 +13,14 @@ DIFFICULTY_MAP = {
 
 
 POTIONS = [
-    "Fate",
-    "Battle",
-    "Might",
-    "Sage",
-    "Malevolence",
-    "Malice",
-    "Honor",
-    "Philtre",
+    "Fate Tonic",
+    "Potent Battle Elixir",
+    "Might Tonic",
+    "Sage Tonic",
+    "Potent Malevolence Elixir",
+    "Potent Malice Potion",
+    "Potent Honor Potion",
+    "Felicitous Philtre",
 ]
 
 WEAPONS = [
