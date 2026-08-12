@@ -193,22 +193,6 @@ class CreateTicketModal(discord.ui.Modal):
         self.room_input = None
         self.server = ""
 
-        if self.type in {
-            "other bosses",
-            "spamming",
-            "testing",
-            "until drop",
-        }:
-            self.max_claims_input = discord.ui.TextInput(
-                label="Maximum helpers",
-                placeholder="Digit between 1 and 20",
-                required=True,
-            )
-            self.add_item(self.max_claims_input)
-        else:
-            self.max_claims_input = None
-            self.max_claims = None
-
         if self.type == "until drop":
             self.total_drops_input = discord.ui.TextInput(
                 label="Drop Rate % (comma-separated)",
@@ -329,20 +313,13 @@ class CreateTicketModal(discord.ui.Modal):
                 inventory_info["classes"].add(badge)
 
 
-            if self.max_claims_input:
-                try:
-                    max_claims_value = int(self.max_claims_input.value)
-                    if not 1 <= max_claims_value <= 20:
-                        raise ValueError
-                except ValueError:
-                    return await interaction.followup.send(
-                        "❌ Maximum helpers must be a number between **1 and 20**.",
-                        ephemeral=True,
-                    )
-            elif self.type == "7 man bosses":
+            max_claims_value = 0
+            if self.type == "7 man bosses":
                 max_claims_value = 6
-            else:
+            elif self.type in {"weekly bosses", "daily bosses"}:
                 max_claims_value = 3
+            else:
+                max_claims_value = 1
 
             points = 0
             if self.is_practice:
@@ -351,25 +328,8 @@ class CreateTicketModal(discord.ui.Modal):
 
             elif self.type in {"other bosses", "spamming", "testing"}:
                 if self.type == "spamming":
-                    selected_spam = bosses[0]
-                    if selected_spam == "All TempleShrine":
-                        points = int(total_kills_value * 1.75)
-                    elif selected_spam == "Middle TempleShrine":
-                        points = int(total_kills_value * 0.75)
-                    elif selected_spam in [
-                        "Right TempleShrine",
-                        "Left TempleShrine",
-                    ]:
-                        points = int(total_kills_value * 0.5)
-                    elif selected_spam == "Flame Usurper":
-                        points = int(total_kills_value * 0.4)
-                        max_claims_value = 1
-                    else:
-                        bosses = [
-                            boss.strip() for boss in self.bosses_input.value.split(",")
-                        ]
-                        index = bisect.bisect_left(spam_points, total_kills_value)
-                        points = index if index > 0 else 1
+                    index = bisect.bisect_left(spam_points, total_kills_value)
+                    points = index if index > 0 else 1
             elif self.type == "until drop":
                 bosses = [boss.strip() for boss in self.bosses_input.value.split(",")]
 
@@ -409,6 +369,39 @@ class CreateTicketModal(discord.ui.Modal):
                 category=category,
                 overwrites=overwrites,
             )
+
+            lines = []
+            min_helpers = 20
+
+            for boss in bosses:
+                custom_tickets = {"spamming", "testing", "until drop"}
+                if self.type in custom_tickets and self.is_infinity:
+                    if "TempleShrine" in boss:
+                        rooms = "templeshrine"
+                    elif "Flame Usurper" in boss:
+                        rooms = "flameusurper"
+                    else:
+                        rooms = boss
+                elif self.type == "spamming":
+                    spam_boss = get_spam_boss_room(boss)
+                    rooms = spam_boss.get("room")
+                    limit = spam_boss.get("players", 1)
+                    min_helpers = min(min_helpers, limit)
+                else:
+                    rooms = get_boss_room(boss)
+
+                if not rooms:
+                    continue
+
+                # Split multiple rooms by comma
+                room_list = [r.strip() for r in rooms.split(",")]
+
+                for room in room_list:
+                    lines.append(f"```/join {room}-{room_value}```")
+
+            rooms_text = "".join(lines)
+            if self.type == "spamming":
+                max_claims_value = min_helpers
 
             log_layout = LogLayout(
                 requester_id=interaction.user.id,
@@ -551,32 +544,7 @@ class CreateTicketModal(discord.ui.Modal):
             await interaction.followup.send(
                 f"✅ Ticket created: {channel.mention}", ephemeral=True
             )
-            lines = []
 
-            for boss in bosses:
-                custom_tickets = {"spamming", "testing", "until drop"}
-                if self.type in custom_tickets and self.is_infinity:
-                    if "TempleShrine" in boss:
-                        rooms = "templeshrine"
-                    elif "Flame Usurper" in boss:
-                        rooms = "flameusurper"
-                    else:
-                        rooms = boss
-                elif self.type == "spamming":
-                    rooms = get_spam_boss_room(boss)
-                else:
-                    rooms = get_boss_room(boss)
-
-                if not rooms:
-                    continue
-
-                # Split multiple rooms by comma
-                room_list = [r.strip() for r in rooms.split(",")]
-
-                for room in room_list:
-                    lines.append(f"```/join {room}-{layout.room}```")
-
-            rooms_text = "".join(lines)
 
             await interaction.followup.send(
                 f"📋 **Room codes:**\n{rooms_text}", ephemeral=True

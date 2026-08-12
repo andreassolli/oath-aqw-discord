@@ -5,7 +5,8 @@
     "location_name": "Battledoom",
     "location_link": "/battledoom",
     "total_hp": 182890,
-    "room": "battledoom"
+    "room": "battledoom",
+    "max_players": 6
   },
   {
     "name": "Abel (Monster)",
@@ -13,7 +14,8 @@
     "location_name": "Ice Dungeon",
     "location_link": "/ice-dungeon",
     "total_hp": 110000,
-    "room": "icedungeon"
+    "room": "icedungeon",
+    "max_players": 7
   },
   {
     "name": "Aberrant Horror",
@@ -21,7 +23,8 @@
     "location_name": "Deep Forest",
     "location_link": "/deep-forest",
     "total_hp": 178690,
-    "room": "deepforest"
+    "room": "deepforest",
+    "max_players": 7
   },
   {
     "name": "Absurd Foot",
@@ -29,23 +32,8 @@
     "location_name": "Banzai B",
     "location_link": "/banzai-b",
     "total_hp": 120040,
-    "room": "banzaib"
-  },
-  {
-    "name": "Accursed Agape",
-    "url": "https://aqwwiki.wikidot.com/accursed-agape",
-    "location_name": "Infernal Arena",
-    "location_link": "/infernal-arena",
-    "total_hp": 175000,
-    "room": "infernalarena"
-  },
-  {
-    "name": "Accursed Apephyrx",
-    "url": "https://aqwwiki.wikidot.com/accursed-apephyrx",
-    "location_name": "Infernal Arena",
-    "location_link": "/infernal-arena",
-    "total_hp": 200000,
-    "room": "infernalarena"
+    "room": "banzaib",
+    "max_players": 6
   },
   {
     "name": "Adimonde (Monster)",
@@ -53,7 +41,8 @@
     "location_name": "Fiendshard",
     "location_link": "/fiendshard",
     "total_hp": 1000000000,
-    "room": "fiendshard"
+    "room": "fiendshard",
+    "max_players": 7
   },
   {
     "name": "Admiral Zheng",
@@ -61,7 +50,8 @@
     "location_name": "Yokai Treasure",
     "location_link": "/yokai-treasure",
     "total_hp": 175000,
-    "room": "yokaitreasure"
+    "room": "yokaitreasure",
+    "max_players": 8
   },
   {
     "name": "Aeacus",
@@ -69,7 +59,8 @@
     "location_name": "Judgement",
     "location_link": "/judgement",
     "total_hp": 140850,
-    "room": "judgement"
+    "room": "judgement",
+    "max_players": 6
   },
   {
     "name": "Aermhar",
@@ -77,7 +68,8 @@
     "location_name": "Masquerade",
     "location_link": "/masquerade",
     "total_hp": 175880,
-    "room": "masquerade"
+    "room": "masquerade",
+    "max_players": 7
   },
   {
     "name": "Agape",
@@ -85,7 +77,8 @@
     "location_name": "Arcadia",
     "location_link": "/arcadia",
     "total_hp": 100214,
-    "room": "arcadia"
+    "room": "arcadia",
+    "max_players": 7
   },
   {
     "name": "Akriloth (2)",
@@ -93,7 +86,8 @@
     "location_name": "Charred Plains",
     "location_link": "/charred-plains",
     "total_hp": 875130,
-    "room": "charredplains"
+    "room": "charredplains",
+    "max_players": 7
   },
   {
     "name": "Akriloth's Head",
@@ -101,7 +95,8 @@
     "location_name": "Fear House",
     "location_link": "/fear-house",
     "total_hp": 816620,
-    "room": "fearhouse"
+    "room": "fearhouse",
+    "max_players": 6
   },
   {
     "name": "All Fears",
@@ -109,7 +104,8 @@
     "location_name": "Fear House",
     "location_link": "/fear-house",
     "total_hp": 133880,
-    "room": "fearhouse"
+    "room": "fearhouse",
+    "max_players": 6
   },
   {
     "name": "Alpha Cabdury",
@@ -117,7 +113,8 @@
     "location_name": "Grenwog Warren",
     "location_link": "/grenwog-warren",
     "total_hp": 100000,
-    "room": "grenwogwarren"
+    "room": "grenwogwarren",
+    "max_players": 7
   },
   {
     "name": "Amarok",
@@ -125,7 +122,8 @@
     "location_name": "Wolf Lake",
     "location_link": "/wolf-lake",
     "total_hp": 300000,
-    "room": "wolflake"
+    "room": "wolflake",
+    "max_players": 7
   },
   {
     "name": "Ancient Dread Dragon",
@@ -133,7 +131,8 @@
     "location_name": "Breakstone",
     "location_link": "/breakstone",
     "total_hp": 446659,
-    "room": "breakstone"
+    "room": "breakstone",
+    "max_players": 6
   },
   {
     "name": "Ancient Horror",
@@ -141,7 +140,8 @@
     "location_name": null,
     "location_link": null,
     "total_hp": 370560,
-    "room": null
+    "room": null,
+    "max_players": null
   },
   {
     "name": "Ancient Mecha",
@@ -149,7 +149,8 @@
     "location_name": "Genesis Garden",
     "location_link": "/genesis-garden",
     "total_hp": 180000,
-    "room": "genesisgarden"
+    "room": "genesisgarden",
+    "max_players": 7
   },
   {
     "name": "Anima Animus Aiwass",
@@ -157,7 +158,8 @@
     "location_name": "Sanctuary Aiwass",
     "location_link": "/sanctuary-aiwass",
     "total_hp": 220000,
-    "room": "sanctuaryaiwass"
+    "room": "sanctuaryaiwass",
+    "max_players": 7
   },
   {
     "name": "Anka",
@@ -165,7 +167,8 @@
     "location_name": "Down Below",
     "location_link": "/down-below",
     "total_hp": 600000,
-    "room": "downbelow"
+    "room": "downbelow",
+    "max_players": 7
   },
   {
     "name": "Anqa",
@@ -173,7 +176,8 @@
     "location_name": "Sunset Ridge",
     "location_link": "/sunset-ridge",
     "total_hp": 1000000,
-    "room": "sunsetridge"
+    "room": "sunsetridge",
+    "max_players": 7
   },
   {
     "name": "Apophis Chantress",
@@ -181,7 +185,8 @@
     "location_name": "Lotus Tomb",
     "location_link": "/lotus-tomb",
     "total_hp": 275000,
-    "room": null
+    "room": null,
+    "max_players": 7
   },
   {
     "name": "Aquamancer",
@@ -189,15 +194,8 @@
     "location_name": "Hidden Depths",
     "location_link": "/hidden-depths",
     "total_hp": 599370,
-    "room": "hiddendepths"
-  },
-  {
-    "name": "Aranx (Monster)",
-    "url": "https://aqwwiki.wikidot.com/aranx-monster",
-    "location_name": "Celestial Arena D",
-    "location_link": "/celestial-arena-d",
-    "total_hp": 626330,
-    "room": "celestialarenad"
+    "room": "hiddendepths",
+    "max_players": 6
   },
   {
     "name": "Aranx, Nightstar",
@@ -205,7 +203,8 @@
     "location_name": "Infernal Dianoia",
     "location_link": "/infernal-dianoia",
     "total_hp": 625000,
-    "room": "infernaldianoia"
+    "room": "infernaldianoia",
+    "max_players": 7
   },
   {
     "name": "Archfiend Casimir (Monster)",
@@ -213,7 +212,8 @@
     "location_name": "Fiend Void",
     "location_link": "/fiend-void",
     "total_hp": 290000,
-    "room": "fiendvoid"
+    "room": "fiendvoid",
+    "max_players": 7
   },
   {
     "name": "ArchFiend DragonLord (Monster)",
@@ -221,7 +221,8 @@
     "location_name": "Underlair",
     "location_link": "/underlair",
     "total_hp": 668280,
-    "room": "underlair"
+    "room": "underlair",
+    "max_players": 7
   },
   {
     "name": "Archfiend Oblivion (Monster)",
@@ -229,7 +230,8 @@
     "location_name": "Oblivion Tundra",
     "location_link": "/oblivion-tundra",
     "total_hp": 275000,
-    "room": "obliviontundra"
+    "room": "obliviontundra",
+    "max_players": 7
   },
   {
     "name": "Archfiend Rodeleros (Monster)",
@@ -237,7 +239,8 @@
     "location_name": "Terces Invasion",
     "location_link": "/terces-invasion",
     "total_hp": 320000,
-    "room": "tercesinvasion"
+    "room": "tercesinvasion",
+    "max_players": 7
   },
   {
     "name": "Archfiend Vigneron (Monster)",
@@ -245,7 +248,8 @@
     "location_name": "Terces Invasion",
     "location_link": "/terces-invasion",
     "total_hp": 240000,
-    "room": "tercesinvasion"
+    "room": "tercesinvasion",
+    "max_players": 7
   },
   {
     "name": "Argo (Monster)",
@@ -253,7 +257,8 @@
     "location_name": "Envy (Location) (2)",
     "location_link": "/envy-location-2",
     "total_hp": 133420,
-    "room": "dragoncrown"
+    "room": "dragoncrown",
+    "max_players": 7
   },
   {
     "name": "Argus Panoptes (Monster)",
@@ -261,7 +266,8 @@
     "location_name": "Phlegethon",
     "location_link": "/phlegethon",
     "total_hp": 2000000,
-    "room": "phlegethon"
+    "room": "phlegethon",
+    "max_players": 7
   },
   {
     "name": "Armadeddon",
@@ -269,7 +275,8 @@
     "location_name": "Lich War",
     "location_link": "/lich-war",
     "total_hp": 225000,
-    "room": "lichwar"
+    "room": "lichwar",
+    "max_players": 20
   },
   {
     "name": "Arthelyn (Monster)",
@@ -277,7 +284,8 @@
     "location_name": "Ivoliss (Location)",
     "location_link": "/ivoliss-location",
     "total_hp": 175880,
-    "room": "ivoliss"
+    "room": "ivoliss",
+    "max_players": 7
   },
   {
     "name": "Astero (Monster)",
@@ -285,7 +293,8 @@
     "location_name": "Fortress Delve",
     "location_link": "/fortress-delve",
     "total_hp": 220000,
-    "room": "fortressdelve"
+    "room": "fortressdelve",
+    "max_players": 7
   },
   {
     "name": "Astice",
@@ -293,7 +302,8 @@
     "location_name": "Canal Shore",
     "location_link": "/canal-shore",
     "total_hp": 151000,
-    "room": "canalshore"
+    "room": "canalshore",
+    "max_players": 7
   },
   {
     "name": "Aurola (Monster)",
@@ -301,7 +311,8 @@
     "location_name": "Astravia Past",
     "location_link": "/astravia-past",
     "total_hp": 110000,
-    "room": null
+    "room": null,
+    "max_players": 7
   },
   {
     "name": "Aurora Vaderix",
@@ -309,7 +320,8 @@
     "location_name": "Snowview Race",
     "location_link": "/snowview-race",
     "total_hp": 140000,
-    "room": "snowviewrace"
+    "room": "snowviewrace",
+    "max_players": 7
   },
   {
     "name": "Avarice",
@@ -317,7 +329,8 @@
     "location_name": "Fiend Past",
     "location_link": "/fiend-past",
     "total_hp": 100000,
-    "room": "fiendpast"
+    "room": "fiendpast",
+    "max_players": 7
   },
   {
     "name": "Avatar of Desolich",
@@ -325,7 +338,8 @@
     "location_name": "Dragons' Heart",
     "location_link": "/dragons-heart",
     "total_hp": 123300,
-    "room": "dragonheart"
+    "room": "dragonheart",
+    "max_players": 6
   },
   {
     "name": "Avatar of Time (Monster) (2)",
@@ -333,7 +347,8 @@
     "location_name": "Infernal Dianoia",
     "location_link": "/infernal-dianoia",
     "total_hp": 150000,
-    "room": "infernaldianoia"
+    "room": "infernaldianoia",
+    "max_players": 7
   },
   {
     "name": "Avatar Tyndarius",
@@ -341,7 +356,8 @@
     "location_name": "Fire Avatar",
     "location_link": "/fire-avatar",
     "total_hp": 1500000,
-    "room": "fireavatar"
+    "room": "fireavatar",
+    "max_players": 7
   },
   {
     "name": "Azal the Infernal (Monster)",
@@ -349,7 +365,8 @@
     "location_name": "Dreadrock Citadel",
     "location_link": "/dreadrock-citadel",
     "total_hp": 170050,
-    "room": "dreadrock"
+    "room": "dreadrock",
+    "max_players": 6
   },
   {
     "name": "Azalith (Monster) (2)",
@@ -357,7 +374,8 @@
     "location_name": "Champion Azalith",
     "location_link": "/champion-azalith",
     "total_hp": 888888,
-    "room": "champazalith"
+    "room": "champazalith",
+    "max_players": 7
   },
   {
     "name": "Baby",
@@ -365,7 +383,8 @@
     "location_name": "Twig's Arcade",
     "location_link": "/twig-s-arcade",
     "total_hp": 111180,
-    "room": "twigsarcade"
+    "room": "twigsarcade",
+    "max_players": 7
   },
   {
     "name": "Barghest",
@@ -373,7 +392,8 @@
     "location_name": "Mystcroft Forest (Location)",
     "location_link": "/mystcroft-forest-location",
     "total_hp": 136460,
-    "room": "mystcroftforest"
+    "room": "mystcroftforest",
+    "max_players": 6
   },
   {
     "name": "Baron Luca (Monster)",
@@ -381,7 +401,8 @@
     "location_name": "BakeShop of Horrors",
     "location_link": "/bakeshop-of-horrors",
     "total_hp": 126720,
-    "room": "pie"
+    "room": "pie",
+    "max_players": 6
   },
   {
     "name": "Befuddled Broc",
@@ -389,7 +410,8 @@
     "location_name": "Wedding",
     "location_link": "/wedding",
     "total_hp": 200000,
-    "room": "wed"
+    "room": "wed",
+    "max_players": 20
   },
   {
     "name": "Befuddled Brody",
@@ -397,7 +419,8 @@
     "location_name": "Wedding",
     "location_link": "/wedding",
     "total_hp": 195000,
-    "room": "wed"
+    "room": "wed",
+    "max_players": 20
   },
   {
     "name": "Bellona",
@@ -405,7 +428,8 @@
     "location_name": "Camlan Forest",
     "location_link": "/camlan-forest",
     "total_hp": 125000,
-    "room": "camlan"
+    "room": "camlan",
+    "max_players": 7
   },
   {
     "name": "Bicho Papao",
@@ -413,7 +437,8 @@
     "location_name": "Dance Guru",
     "location_link": "/dance-guru",
     "total_hp": 140330,
-    "room": "danceguru"
+    "room": "danceguru",
+    "max_players": 7
   },
   {
     "name": "Big Bad Ancient Goose",
@@ -421,7 +446,8 @@
     "location_name": "Cysero's Secret",
     "location_link": "/cysero-s-secret",
     "total_hp": 142960,
-    "room": "goose"
+    "room": "goose",
+    "max_players": 6
   },
   {
     "name": "Binky (Monster)",
@@ -429,7 +455,8 @@
     "location_name": null,
     "location_link": null,
     "total_hp": 866680,
-    "room": "doomvaultb"
+    "room": "doomvaultb",
+    "max_players": null
   },
   {
     "name": "Birthday Cake",
@@ -437,7 +464,8 @@
     "location_name": "Birthday",
     "location_link": "/birthday",
     "total_hp": 100017,
-    "room": "birthday"
+    "room": "birthday",
+    "max_players": null
   },
   {
     "name": "Birthday Gifts",
@@ -445,7 +473,8 @@
     "location_name": "Event Hub (October)",
     "location_link": "/event-hub",
     "total_hp": 101008,
-    "room": "eventhub"
+    "room": "eventhub",
+    "max_players": 20
   },
   {
     "name": "Black BOGOdrone Prime",
@@ -453,7 +482,8 @@
     "location_name": "Ebil Mega Mall",
     "location_link": "/ebil-mega-mall",
     "total_hp": 251128,
-    "room": "ebilmegamall"
+    "room": "ebilmegamall",
+    "max_players": 7
   },
   {
     "name": "Blight",
@@ -461,7 +491,8 @@
     "location_name": "Bright Chaos",
     "location_link": "/bright-chaos",
     "total_hp": 179290,
-    "room": "brightchaos"
+    "room": "brightchaos",
+    "max_players": 7
   },
   {
     "name": "Blighted Zubami",
@@ -469,7 +500,8 @@
     "location_name": "Deleuze Tundra",
     "location_link": "/deleuze-tundra",
     "total_hp": 12000000,
-    "room": "deleuzetundra"
+    "room": "deleuzetundra",
+    "max_players": 7
   },
   {
     "name": "Blood Titan (Monster)",
@@ -477,7 +509,8 @@
     "location_name": "Blood Titan (Location)",
     "location_link": "/blood-titan-location",
     "total_hp": 196460,
-    "room": "bloodtitan"
+    "room": "bloodtitan",
+    "max_players": 6
   },
   {
     "name": "Blood Witch",
@@ -485,7 +518,8 @@
     "location_name": "Lae's Wedding",
     "location_link": "/lae-s-wedding",
     "total_hp": 100524,
-    "room": "laewed"
+    "room": "laewed",
+    "max_players": 7
   },
   {
     "name": "Bloodthirsty Bonnie",
@@ -493,7 +527,8 @@
     "location_name": "Blood Isles",
     "location_link": "/blood-isles",
     "total_hp": 100000,
-    "room": "bloodisles"
+    "room": "bloodisles",
+    "max_players": 7
   },
   {
     "name": "BOGOdrone Prime",
@@ -501,7 +536,8 @@
     "location_name": "Black Friday War",
     "location_link": "/black-friday-war",
     "total_hp": 142830,
-    "room": "blackfridaywar"
+    "room": "blackfridaywar",
+    "max_players": 6
   },
   {
     "name": "Book Wyrm",
@@ -509,7 +545,8 @@
     "location_name": "Back Room",
     "location_link": "/back-room",
     "total_hp": 170210,
-    "room": "backroom"
+    "room": "backroom",
+    "max_players": 7
   },
   {
     "name": "Boto",
@@ -517,7 +554,8 @@
     "location_name": "Myth Perception",
     "location_link": "/myth-perception",
     "total_hp": 150000,
-    "room": "mythperception"
+    "room": "mythperception",
+    "max_players": 7
   },
   {
     "name": "Brado Retumbante (Monster)",
@@ -525,7 +563,8 @@
     "location_name": "Povo Heroico (Location)",
     "location_link": "/povo-heroico-location",
     "total_hp": 791822,
-    "room": "povoheroico"
+    "room": "povoheroico",
+    "max_players": 5
   },
   {
     "name": "Bubble (Monster)",
@@ -533,7 +572,8 @@
     "location_name": "Blood Moon",
     "location_link": "/blood-moon",
     "total_hp": 129050,
-    "room": "bloodmoon"
+    "room": "bloodmoon",
+    "max_players": 7
   },
   {
     "name": "Burglinster",
@@ -541,7 +581,8 @@
     "location_name": "Yulgar's Börgars (Location)",
     "location_link": "/yulgar-s-borgars-location",
     "total_hp": 179290,
-    "room": "borgars"
+    "room": "borgars",
+    "max_players": 7
   },
   {
     "name": "Byro-Dax Monstrosity",
@@ -549,7 +590,8 @@
     "location_name": "ByroDax",
     "location_link": "/byrodax",
     "total_hp": 159750,
-    "room": "byrodax"
+    "room": "byrodax",
+    "max_players": 7
   },
   {
     "name": "Calamitous Warlic (Monster)",
@@ -557,7 +599,8 @@
     "location_name": "Ruined Crown",
     "location_link": "/ruined-crown",
     "total_hp": 250000,
-    "room": "ruinedcrown"
+    "room": "ruinedcrown",
+    "max_players": 7
   },
   {
     "name": "Carcano",
@@ -565,7 +608,8 @@
     "location_name": "Void Chasm",
     "location_link": "/void-chasm",
     "total_hp": 250000,
-    "room": "voidchasm"
+    "room": "voidchasm",
+    "max_players": 7
   },
   {
     "name": "Carnage (Monster) (2)",
@@ -573,7 +617,8 @@
     "location_name": "Void Refuge",
     "location_link": "/void-refuge",
     "total_hp": 180000,
-    "room": "voidrefuge"
+    "room": "voidrefuge",
+    "max_players": 7
   },
   {
     "name": "Catrina (Monster)",
@@ -581,7 +626,8 @@
     "location_name": "Memento",
     "location_link": "/memento",
     "total_hp": 123520,
-    "room": "memento"
+    "room": "memento",
+    "max_players": 6
   },
   {
     "name": "Cecaelia",
@@ -589,7 +635,8 @@
     "location_name": "Merrow Trench",
     "location_link": "/merrow-trench",
     "total_hp": 326430,
-    "room": "merrowtrench"
+    "room": "merrowtrench",
+    "max_players": 7
   },
   {
     "name": "Celestial Gramiel",
@@ -597,7 +644,8 @@
     "location_name": "Dawn Vindicators' Sanctum",
     "location_link": "/dawn-vindicators-sanctum",
     "total_hp": 300000,
-    "room": "dawnsanctum"
+    "room": "dawnsanctum",
+    "max_players": 7
   },
   {
     "name": "Cellot",
@@ -605,7 +653,8 @@
     "location_name": "Wind",
     "location_link": "/wind",
     "total_hp": 120690,
-    "room": "wind"
+    "room": "wind",
+    "max_players": 6
   },
   {
     "name": "Cerberus (Monster)",
@@ -613,15 +662,8 @@
     "location_name": "Styx",
     "location_link": "/styx",
     "total_hp": 145320,
-    "room": "styx"
-  },
-  {
-    "name": "Cervus Malus",
-    "url": "https://aqwwiki.wikidot.com/cervus-malus",
-    "location_name": "Infernal Arena",
-    "location_link": "/infernal-arena",
-    "total_hp": 400000,
-    "room": "infernalarena"
+    "room": "styx",
+    "max_players": 6
   },
   {
     "name": "Chained Kezeroth",
@@ -629,7 +671,8 @@
     "location_name": "Frostval 2016",
     "location_link": "/frostval-2016",
     "total_hp": 216400,
-    "room": "icepike"
+    "room": "icepike",
+    "max_players": 6
   },
   {
     "name": "Champion of Chaos (Monster)",
@@ -637,7 +680,8 @@
     "location_name": "Ultra Drakath",
     "location_link": "/ultra-drakath",
     "total_hp": 923300,
-    "room": "ultradrakath"
+    "room": "ultradrakath",
+    "max_players": 8
   },
   {
     "name": "Chaorrupted Guardian",
@@ -645,7 +689,8 @@
     "location_name": null,
     "location_link": null,
     "total_hp": 106351,
-    "room": null
+    "room": null,
+    "max_players": null
   },
   {
     "name": "Chaos Dragon (1)",
@@ -653,7 +698,8 @@
     "location_name": "Chaos Beast",
     "location_link": "/chaos-beast",
     "total_hp": 131850,
-    "room": "chaosbeast"
+    "room": "chaosbeast",
+    "max_players": 8
   },
   {
     "name": "Chaos Giant",
@@ -661,7 +707,8 @@
     "location_name": "Queen's Battle",
     "location_link": "/queen-s-battle",
     "total_hp": 100000,
-    "room": "queenbattle"
+    "room": "queenbattle",
+    "max_players": 7
   },
   {
     "name": "Chaos Kraken (Monster)",
@@ -669,7 +716,8 @@
     "location_name": "Chaos Kraken (Location)",
     "location_link": "/chaos-kraken-location",
     "total_hp": 365770,
-    "room": "chaoskraken"
+    "room": "chaoskraken",
+    "max_players": 6
   },
   {
     "name": "Chaos Lord Alteon (Monster)",
@@ -677,7 +725,8 @@
     "location_name": "Swordhaven Falls",
     "location_link": "/swordhaven-falls",
     "total_hp": 100000,
-    "room": "swordhavenfalls"
+    "room": "swordhavenfalls",
+    "max_players": 6
   },
   {
     "name": "ChaosWeaver Cleric (Monster)",
@@ -685,7 +734,8 @@
     "location_name": "Chaos Web",
     "location_link": "/chaos-web",
     "total_hp": 199580,
-    "room": "chaosweb"
+    "room": "chaosweb",
+    "max_players": 6
   },
   {
     "name": "ChaosWeaver Warrior",
@@ -693,7 +743,8 @@
     "location_name": "Twilight's Edge",
     "location_link": "/twilight-s-edge",
     "total_hp": 132840,
-    "room": "twilightedge"
+    "room": "twilightedge",
+    "max_players": 6
   },
   {
     "name": "Child of the Depths",
@@ -701,7 +752,8 @@
     "location_name": "Elodea Temple",
     "location_link": "/elodea-temple",
     "total_hp": 350000,
-    "room": "elodeatemple"
+    "room": "elodeatemple",
+    "max_players": 7
   },
   {
     "name": "Chillbite (Monster)",
@@ -709,7 +761,8 @@
     "location_name": "Everfrost Valley",
     "location_link": "/everfrost-valley",
     "total_hp": 105260,
-    "room": "everfrost"
+    "room": "everfrost",
+    "max_players": 7
   },
   {
     "name": "Chimera (Monster) (2)",
@@ -717,7 +770,8 @@
     "location_name": "Coliseum",
     "location_link": "/coliseum",
     "total_hp": 500000,
-    "room": "coliseum"
+    "room": "coliseum",
+    "max_players": 7
   },
   {
     "name": "Chromafection (Monster)",
@@ -725,7 +779,8 @@
     "location_name": "Chromafection (Location)",
     "location_link": "/chromafection-location",
     "total_hp": 111180,
-    "room": "chromafection"
+    "room": "chromafection",
+    "max_players": 7
   },
   {
     "name": "Chronocide",
@@ -733,7 +788,8 @@
     "location_name": "Time Ritual (Location)",
     "location_link": "/time-ritual-location",
     "total_hp": 180830,
-    "room": "timeritual"
+    "room": "timeritual",
+    "max_players": 7
   },
   {
     "name": "Chronocide Prime",
@@ -741,7 +797,8 @@
     "location_name": "Chronomancy Hub",
     "location_link": "/chronomancy-hub",
     "total_hp": 250000,
-    "room": "chronohub"
+    "room": "chronohub",
+    "max_players": 7
   },
   {
     "name": "Chrono-Phoenix (Monster)",
@@ -749,7 +806,8 @@
     "location_name": "Chrono Phoenix (Location)",
     "location_link": "/chrono-phoenix-location",
     "total_hp": 164830,
-    "room": "chronophoenix"
+    "room": "chronophoenix",
+    "max_players": 7
   },
   {
     "name": "Clematis",
@@ -757,7 +815,8 @@
     "location_name": "Forge Citrinitas",
     "location_link": "/forge-citrinitas",
     "total_hp": 125000,
-    "room": "forgecitrinas"
+    "room": "forgecitrinas",
+    "max_players": 7
   },
   {
     "name": "Clementine",
@@ -765,7 +824,8 @@
     "location_name": "Carcossa Cabins",
     "location_link": "/carcossa-cabins",
     "total_hp": 660000,
-    "room": "forgecitrinas"
+    "room": "forgecitrinas",
+    "max_players": 7
   },
   {
     "name": "Cluckmoo Mach 2",
@@ -773,7 +833,8 @@
     "location_name": "Battleon Town",
     "location_link": "/battleon-town",
     "total_hp": 406703,
-    "room": "battleontown"
+    "room": "battleontown",
+    "max_players": 20
   },
   {
     "name": "Coelho (Monster)",
@@ -781,7 +842,8 @@
     "location_name": "Atlas Kingdom",
     "location_link": "/atlas-kingdom",
     "total_hp": 250000,
-    "room": "atlaskingdom"
+    "room": "atlaskingdom",
+    "max_players": 7
   },
   {
     "name": "Cold Grudge",
@@ -789,7 +851,8 @@
     "location_name": "Holiday Horror",
     "location_link": "/holiday-horror",
     "total_hp": 999999,
-    "room": "holidayhorror"
+    "room": "holidayhorror",
+    "max_players": 7
   },
   {
     "name": "Cold Thunder Avatar",
@@ -797,7 +860,8 @@
     "location_name": "Cold Thunder",
     "location_link": "/cold-thunder",
     "total_hp": 1300000,
-    "room": "coldthunder"
+    "room": "coldthunder",
+    "max_players": 7
   },
   {
     "name": "Colonicus",
@@ -805,7 +869,8 @@
     "location_name": "Gluttony (Location)",
     "location_link": "/gluttony-location",
     "total_hp": 124370,
-    "room": "gluttony"
+    "room": "gluttony",
+    "max_players": 7
   },
   {
     "name": "Colossal Primarch",
@@ -813,7 +878,8 @@
     "location_name": null,
     "location_link": null,
     "total_hp": 594740,
-    "room": "doomvaultb"
+    "room": "doomvaultb",
+    "max_players": null
   },
   {
     "name": "Colossal Vordred",
@@ -821,7 +887,8 @@
     "location_name": "More Skulls (Location)",
     "location_link": "/more-skulls-location",
     "total_hp": 666666,
-    "room": "moreskulls"
+    "room": "moreskulls",
+    "max_players": 7
   },
   {
     "name": "Commander Gallaeon",
@@ -829,7 +896,8 @@
     "location_name": "Doom Pirate",
     "location_link": "/doom-pirate",
     "total_hp": 1000000,
-    "room": "doompirate"
+    "room": "doompirate",
+    "max_players": 7
   },
   {
     "name": "Conquest",
@@ -837,7 +905,8 @@
     "location_name": "Undervoid",
     "location_link": "/undervoid",
     "total_hp": 162070,
-    "room": "undervoid"
+    "room": "undervoid",
+    "max_players": 6
   },
   {
     "name": "Cornholio",
@@ -845,7 +914,8 @@
     "location_name": "Ubear (Location)",
     "location_link": "/ubear-location",
     "total_hp": 124370,
-    "room": "ubear"
+    "room": "ubear",
+    "max_players": 7
   },
   {
     "name": "Corrupted Luma",
@@ -853,7 +923,8 @@
     "location_name": "Luma Fortress",
     "location_link": "/luma-fortress",
     "total_hp": 106640,
-    "room": "lumafortress"
+    "room": "lumafortress",
+    "max_players": 7
   },
   {
     "name": "Count Maxius (2)",
@@ -861,7 +932,8 @@
     "location_name": "Maxius",
     "location_link": "/maxius",
     "total_hp": 106910,
-    "room": "maxius"
+    "room": "maxius",
+    "max_players": 7
   },
   {
     "name": "Covetous Disgrace",
@@ -869,7 +941,8 @@
     "location_name": "Lost Villa",
     "location_link": "/lost-villa",
     "total_hp": 200000,
-    "room": "lostvilla"
+    "room": "lostvilla",
+    "max_players": 7
   },
   {
     "name": "Creature 12",
@@ -877,7 +950,8 @@
     "location_name": "Darkon's Garden",
     "location_link": "/darkon-s-garden",
     "total_hp": 201400,
-    "room": "garden"
+    "room": "garden",
+    "max_players": 7
   },
   {
     "name": "Creature 6",
@@ -885,7 +959,8 @@
     "location_name": "Eridani",
     "location_link": "/eridani",
     "total_hp": 275260,
-    "room": "eridani"
+    "room": "eridani",
+    "max_players": 7
   },
   {
     "name": "Creel",
@@ -893,7 +968,8 @@
     "location_name": "Tower of Doom (5)",
     "location_link": "/tower-of-doom-5",
     "total_hp": 178470,
-    "room": "towerofdoom5"
+    "room": "towerofdoom5",
+    "max_players": 6
   },
   {
     "name": "Cryptbreaker",
@@ -901,7 +977,8 @@
     "location_name": "Razorclaw (Location)",
     "location_link": "/razorclaw-location",
     "total_hp": 163070,
-    "room": "razorclaw"
+    "room": "razorclaw",
+    "max_players": 8
   },
   {
     "name": "Crystal Prima",
@@ -909,7 +986,8 @@
     "location_name": "Sanctuary Aiwass",
     "location_link": "/sanctuary-aiwass",
     "total_hp": 100000,
-    "room": "sanctuaryaiwass"
+    "room": "sanctuaryaiwass",
+    "max_players": 7
   },
   {
     "name": "Cured Phlegnn",
@@ -917,7 +995,8 @@
     "location_name": "Sloth",
     "location_link": "/sloth",
     "total_hp": 221220,
-    "room": "sloth"
+    "room": "sloth",
+    "max_players": 7
   },
   {
     "name": "Cursed Cecaelia",
@@ -925,7 +1004,8 @@
     "location_name": null,
     "location_link": null,
     "total_hp": 326428,
-    "room": "ghostship"
+    "room": "ghostship",
+    "max_players": null
   },
   {
     "name": "Cursed Spirit",
@@ -933,7 +1013,8 @@
     "location_name": "Oddities",
     "location_link": "/oddities",
     "total_hp": 350000,
-    "room": "oddities"
+    "room": "oddities",
+    "max_players": 7
   },
   {
     "name": "Dai Tengu (2)",
@@ -941,7 +1022,8 @@
     "location_name": "Haku Village",
     "location_link": "/haku-village",
     "total_hp": 185000,
-    "room": "hakuvillage"
+    "room": "hakuvillage",
+    "max_players": 7
   },
   {
     "name": "Dark Boitata",
@@ -949,7 +1031,8 @@
     "location_name": "Dark Festa",
     "location_link": "/dark-festa",
     "total_hp": 209890,
-    "room": "darkfesta"
+    "room": "darkfesta",
+    "max_players": 7
   },
   {
     "name": "Dark Pit of Despair (Monster)",
@@ -957,7 +1040,8 @@
     "location_name": "Memet's Nightmare",
     "location_link": "/memet-s-nightmare",
     "total_hp": 167790,
-    "room": "memetnightmare"
+    "room": "memetnightmare",
+    "max_players": 7
   },
   {
     "name": "Darkon (Monster)",
@@ -965,7 +1049,8 @@
     "location_name": "The World",
     "location_link": "/the-world",
     "total_hp": 222222,
-    "room": "theworld"
+    "room": "theworld",
+    "max_players": 7
   },
   {
     "name": "Deadfly",
@@ -973,7 +1058,8 @@
     "location_name": "Dead Fly",
     "location_link": "/dead-fly",
     "total_hp": 100000,
-    "room": "deadfly"
+    "room": "deadfly",
+    "max_players": 7
   },
   {
     "name": "Death (Monster) (2)",
@@ -981,7 +1067,8 @@
     "location_name": "Undervoid",
     "location_link": "/undervoid",
     "total_hp": 242820,
-    "room": "undervoid"
+    "room": "undervoid",
+    "max_players": 6
   },
   {
     "name": "Death's Head (Monster)",
@@ -989,7 +1076,8 @@
     "location_name": "Citadel",
     "location_link": "/citadel",
     "total_hp": 100000,
-    "room": "citadel"
+    "room": "citadel",
+    "max_players": 5
   },
   {
     "name": "Deflated Glutus",
@@ -997,7 +1085,8 @@
     "location_name": "Gluttony (Location)",
     "location_link": "/gluttony-location",
     "total_hp": 221220,
-    "room": "gluttony"
+    "room": "gluttony",
+    "max_players": 7
   },
   {
     "name": "Deimos (Monster)",
@@ -1005,7 +1094,8 @@
     "location_name": "Reap Finals",
     "location_link": "/reap-finals",
     "total_hp": 250000,
-    "room": "reapfinals"
+    "room": "reapfinals",
+    "max_players": 7
   },
   {
     "name": "Depths of Isfet",
@@ -1013,7 +1103,8 @@
     "location_name": "Hidden Duat",
     "location_link": "/hidden-duat",
     "total_hp": 40000000,
-    "room": "hiddenduat"
+    "room": "hiddenduat",
+    "max_players": 7
   },
   {
     "name": "Desolich (Monster)",
@@ -1021,7 +1112,8 @@
     "location_name": "Desolich (Location)",
     "location_link": "/desolich-location",
     "total_hp": 8195130,
-    "room": "desolich"
+    "room": "desolich",
+    "max_players": 8
   },
   {
     "name": "Desoloth (Monster)",
@@ -1029,7 +1121,8 @@
     "location_name": "Desoloth (Location)",
     "location_link": "/desoloth-location",
     "total_hp": 176150,
-    "room": "desoloth"
+    "room": "desoloth",
+    "max_players": 6
   },
   {
     "name": "Desoloth the Final",
@@ -1037,15 +1130,8 @@
     "location_name": "Dragon Challenge",
     "location_link": "/dragon-challenge",
     "total_hp": 250000,
-    "room": "dragonchallenge"
-  },
-  {
-    "name": "Destructive Defiler",
-    "url": "https://aqwwiki.wikidot.com/destructive-defiler",
-    "location_name": "Infernal Arena",
-    "location_link": "/infernal-arena",
-    "total_hp": 125000,
-    "room": "infernalarena"
+    "room": "dragonchallenge",
+    "max_players": 4
   },
   {
     "name": "Dethrix",
@@ -1053,7 +1139,8 @@
     "location_name": "Ebonslate Dungeon",
     "location_link": "/ebonslate-dungeon",
     "total_hp": 260710,
-    "room": "ebondungeon"
+    "room": "ebondungeon",
+    "max_players": 7
   },
   {
     "name": "Deva",
@@ -1061,7 +1148,8 @@
     "location_name": "Necro Carnival",
     "location_link": "/necro-carnival",
     "total_hp": 100000,
-    "room": "necrocarnival"
+    "room": "necrocarnival",
+    "max_players": 7
   },
   {
     "name": "Devastator Deimos",
@@ -1069,7 +1157,8 @@
     "location_name": "Deimos (Location)",
     "location_link": "/deimos-location",
     "total_hp": 1000000,
-    "room": "deimos"
+    "room": "deimos",
+    "max_players": 7
   },
   {
     "name": "Devourer of Souls (Monster)",
@@ -1077,7 +1166,8 @@
     "location_name": "Abyssal Lair",
     "location_link": "/abyssal-lair",
     "total_hp": 848160,
-    "room": "abysslair"
+    "room": "abysslair",
+    "max_players": 7
   },
   {
     "name": "Dire Groglurk",
@@ -1085,7 +1175,8 @@
     "location_name": null,
     "location_link": null,
     "total_hp": 102790,
-    "room": "bosschallenge"
+    "room": "bosschallenge",
+    "max_players": null
   },
   {
     "name": "Doom Overlord",
@@ -1093,7 +1184,8 @@
     "location_name": "Necropolis Dungeon",
     "location_link": "/necropolis-dungeon",
     "total_hp": 666666,
-    "room": "necrodungeon"
+    "room": "necrodungeon",
+    "max_players": 6
   },
   {
     "name": "Doomed Fiend",
@@ -1101,7 +1193,8 @@
     "location_name": "Temple Delve",
     "location_link": "/temple-delve",
     "total_hp": 225000,
-    "room": "templedelve"
+    "room": "templedelve",
+    "max_players": 7
   },
   {
     "name": "Doomed Oblivion",
@@ -1109,7 +1202,8 @@
     "location_name": "Temple Siege",
     "location_link": "/temple-siege",
     "total_hp": 200000,
-    "room": "templesiege"
+    "room": "templesiege",
+    "max_players": 7
   },
   {
     "name": "DoomKnight Dryden (1)",
@@ -1117,7 +1211,8 @@
     "location_name": "Shadow Duat",
     "location_link": "/shadow-duat",
     "total_hp": 350000,
-    "room": "shadowduat"
+    "room": "shadowduat",
+    "max_players": 7
   },
   {
     "name": "Doomknight Dryden (2)",
@@ -1125,7 +1220,8 @@
     "location_name": "Carcossa Court",
     "location_link": "/carcossa-court",
     "total_hp": 375000,
-    "room": "carcossacourt"
+    "room": "carcossacourt",
+    "max_players": 7
   },
   {
     "name": "Doomknight Prince",
@@ -1133,7 +1229,8 @@
     "location_name": "Victor Matsuri",
     "location_link": "/victor-matsuri",
     "total_hp": 750000,
-    "room": "victormatsuri"
+    "room": "victormatsuri",
+    "max_players": 4
   },
   {
     "name": "Downfall of Empires",
@@ -1141,7 +1238,8 @@
     "location_name": "Temple of Doom",
     "location_link": "/temple-of-doom",
     "total_hp": 4000000,
-    "room": "templeofdoom"
+    "room": "templeofdoom",
+    "max_players": 7
   },
   {
     "name": "Dragon Drakath (2)",
@@ -1149,7 +1247,8 @@
     "location_name": "Eternal Chaos",
     "location_link": "/eternal-chaos",
     "total_hp": 100000,
-    "room": "eternalchaos"
+    "room": "eternalchaos",
+    "max_players": 7
   },
   {
     "name": "Drakonnan (Monster)",
@@ -1157,7 +1256,8 @@
     "location_name": "Drakonnan (Location)",
     "location_link": "/drakonnan-location",
     "total_hp": 179290,
-    "room": "drakonnan"
+    "room": "drakonnan",
+    "max_players": 7
   },
   {
     "name": "Drayko",
@@ -1165,7 +1265,8 @@
     "location_name": "Tree Titan",
     "location_link": "/tree-titan",
     "total_hp": 196460,
-    "room": "livingdungeon"
+    "room": "livingdungeon",
+    "max_players": 6
   },
   {
     "name": "Dread Avatar",
@@ -1173,7 +1274,8 @@
     "location_name": "Tower of Doom (8)",
     "location_link": "/tower-of-doom-8",
     "total_hp": 359610,
-    "room": "towerofdoom8"
+    "room": "towerofdoom8",
+    "max_players": 6
   },
   {
     "name": "Dread Fang",
@@ -1181,7 +1283,8 @@
     "location_name": "Tower of Doom (9)",
     "location_link": "/tower-of-doom-9",
     "total_hp": 433760,
-    "room": "towerofdoom9"
+    "room": "towerofdoom9",
+    "max_players": 6
   },
   {
     "name": "Dread Terror",
@@ -1189,7 +1292,8 @@
     "location_name": "Tower of Doom (6)",
     "location_link": "/tower-of-doom-6",
     "total_hp": 241610,
-    "room": "towerofdoom6"
+    "room": "towerofdoom6",
+    "max_players": 6
   },
   {
     "name": "Dread Warrior",
@@ -1197,7 +1301,8 @@
     "location_name": "Tower of Doom (7)",
     "location_link": "/tower-of-doom-7",
     "total_hp": 319680,
-    "room": "towerofdoom7"
+    "room": "towerofdoom7",
+    "max_players": 6
   },
   {
     "name": "Dreadmaw the Defiler",
@@ -1205,7 +1310,8 @@
     "location_name": "Dragon Challenge",
     "location_link": "/dragon-challenge",
     "total_hp": 136610,
-    "room": "dragonchallenge"
+    "room": "dragonchallenge",
+    "max_players": 4
   },
   {
     "name": "Duncan (Monster)",
@@ -1213,7 +1319,8 @@
     "location_name": "Ice Storm",
     "location_link": "/ice-storm",
     "total_hp": 175880,
-    "room": "icestorm"
+    "room": "icestorm",
+    "max_players": 8
   },
   {
     "name": "Dzeza the Boundless",
@@ -1221,7 +1328,8 @@
     "location_name": "Eldritch World",
     "location_link": "/eldritch-world",
     "total_hp": 300000,
-    "room": "eldritchworld"
+    "room": "eldritchworld",
+    "max_players": 7
   },
   {
     "name": "Ebil AI Blender",
@@ -1229,7 +1337,8 @@
     "location_name": "Chairman Platinum's Evolving Environmental Art Gallery",
     "location_link": "/chairman-platinum-s-evolving-environmental-art-gallery",
     "total_hp": 99999999,
-    "room": "ebilart"
+    "room": "ebilart",
+    "max_players": 7
   },
   {
     "name": "Ebil Red Dragon",
@@ -1237,7 +1346,8 @@
     "location_name": "EbilCorp Takeover",
     "location_link": "/ebilcorp-takeover",
     "total_hp": 175000,
-    "room": "ebiltakeover"
+    "room": "ebiltakeover",
+    "max_players": 7
   },
   {
     "name": "Egg-stremis",
@@ -1245,7 +1355,8 @@
     "location_name": "Battle Fowl",
     "location_link": "/battle-fowl",
     "total_hp": 406700,
-    "room": "battlefowl"
+    "room": "battlefowl",
+    "max_players": 10
   },
   {
     "name": "EGGZilla",
@@ -1253,7 +1364,8 @@
     "location_name": "Event Hub (April)",
     "location_link": "/event-hub",
     "total_hp": 100000,
-    "room": "eventhub"
+    "room": "eventhub",
+    "max_players": 20
   },
   {
     "name": "Ektorax",
@@ -1261,7 +1373,8 @@
     "location_name": "Ecto Cave",
     "location_link": "/ecto-cave",
     "total_hp": 963190,
-    "room": "ectocave"
+    "room": "ectocave",
+    "max_players": 6
   },
   {
     "name": "Elder Necromancer",
@@ -1269,7 +1382,8 @@
     "location_name": "Bocklin Grove (Location)",
     "location_link": "/bocklin-grove-location",
     "total_hp": 100000,
-    "room": "bocklingrove"
+    "room": "bocklingrove",
+    "max_players": 7
   },
   {
     "name": "Eldritch Amalgamation",
@@ -1277,7 +1391,8 @@
     "location_name": "Broken Woods",
     "location_link": "/broken-woods",
     "total_hp": 200000,
-    "room": "brokenwoods"
+    "room": "brokenwoods",
+    "max_players": 7
   },
   {
     "name": "Eldritch Gifthulu",
@@ -1285,7 +1400,8 @@
     "location_name": null,
     "location_link": null,
     "total_hp": 125860,
-    "room": "caroltown"
+    "room": "caroltown",
+    "max_players": null
   },
   {
     "name": "Elius (Monster)",
@@ -1293,7 +1409,8 @@
     "location_name": "ShadowFire Plane",
     "location_link": "/shadowfire-plane",
     "total_hp": 150000,
-    "room": "fireavatar"
+    "room": "fireavatar",
+    "max_players": 7
   },
   {
     "name": "Elixir Etokoun",
@@ -1301,7 +1418,8 @@
     "location_name": "Yokai Hunt",
     "location_link": "/yokai-hunt",
     "total_hp": 121223,
-    "room": "yokaihunt"
+    "room": "yokaihunt",
+    "max_players": 7
   },
   {
     "name": "Empowered Prime",
@@ -1309,7 +1427,8 @@
     "location_name": "Starsinc Fortress",
     "location_link": "/starsinc-fortress",
     "total_hp": 233850,
-    "room": "starsinc"
+    "room": "starsinc",
+    "max_players": 6
   },
   {
     "name": "Empowered Scalebeard",
@@ -1317,7 +1436,8 @@
     "location_name": "Dragon Capital",
     "location_link": "/dragon-capital",
     "total_hp": 190000,
-    "room": "dragoncapital"
+    "room": "dragoncapital",
+    "max_players": 7
   },
   {
     "name": "Empress' Finger",
@@ -1325,7 +1445,8 @@
     "location_name": "First Observatory",
     "location_link": "/first-observatory",
     "total_hp": 333333,
-    "room": "firstobservatory"
+    "room": "firstobservatory",
+    "max_players": 7
   },
   {
     "name": "Encore Darkon",
@@ -1333,7 +1454,8 @@
     "location_name": "The World",
     "location_link": "/the-world",
     "total_hp": 222222,
-    "room": "theworld"
+    "room": "theworld",
+    "max_players": 7
   },
   {
     "name": "Enn'tröpy (Monster)",
@@ -1341,7 +1463,8 @@
     "location_name": "Citadel Ruins",
     "location_link": "/citadel-ruins",
     "total_hp": 216830,
-    "room": "citadelruins"
+    "room": "citadelruins",
+    "max_players": 7
   },
   {
     "name": "Enraged Constantin",
@@ -1349,7 +1472,8 @@
     "location_name": "Blood War (Vampire)",
     "location_link": "/blood-war-vampire",
     "total_hp": 142830,
-    "room": "bloodwarvamp"
+    "room": "bloodwarvamp",
+    "max_players": 7
   },
   {
     "name": "Enraged Dread Dragon",
@@ -1357,7 +1481,8 @@
     "location_name": "Breakstone",
     "location_link": "/breakstone",
     "total_hp": 185937,
-    "room": "breakstone"
+    "room": "breakstone",
+    "max_players": 6
   },
   {
     "name": "Enslaved Astero",
@@ -1365,7 +1490,8 @@
     "location_name": "Siege Fortress",
     "location_link": "/siege-fortress",
     "total_hp": 220000,
-    "room": "siegefortress"
+    "room": "siegefortress",
+    "max_players": 7
   },
   {
     "name": "Eos Soulsworn",
@@ -1373,7 +1499,8 @@
     "location_name": "Carcossa Court",
     "location_link": "/carcossa-court",
     "total_hp": 100000,
-    "room": "carcossacourt"
+    "room": "carcossacourt",
+    "max_players": 7
   },
   {
     "name": "Epic Slayer",
@@ -1381,7 +1508,8 @@
     "location_name": "Delta V Lab",
     "location_link": "/delta-v-lab",
     "total_hp": 136610,
-    "room": "deltavlab"
+    "room": "deltavlab",
+    "max_players": 6
   },
   {
     "name": "Eternal Dragon",
@@ -1389,7 +1517,8 @@
     "location_name": "Deadlines",
     "location_link": "/deadlines",
     "total_hp": 750000,
-    "room": "deadlines"
+    "room": "deadlines",
+    "max_players": 7
   },
   {
     "name": "Eternal Drakath",
@@ -1397,7 +1526,8 @@
     "location_name": "Eternal Chaos",
     "location_link": "/eternal-chaos",
     "total_hp": 500000,
-    "room": "eternalchaos"
+    "room": "eternalchaos",
+    "max_players": 7
   },
   {
     "name": "Etokoun",
@@ -1405,7 +1535,8 @@
     "location_name": "Yokai Hunt",
     "location_link": "/yokai-hunt",
     "total_hp": 117210,
-    "room": "yokaihunt"
+    "room": "yokaihunt",
+    "max_players": 7
   },
   {
     "name": "Evil ArchMage Brentan",
@@ -1413,7 +1544,8 @@
     "location_name": "Lightovia Cave",
     "location_link": "/lightovia-cave",
     "total_hp": 299650,
-    "room": "lightoviacave"
+    "room": "lightoviacave",
+    "max_players": 7
   },
   {
     "name": "Evolved Fear Muncher",
@@ -1421,7 +1553,8 @@
     "location_name": null,
     "location_link": null,
     "total_hp": 157120,
-    "room": "bosschallenge"
+    "room": "bosschallenge",
+    "max_players": null
   },
   {
     "name": "Evolved Overlord",
@@ -1429,7 +1562,8 @@
     "location_name": "Necropolis Cavern",
     "location_link": "/necropolis-cavern",
     "total_hp": 666666,
-    "room": "necrocavern"
+    "room": "necrocavern",
+    "max_players": 6
   },
   {
     "name": "Executioner Ladon",
@@ -1437,7 +1571,8 @@
     "location_name": "Atlas Kingdom",
     "location_link": "/atlas-kingdom",
     "total_hp": 1500000,
-    "room": "atlaskingdom"
+    "room": "atlaskingdom",
+    "max_players": 7
   },
   {
     "name": "Exiled General Miel",
@@ -1445,7 +1580,8 @@
     "location_name": "Low Tide",
     "location_link": "/low-tide",
     "total_hp": 140000,
-    "room": "lowtide"
+    "room": "lowtide",
+    "max_players": 7
   },
   {
     "name": "Exos (Monster)",
@@ -1453,7 +1589,8 @@
     "location_name": "ChaosGuard",
     "location_link": "/chaosguard",
     "total_hp": 115000,
-    "room": "chaosguard"
+    "room": "chaosguard",
+    "max_players": 6
   },
   {
     "name": "Extreme Noxus (1)",
@@ -1461,7 +1598,8 @@
     "location_name": "Noxus (Location)",
     "location_link": "/noxus-location",
     "total_hp": 120040,
-    "room": "noxus"
+    "room": "noxus",
+    "max_players": 6
   },
   {
     "name": "Extreme Noxus (2)",
@@ -1469,7 +1607,8 @@
     "location_name": "Lightguard War (Location)",
     "location_link": "/lightguard-war-location",
     "total_hp": 290690,
-    "room": "lightguardwar"
+    "room": "lightguardwar",
+    "max_players": 7
   },
   {
     "name": "Ezrajal",
@@ -1477,7 +1616,8 @@
     "location_name": "Inn at the Edge of Time",
     "location_link": "/inn-at-the-edge-of-time",
     "total_hp": 300000,
-    "room": "timeinn"
+    "room": "timeinn",
+    "max_players": 6
   },
   {
     "name": "Fa (Monster) (1)",
@@ -1485,7 +1625,8 @@
     "location_name": "Darkon's Garden",
     "location_link": "/darkon-s-garden",
     "total_hp": 190000,
-    "room": "garden"
+    "room": "garden",
+    "max_players": 7
   },
   {
     "name": "Fa (Monster) (2)",
@@ -1493,7 +1634,8 @@
     "location_name": "The World",
     "location_link": "/the-world",
     "total_hp": 190000,
-    "room": "theworld"
+    "room": "theworld",
+    "max_players": 7
   },
   {
     "name": "Fall Fae Queen (Monster)",
@@ -1501,7 +1643,8 @@
     "location_name": "Moglin Feast",
     "location_link": "/moglin-feast",
     "total_hp": 150000,
-    "room": "moglinfeast"
+    "room": "moglinfeast",
+    "max_players": 7
   },
   {
     "name": "Fallen Arthelyn (Monster)",
@@ -1509,7 +1652,8 @@
     "location_name": "Infernal Dianoia",
     "location_link": "/infernal-dianoia",
     "total_hp": 200000,
-    "room": "infernaldianoia"
+    "room": "infernaldianoia",
+    "max_players": 7
   },
   {
     "name": "Famine (1)",
@@ -1517,7 +1661,8 @@
     "location_name": "Undervoid",
     "location_link": "/undervoid",
     "total_hp": 205830,
-    "room": "undervoid"
+    "room": "undervoid",
+    "max_players": 6
   },
   {
     "name": "Famine (2)",
@@ -1525,7 +1670,8 @@
     "location_name": "Blight Harvest",
     "location_link": "/blight-harvest",
     "total_hp": 125000,
-    "room": "blightharvest"
+    "room": "blightharvest",
+    "max_players": 7
   },
   {
     "name": "Feegrix Queen",
@@ -1533,7 +1679,8 @@
     "location_name": "Furborg Ship",
     "location_link": "/furborg-ship",
     "total_hp": 100380,
-    "room": "furborgship"
+    "room": "furborgship",
+    "max_players": 7
   },
   {
     "name": "Feral Flintfang",
@@ -1541,7 +1688,8 @@
     "location_name": "Pirate Blood War (Vampire)",
     "location_link": "/pirate-blood-war-vampire",
     "total_hp": 185000,
-    "room": "piratevampire"
+    "room": "piratevampire",
+    "max_players": 7
   },
   {
     "name": "Fiend Champion",
@@ -1549,7 +1697,8 @@
     "location_name": "Originul",
     "location_link": "/originul",
     "total_hp": 229160,
-    "room": "originul"
+    "room": "originul",
+    "max_players": 7
   },
   {
     "name": "Fiend of Voracity (Monster)",
@@ -1557,7 +1706,8 @@
     "location_name": "Terces Archive",
     "location_link": "/terces-archive",
     "total_hp": 280000,
-    "room": "tercesarchive"
+    "room": "tercesarchive",
+    "max_players": 7
   },
   {
     "name": "Fifth Lord Arachne",
@@ -1565,7 +1715,8 @@
     "location_name": "Space Yard",
     "location_link": "/space-yard",
     "total_hp": 400000,
-    "room": "spaceyard"
+    "room": "spaceyard",
+    "max_players": 7
   },
   {
     "name": "Fifth Sepulchure",
@@ -1573,7 +1724,8 @@
     "location_name": "Murder Moon",
     "location_link": "/murder-moon",
     "total_hp": 138300,
-    "room": "murdermoon"
+    "room": "murdermoon",
+    "max_players": 7
   },
   {
     "name": "Fimbulventr Witch (Monster)",
@@ -1581,7 +1733,8 @@
     "location_name": "Fimbul's Tomb",
     "location_link": "/fimbul-s-tomb",
     "total_hp": 175000,
-    "room": "fimbultomb"
+    "room": "fimbultomb",
+    "max_players": 7
   },
   {
     "name": "Fire Champion",
@@ -1589,7 +1742,8 @@
     "location_name": "War Training",
     "location_link": "/war-training",
     "total_hp": 250000,
-    "room": "wartraining"
+    "room": "wartraining",
+    "max_players": 7
   },
   {
     "name": "Fire Orb (Monster)",
@@ -1597,7 +1751,8 @@
     "location_name": "Fire Avatar",
     "location_link": "/fire-avatar",
     "total_hp": 300000,
-    "room": "fireavatar"
+    "room": "fireavatar",
+    "max_players": 7
   },
   {
     "name": "Firebird Anqa",
@@ -1605,7 +1760,8 @@
     "location_name": "Sunset Dunes",
     "location_link": "/sunset-dunes",
     "total_hp": 2000000,
-    "room": "sunsetdunes"
+    "room": "sunsetdunes",
+    "max_players": 7
   },
   {
     "name": "First Mate Bloodbone",
@@ -1613,7 +1769,8 @@
     "location_name": "Blacksea Keep",
     "location_link": "/blacksea-keep",
     "total_hp": 119460,
-    "room": "blackseakeep"
+    "room": "blackseakeep",
+    "max_players": 7
   },
   {
     "name": "Flame Dragon General",
@@ -1621,7 +1778,8 @@
     "location_name": "Coliseum",
     "location_link": "/coliseum",
     "total_hp": 125000,
-    "room": "coliseum"
+    "room": "coliseum",
+    "max_players": 7
   },
   {
     "name": "Flame of Albedo (Monster)",
@@ -1629,7 +1787,8 @@
     "location_name": "Forge Albedo",
     "location_link": "/forge-albedo",
     "total_hp": 300000,
-    "room": "forgealbedo"
+    "room": "forgealbedo",
+    "max_players": 7
   },
   {
     "name": "Flame of Citrinitas (Monster)",
@@ -1637,7 +1796,8 @@
     "location_name": "Fort Luma",
     "location_link": "/fort-luma",
     "total_hp": 220000,
-    "room": "fortluma"
+    "room": "fortluma",
+    "max_players": 7
   },
   {
     "name": "Flame of Maleno (Monster)",
@@ -1645,7 +1805,8 @@
     "location_name": "Thelima City",
     "location_link": "/thelima-city",
     "total_hp": 310000,
-    "room": "thelimacity"
+    "room": "thelimacity",
+    "max_players": 20
   },
   {
     "name": "Flame of Rubedo (Monster)",
@@ -1653,7 +1814,8 @@
     "location_name": "Warwick Forest",
     "location_link": "/warwick-forest",
     "total_hp": 200000,
-    "room": "warwickforest"
+    "room": "warwickforest",
+    "max_players": 7
   },
   {
     "name": "Flame of the Beyond",
@@ -1661,7 +1823,8 @@
     "location_name": "Magnum Opus",
     "location_link": "/magnum-opus",
     "total_hp": 1500000,
-    "room": "magnumopus"
+    "room": "magnumopus",
+    "max_players": 7
   },
   {
     "name": "Flamewing",
@@ -1669,7 +1832,8 @@
     "location_name": "Firestorm Forge",
     "location_link": "/firestorm-forge",
     "total_hp": 319680,
-    "room": "fireforge"
+    "room": "fireforge",
+    "max_players": 6
   },
   {
     "name": "Flibbitiestgibbet",
@@ -1677,7 +1841,8 @@
     "location_name": "Void Flibbitiestgibbet",
     "location_link": "/void-flibbitiestgibbet",
     "total_hp": 1500000,
-    "room": "voidflibbi"
+    "room": "voidflibbi",
+    "max_players": 7
   },
   {
     "name": "Flintfang (Monster)",
@@ -1685,7 +1850,8 @@
     "location_name": "Midnight War",
     "location_link": "/midnight-war",
     "total_hp": 99760,
-    "room": "midnightwar"
+    "room": "midnightwar",
+    "max_players": 8
   },
   {
     "name": "Forest Guardian",
@@ -1693,7 +1859,8 @@
     "location_name": "Fable Forest",
     "location_link": "/fable-forest",
     "total_hp": 106350,
-    "room": "fableforest"
+    "room": "fableforest",
+    "max_players": 6
   },
   {
     "name": "Fourth Lynaria",
@@ -1701,7 +1868,8 @@
     "location_name": "Murder Moon",
     "location_link": "/murder-moon",
     "total_hp": 1000000,
-    "room": "murdermoon"
+    "room": "murdermoon",
+    "max_players": 7
   },
   {
     "name": "Fragment of Doom",
@@ -1709,7 +1877,8 @@
     "location_name": "Shadow Void (Location)",
     "location_link": "/shadow-void-location",
     "total_hp": 326430,
-    "room": "shadowvoid"
+    "room": "shadowvoid",
+    "max_players": 7
   },
   {
     "name": "Frost Dragon (3)",
@@ -1717,7 +1886,8 @@
     "location_name": "Honor Hall",
     "location_link": "/honor-hall",
     "total_hp": 119760,
-    "room": "honorhall"
+    "room": "honorhall",
+    "max_players": 6
   },
   {
     "name": "Frost Fang",
@@ -1725,7 +1895,8 @@
     "location_name": "Darkwinter",
     "location_link": "/darkwinter",
     "total_hp": 134140,
-    "room": "darkwinter"
+    "room": "darkwinter",
+    "max_players": 6
   },
   {
     "name": "Frost King",
@@ -1733,7 +1904,8 @@
     "location_name": "King Coal",
     "location_link": "/king-coal",
     "total_hp": 116980,
-    "room": "kingcoal"
+    "room": "kingcoal",
+    "max_players": 6
   },
   {
     "name": "Frostspawn Horror",
@@ -1741,7 +1913,8 @@
     "location_name": "Icewind Pass",
     "location_link": "/icewind-pass",
     "total_hp": 153590,
-    "room": "icewindpass"
+    "room": "icewindpass",
+    "max_players": 6
   },
   {
     "name": "Frostspinner Queen",
@@ -1749,7 +1922,8 @@
     "location_name": "Frozen Queen",
     "location_link": "/frozen-queen",
     "total_hp": 175000,
-    "room": "frozenqueen"
+    "room": "frozenqueen",
+    "max_players": 7
   },
   {
     "name": "Frostval Gifts",
@@ -1757,7 +1931,8 @@
     "location_name": null,
     "location_link": null,
     "total_hp": 202331,
-    "room": "frostvale"
+    "room": "frostvale",
+    "max_players": null
   },
   {
     "name": "Frozen Pyromancer (Monster)",
@@ -1765,7 +1940,8 @@
     "location_name": "Underworld",
     "location_link": "/underworld",
     "total_hp": 209890,
-    "room": "underworld"
+    "room": "underworld",
+    "max_players": 6
   },
   {
     "name": "Gaiazor (Monster) (1)",
@@ -1773,7 +1949,8 @@
     "location_name": "Dark Heart (Location)",
     "location_link": "/dark-heart-location",
     "total_hp": 239340,
-    "room": "darkheart"
+    "room": "darkheart",
+    "max_players": 6
   },
   {
     "name": "Gaiazor (Monster) (2)",
@@ -1781,7 +1958,8 @@
     "location_name": "Gaiazor (Location)",
     "location_link": "/gaiazor-location",
     "total_hp": 446190,
-    "room": "gaiazor"
+    "room": "gaiazor",
+    "max_players": 6
   },
   {
     "name": "Gallaeon",
@@ -1789,7 +1967,8 @@
     "location_name": "Doom Pirate",
     "location_link": "/doom-pirate",
     "total_hp": 220000,
-    "room": "doompirate"
+    "room": "doompirate",
+    "max_players": 7
   },
   {
     "name": "Gedoz",
@@ -1797,7 +1976,8 @@
     "location_name": "Djinn Gate",
     "location_link": "/djinn-gate",
     "total_hp": 136610,
-    "room": "djinngate"
+    "room": "djinngate",
+    "max_players": 7
   },
   {
     "name": "Gem Forgemaster",
@@ -1805,7 +1985,8 @@
     "location_name": "ChronoForge",
     "location_link": "/chronoforge",
     "total_hp": 325000,
-    "room": "chronogem"
+    "room": "chronogem",
+    "max_players": 7
   },
   {
     "name": "General Drox",
@@ -1813,7 +1994,8 @@
     "location_name": "Horc War (Location)",
     "location_link": "/horc-war-location",
     "total_hp": 137830,
-    "room": "warhorc"
+    "room": "warhorc",
+    "max_players": 5
   },
   {
     "name": "General Goldhammer",
@@ -1821,7 +2003,8 @@
     "location_name": "Noxus Tower",
     "location_link": "/noxus-tower",
     "total_hp": 179260,
-    "room": "noxustower"
+    "room": "noxustower",
+    "max_players": 7
   },
   {
     "name": "General Vaughn (Monster)",
@@ -1829,7 +2012,8 @@
     "location_name": "Reap Finals",
     "location_link": "/reap-finals",
     "total_hp": 500000,
-    "room": "reapfinals"
+    "room": "reapfinals",
+    "max_players": 7
   },
   {
     "name": "Ghostly Hasu",
@@ -1837,7 +2021,8 @@
     "location_name": "Aozora Hills (Location)",
     "location_link": "/aozora-hills-location",
     "total_hp": 136610,
-    "room": "aozorahills"
+    "room": "aozorahills",
+    "max_players": 7
   },
   {
     "name": "Giant ChickenCow",
@@ -1845,7 +2030,8 @@
     "location_name": "Meateor Town",
     "location_link": "/meateor-town",
     "total_hp": 500000,
-    "room": "meateortown"
+    "room": "meateortown",
+    "max_players": 20
   },
   {
     "name": "Gieferocious",
@@ -1853,7 +2039,8 @@
     "location_name": "Frostvale",
     "location_link": "/frostvale",
     "total_hp": 139480,
-    "room": "frostvale"
+    "room": "frostvale",
+    "max_players": 6
   },
   {
     "name": "Giefurious",
@@ -1861,7 +2048,8 @@
     "location_name": "Frostvale",
     "location_link": "/frostvale",
     "total_hp": 139480,
-    "room": "frostvale"
+    "room": "frostvale",
+    "max_players": 6
   },
   {
     "name": "Giefury",
@@ -1869,7 +2057,8 @@
     "location_name": "Frostvale",
     "location_link": "/frostvale",
     "total_hp": 139480,
-    "room": "frostvale"
+    "room": "frostvale",
+    "max_players": 6
   },
   {
     "name": "Giftblulu",
@@ -1877,7 +2066,8 @@
     "location_name": "Gifthulu (Location)",
     "location_link": "/gifthulu-location",
     "total_hp": 125860,
-    "room": "gifthulu"
+    "room": "gifthulu",
+    "max_players": 7
   },
   {
     "name": "Gifthulu (Monster)",
@@ -1885,7 +2075,8 @@
     "location_name": "Gifthulu (Location)",
     "location_link": "/gifthulu-location",
     "total_hp": 125860,
-    "room": "gifthulu"
+    "room": "gifthulu",
+    "max_players": 7
   },
   {
     "name": "GleebleGlarble",
@@ -1893,7 +2084,8 @@
     "location_name": "Nursery",
     "location_link": "/nursery",
     "total_hp": 175880,
-    "room": "nursery"
+    "room": "nursery",
+    "max_players": 7
   },
   {
     "name": "Gluttony (Monster)",
@@ -1901,7 +2093,8 @@
     "location_name": "Seven Circles",
     "location_link": "/seven-circles",
     "total_hp": 109000,
-    "room": "sevencircles"
+    "room": "sevencircles",
+    "max_players": 7
   },
   {
     "name": "Goldun",
@@ -1909,7 +2102,8 @@
     "location_name": "Chaos Amulet",
     "location_link": "/chaos-amulet",
     "total_hp": 126860,
-    "room": "chaosamulet"
+    "room": "chaosamulet",
+    "max_players": 7
   },
   {
     "name": "Goregold",
@@ -1917,7 +2111,8 @@
     "location_name": "Greed",
     "location_link": "/greed",
     "total_hp": 221220,
-    "room": "greed"
+    "room": "greed",
+    "max_players": 7
   },
   {
     "name": "Gorgorath",
@@ -1925,7 +2120,8 @@
     "location_name": null,
     "location_link": null,
     "total_hp": 104540,
-    "room": "wrath"
+    "room": "wrath",
+    "max_players": null
   },
   {
     "name": "Gramiel",
@@ -1933,7 +2129,8 @@
     "location_name": "Trygve",
     "location_link": "/trygve",
     "total_hp": 180000,
-    "room": "trygve"
+    "room": "trygve",
+    "max_players": 7
   },
   {
     "name": "Grandmaster Gramiel (Monster)",
@@ -1941,7 +2138,8 @@
     "location_name": "Dawn Vindicators' Sanctum",
     "location_link": "/dawn-vindicators-sanctum",
     "total_hp": 190000,
-    "room": "dawnsanctum"
+    "room": "dawnsanctum",
+    "max_players": 7
   },
   {
     "name": "Graveclaw the Destroyer",
@@ -1949,7 +2147,8 @@
     "location_name": "Grave Challenge",
     "location_link": "/grave-challenge",
     "total_hp": 1556100,
-    "room": "gravechallenge"
+    "room": "gravechallenge",
+    "max_players": 6
   },
   {
     "name": "Gravelyn the Good (Monster)",
@@ -1957,7 +2156,8 @@
     "location_name": "Brightshadow",
     "location_link": "/brightshadow",
     "total_hp": 270110,
-    "room": "brightshadow"
+    "room": "brightshadow",
+    "max_players": 7
   },
   {
     "name": "Grievous Inbunche",
@@ -1965,7 +2165,8 @@
     "location_name": null,
     "location_link": null,
     "total_hp": 203570,
-    "room": "bosschallenge"
+    "room": "bosschallenge",
+    "max_players": null
   },
   {
     "name": "Grimlord Boss",
@@ -1973,7 +2174,8 @@
     "location_name": "ShadowBlast Arena",
     "location_link": "/shadowblast-arena",
     "total_hp": 99590,
-    "room": "shadowblast"
+    "room": "shadowblast",
+    "max_players": 6
   },
   {
     "name": "Grou'luu",
@@ -1981,7 +2183,8 @@
     "location_name": "Queen's Reign",
     "location_link": "/queen-s-reign",
     "total_hp": 100000,
-    "room": "queenreign"
+    "room": "queenreign",
+    "max_players": 7
   },
   {
     "name": "Grrrberus",
@@ -1989,7 +2192,8 @@
     "location_name": "Dark Fortress (2)",
     "location_link": "/dark-fortress-2",
     "total_hp": 136460,
-    "room": "dagefortress"
+    "room": "dagefortress",
+    "max_players": 6
   },
   {
     "name": "Haruki Matsuoka (Monster)",
@@ -1997,7 +2201,8 @@
     "location_name": "Victor Matsuri",
     "location_link": "/victor-matsuri",
     "total_hp": 300000,
-    "room": "victormatsuri"
+    "room": "victormatsuri",
+    "max_players": 4
   },
   {
     "name": "Harvest Acromegalia",
@@ -2005,7 +2210,8 @@
     "location_name": "Eldritch Battletown",
     "location_link": "/eldritch-battletown",
     "total_hp": 250000,
-    "room": "eldritchbattletown"
+    "room": "eldritchbattletown",
+    "max_players": 7
   },
   {
     "name": "Harvest Golem",
@@ -2013,7 +2219,8 @@
     "location_name": "Feast War Evil",
     "location_link": "/feast-war-evil",
     "total_hp": 111180,
-    "room": "feastwarevil"
+    "room": "feastwarevil",
+    "max_players": 7
   },
   {
     "name": "Harvest Queen (Monster)",
@@ -2021,7 +2228,8 @@
     "location_name": "Harvest Queen (Location)",
     "location_link": "/harvest-queen-location",
     "total_hp": 250000,
-    "room": "harvestqueen"
+    "room": "harvestqueen",
+    "max_players": 7
   },
   {
     "name": "Headless Knight (Monster)",
@@ -2029,7 +2237,8 @@
     "location_name": "Bocklin Castle",
     "location_link": "/bocklin-castle",
     "total_hp": 225000,
-    "room": "bocklincastle"
+    "room": "bocklincastle",
+    "max_players": 7
   },
   {
     "name": "Heart of Chaos",
@@ -2037,7 +2246,8 @@
     "location_name": "Laguna Beach",
     "location_link": "/laguna-beach",
     "total_hp": 201260,
-    "room": "lagunabeach"
+    "room": "lagunabeach",
+    "max_players": 7
   },
   {
     "name": "Hebimaru",
@@ -2045,7 +2255,8 @@
     "location_name": "Dage Recruit",
     "location_link": "/dage-recruit",
     "total_hp": 130000,
-    "room": "dagerecruit"
+    "room": "dagerecruit",
+    "max_players": 7
   },
   {
     "name": "Helsdottir",
@@ -2053,7 +2264,8 @@
     "location_name": "Helsgrove",
     "location_link": "/helsgrove",
     "total_hp": 300000,
-    "room": "helsgrove"
+    "room": "helsgrove",
+    "max_players": 7
   },
   {
     "name": "Hero (Boss) (4)",
@@ -2061,15 +2273,8 @@
     "location_name": "Vasalkar Lair - Attack (1)",
     "location_link": "/vasalkar-lair-attack-1",
     "total_hp": 106351,
-    "room": "lairattack"
-  },
-  {
-    "name": "Hero (Chaos Lord)",
-    "url": "https://aqwwiki.wikidot.com/hero-chaos-lord",
-    "location_name": "Chaos Lord",
-    "location_link": "/chaos-lord",
-    "total_hp": 100000,
-    "room": "chaoslord"
+    "room": "lairattack",
+    "max_players": 8
   },
   {
     "name": "Hollowborn Judge (Monster)",
@@ -2077,7 +2282,8 @@
     "location_name": "Hollowborn Challenge",
     "location_link": "/hollowborn-challenge",
     "total_hp": 350000,
-    "room": "hbchallenge"
+    "room": "hbchallenge",
+    "max_players": 20
   },
   {
     "name": "Hollowborn Lycan (Monster)",
@@ -2085,7 +2291,8 @@
     "location_name": "Hollowborn Challenge",
     "location_link": "/hollowborn-challenge",
     "total_hp": 500000,
-    "room": "hbchallenge"
+    "room": "hbchallenge",
+    "max_players": 20
   },
   {
     "name": "Hollowborn Nightmare (Monster)",
@@ -2093,7 +2300,8 @@
     "location_name": null,
     "location_link": null,
     "total_hp": 182890,
-    "room": "hbchallenge"
+    "room": "hbchallenge",
+    "max_players": null
   },
   {
     "name": "Hollowborn Vampire (Monster)",
@@ -2101,7 +2309,8 @@
     "location_name": "Hollowborn Challenge",
     "location_link": "/hollowborn-challenge",
     "total_hp": 450000,
-    "room": "hbchallenge"
+    "room": "hbchallenge",
+    "max_players": 20
   },
   {
     "name": "Horothotep",
@@ -2109,7 +2318,8 @@
     "location_name": "Orb Hunt",
     "location_link": "/orb-hunt",
     "total_hp": 100000,
-    "room": "orbhunt"
+    "room": "orbhunt",
+    "max_players": 7
   },
   {
     "name": "Horseman of Death",
@@ -2117,7 +2327,8 @@
     "location_name": "Phlegethon Arena",
     "location_link": "/phlegethon-arena",
     "total_hp": 200000,
-    "room": "phlegethonarena"
+    "room": "phlegethonarena",
+    "max_players": 7
   },
   {
     "name": "Hot Mama (Monster)",
@@ -2125,7 +2336,8 @@
     "location_name": "Battle Under E",
     "location_link": "/battle-under-e",
     "total_hp": 154780,
-    "room": "battleundere"
+    "room": "battleundere",
+    "max_players": 7
   },
   {
     "name": "Hovercraft",
@@ -2133,7 +2345,8 @@
     "location_name": "Delta V Core",
     "location_link": "/delta-v-core",
     "total_hp": 182890,
-    "room": "deltavcore"
+    "room": "deltavcore",
+    "max_players": 6
   },
   {
     "name": "Howard's Grief",
@@ -2141,7 +2354,8 @@
     "location_name": "Howard's Hill",
     "location_link": "/howard-s-hill",
     "total_hp": 125860,
-    "room": "howardshill"
+    "room": "howardshill",
+    "max_players": 7
   },
   {
     "name": "Howard's Rage",
@@ -2149,7 +2363,8 @@
     "location_name": "Winter Horror",
     "location_link": "/winter-horror",
     "total_hp": 125860,
-    "room": "winterhorror"
+    "room": "winterhorror",
+    "max_players": 7
   },
   {
     "name": "Hulking Castle Spider",
@@ -2157,7 +2372,8 @@
     "location_name": null,
     "location_link": null,
     "total_hp": 215390,
-    "room": "bosschallenge"
+    "room": "bosschallenge",
+    "max_players": null
   },
   {
     "name": "Human Clock (Monster)",
@@ -2165,7 +2381,8 @@
     "location_name": "The Magician's House",
     "location_link": "/the-magician-s-house",
     "total_hp": 121212,
-    "room": "magician"
+    "room": "magician",
+    "max_players": 7
   },
   {
     "name": "Huntress Valais",
@@ -2173,7 +2390,8 @@
     "location_name": "Otzi War",
     "location_link": "/otzi-war",
     "total_hp": 750000,
-    "room": "otziwar"
+    "room": "otziwar",
+    "max_players": 7
   },
   {
     "name": "Hydra Crew",
@@ -2181,7 +2399,8 @@
     "location_name": "Doom Pirate",
     "location_link": "/doom-pirate",
     "total_hp": 100000,
-    "room": "doompirate"
+    "room": "doompirate",
+    "max_players": 7
   },
   {
     "name": "Hydra Head 65",
@@ -2189,7 +2408,8 @@
     "location_name": "Hydra Challenge",
     "location_link": "/hydra-challenge",
     "total_hp": 113880,
-    "room": "hydrachallenge"
+    "room": "hydrachallenge",
+    "max_players": 6
   },
   {
     "name": "Hydra Head 75",
@@ -2197,7 +2417,8 @@
     "location_name": "Hydra Challenge",
     "location_link": "/hydra-challenge",
     "total_hp": 172940,
-    "room": "hydrachallenge"
+    "room": "hydrachallenge",
+    "max_players": 6
   },
   {
     "name": "Hydra Head 85",
@@ -2205,7 +2426,8 @@
     "location_name": "Hydra Challenge",
     "location_link": "/hydra-challenge",
     "total_hp": 188620,
-    "room": "hydrachallenge"
+    "room": "hydrachallenge",
+    "max_players": 6
   },
   {
     "name": "Hydra Head 90",
@@ -2213,7 +2435,8 @@
     "location_name": "Hydra Challenge",
     "location_link": "/hydra-challenge",
     "total_hp": 206790,
-    "room": "hydrachallenge"
+    "room": "hydrachallenge",
+    "max_players": 6
   },
   {
     "name": "Iara (Monster)",
@@ -2221,7 +2444,8 @@
     "location_name": "Iara (Location)",
     "location_link": "/iara-location",
     "total_hp": 100000,
-    "room": "iara"
+    "room": "iara",
+    "max_players": 7
   },
   {
     "name": "Icewing General",
@@ -2229,7 +2453,8 @@
     "location_name": "Icestorm Arena",
     "location_link": "/icestorm-arena",
     "total_hp": 128580,
-    "room": "icestormarena"
+    "room": "icestormarena",
+    "max_players": 7
   },
   {
     "name": "Icewing Terror",
@@ -2237,7 +2462,8 @@
     "location_name": "Coliseum",
     "location_link": "/coliseum",
     "total_hp": 900000,
-    "room": "coliseum"
+    "room": "coliseum",
+    "max_players": 7
   },
   {
     "name": "Idalion",
@@ -2245,7 +2471,8 @@
     "location_name": "Mount Maleno",
     "location_link": "/mount-maleno",
     "total_hp": 630000,
-    "room": "mountmaleno"
+    "room": "mountmaleno",
+    "max_players": 8
   },
   {
     "name": "Idea of a Champion",
@@ -2253,7 +2480,8 @@
     "location_name": "Warwick Forest",
     "location_link": "/warwick-forest",
     "total_hp": 105000,
-    "room": "warwickforest"
+    "room": "warwickforest",
+    "max_players": 7
   },
   {
     "name": "Image of Crulon",
@@ -2261,7 +2489,8 @@
     "location_name": "Djinn Guardians",
     "location_link": "/djinn-guardians",
     "total_hp": 133880,
-    "room": "djinnguard"
+    "room": "djinnguard",
+    "max_players": 7
   },
   {
     "name": "Image of Glace",
@@ -2269,7 +2498,8 @@
     "location_name": "Ice Dungeon",
     "location_link": "/ice-dungeon",
     "total_hp": 100000,
-    "room": "icedungeon"
+    "room": "icedungeon",
+    "max_players": 7
   },
   {
     "name": "Imperial Noxus (Monster)",
@@ -2277,7 +2507,8 @@
     "location_name": "Necro Project",
     "location_link": "/necro-project",
     "total_hp": 1000000,
-    "room": "necroproject"
+    "room": "necroproject",
+    "max_players": 7
   },
   {
     "name": "Infernal Guard Captain",
@@ -2285,15 +2516,8 @@
     "location_name": "Spire Past",
     "location_link": "/spire-past",
     "total_hp": 176010,
-    "room": "spirepast"
-  },
-  {
-    "name": "Infernal Krampus",
-    "url": "https://aqwwiki.wikidot.com/infernal-krampus",
-    "location_name": "Infernal Arena",
-    "location_link": "/infernal-arena",
-    "total_hp": 100000,
-    "room": "infernalarena"
+    "room": "spirepast",
+    "max_players": 7
   },
   {
     "name": "Infernal Malxas",
@@ -2301,7 +2525,8 @@
     "location_name": "Infernal Paradise",
     "location_link": "/infernal-paradise",
     "total_hp": 135000,
-    "room": "infernalparadise"
+    "room": "infernalparadise",
+    "max_players": 7
   },
   {
     "name": "Infinity Pool",
@@ -2309,7 +2534,8 @@
     "location_name": "Oblivion Tundra",
     "location_link": "/oblivion-tundra",
     "total_hp": 1000000000,
-    "room": "obliviontundra"
+    "room": "obliviontundra",
+    "max_players": 7
   },
   {
     "name": "Ivoliss (Monster)",
@@ -2317,7 +2543,8 @@
     "location_name": "Ivoliss (Location)",
     "location_link": "/ivoliss-location",
     "total_hp": 133880,
-    "room": "ivoliss"
+    "room": "ivoliss",
+    "max_players": 7
   },
   {
     "name": "Izotz",
@@ -2325,7 +2552,8 @@
     "location_name": "North Mountain",
     "location_link": "/north-mountain",
     "total_hp": 142830,
-    "room": "northmountain"
+    "room": "northmountain",
+    "max_players": 7
   },
   {
     "name": "J6 (Monster)",
@@ -2333,7 +2561,8 @@
     "location_name": "Saloon",
     "location_link": "/saloon",
     "total_hp": 488690,
-    "room": "saloon"
+    "room": "saloon",
+    "max_players": 12
   },
   {
     "name": "Jalnar",
@@ -2341,7 +2570,8 @@
     "location_name": "ColdWind Valley",
     "location_link": "/coldwind-valley",
     "total_hp": 129050,
-    "room": "coldwindvalley"
+    "room": "coldwindvalley",
+    "max_players": 7
   },
   {
     "name": "Jing",
@@ -2349,7 +2579,8 @@
     "location_name": "Zhu (Location)",
     "location_link": "/zhu-location",
     "total_hp": 99260,
-    "room": "zhu"
+    "room": "zhu",
+    "max_players": 7
   },
   {
     "name": "Jir'abin",
@@ -2357,7 +2588,8 @@
     "location_name": "Runed Woods",
     "location_link": "/runed-woods",
     "total_hp": 1156220,
-    "room": "runedwoods"
+    "room": "runedwoods",
+    "max_players": 6
   },
   {
     "name": "Jir'abin Challenge",
@@ -2365,7 +2597,8 @@
     "location_name": "Void Battle",
     "location_link": "/void-battle",
     "total_hp": 1156220,
-    "room": "voidbattle"
+    "room": "voidbattle",
+    "max_players": 6
   },
   {
     "name": "Jon S'Nooooooo",
@@ -2373,7 +2606,8 @@
     "location_name": "Snowmore",
     "location_link": "/snowmore",
     "total_hp": 119460,
-    "room": "snowmore"
+    "room": "snowmore",
+    "max_players": 7
   },
   {
     "name": "Kabasaran Waranei",
@@ -2381,7 +2615,8 @@
     "location_name": "Wentira",
     "location_link": "/wentira",
     "total_hp": 400000,
-    "room": "wentira"
+    "room": "wentira",
+    "max_players": 7
   },
   {
     "name": "Kala (Monster)",
@@ -2389,7 +2624,8 @@
     "location_name": "Kala (Location)",
     "location_link": "/kala-location",
     "total_hp": 200000,
-    "room": "kala"
+    "room": "kala",
+    "max_players": 7
   },
   {
     "name": "Kalayo",
@@ -2397,7 +2633,8 @@
     "location_name": "Lavarock Bay",
     "location_link": "/lavarock-bay",
     "total_hp": 500000,
-    "room": "lavarockbay"
+    "room": "lavarockbay",
+    "max_players": 10
   },
   {
     "name": "Kall Haxa",
@@ -2405,7 +2642,8 @@
     "location_name": "Frozen Balemorale Castle",
     "location_link": "/frozen-balemorale-castle",
     "total_hp": 150000,
-    "room": "frozenbalemorale"
+    "room": "frozenbalemorale",
+    "max_players": 7
   },
   {
     "name": "Kalron the Cryptborg (Monster)",
@@ -2413,7 +2651,8 @@
     "location_name": "Tech Dungeon",
     "location_link": "/tech-dungeon",
     "total_hp": 142830,
-    "room": "techdungeon"
+    "room": "techdungeon",
+    "max_players": 7
   },
   {
     "name": "Karok the Fallen (2)",
@@ -2421,7 +2660,8 @@
     "location_name": "Frostval 2016",
     "location_link": "/frostval-2016",
     "total_hp": 315520,
-    "room": "icepike"
+    "room": "icepike",
+    "max_players": 6
   },
   {
     "name": "Kezeroth",
@@ -2429,7 +2669,8 @@
     "location_name": "IceRise Keep",
     "location_link": "/icerise-keep",
     "total_hp": 124260,
-    "room": "icerise"
+    "room": "icerise",
+    "max_players": 6
   },
   {
     "name": "Kezeroth, The World Ender",
@@ -2437,7 +2678,8 @@
     "location_name": "World Ender",
     "location_link": "/world-ender",
     "total_hp": 26000000,
-    "room": "worldender"
+    "room": "worldender",
+    "max_players": 7
   },
   {
     "name": "Kha'in",
@@ -2445,7 +2687,8 @@
     "location_name": "Djinn Valley",
     "location_link": "/djinn-valley",
     "total_hp": 8000000,
-    "room": "djinnvalley"
+    "room": "djinnvalley",
+    "max_players": 7
   },
   {
     "name": "Killek BoneBreaker (Monster)",
@@ -2453,7 +2696,8 @@
     "location_name": "BoneBreaker Fortress",
     "location_link": "/bonebreaker-fortress",
     "total_hp": 133420,
-    "room": "bonebreak"
+    "room": "bonebreak",
+    "max_players": 6
   },
   {
     "name": "Killek DeadChewer",
@@ -2461,7 +2705,8 @@
     "location_name": "Lust",
     "location_link": "/lust",
     "total_hp": 133420,
-    "room": "lust"
+    "room": "lust",
+    "max_players": 7
   },
   {
     "name": "King Almoravid",
@@ -2469,7 +2714,8 @@
     "location_name": "Crulon's Wedding (Location)",
     "location_link": "/crulon-s-wedding-location",
     "total_hp": 145000,
-    "room": "crulonwed"
+    "room": "crulonwed",
+    "max_players": 7
   },
   {
     "name": "King Duncan",
@@ -2477,7 +2723,8 @@
     "location_name": "Lia Tara Hill",
     "location_link": "/lia-tara-hill",
     "total_hp": 140000,
-    "room": "liatarahill"
+    "room": "liatarahill",
+    "max_players": 7
   },
   {
     "name": "King of the Dark (Monster)",
@@ -2485,7 +2732,8 @@
     "location_name": "Castle Whistler",
     "location_link": "/castle-whistler",
     "total_hp": 800000,
-    "room": "castlewhistler"
+    "room": "castlewhistler",
+    "max_players": 4
   },
   {
     "name": "King Zedek",
@@ -2493,7 +2741,8 @@
     "location_name": "Atlas Falls",
     "location_link": "/atlas-falls",
     "total_hp": 2000000,
-    "room": "atlasfalls"
+    "room": "atlasfalls",
+    "max_players": 7
   },
   {
     "name": "Kitsune Himawari",
@@ -2501,7 +2750,8 @@
     "location_name": "Victor Matsuri",
     "location_link": "/victor-matsuri",
     "total_hp": 100000,
-    "room": "victormatsuri"
+    "room": "victormatsuri",
+    "max_players": 4
   },
   {
     "name": "Kitsune Kukol'nyy",
@@ -2509,7 +2759,8 @@
     "location_name": "Yokai Portal",
     "location_link": "/yokai-portal",
     "total_hp": 150000,
-    "room": "yokaiportal"
+    "room": "yokaiportal",
+    "max_players": 7
   },
   {
     "name": "Kitty Yu Yule",
@@ -2517,7 +2768,8 @@
     "location_name": "Yulecat",
     "location_link": "/yulecat",
     "total_hp": 200000,
-    "room": "yulecat"
+    "room": "yulecat",
+    "max_players": 7
   },
   {
     "name": "Klashex",
@@ -2525,7 +2777,8 @@
     "location_name": "Kaiju War",
     "location_link": "/kaiju-war",
     "total_hp": 133880,
-    "room": "kaijuwar"
+    "room": "kaijuwar",
+    "max_players": 7
   },
   {
     "name": "Kolr, Usurper of Flames",
@@ -2533,7 +2786,8 @@
     "location_name": "Flame Usurper",
     "location_link": "/flame-usurper",
     "total_hp": 3000000,
-    "room": "flameusurper"
+    "room": "flameusurper",
+    "max_players": 2
   },
   {
     "name": "Krahen",
@@ -2541,7 +2795,8 @@
     "location_name": "Inner Shadows",
     "location_link": "/inner-shadows",
     "total_hp": 256450,
-    "room": "innershadows"
+    "room": "innershadows",
+    "max_players": 7
   },
   {
     "name": "Krampus (Monster)",
@@ -2549,7 +2804,8 @@
     "location_name": "Krampus (Location)",
     "location_link": "/krampus-location",
     "total_hp": 146070,
-    "room": "krampus"
+    "room": "krampus",
+    "max_players": 7
   },
   {
     "name": "Kriomein",
@@ -2557,7 +2813,8 @@
     "location_name": "Glace's Tomb",
     "location_link": "/glace-s-tomb",
     "total_hp": 110000,
-    "room": "glacetomb"
+    "room": "glacetomb",
+    "max_players": 7
   },
   {
     "name": "La (Monster)",
@@ -2565,7 +2822,8 @@
     "location_name": "Astravia Judgement",
     "location_link": "/astravia-judgement",
     "total_hp": 180000,
-    "room": "astraviajudge"
+    "room": "astraviajudge",
+    "max_players": 7
   },
   {
     "name": "Ladon",
@@ -2573,7 +2831,8 @@
     "location_name": "Atlas Falls",
     "location_link": "/atlas-falls",
     "total_hp": 260000,
-    "room": "atlasfalls"
+    "room": "atlasfalls",
+    "max_players": 7
   },
   {
     "name": "Lady Laidronette",
@@ -2581,7 +2840,8 @@
     "location_name": "Victor Matsuri",
     "location_link": "/victor-matsuri",
     "total_hp": 500000,
-    "room": "victormatsuri"
+    "room": "victormatsuri",
+    "max_players": 4
   },
   {
     "name": "Lady Noelle",
@@ -2589,7 +2849,8 @@
     "location_name": "Trench Observatory",
     "location_link": "/trench-observatory",
     "total_hp": 350000,
-    "room": "trenchobservatory"
+    "room": "trenchobservatory",
+    "max_players": 8
   },
   {
     "name": "Laken Clone 1.7",
@@ -2597,7 +2858,8 @@
     "location_name": "Reap Finals",
     "location_link": "/reap-finals",
     "total_hp": 125000,
-    "room": "reapfinals"
+    "room": "reapfinals",
+    "max_players": 7
   },
   {
     "name": "Laken Clone 2.3",
@@ -2605,7 +2867,8 @@
     "location_name": "Reap Finals",
     "location_link": "/reap-finals",
     "total_hp": 150000,
-    "room": "reapfinals"
+    "room": "reapfinals",
+    "max_players": 7
   },
   {
     "name": "Lascivia",
@@ -2613,7 +2876,8 @@
     "location_name": "Lust",
     "location_link": "/lust",
     "total_hp": 151000,
-    "room": "lust"
+    "room": "lust",
+    "max_players": 7
   },
   {
     "name": "Laser Memet",
@@ -2621,7 +2885,8 @@
     "location_name": "Fear House",
     "location_link": "/fear-house",
     "total_hp": 224700,
-    "room": "fearhouse"
+    "room": "fearhouse",
+    "max_players": 6
   },
   {
     "name": "Last Alutian",
@@ -2629,7 +2894,8 @@
     "location_name": "Alutea Nursery (Location)",
     "location_link": "/alutea-nursery-location",
     "total_hp": 200000,
-    "room": "aluteanursery"
+    "room": "aluteanursery",
+    "max_players": 7
   },
   {
     "name": "Leanan Sidhe (Monster)",
@@ -2637,7 +2903,8 @@
     "location_name": "Castle Eblana",
     "location_link": "/castle-eblana",
     "total_hp": 750000,
-    "room": "castleeblana"
+    "room": "castleeblana",
+    "max_players": 7
   },
   {
     "name": "Legion Lich Lord (Monster)",
@@ -2645,7 +2912,8 @@
     "location_name": "Frozen Lair",
     "location_link": "/frozen-lair",
     "total_hp": 848160,
-    "room": "frozenlair"
+    "room": "frozenlair",
+    "max_players": 7
   },
   {
     "name": "Leviathan",
@@ -2653,7 +2921,8 @@
     "location_name": "Twilight Zone",
     "location_link": "/twilight-zone",
     "total_hp": 230000,
-    "room": "twilightzone"
+    "room": "twilightzone",
+    "max_players": 8
   },
   {
     "name": "Leviathanius",
@@ -2661,7 +2930,8 @@
     "location_name": "Dragon Capital",
     "location_link": "/dragon-capital",
     "total_hp": 138000,
-    "room": "dragoncapital"
+    "room": "dragoncapital",
+    "max_players": 7
   },
   {
     "name": "Lich Emperor",
@@ -2669,7 +2939,8 @@
     "location_name": "Undead War (Location)",
     "location_link": "/undead-war-location",
     "total_hp": 102720,
-    "room": "warundead"
+    "room": "warundead",
+    "max_players": 7
   },
   {
     "name": "Lightguard Engine",
@@ -2677,7 +2948,8 @@
     "location_name": "Lightguard War (Location)",
     "location_link": "/lightguard-war-location",
     "total_hp": 179290,
-    "room": "lightguardwar"
+    "room": "lightguardwar",
+    "max_players": 7
   },
   {
     "name": "Long Kukol'nyy",
@@ -2685,7 +2957,8 @@
     "location_name": "Haku War",
     "location_link": "/haku-war",
     "total_hp": 200000,
-    "room": "hakuwar"
+    "room": "hakuwar",
+    "max_players": 7
   },
   {
     "name": "Lord Reignolds",
@@ -2693,7 +2966,8 @@
     "location_name": "Dread Forest",
     "location_link": "/dread-forest",
     "total_hp": 250000,
-    "room": "dreadforest"
+    "room": "dreadforest",
+    "max_players": 7
   },
   {
     "name": "Luma Dragon Twins",
@@ -2701,7 +2975,8 @@
     "location_name": "Fort Luma",
     "location_link": "/fort-luma",
     "total_hp": 250000,
-    "room": "fortluma"
+    "room": "fortluma",
+    "max_players": 7
   },
   {
     "name": "Luxuria",
@@ -2709,7 +2984,8 @@
     "location_name": "Seven Circles",
     "location_link": "/seven-circles",
     "total_hp": 175880,
-    "room": "sevencircles"
+    "room": "sevencircles",
+    "max_players": 7
   },
   {
     "name": "Maah-na",
@@ -2717,7 +2993,8 @@
     "location_name": "Champion Azalith",
     "location_link": "/champion-azalith",
     "total_hp": 100000,
-    "room": "champazalith"
+    "room": "champazalith",
+    "max_players": 7
   },
   {
     "name": "Madam Ester",
@@ -2725,7 +3002,8 @@
     "location_name": "Tricktown",
     "location_link": "/tricktown",
     "total_hp": 103120,
-    "room": "tricktown"
+    "room": "tricktown",
+    "max_players": 7
   },
   {
     "name": "Magpie Junk Heap",
@@ -2733,7 +3011,8 @@
     "location_name": "Junkhoard",
     "location_link": "/junkhoard",
     "total_hp": 167340,
-    "room": "junkhoard"
+    "room": "junkhoard",
+    "max_players": 7
   },
   {
     "name": "Mahou's Anguish",
@@ -2741,7 +3020,8 @@
     "location_name": "Ghost Nexus",
     "location_link": "/ghost-nexus",
     "total_hp": 136610,
-    "room": "ghostnexus"
+    "room": "ghostnexus",
+    "max_players": 7
   },
   {
     "name": "Major Anomaly",
@@ -2749,7 +3029,8 @@
     "location_name": "Eden City",
     "location_link": "/eden-city",
     "total_hp": 200000,
-    "room": "eden"
+    "room": "eden",
+    "max_players": 7
   },
   {
     "name": "Maladrite",
@@ -2757,7 +3038,8 @@
     "location_name": "Burning Beach",
     "location_link": "/burning-beach",
     "total_hp": 182890,
-    "room": "burningbeach"
+    "room": "burningbeach",
+    "max_players": 7
   },
   {
     "name": "Maleagant",
@@ -2765,7 +3047,8 @@
     "location_name": "Cocytus Barracks",
     "location_link": "/cocytus-barracks",
     "total_hp": 250000,
-    "room": "cocytusbarracks"
+    "room": "cocytusbarracks",
+    "max_players": 7
   },
   {
     "name": "Mal-formed Gar",
@@ -2773,15 +3056,8 @@
     "location_name": "Time Keep",
     "location_link": "/time-keep",
     "total_hp": 600000,
-    "room": "timekeep"
-  },
-  {
-    "name": "Malgor (Monster) (1)",
-    "url": "https://aqwwiki.wikidot.com/malgor-monster-1",
-    "location_name": "Malgor (Location)",
-    "location_link": "/malgor-location",
-    "total_hp": 406700,
-    "room": "malgor"
+    "room": "timekeep",
+    "max_players": 7
   },
   {
     "name": "Malgor (Monster) (2)",
@@ -2789,7 +3065,8 @@
     "location_name": "Mana Cradle",
     "location_link": "/mana-cradle",
     "total_hp": 1700000,
-    "room": "manacradle"
+    "room": "manacradle",
+    "max_players": 7
   },
   {
     "name": "Maloth (Monster)",
@@ -2797,7 +3074,8 @@
     "location_name": "Maloth (Location)",
     "location_link": "/maloth-location",
     "total_hp": 133880,
-    "room": "maloth"
+    "room": "maloth",
+    "max_players": 7
   },
   {
     "name": "Malxas",
@@ -2805,7 +3083,8 @@
     "location_name": "Infernal Spire",
     "location_link": "/infernal-spire",
     "total_hp": 133880,
-    "room": "infernalspire"
+    "room": "infernalspire",
+    "max_players": 6
   },
   {
     "name": "Mananxiety",
@@ -2813,7 +3092,8 @@
     "location_name": "Mana Harvest",
     "location_link": "/mana-harvest",
     "total_hp": 110000,
-    "room": "manaharvest"
+    "room": "manaharvest",
+    "max_players": 7
   },
   {
     "name": "Marine Snow",
@@ -2821,7 +3101,8 @@
     "location_name": "Sunlight Zone",
     "location_link": "/sunlight-zone",
     "total_hp": 210000,
-    "room": "sunlightzone"
+    "room": "sunlightzone",
+    "max_players": 7
   },
   {
     "name": "Masakado (Monster)",
@@ -2829,7 +3110,8 @@
     "location_name": "Victor Matsuri",
     "location_link": "/victor-matsuri",
     "total_hp": 2000000,
-    "room": "victormatsuri"
+    "room": "victormatsuri",
+    "max_players": 4
   },
   {
     "name": "Mask of Tranquility",
@@ -2837,7 +3119,8 @@
     "location_name": "World's Core",
     "location_link": "/world-s-core",
     "total_hp": 1500000,
-    "room": "worldscore"
+    "room": "worldscore",
+    "max_players": 7
   },
   {
     "name": "Massive Dire Wolf",
@@ -2845,7 +3128,8 @@
     "location_name": "Battleground F",
     "location_link": "/battleground-f",
     "total_hp": 144360,
-    "room": "battlegroundf"
+    "room": "battlegroundf",
+    "max_players": 6
   },
   {
     "name": "Master Chairman",
@@ -2853,7 +3137,8 @@
     "location_name": "EbilCorp HQ",
     "location_link": "/ebilcorp-hq",
     "total_hp": 150000,
-    "room": "ebilcorphq"
+    "room": "ebilcorphq",
+    "max_players": 7
   },
   {
     "name": "M'Boi",
@@ -2861,7 +3146,8 @@
     "location_name": "Yguasu River",
     "location_link": "/yguasu-river",
     "total_hp": 120000,
-    "room": "yguasu"
+    "room": "yguasu",
+    "max_players": 7
   },
   {
     "name": "MechaVortrix",
@@ -2869,7 +3155,8 @@
     "location_name": "Tech Fortress",
     "location_link": "/tech-fortress",
     "total_hp": 294790,
-    "room": "techfortress"
+    "room": "techfortress",
+    "max_players": 7
   },
   {
     "name": "Memory Leech",
@@ -2877,7 +3164,8 @@
     "location_name": "Holiday Hotel",
     "location_link": "/holiday-hotel",
     "total_hp": 130000,
-    "room": "holidayhotel"
+    "room": "holidayhotel",
+    "max_players": 7
   },
   {
     "name": "Mercutio (Monster)",
@@ -2885,7 +3173,8 @@
     "location_name": "Mercutio (Location)",
     "location_link": "/mercutio-location",
     "total_hp": 109900,
-    "room": "mercutio"
+    "room": "mercutio",
+    "max_players": 6
   },
   {
     "name": "Merpyre",
@@ -2893,7 +3182,8 @@
     "location_name": "Blood Isles",
     "location_link": "/blood-isles",
     "total_hp": 200000,
-    "room": "bloodisles"
+    "room": "bloodisles",
+    "max_players": 7
   },
   {
     "name": "Metamorphosis Maw",
@@ -2901,7 +3191,8 @@
     "location_name": "Camlan Forest",
     "location_link": "/camlan-forest",
     "total_hp": 340000,
-    "room": "camlan"
+    "room": "camlan",
+    "max_players": 7
   },
   {
     "name": "Mikoto Kukol'nyy",
@@ -2909,7 +3200,8 @@
     "location_name": "Yokai Realm",
     "location_link": "/yokai-realm",
     "total_hp": 1000000,
-    "room": "yokairealm"
+    "room": "yokairealm",
+    "max_players": 7
   },
   {
     "name": "Min'et's Corpse",
@@ -2917,7 +3209,8 @@
     "location_name": "Time Retaliate",
     "location_link": "/time-retaliate",
     "total_hp": 150000,
-    "room": "timeretaliate"
+    "room": "timeretaliate",
+    "max_players": 7
   },
   {
     "name": "Minos",
@@ -2925,7 +3218,8 @@
     "location_name": "Judgement",
     "location_link": "/judgement",
     "total_hp": 130710,
-    "room": "judgement"
+    "room": "judgement",
+    "max_players": 6
   },
   {
     "name": "Mockingbird",
@@ -2933,7 +3227,8 @@
     "location_name": "Holiday Horror",
     "location_link": "/holiday-horror",
     "total_hp": 200217,
-    "room": "holidayhorror"
+    "room": "holidayhorror",
+    "max_players": 7
   },
   {
     "name": "Module 005",
@@ -2941,7 +3236,8 @@
     "location_name": "Hollowborn Challenge",
     "location_link": "/hollowborn-challenge",
     "total_hp": 400000,
-    "room": "hbchallenge"
+    "room": "hbchallenge",
+    "max_players": 20
   },
   {
     "name": "Mogdring",
@@ -2949,7 +3245,8 @@
     "location_name": "Musty Cave",
     "location_link": "/musty-cave",
     "total_hp": 126860,
-    "room": "mustycave"
+    "room": "mustycave",
+    "max_players": 7
   },
   {
     "name": "Mogugudra",
@@ -2957,7 +3254,8 @@
     "location_name": "Ebil Mega Mall",
     "location_link": "/ebil-mega-mall",
     "total_hp": 200000,
-    "room": "ebilmegamall"
+    "room": "ebilmegamall",
+    "max_players": 7
   },
   {
     "name": "Mr. Wubbles (Monster)",
@@ -2965,7 +3263,8 @@
     "location_name": "Wubblevania",
     "location_link": "/wubblevania",
     "total_hp": 99260,
-    "room": "wubblevania"
+    "room": "wubblevania",
+    "max_players": 7
   },
   {
     "name": "Mutated Void Dragon",
@@ -2973,7 +3272,8 @@
     "location_name": null,
     "location_link": null,
     "total_hp": 414050,
-    "room": "bosschallenge"
+    "room": "bosschallenge",
+    "max_players": 7
   },
   {
     "name": "Mutou Hong",
@@ -2981,7 +3281,8 @@
     "location_name": "Yokai Hunt",
     "location_link": "/yokai-hunt",
     "total_hp": 122024,
-    "room": "yokaihunt"
+    "room": "yokaihunt",
+    "max_players": 7
   },
   {
     "name": "Mysterious Stranger (Monster) (3)",
@@ -2989,15 +3290,8 @@
     "location_name": "Shadow Battleon",
     "location_link": "/shadow-battleon",
     "total_hp": 666666,
-    "room": "shadowbattleon"
-  },
-  {
-    "name": "Na'al",
-    "url": "https://aqwwiki.wikidot.com/na-al",
-    "location_name": "Infernal Arena",
-    "location_link": "/infernal-arena",
-    "total_hp": 1500000,
-    "room": "infernalarena"
+    "room": "shadowbattleon",
+    "max_players": 7
   },
   {
     "name": "Nameless Dragonlord",
@@ -3005,7 +3299,8 @@
     "location_name": "Hollowborn Challenge",
     "location_link": "/hollowborn-challenge",
     "total_hp": 600000,
-    "room": "hbchallenge"
+    "room": "hbchallenge",
+    "max_players": 20
   },
   {
     "name": "Narcis Arrhythmia (Monster)",
@@ -3013,7 +3308,8 @@
     "location_name": "Victor Matsuri",
     "location_link": "/victor-matsuri",
     "total_hp": 150000,
-    "room": "victormatsuri"
+    "room": "victormatsuri",
+    "max_players": 4
   },
   {
     "name": "NeOni",
@@ -3021,7 +3317,8 @@
     "location_name": "Victor Matsuri",
     "location_link": "/victor-matsuri",
     "total_hp": 125000,
-    "room": "victormatsuri"
+    "room": "victormatsuri",
+    "max_players": 4
   },
   {
     "name": "Nereid Princess",
@@ -3029,7 +3326,8 @@
     "location_name": "Sunken City",
     "location_link": "/sunken-city",
     "total_hp": 1000000,
-    "room": "sunkencity"
+    "room": "sunkencity",
+    "max_players": 7
   },
   {
     "name": "Nerites (Monster)",
@@ -3037,7 +3335,8 @@
     "location_name": "Nerites (Location)",
     "location_link": "/nerites-location",
     "total_hp": 3000000,
-    "room": "nerites"
+    "room": "nerites",
+    "max_players": 9
   },
   {
     "name": "Nevanna",
@@ -3045,7 +3344,8 @@
     "location_name": "Gaiazor (Location)",
     "location_link": "/gaiazor-location",
     "total_hp": 245360,
-    "room": "gaiazor"
+    "room": "gaiazor",
+    "max_players": 6
   },
   {
     "name": "Nightbane",
@@ -3053,7 +3353,8 @@
     "location_name": "Void Nightbane",
     "location_link": "/void-nightbane",
     "total_hp": 500000,
-    "room": "voidnightbane"
+    "room": "voidnightbane",
+    "max_players": 7
   },
   {
     "name": "Nightlocke Axe",
@@ -3061,7 +3362,8 @@
     "location_name": "3D Battleon",
     "location_link": "/3d-battleon",
     "total_hp": 133880,
-    "room": "aqw3d"
+    "room": "aqw3d",
+    "max_players": 6
   },
   {
     "name": "Nightmare Carnax",
@@ -3069,7 +3371,8 @@
     "location_name": "Dark Carnax",
     "location_link": "/dark-carnax",
     "total_hp": 5000000,
-    "room": "darkcarnax"
+    "room": "darkcarnax",
+    "max_players": 5
   },
   {
     "name": "Nightmare Zorbak",
@@ -3077,7 +3380,8 @@
     "location_name": "MoonLab",
     "location_link": "/moonlab",
     "total_hp": 216830,
-    "room": "moonlab"
+    "room": "moonlab",
+    "max_players": 7
   },
   {
     "name": "Nomlem",
@@ -3085,7 +3389,8 @@
     "location_name": "Feast War Good",
     "location_link": "/feast-war-good",
     "total_hp": 165440,
-    "room": "feastwargood"
+    "room": "feastwargood",
+    "max_players": 7
   },
   {
     "name": "Nomura",
@@ -3093,7 +3398,8 @@
     "location_name": "Cetoleon War",
     "location_link": "/cetoleon-war",
     "total_hp": 129050,
-    "room": "cetoleonwar"
+    "room": "cetoleonwar",
+    "max_players": 7
   },
   {
     "name": "Nova Empyrean",
@@ -3101,7 +3407,8 @@
     "location_name": "Nova Shrine",
     "location_link": "/nova-shrine",
     "total_hp": 280000,
-    "room": "novashrine"
+    "room": "novashrine",
+    "max_players": 7
   },
   {
     "name": "Noxborg",
@@ -3109,7 +3416,8 @@
     "location_name": "Necro Project",
     "location_link": "/necro-project",
     "total_hp": 142830,
-    "room": "necroproject"
+    "room": "necroproject",
+    "max_players": 7
   },
   {
     "name": "Noxore",
@@ -3117,7 +3425,8 @@
     "location_name": "Necro Project",
     "location_link": "/necro-project",
     "total_hp": 350000,
-    "room": "necroproject"
+    "room": "necroproject",
+    "max_players": 7
   },
   {
     "name": "Noxustrian",
@@ -3125,7 +3434,8 @@
     "location_name": "Necro Project",
     "location_link": "/necro-project",
     "total_hp": 866680,
-    "room": "necroproject"
+    "room": "necroproject",
+    "max_players": 7
   },
   {
     "name": "Nulgath's Fiend Shard",
@@ -3133,7 +3443,8 @@
     "location_name": "Fiendshard",
     "location_link": "/fiendshard",
     "total_hp": 275440,
-    "room": "fiendshard"
+    "room": "fiendshard",
+    "max_players": 7
   },
   {
     "name": "Oblivion's Herald",
@@ -3141,7 +3452,8 @@
     "location_name": "Deleuze Tundra",
     "location_link": "/deleuze-tundra",
     "total_hp": 250000,
-    "room": "deleuzetundra"
+    "room": "deleuzetundra",
+    "max_players": 7
   },
   {
     "name": "Odium",
@@ -3149,7 +3461,8 @@
     "location_name": "Greyguard",
     "location_link": "/greyguard",
     "total_hp": 100000,
-    "room": "greyguard"
+    "room": "greyguard",
+    "max_players": 7
   },
   {
     "name": "Oh'Garr",
@@ -3157,7 +3470,8 @@
     "location_name": "Shadowsong",
     "location_link": "/shadowsong",
     "total_hp": 239340,
-    "room": "shadowsong"
+    "room": "shadowsong",
+    "max_players": 7
   },
   {
     "name": "Oizys",
@@ -3165,7 +3479,8 @@
     "location_name": "Lethe",
     "location_link": "/lethe",
     "total_hp": 750000,
-    "room": "lethe"
+    "room": "lethe",
+    "max_players": 7
   },
   {
     "name": "Oni",
@@ -3173,7 +3488,8 @@
     "location_name": "Parades (Location)",
     "location_link": "/parades-location",
     "total_hp": 111170,
-    "room": "parades"
+    "room": "parades",
+    "max_players": 6
   },
   {
     "name": "Onyx Lava Dragon",
@@ -3181,7 +3497,8 @@
     "location_name": "Vasalkar's Lair",
     "location_link": "/vasalkar-s-lair",
     "total_hp": 116830,
-    "room": "lair"
+    "room": "lair",
+    "max_players": 6
   },
   {
     "name": "Oubliette",
@@ -3189,7 +3506,8 @@
     "location_name": "Tunnel of Love",
     "location_link": "/tunnel-of-love",
     "total_hp": 140000,
-    "room": "tunneloflove"
+    "room": "tunneloflove",
+    "max_players": 7
   },
   {
     "name": "Paladin Arondight (Monster)",
@@ -3197,7 +3515,8 @@
     "location_name": "Legion Barracks",
     "location_link": "/legion-barracks",
     "total_hp": 150000,
-    "room": "legionbarracks"
+    "room": "legionbarracks",
+    "max_players": 7
   },
   {
     "name": "Paragon of Light (Monster)",
@@ -3205,7 +3524,8 @@
     "location_name": "Bright Fortress (Location)",
     "location_link": "/bright-fortress-location",
     "total_hp": 106640,
-    "room": "brightfortress"
+    "room": "brightfortress",
+    "max_players": 6
   },
   {
     "name": "Perfect Beiza",
@@ -3213,7 +3533,8 @@
     "location_name": "Dragon Road",
     "location_link": "/dragon-road",
     "total_hp": 186660,
-    "room": "dragonroad"
+    "room": "dragonroad",
+    "max_players": 6
   },
   {
     "name": "Permafrost Dragon",
@@ -3221,7 +3542,8 @@
     "location_name": "Skades Pass",
     "location_link": "/skades-pass",
     "total_hp": 1200000,
-    "room": "skadespass"
+    "room": "skadespass",
+    "max_players": 7
   },
   {
     "name": "Phantom Jaws",
@@ -3229,7 +3551,8 @@
     "location_name": "Pirate Alliance",
     "location_link": "/pirate-alliance",
     "total_hp": 150000,
-    "room": "piratealliance"
+    "room": "piratealliance",
+    "max_players": 7
   },
   {
     "name": "Pharaoh Neith",
@@ -3237,7 +3560,8 @@
     "location_name": "Hidden Duat",
     "location_link": "/hidden-duat",
     "total_hp": 140000,
-    "room": "hiddenduat"
+    "room": "hiddenduat",
+    "max_players": 7
   },
   {
     "name": "Phlegnn",
@@ -3245,7 +3569,8 @@
     "location_name": "Sloth",
     "location_link": "/sloth",
     "total_hp": 221220,
-    "room": "sloth"
+    "room": "sloth",
+    "max_players": 7
   },
   {
     "name": "Pinky",
@@ -3253,7 +3578,8 @@
     "location_name": "Swaggy's Chateau",
     "location_link": "/swaggy-s-chateau",
     "total_hp": 179290,
-    "room": "chateau"
+    "room": "chateau",
+    "max_players": 7
   },
   {
     "name": "Pirate Queen Teja (Monster)",
@@ -3261,7 +3587,8 @@
     "location_name": "Granite Cove",
     "location_link": "/granite-cove",
     "total_hp": 119460,
-    "room": "granitecove"
+    "room": "granitecove",
+    "max_players": 7
   },
   {
     "name": "Potion Spider",
@@ -3269,15 +3596,8 @@
     "location_name": "Fear House",
     "location_link": "/fear-house",
     "total_hp": 139480,
-    "room": "fearhouse"
-  },
-  {
-    "name": "Prince Drakath",
-    "url": "https://aqwwiki.wikidot.com/prince-drakath",
-    "location_name": "Final Showdown",
-    "location_link": "/final-showdown",
-    "total_hp": 125000,
-    "room": "finalshowdown"
+    "room": "fearhouse",
+    "max_players": 6
   },
   {
     "name": "Princess Arethusa (Monster)",
@@ -3285,7 +3605,8 @@
     "location_name": "Atlas Falls",
     "location_link": "/atlas-falls",
     "total_hp": 1000000,
-    "room": "atlasfalls"
+    "room": "atlasfalls",
+    "max_players": 7
   },
   {
     "name": "Prismata",
@@ -3293,7 +3614,8 @@
     "location_name": "Archmage (Location)",
     "location_link": "/archmage-location",
     "total_hp": 500000,
-    "room": "archmage"
+    "room": "archmage",
+    "max_players": 7
   },
   {
     "name": "Proto Chaos Champion",
@@ -3301,15 +3623,8 @@
     "location_name": "Queen's Battle",
     "location_link": "/queen-s-battle",
     "total_hp": 200000,
-    "room": "queenbattle"
-  },
-  {
-    "name": "Queen Iona",
-    "url": "https://aqwwiki.wikidot.com/queen-iona",
-    "location_name": "Queen Iona Challenge Fight",
-    "location_link": "/queen-iona-challenge-fight",
-    "total_hp": 1000000,
-    "room": "queeniona"
+    "room": "queenbattle",
+    "max_players": 7
   },
   {
     "name": "Queen Meresankh",
@@ -3317,7 +3632,8 @@
     "location_name": "Meresankh Chambers",
     "location_link": "/meresankh-chambers",
     "total_hp": 250000,
-    "room": "meresankhchambers"
+    "room": "meresankhchambers",
+    "max_players": 7
   },
   {
     "name": "Queen of Envy",
@@ -3325,7 +3641,8 @@
     "location_name": "Envy (Location) (1)",
     "location_link": "/envy-location-1",
     "total_hp": 182890,
-    "room": "envy"
+    "room": "envy",
+    "max_players": 6
   },
   {
     "name": "Queen of Monsters (Monster) (1)",
@@ -3333,7 +3650,8 @@
     "location_name": "Transformation",
     "location_link": "/transformation",
     "total_hp": 359750,
-    "room": "transformation"
+    "room": "transformation",
+    "max_players": 7
   },
   {
     "name": "Queen of Monsters (Monster) (2)",
@@ -3341,7 +3659,8 @@
     "location_name": "Queen's Battle",
     "location_link": "/queen-s-battle",
     "total_hp": 660000,
-    "room": "queenbattle"
+    "room": "queenbattle",
+    "max_players": 7
   },
   {
     "name": "Queen Victoria (Monster)",
@@ -3349,7 +3668,8 @@
     "location_name": "Balemorale",
     "location_link": "/balemorale",
     "total_hp": 300000,
-    "room": "balemorale"
+    "room": "balemorale",
+    "max_players": 20
   },
   {
     "name": "Quetzal (Monster)",
@@ -3357,7 +3677,8 @@
     "location_name": "Orb Hunt",
     "location_link": "/orb-hunt",
     "total_hp": 175000,
-    "room": "orbhunt"
+    "room": "orbhunt",
+    "max_players": 7
   },
   {
     "name": "Rangda (Monster)",
@@ -3365,7 +3686,8 @@
     "location_name": "Rangda (Location)",
     "location_link": "/rangda-location",
     "total_hp": 179290,
-    "room": "rangda"
+    "room": "rangda",
+    "max_players": 7
   },
   {
     "name": "RawrGobble",
@@ -3373,7 +3695,8 @@
     "location_name": "Birds with Harms",
     "location_link": "/birds-with-harms",
     "total_hp": 120000,
-    "room": "birdswithharms"
+    "room": "birdswithharms",
+    "max_players": 8
   },
   {
     "name": "Rax-goreless",
@@ -3381,7 +3704,8 @@
     "location_name": "Lich War",
     "location_link": "/lich-war",
     "total_hp": 225000,
-    "room": "lichwar"
+    "room": "lichwar",
+    "max_players": 20
   },
   {
     "name": "Re (Monster)",
@@ -3389,7 +3713,8 @@
     "location_name": "The World",
     "location_link": "/the-world",
     "total_hp": 140000,
-    "room": "theworld"
+    "room": "theworld",
+    "max_players": 7
   },
   {
     "name": "Reaper",
@@ -3397,7 +3722,8 @@
     "location_name": "The Void",
     "location_link": "/the-void",
     "total_hp": 507750,
-    "room": "thevoid"
+    "room": "thevoid",
+    "max_players": 7
   },
   {
     "name": "Red Hare",
@@ -3405,7 +3731,8 @@
     "location_name": "Yokai Hunt",
     "location_link": "/yokai-hunt",
     "total_hp": 302026,
-    "room": "yokaihunt"
+    "room": "yokaihunt",
+    "max_players": 7
   },
   {
     "name": "Reject Pile",
@@ -3413,7 +3740,8 @@
     "location_name": "Zorbot (Location)",
     "location_link": "/zorbot-location",
     "total_hp": 106640,
-    "room": "zorbot"
+    "room": "zorbot",
+    "max_players": 4
   },
   {
     "name": "Retrograde Maw",
@@ -3421,7 +3749,8 @@
     "location_name": "Time Retaliate",
     "location_link": "/time-retaliate",
     "total_hp": 100000,
-    "room": "timeretaliate"
+    "room": "timeretaliate",
+    "max_players": 7
   },
   {
     "name": "Rhadamanthys",
@@ -3429,7 +3758,8 @@
     "location_name": "Judgement",
     "location_link": "/judgement",
     "total_hp": 120560,
-    "room": "judgement"
+    "room": "judgement",
+    "max_players": 6
   },
   {
     "name": "Rigaud & Cassie",
@@ -3437,7 +3767,8 @@
     "location_name": "Fort Luma",
     "location_link": "/fort-luma",
     "total_hp": 102000,
-    "room": "fortluma"
+    "room": "fortluma",
+    "max_players": 7
   },
   {
     "name": "Rigaud the Forsaken",
@@ -3445,7 +3776,8 @@
     "location_name": "Carcossa Court",
     "location_link": "/carcossa-court",
     "total_hp": 280000,
-    "room": "carcossacourt"
+    "room": "carcossacourt",
+    "max_players": 7
   },
   {
     "name": "Rotfinger",
@@ -3453,7 +3785,8 @@
     "location_name": "Rot Finger",
     "location_link": "/rot-finger",
     "total_hp": 130000,
-    "room": "rotfinger"
+    "room": "rotfinger",
+    "max_players": 7
   },
   {
     "name": "Royce",
@@ -3461,7 +3794,8 @@
     "location_name": "Crescent Moon",
     "location_link": "/crescent-moon",
     "total_hp": 500000,
-    "room": "crescentmoon"
+    "room": "crescentmoon",
+    "max_players": 7
   },
   {
     "name": "Saint Apa",
@@ -3469,7 +3803,8 @@
     "location_name": "Shinkansen",
     "location_link": "/shinkansen",
     "total_hp": 200000,
-    "room": "shinkansen"
+    "room": "shinkansen",
+    "max_players": 7
   },
   {
     "name": "Saint Eta",
@@ -3477,7 +3812,8 @@
     "location_name": "Shinkansen",
     "location_link": "/shinkansen",
     "total_hp": 100000,
-    "room": "shinkansen"
+    "room": "shinkansen",
+    "max_players": 7
   },
   {
     "name": "Sa-Laatan",
@@ -3485,7 +3821,8 @@
     "location_name": "Queen's Reign",
     "location_link": "/queen-s-reign",
     "total_hp": 150000,
-    "room": "queenreign"
+    "room": "queenreign",
+    "max_players": 7
   },
   {
     "name": "Salek Sprayer",
@@ -3493,7 +3830,8 @@
     "location_name": "Void Salek",
     "location_link": "/void-salek",
     "total_hp": 1005844,
-    "room": "voidsalek"
+    "room": "voidsalek",
+    "max_players": 7
   },
   {
     "name": "Salvaza (Monster)",
@@ -3501,7 +3839,8 @@
     "location_name": "Fezzini",
     "location_link": "/fezzini",
     "total_hp": 175880,
-    "room": "fezzini"
+    "room": "fezzini",
+    "max_players": 7
   },
   {
     "name": "Sarah the NerfKitten",
@@ -3509,7 +3848,8 @@
     "location_name": "Void NerfKitten",
     "location_link": "/void-nerfkitten",
     "total_hp": 5000000,
-    "room": "voidnerfkitten"
+    "room": "voidnerfkitten",
+    "max_players": 7
   },
   {
     "name": "Sarah the NiceKitten",
@@ -3517,7 +3857,8 @@
     "location_name": "Coliseum",
     "location_link": "/coliseum",
     "total_hp": 125000,
-    "room": "coliseum"
+    "room": "coliseum",
+    "max_players": 7
   },
   {
     "name": "Scalebeard",
@@ -3525,7 +3866,8 @@
     "location_name": "Dragonpirate",
     "location_link": "/dragonpirate",
     "total_hp": 138000,
-    "room": "dragonpirate"
+    "room": "dragonpirate",
+    "max_players": 7
   },
   {
     "name": "Screamfeeder",
@@ -3533,7 +3875,8 @@
     "location_name": "Dream Maze",
     "location_link": "/dream-maze",
     "total_hp": 120040,
-    "room": "dreammaze"
+    "room": "dreammaze",
+    "max_players": 6
   },
   {
     "name": "Scurvyfins McKrill",
@@ -3541,7 +3884,8 @@
     "location_name": "Heart of the Sea",
     "location_link": "/heart-of-the-sea",
     "total_hp": 175880,
-    "room": "heartofthesea"
+    "room": "heartofthesea",
+    "max_players": 7
   },
   {
     "name": "Sea King Gravefang (Monster)",
@@ -3549,7 +3893,8 @@
     "location_name": "Blood Testament Isles",
     "location_link": "/blood-testament-isles",
     "total_hp": 500000,
-    "room": "seakingkurok"
+    "room": "seakingkurok",
+    "max_players": 7
   },
   {
     "name": "Sea King Kurok",
@@ -3557,7 +3902,8 @@
     "location_name": "Blood Isles",
     "location_link": "/blood-isles",
     "total_hp": 100000,
-    "room": "bloodisles"
+    "room": "bloodisles",
+    "max_players": 7
   },
   {
     "name": "Seafoam Elemental",
@@ -3565,7 +3911,8 @@
     "location_name": "Ashray",
     "location_link": "/ashray",
     "total_hp": 200000,
-    "room": "ashray"
+    "room": "ashray",
+    "max_players": 9
   },
   {
     "name": "Second Speaker",
@@ -3573,7 +3920,8 @@
     "location_name": "Timestream War",
     "location_link": "/timestream-war",
     "total_hp": 1000000,
-    "room": "timestreamwar"
+    "room": "timestreamwar",
+    "max_players": 7
   },
   {
     "name": "Sepulchuroth",
@@ -3581,7 +3929,8 @@
     "location_name": "ShadowStrike",
     "location_link": "/shadowstrike",
     "total_hp": 143220,
-    "room": "shadowstrike"
+    "room": "shadowstrike",
+    "max_players": 6
   },
   {
     "name": "Serepthys (Monster)",
@@ -3589,7 +3938,8 @@
     "location_name": "Yasaris",
     "location_link": "/yasaris",
     "total_hp": 996660,
-    "room": "yasaris"
+    "room": "yasaris",
+    "max_players": 6
   },
   {
     "name": "Shade of Kyanos (Monster)",
@@ -3597,7 +3947,8 @@
     "location_name": "Ice Dungeon",
     "location_link": "/ice-dungeon",
     "total_hp": 120000,
-    "room": "icedungeon"
+    "room": "icedungeon",
+    "max_players": 7
   },
   {
     "name": "Shadefire Colonel",
@@ -3605,7 +3956,8 @@
     "location_name": "Fire Invasion",
     "location_link": "/fire-invasion",
     "total_hp": 175000,
-    "room": "fireinvasion"
+    "room": "fireinvasion",
+    "max_players": 7
   },
   {
     "name": "Shadefire General",
@@ -3613,7 +3965,8 @@
     "location_name": "Fire Invasion",
     "location_link": "/fire-invasion",
     "total_hp": 100000,
-    "room": "fireinvasion"
+    "room": "fireinvasion",
+    "max_players": 7
   },
   {
     "name": "Shadefire Major",
@@ -3621,7 +3974,8 @@
     "location_name": "Fire Invasion",
     "location_link": "/fire-invasion",
     "total_hp": 250000,
-    "room": "fireinvasion"
+    "room": "fireinvasion",
+    "max_players": 7
   },
   {
     "name": "Shadow Destroyer",
@@ -3629,7 +3983,8 @@
     "location_name": "ShadowBlast Arena",
     "location_link": "/shadowblast-arena",
     "total_hp": 99510,
-    "room": "shadowblast"
+    "room": "shadowblast",
+    "max_players": 6
   },
   {
     "name": "Shadow Fernando",
@@ -3637,7 +3992,8 @@
     "location_name": "Black Maze",
     "location_link": "/black-maze",
     "total_hp": 300000,
-    "room": "blackmaze"
+    "room": "blackmaze",
+    "max_players": 7
   },
   {
     "name": "Shadow of Malphas",
@@ -3645,7 +4001,8 @@
     "location_name": "Sramol Woes",
     "location_link": "/sramol-woes",
     "total_hp": 175000,
-    "room": "sramolwoes"
+    "room": "sramolwoes",
+    "max_players": 7
   },
   {
     "name": "Shadow Rider",
@@ -3653,7 +4010,8 @@
     "location_name": "Hollowborn Challenge",
     "location_link": "/hollowborn-challenge",
     "total_hp": 155390,
-    "room": "hbchallenge"
+    "room": "hbchallenge",
+    "max_players": 20
   },
   {
     "name": "ShadowClaw",
@@ -3661,7 +4019,8 @@
     "location_name": "Fire Plane Invasion",
     "location_link": "/fire-plane-invasion",
     "total_hp": 175000,
-    "room": "fireplanewar"
+    "room": "fireplanewar",
+    "max_players": 7
   },
   {
     "name": "ShadowFlame Dragon (2)",
@@ -3669,7 +4028,8 @@
     "location_name": "Bright Forest",
     "location_link": "/bright-forest",
     "total_hp": 436260,
-    "room": "brightforest"
+    "room": "brightforest",
+    "max_players": 7
   },
   {
     "name": "Shadowflame Kyron",
@@ -3677,7 +4037,8 @@
     "location_name": "Fire Invasion",
     "location_link": "/fire-invasion",
     "total_hp": 600000,
-    "room": "fireinvasion"
+    "room": "fireinvasion",
+    "max_players": 7
   },
   {
     "name": "ShadowFlame Phedra (Monster)",
@@ -3685,7 +4046,8 @@
     "location_name": "Fire Plane Invasion",
     "location_link": "/fire-plane-invasion",
     "total_hp": 250000,
-    "room": "fireplanewar"
+    "room": "fireplanewar",
+    "max_players": 7
   },
   {
     "name": "Shadowflame Yulgar",
@@ -3693,7 +4055,8 @@
     "location_name": "Junkheap",
     "location_link": "/junkheap",
     "total_hp": 164830,
-    "room": "junkheap"
+    "room": "junkheap",
+    "max_players": 7
   },
   {
     "name": "ShadowKnight Gar (Monster)",
@@ -3701,7 +4064,8 @@
     "location_name": "Timestream",
     "location_link": "/timestream",
     "total_hp": 233850,
-    "room": "timestream"
+    "room": "timestream",
+    "max_players": 7
   },
   {
     "name": "Shadowstone Support",
@@ -3709,7 +4073,8 @@
     "location_name": "Necropolis Cavern",
     "location_link": "/necropolis-cavern",
     "total_hp": 100000,
-    "room": "necrocavern"
+    "room": "necrocavern",
+    "max_players": 6
   },
   {
     "name": "Shimazu (Monster)",
@@ -3717,7 +4082,8 @@
     "location_name": "Shimazu (Location)",
     "location_link": "/shimazu-location",
     "total_hp": 213250,
-    "room": "shimazu"
+    "room": "shimazu",
+    "max_players": 7
   },
   {
     "name": "Shrade (1)",
@@ -3725,7 +4091,8 @@
     "location_name": "Camp Gonnagetcha",
     "location_link": "/camp-gonnagetcha",
     "total_hp": 114630,
-    "room": "gonnagetcha"
+    "room": "gonnagetcha",
+    "max_players": 7
   },
   {
     "name": "Shub-Hathrys",
@@ -3733,7 +4100,8 @@
     "location_name": "Crownsreach FXIII",
     "location_link": "/crownsreach-fxiii",
     "total_hp": 365770,
-    "room": "crownsreachfxiii"
+    "room": "crownsreachfxiii",
+    "max_players": 8
   },
   {
     "name": "Sigrid Sunshield (Monster)",
@@ -3741,7 +4109,8 @@
     "location_name": "Lightguard War (Location)",
     "location_link": "/lightguard-war-location",
     "total_hp": 155390,
-    "room": "lightguardwar"
+    "room": "lightguardwar",
+    "max_players": 7
   },
   {
     "name": "Simulated Elius",
@@ -3749,7 +4118,8 @@
     "location_name": "War Training",
     "location_link": "/war-training",
     "total_hp": 350000,
-    "room": "wartraining"
+    "room": "wartraining",
+    "max_players": 7
   },
   {
     "name": "Sir Kut",
@@ -3757,7 +4127,8 @@
     "location_name": "Stonewood Forest",
     "location_link": "/stonewood-forest",
     "total_hp": 186660,
-    "room": "stonewooddeep"
+    "room": "stonewooddeep",
+    "max_players": 7
   },
   {
     "name": "Slayer Cake",
@@ -3765,7 +4136,8 @@
     "location_name": "Event Hub",
     "location_link": "/event-hub",
     "total_hp": 101023,
-    "room": "eventhub"
+    "room": "eventhub",
+    "max_players": 20
   },
   {
     "name": "Sleep Paralysis",
@@ -3773,7 +4145,8 @@
     "location_name": "Gothic Dream",
     "location_link": "/gothic-dream",
     "total_hp": 142830,
-    "room": "gothicdream"
+    "room": "gothicdream",
+    "max_players": 7
   },
   {
     "name": "Sleih",
@@ -3781,7 +4154,8 @@
     "location_name": "Camlan Forest",
     "location_link": "/camlan-forest",
     "total_hp": 175000,
-    "room": "camlan"
+    "room": "camlan",
+    "max_players": 7
   },
   {
     "name": "Sluagh Mellori",
@@ -3789,7 +4163,8 @@
     "location_name": "Mount Otzi",
     "location_link": "/mount-otzi",
     "total_hp": 175000,
-    "room": "mountotzi"
+    "room": "mountotzi",
+    "max_players": 7
   },
   {
     "name": "Slugbutter",
@@ -3797,7 +4172,8 @@
     "location_name": "Tower of Doom (10)",
     "location_link": "/tower-of-doom-10",
     "total_hp": 600000,
-    "room": "towerofdoom10"
+    "room": "towerofdoom10",
+    "max_players": 6
   },
   {
     "name": "Smaras",
@@ -3805,7 +4181,8 @@
     "location_name": "Dage Recruit",
     "location_link": "/dage-recruit",
     "total_hp": 120000,
-    "room": "dagerecruit"
+    "room": "dagerecruit",
+    "max_players": 7
   },
   {
     "name": "Smorgasbord",
@@ -3813,7 +4190,8 @@
     "location_name": "EbilCorp Takeover",
     "location_link": "/ebilcorp-takeover",
     "total_hp": 130000,
-    "room": "ebiltakeover"
+    "room": "ebiltakeover",
+    "max_players": 7
   },
   {
     "name": "SMU BrutalCorn",
@@ -3821,7 +4199,8 @@
     "location_name": "Ultra Brutalcorn (Location)",
     "location_link": "/ultra-brutalcorn-location",
     "total_hp": 1951170,
-    "room": "ultrabrutalcorn"
+    "room": "ultrabrutalcorn",
+    "max_players": 6
   },
   {
     "name": "SN.O.W. Challenge",
@@ -3829,7 +4208,8 @@
     "location_name": "Extinction",
     "location_link": "/extinction",
     "total_hp": 150470,
-    "room": "extinction"
+    "room": "extinction",
+    "max_players": 6
   },
   {
     "name": "Sobekemsaph",
@@ -3837,7 +4217,8 @@
     "location_name": "Crocodile River",
     "location_link": "/crocodile-river",
     "total_hp": 200000,
-    "room": "crocriver"
+    "room": "crocriver",
+    "max_players": 7
   },
   {
     "name": "Solar Flare",
@@ -3845,7 +4226,8 @@
     "location_name": "Water War",
     "location_link": "/water-war",
     "total_hp": 115720,
-    "room": "waterwar"
+    "room": "waterwar",
+    "max_players": 7
   },
   {
     "name": "Sparagmos",
@@ -3853,7 +4235,8 @@
     "location_name": "Midnight Zone",
     "location_link": "/midnight-zone",
     "total_hp": 250000,
-    "room": "midnightzone"
+    "room": "midnightzone",
+    "max_players": 7
   },
   {
     "name": "Spineback Abaddon",
@@ -3861,7 +4244,8 @@
     "location_name": "Abaddon Cave",
     "location_link": "/abaddon-cave",
     "total_hp": 300000,
-    "room": "abaddoncave"
+    "room": "abaddoncave",
+    "max_players": 7
   },
   {
     "name": "Spirit of Voland",
@@ -3869,7 +4253,8 @@
     "location_name": "Hunter's Moon",
     "location_link": "/hunter-s-moon",
     "total_hp": 107110,
-    "room": "huntersmoon"
+    "room": "huntersmoon",
+    "max_players": 7
   },
   {
     "name": "Steaming Dragon",
@@ -3877,7 +4262,8 @@
     "location_name": "Beach Party",
     "location_link": "/beach-party",
     "total_hp": 213250,
-    "room": "beachparty"
+    "room": "beachparty",
+    "max_players": 7
   },
   {
     "name": "Stolen Heart",
@@ -3885,7 +4271,8 @@
     "location_name": "Love Spell",
     "location_link": "/love-spell",
     "total_hp": 125860,
-    "room": "lovespell"
+    "room": "lovespell",
+    "max_players": 7
   },
   {
     "name": "Strong Dread Dragon",
@@ -3893,7 +4280,8 @@
     "location_name": "Breakstone",
     "location_link": "/breakstone",
     "total_hp": 151650,
-    "room": "breakstone"
+    "room": "breakstone",
+    "max_players": 6
   },
   {
     "name": "Stymphalian Terror",
@@ -3901,7 +4289,8 @@
     "location_name": "Birds with Harms",
     "location_link": "/birds-with-harms",
     "total_hp": 350000,
-    "room": "birdswithharms"
+    "room": "birdswithharms",
+    "max_players": 8
   },
   {
     "name": "Suki (Monster)",
@@ -3909,7 +4298,8 @@
     "location_name": "Eridani Past",
     "location_link": "/eridani-past",
     "total_hp": 150000,
-    "room": "eridanipast"
+    "room": "eridanipast",
+    "max_players": 7
   },
   {
     "name": "Super Dragon Twig",
@@ -3917,7 +4307,8 @@
     "location_name": "Dragon Road",
     "location_link": "/dragon-road",
     "total_hp": 315520,
-    "room": "dragonroad"
+    "room": "dragonroad",
+    "max_players": 6
   },
   {
     "name": "SUPER Dreadhaven General",
@@ -3925,15 +4316,8 @@
     "location_name": "Dreadfight",
     "location_link": "/dreadfight",
     "total_hp": 330000,
-    "room": "dreadfight"
-  },
-  {
-    "name": "Super Ryoku",
-    "url": "https://aqwwiki.wikidot.com/super-ryoku",
-    "location_name": "Super Slayin'",
-    "location_link": "/super-slayin",
-    "total_hp": 200000,
-    "room": "superslayin"
+    "room": "dreadfight",
+    "max_players": 7
   },
   {
     "name": "Super-Charged Karok",
@@ -3941,7 +4325,8 @@
     "location_name": "Cryostorm War (Location)",
     "location_link": "/cryostorm-war-location",
     "total_hp": 125000,
-    "room": "cryowar"
+    "room": "cryowar",
+    "max_players": 6
   },
   {
     "name": "Supercharged Laken",
@@ -3949,7 +4334,8 @@
     "location_name": "Seraphic War Dage",
     "location_link": "/seraphic-war-dage",
     "total_hp": 111500,
-    "room": "seraphicwardage"
+    "room": "seraphicwardage",
+    "max_players": 7
   },
   {
     "name": "Supreme Shadowscythe",
@@ -3957,7 +4343,8 @@
     "location_name": null,
     "location_link": null,
     "total_hp": 234400,
-    "room": "bosschallenge"
+    "room": "bosschallenge",
+    "max_players": 7
   },
   {
     "name": "Suzaku",
@@ -3965,7 +4352,8 @@
     "location_name": "Vermillion Cliffs",
     "location_link": "/vermillion-cliffs",
     "total_hp": 170000,
-    "room": "vermillioncliffs"
+    "room": "vermillioncliffs",
+    "max_players": 7
   },
   {
     "name": "Svelgr the Devourer",
@@ -3973,7 +4361,8 @@
     "location_name": "Deep Portalspace",
     "location_link": "/deep-portalspace",
     "total_hp": 118970,
-    "room": "tachyon"
+    "room": "tachyon",
+    "max_players": 6
   },
   {
     "name": "Sys Zero's Mech",
@@ -3981,7 +4370,8 @@
     "location_name": "Cysero's Paradox",
     "location_link": "/cysero-s-paradox",
     "total_hp": 500000,
-    "room": "cyseroparadox"
+    "room": "cyseroparadox",
+    "max_players": 7
   },
   {
     "name": "Taotie",
@@ -3989,7 +4379,8 @@
     "location_name": "Shizaistrath",
     "location_link": "/shizaistrath",
     "total_hp": 1000000,
-    "room": "shizaistrath"
+    "room": "shizaistrath",
+    "max_players": 7
   },
   {
     "name": "Taro Blademaster",
@@ -3997,7 +4388,8 @@
     "location_name": "Tercessuinotlim",
     "location_link": "/tercessuinotlim",
     "total_hp": 200000,
-    "room": "tercessuinotlim"
+    "room": "tercessuinotlim",
+    "max_players": 6
   },
   {
     "name": "Terrane (Monster)",
@@ -4005,7 +4397,8 @@
     "location_name": "Guardian Tree",
     "location_link": "/guardian-tree",
     "total_hp": 133880,
-    "room": "guardiantree"
+    "room": "guardiantree",
+    "max_players": 7
   },
   {
     "name": "Thanatos (Monster)",
@@ -4013,7 +4406,8 @@
     "location_name": "ShadowBlast Arena",
     "location_link": "/shadowblast-arena",
     "total_hp": 99590,
-    "room": "shadowblast"
+    "room": "shadowblast",
+    "max_players": 6
   },
   {
     "name": "THAT (Monster)",
@@ -4021,7 +4415,8 @@
     "location_name": "That (Location)",
     "location_link": "/that-location",
     "total_hp": 265060,
-    "room": "that"
+    "room": "that",
+    "max_players": 7
   },
   {
     "name": "The Ashray",
@@ -4029,7 +4424,8 @@
     "location_name": "Abyssal Zone",
     "location_link": "/abyssal-zone",
     "total_hp": 260000,
-    "room": "abyssalzone"
+    "room": "abyssalzone",
+    "max_players": 7
   },
   {
     "name": "The Beast (Monster)",
@@ -4037,7 +4433,8 @@
     "location_name": "Seven Circles War",
     "location_link": "/seven-circles-war",
     "total_hp": 1666666,
-    "room": "sevencircleswar"
+    "room": "sevencircleswar",
+    "max_players": 7
   },
   {
     "name": "The Crimson Rider (Monster)",
@@ -4045,7 +4442,8 @@
     "location_name": "Reap Finals",
     "location_link": "/reap-finals",
     "total_hp": 225000,
-    "room": "reapfinals"
+    "room": "reapfinals",
+    "max_players": 7
   },
   {
     "name": "The Darkdweller",
@@ -4053,7 +4451,8 @@
     "location_name": "Hollowborn Challenge",
     "location_link": "/hollowborn-challenge",
     "total_hp": 750000,
-    "room": "hbchallenge"
+    "room": "hbchallenge",
+    "max_players": 20
   },
   {
     "name": "The Engineer",
@@ -4061,7 +4460,8 @@
     "location_name": "Inn at the Edge of Time",
     "location_link": "/inn-at-the-edge-of-time",
     "total_hp": 250000,
-    "room": "timeinn"
+    "room": "timeinn",
+    "max_players": 6
   },
   {
     "name": "The Heartbreaker",
@@ -4069,7 +4469,8 @@
     "location_name": "Coliseum",
     "location_link": "/coliseum",
     "total_hp": 900000,
-    "room": "coliseum"
+    "room": "coliseum",
+    "max_players": 7
   },
   {
     "name": "The Mainyu",
@@ -4077,7 +4478,8 @@
     "location_name": "Mana Cradle",
     "location_link": "/mana-cradle",
     "total_hp": 2000000,
-    "room": "manacradle"
+    "room": "manacradle",
+    "max_players": 7
   },
   {
     "name": "The Master (Monster)",
@@ -4085,7 +4487,8 @@
     "location_name": "Haku Village",
     "location_link": "/haku-village",
     "total_hp": 300000,
-    "room": "hakuvillage"
+    "room": "hakuvillage",
+    "max_players": 7
   },
   {
     "name": "The Moon",
@@ -4093,7 +4496,8 @@
     "location_name": "Astravia",
     "location_link": "/astravia",
     "total_hp": 181818,
-    "room": "astravia"
+    "room": "astravia",
+    "max_players": 7
   },
   {
     "name": "The Sun",
@@ -4101,7 +4505,8 @@
     "location_name": "Astravia Castle",
     "location_link": "/astravia-castle",
     "total_hp": 191919,
-    "room": "astraviacastle"
+    "room": "astraviacastle",
+    "max_players": 7
   },
   {
     "name": "The Sunsetter",
@@ -4109,7 +4514,8 @@
     "location_name": "Carcossa Court",
     "location_link": "/carcossa-court",
     "total_hp": 777666,
-    "room": "carcossacourt"
+    "room": "carcossacourt",
+    "max_players": 7
   },
   {
     "name": "The UnDying",
@@ -4117,7 +4523,8 @@
     "location_name": "Coliseum",
     "location_link": "/coliseum",
     "total_hp": 500000,
-    "room": "coliseum"
+    "room": "coliseum",
+    "max_players": 7
   },
   {
     "name": "The Unsung",
@@ -4125,7 +4532,8 @@
     "location_name": "Unsung Necropolis",
     "location_link": "/unsung-necropolis",
     "total_hp": 150000,
-    "room": "unsungnecropolis"
+    "room": "unsungnecropolis",
+    "max_players": 7
   },
   {
     "name": "The Warden",
@@ -4133,7 +4541,8 @@
     "location_name": "Inn at the Edge of Time",
     "location_link": "/inn-at-the-edge-of-time",
     "total_hp": 200000,
-    "room": "timeinn"
+    "room": "timeinn",
+    "max_players": 6
   },
   {
     "name": "The WarForge",
@@ -4141,7 +4550,8 @@
     "location_name": "Legion Tournament",
     "location_link": "/legion-tournament",
     "total_hp": 175000,
-    "room": "legiontournament"
+    "room": "legiontournament",
+    "max_players": 7
   },
   {
     "name": "THIS YEAR",
@@ -4149,7 +4559,8 @@
     "location_name": "Nightmare War",
     "location_link": "/nightmare-war",
     "total_hp": 182890,
-    "room": "nightmarewar"
+    "room": "nightmarewar",
+    "max_players": 6
   },
   {
     "name": "Thronekeeper",
@@ -4157,7 +4568,8 @@
     "location_name": "Bocklin Sanctum",
     "location_link": "/bocklin-sanctum",
     "total_hp": 300000,
-    "room": "bocklinsanctum"
+    "room": "bocklinsanctum",
+    "max_players": 7
   },
   {
     "name": "Thundersnow Storm",
@@ -4165,7 +4577,8 @@
     "location_name": "Castle Gaheris",
     "location_link": "/castle-gaheris",
     "total_hp": 150000,
-    "room": "castlegaheris"
+    "room": "castlegaheris",
+    "max_players": 7
   },
   {
     "name": "Ti",
@@ -4173,15 +4586,8 @@
     "location_name": "Astravia",
     "location_link": "/astravia",
     "total_hp": 165690,
-    "room": "astravia"
-  },
-  {
-    "name": "Titan Drakath (Monster)",
-    "url": "https://aqwwiki.wikidot.com/titan-drakath-monster",
-    "location_name": "Titan Drakath (Location)",
-    "location_link": "/titan-drakath-location",
-    "total_hp": 200000,
-    "room": "titandrakath"
+    "room": "astravia",
+    "max_players": 7
   },
   {
     "name": "Titan Shadow Dragonlord",
@@ -4189,7 +4595,8 @@
     "location_name": "Shadowgrove",
     "location_link": "/shadowgrove",
     "total_hp": 170050,
-    "room": "shadowgrove"
+    "room": "shadowgrove",
+    "max_players": 7
   },
   {
     "name": "Titania",
@@ -4197,7 +4604,8 @@
     "location_name": "Astravia Past",
     "location_link": "/astravia-past",
     "total_hp": 140000,
-    "room": "astraviapast"
+    "room": "astraviapast",
+    "max_players": 7
   },
   {
     "name": "Titanic Destroyer (Monster)",
@@ -4205,7 +4613,8 @@
     "location_name": "Titan Strike",
     "location_link": "/titan-strike",
     "total_hp": 150000,
-    "room": "titanstrike"
+    "room": "titanstrike",
+    "max_players": 7
   },
   {
     "name": "Titanic DoomKnight",
@@ -4213,7 +4622,8 @@
     "location_name": "Titan Attack",
     "location_link": "/titan-attack",
     "total_hp": 100000,
-    "room": "titanattack"
+    "room": "titanattack",
+    "max_players": 7
   },
   {
     "name": "Titanic Paladin",
@@ -4221,7 +4631,8 @@
     "location_name": "Titan Attack",
     "location_link": "/titan-attack",
     "total_hp": 100000,
-    "room": "titanattack"
+    "room": "titanattack",
+    "max_players": 7
   },
   {
     "name": "Treachery",
@@ -4229,7 +4640,8 @@
     "location_name": "Seven Circles War",
     "location_link": "/seven-circles-war",
     "total_hp": 234850,
-    "room": "sevencircleswar"
+    "room": "sevencircleswar",
+    "max_players": 7
   },
   {
     "name": "Treasure Pile (Monster) (2)",
@@ -4237,7 +4649,8 @@
     "location_name": "Yulgar's Party",
     "location_link": "/yulgar-s-party",
     "total_hp": 202020,
-    "room": "yulgarparty"
+    "room": "yulgarparty",
+    "max_players": 7
   },
   {
     "name": "Trey Simulacrum",
@@ -4245,7 +4658,8 @@
     "location_name": "Holiday Horror",
     "location_link": "/holiday-horror",
     "total_hp": 100000,
-    "room": "holidayhorror"
+    "room": "holidayhorror",
+    "max_players": 7
   },
   {
     "name": "Trickster Duartaine",
@@ -4253,7 +4667,8 @@
     "location_name": "Monaghan Gorge",
     "location_link": "/monaghan-gorge",
     "total_hp": 500000,
-    "room": "monaghangorge"
+    "room": "monaghangorge",
+    "max_players": 7
   },
   {
     "name": "Trobbolegion",
@@ -4261,7 +4676,8 @@
     "location_name": "Wormhole",
     "location_link": "/wormhole",
     "total_hp": 125120,
-    "room": "wormhole"
+    "room": "wormhole",
+    "max_players": 6
   },
   {
     "name": "TurKing",
@@ -4269,7 +4685,8 @@
     "location_name": "Birds With Harms",
     "location_link": "/birds-with-harms",
     "total_hp": 120000,
-    "room": "birdswithharms"
+    "room": "birdswithharms",
+    "max_players": 8
   },
   {
     "name": "Twiggu (Monster)",
@@ -4277,7 +4694,8 @@
     "location_name": "Twiggu Hunt",
     "location_link": "/twiggu-hunt",
     "total_hp": 120000,
-    "room": "twigguhunt"
+    "room": "twigguhunt",
+    "max_players": 7
   },
   {
     "name": "Twilly Pinata",
@@ -4285,7 +4703,8 @@
     "location_name": "Birthday",
     "location_link": "/birthday",
     "total_hp": 100016,
-    "room": "birthday"
+    "room": "birthday",
+    "max_players": null
   },
   {
     "name": "Twisted Hunter (Monster)",
@@ -4293,7 +4712,8 @@
     "location_name": "Bad Moon",
     "location_link": "/bad-moon",
     "total_hp": 120000,
-    "room": "badmoon"
+    "room": "badmoon",
+    "max_players": 7
   },
   {
     "name": "Ubear (Monster)",
@@ -4301,7 +4721,8 @@
     "location_name": "LIMFT (Location)",
     "location_link": "/limft-location",
     "total_hp": 135500,
-    "room": "limft"
+    "room": "limft",
+    "max_players": 7
   },
   {
     "name": "Ultra Aeacus",
@@ -4309,7 +4730,8 @@
     "location_name": null,
     "location_link": null,
     "total_hp": 205460,
-    "room": "judgement"
+    "room": "judgement",
+    "max_players": null
   },
   {
     "name": "Ultra Akriloth",
@@ -4317,7 +4739,8 @@
     "location_name": "GraveStrike",
     "location_link": "/gravestrike",
     "total_hp": 623680,
-    "room": "gravestrike"
+    "room": "gravestrike",
+    "max_players": 6
   },
   {
     "name": "Ultra Alteon (Monster)",
@@ -4325,7 +4748,8 @@
     "location_name": "Alteon Battle",
     "location_link": "/alteon-battle",
     "total_hp": 201190,
-    "room": "alteonbattle"
+    "room": "alteonbattle",
+    "max_players": 8
   },
   {
     "name": "Ultra Belo",
@@ -4333,7 +4757,8 @@
     "location_name": "Firebird",
     "location_link": "/firebird",
     "total_hp": 233850,
-    "room": "firebird"
+    "room": "firebird",
+    "max_players": 7
   },
   {
     "name": "Ultra Bibliospectre",
@@ -4341,7 +4766,8 @@
     "location_name": "FrostSpectre",
     "location_link": "/frostspectre",
     "total_hp": 179290,
-    "room": "frostspectre"
+    "room": "frostspectre",
+    "max_players": 6
   },
   {
     "name": "Ultra Blood Titan",
@@ -4349,7 +4775,8 @@
     "location_name": "Blood Titan (Location)",
     "location_link": "/blood-titan-location",
     "total_hp": 384110,
-    "room": "bloodtitan"
+    "room": "bloodtitan",
+    "max_players": 6
   },
   {
     "name": "Ultra Brutalcorn (Monster)",
@@ -4357,7 +4784,8 @@
     "location_name": "Underground Lab B",
     "location_link": "/underground-lab-b",
     "total_hp": 206320,
-    "room": "undergroundlabb"
+    "room": "undergroundlabb",
+    "max_players": 6
   },
   {
     "name": "Ultra Chaos Alteon",
@@ -4365,7 +4793,8 @@
     "location_name": "Ultra Alteon (Location)",
     "location_link": "/ultra-alteon-location",
     "total_hp": 270000,
-    "room": "ultraalteon"
+    "room": "ultraalteon",
+    "max_players": 6
   },
   {
     "name": "Ultra Chaos Dragon",
@@ -4373,7 +4802,8 @@
     "location_name": "Swordhaven Castle Roof",
     "location_link": "/swordhaven-castle-roof",
     "total_hp": 580000,
-    "room": "castleroof"
+    "room": "castleroof",
+    "max_players": 6
   },
   {
     "name": "Ultra Chaos Harpy",
@@ -4381,7 +4811,8 @@
     "location_name": "Mirror Portal",
     "location_link": "/mirror-portal",
     "total_hp": 240000,
-    "room": "mirrorportal"
+    "room": "mirrorportal",
+    "max_players": 6
   },
   {
     "name": "Ultra Chaos Warlord",
@@ -4389,7 +4820,8 @@
     "location_name": "Chaos Boss",
     "location_link": "/chaos-boss",
     "total_hp": 119660,
-    "room": "chaosboss"
+    "room": "chaosboss",
+    "max_players": 6
   },
   {
     "name": "Ultra Chaotic Server Hamster",
@@ -4397,7 +4829,8 @@
     "location_name": "Chaos Lab",
     "location_link": "/chaos-lab",
     "total_hp": 142830,
-    "room": "chaoslab"
+    "room": "chaoslab",
+    "max_players": 6
   },
   {
     "name": "Ultra Cuca",
@@ -4405,7 +4838,8 @@
     "location_name": "Myth Perception",
     "location_link": "/myth-perception",
     "total_hp": 201260,
-    "room": "mythperception"
+    "room": "mythperception",
+    "max_players": 7
   },
   {
     "name": "Ultra Drakonnan",
@@ -4413,7 +4847,8 @@
     "location_name": "Drakonnan (Location)",
     "location_link": "/drakonnan-location",
     "total_hp": 429240,
-    "room": "drakonnan"
+    "room": "drakonnan",
+    "max_players": 7
   },
   {
     "name": "ULTRA Dreadhaven General",
@@ -4421,7 +4856,8 @@
     "location_name": "Ultra Dreadfight",
     "location_link": "/ultra-dreadfight",
     "total_hp": 1000000,
-    "room": "ultradread"
+    "room": "ultradread",
+    "max_players": 4
   },
   {
     "name": "Ultra D'wain Jonsen",
@@ -4429,7 +4865,8 @@
     "location_name": "Dwarf War (Location)",
     "location_link": "/dwarf-war-location",
     "total_hp": 422650,
-    "room": "wardwarf"
+    "room": "wardwarf",
+    "max_players": 6
   },
   {
     "name": "Ultra Ebil Mech Dragon",
@@ -4437,7 +4874,8 @@
     "location_name": "Ultra Chairman",
     "location_link": "/ultra-chairman",
     "total_hp": 508336,
-    "room": "ultrachairman"
+    "room": "ultrachairman",
+    "max_players": null
   },
   {
     "name": "Ultra Exos",
@@ -4445,7 +4883,8 @@
     "location_name": "ChaosGuard",
     "location_link": "/chaosguard",
     "total_hp": 442020,
-    "room": "chaosguard"
+    "room": "chaosguard",
+    "max_players": 6
   },
   {
     "name": "Ultra Frankenwerepire",
@@ -4453,7 +4892,8 @@
     "location_name": "Ultra Franken",
     "location_link": "/ultra-franken",
     "total_hp": 185630,
-    "room": "ultrafranken"
+    "room": "ultrafranken",
+    "max_players": 6
   },
   {
     "name": "Ultra Frost Fang",
@@ -4461,7 +4901,8 @@
     "location_name": "Ultra Frostfang",
     "location_link": "/ultra-frostfang",
     "total_hp": 451090,
-    "room": "ultrafrostfang"
+    "room": "ultrafrostfang",
+    "max_players": 6
   },
   {
     "name": "Ultra Iadoa",
@@ -4469,7 +4910,8 @@
     "location_name": "UltraVoid",
     "location_link": "/ultravoid",
     "total_hp": 160580,
-    "room": "ultravoid"
+    "room": "ultravoid",
+    "max_players": 6
   },
   {
     "name": "Ultra Kathool",
@@ -4477,7 +4919,8 @@
     "location_name": "UltraVoid",
     "location_link": "/ultravoid",
     "total_hp": 625000,
-    "room": "ultravoid"
+    "room": "ultravoid",
+    "max_players": 6
   },
   {
     "name": "Ultra Kezeroth",
@@ -4485,7 +4928,8 @@
     "location_name": "IceRise Keep",
     "location_link": "/icerise-keep",
     "total_hp": 206210,
-    "room": "icerise"
+    "room": "icerise",
+    "max_players": 6
   },
   {
     "name": "Ultra Lionfang (Monster)",
@@ -4493,7 +4937,8 @@
     "location_name": "Ultra Lionfang (Location)",
     "location_link": "/ultra-lionfang-location",
     "total_hp": 425000,
-    "room": "ultralionfang"
+    "room": "ultralionfang",
+    "max_players": 6
   },
   {
     "name": "Ultra Lobthulhu (Monster)",
@@ -4501,7 +4946,8 @@
     "location_name": "Ultra Lobthulhu (Location)",
     "location_link": "/ultra-lobthulhu-location",
     "total_hp": 233850,
-    "room": "ultralob"
+    "room": "ultralob",
+    "max_players": 6
   },
   {
     "name": "Ultra Maladrite",
@@ -4509,7 +4955,8 @@
     "location_name": "Burning Beach",
     "location_link": "/burning-beach",
     "total_hp": 978350,
-    "room": "burningbeach"
+    "room": "burningbeach",
+    "max_players": 7
   },
   {
     "name": "Ultra Manticore",
@@ -4517,7 +4964,8 @@
     "location_name": "The Venom Vaults",
     "location_link": "/the-venom-vaults",
     "total_hp": 175000,
-    "room": "venomvaults"
+    "room": "venomvaults",
+    "max_players": 6
   },
   {
     "name": "Ultra Necronaut",
@@ -4525,7 +4973,8 @@
     "location_name": "Necronaut (Location)",
     "location_link": "/necronaut-location",
     "total_hp": 182890,
-    "room": "necronaut"
+    "room": "necronaut",
+    "max_players": 6
   },
   {
     "name": "Ultra Nightmare Frostmane",
@@ -4533,7 +4982,8 @@
     "location_name": "Frostmane",
     "location_link": "/frostmane",
     "total_hp": 1122290,
-    "room": "frostmane"
+    "room": "frostmane",
+    "max_players": 6
   },
   {
     "name": "Ultra Phedra (Monster)",
@@ -4541,7 +4991,8 @@
     "location_name": "Ultra Phedra (Location)",
     "location_link": "/ultra-phedra-location",
     "total_hp": 233850,
-    "room": "ultraphedra"
+    "room": "ultraphedra",
+    "max_players": 6
   },
   {
     "name": "Ultra Sepulchure",
@@ -4549,7 +5000,8 @@
     "location_name": "Sepulchure Battle",
     "location_link": "/sepulchure-battle",
     "total_hp": 206880,
-    "room": "sepulchurebattle"
+    "room": "sepulchurebattle",
+    "max_players": 8
   },
   {
     "name": "Ultra Shadowman",
@@ -4557,7 +5009,8 @@
     "location_name": "Ravenblight",
     "location_link": "/ravenblight",
     "total_hp": 221470,
-    "room": "ravenblight"
+    "room": "ravenblight",
+    "max_players": 6
   },
   {
     "name": "Ultra Shrade",
@@ -4565,7 +5018,8 @@
     "location_name": "Greymoor",
     "location_link": "/greymoor",
     "total_hp": 248740,
-    "room": "greymoor"
+    "room": "greymoor",
+    "max_players": 7
   },
   {
     "name": "Ultra SN.O.W.",
@@ -4573,7 +5027,8 @@
     "location_name": "Extinction",
     "location_link": "/extinction",
     "total_hp": 1737280,
-    "room": "extinction"
+    "room": "extinction",
+    "max_players": 6
   },
   {
     "name": "Ultra Turdrakolich",
@@ -4581,7 +5036,8 @@
     "location_name": "Killer Kitchen",
     "location_link": "/killer-kitchen",
     "total_hp": 245080,
-    "room": "killerkitchen"
+    "room": "killerkitchen",
+    "max_players": 6
   },
   {
     "name": "Ultra Tyndarius (Monster)",
@@ -4589,7 +5045,8 @@
     "location_name": "Ultra Tyndarius (Location)",
     "location_link": "/ultra-tyndarius-location",
     "total_hp": 233850,
-    "room": "ultraflamelord"
+    "room": "ultraflamelord",
+    "max_players": 6
   },
   {
     "name": "Ultra Uji No Hashihime",
@@ -4597,7 +5054,8 @@
     "location_name": "Yokai Star River",
     "location_link": "/yokai-star-river",
     "total_hp": 429240,
-    "room": "yokaistarriver"
+    "room": "yokaistarriver",
+    "max_players": 6
   },
   {
     "name": "Ultra Undead Raxgore",
@@ -4605,7 +5063,8 @@
     "location_name": "Doom Vault B",
     "location_link": "/doom-vault-b",
     "total_hp": 1445760,
-    "room": "doomvaultb"
+    "room": "doomvaultb",
+    "max_players": 6
   },
   {
     "name": "Ultra Vordred (2)",
@@ -4613,7 +5072,8 @@
     "location_name": "Epic Vordred",
     "location_link": "/epic-vordred",
     "total_hp": 492520,
-    "room": "epicvordred"
+    "room": "epicvordred",
+    "max_players": 6
   },
   {
     "name": "Ultra Xiang",
@@ -4621,7 +5081,8 @@
     "location_name": "Mirror Portal",
     "location_link": "/mirror-portal",
     "total_hp": 280000,
-    "room": "mirrorportal"
+    "room": "mirrorportal",
+    "max_players": 6
   },
   {
     "name": "Ultra Yaomo",
@@ -4629,7 +5090,8 @@
     "location_name": "Akiba - Chinese New Year",
     "location_link": "/akiba-chinese-new-year",
     "total_hp": 1737280,
-    "room": "akibacny"
+    "room": "akibacny",
+    "max_players": 6
   },
   {
     "name": "Ultra-Carnax (Monster)",
@@ -4637,7 +5099,8 @@
     "location_name": "Ultra Carnax (Location)",
     "location_link": "/ultra-carnax-location",
     "total_hp": 625390,
-    "room": "ultracarnax"
+    "room": "ultracarnax",
+    "max_players": 6
   },
   {
     "name": "Ultra-Tibicenas",
@@ -4645,7 +5108,8 @@
     "location_name": "Djinn",
     "location_link": "/djinn",
     "total_hp": 99760,
-    "room": "djinn"
+    "room": "djinn",
+    "max_players": 6
   },
   {
     "name": "Umbral Chaos",
@@ -4653,7 +5117,8 @@
     "location_name": "Hidden Duat",
     "location_link": "/hidden-duat",
     "total_hp": 225000,
-    "room": "hiddenduat"
+    "room": "hiddenduat",
+    "max_players": 7
   },
   {
     "name": "Unborn Brood",
@@ -4661,7 +5126,8 @@
     "location_name": "Castle Alnswick",
     "location_link": "/castle-alnswick",
     "total_hp": 103123,
-    "room": "cursedcastle"
+    "room": "cursedcastle",
+    "max_players": 7
   },
   {
     "name": "Undead Raxgore",
@@ -4669,7 +5135,8 @@
     "location_name": "Doom Vault B",
     "location_link": "/doom-vault-b",
     "total_hp": 963190,
-    "room": "doomvaultb"
+    "room": "doomvaultb",
+    "max_players": 6
   },
   {
     "name": "Underfiend",
@@ -4677,7 +5144,8 @@
     "location_name": "Dark Ally",
     "location_link": "/dark-ally",
     "total_hp": 135500,
-    "room": "darkally"
+    "room": "darkally",
+    "max_players": 7
   },
   {
     "name": "Unsung Queen",
@@ -4685,7 +5153,8 @@
     "location_name": "Frostval Gala",
     "location_link": "/frostval-gala",
     "total_hp": 125000,
-    "room": "frostvalgala"
+    "room": "frostvalgala",
+    "max_players": 7
   },
   {
     "name": "Usurper Lord Slaine",
@@ -4693,7 +5162,8 @@
     "location_name": "Atlas Promenade",
     "location_link": "/atlas-promenade",
     "total_hp": 1350000,
-    "room": "atlaspromenade"
+    "room": "atlaspromenade",
+    "max_players": 7
   },
   {
     "name": "Valsarian",
@@ -4701,7 +5171,8 @@
     "location_name": "Pride",
     "location_link": "/pride",
     "total_hp": 221000,
-    "room": "pride"
+    "room": "pride",
+    "max_players": 7
   },
   {
     "name": "Varga (Monster)",
@@ -4709,7 +5180,8 @@
     "location_name": "War Training",
     "location_link": "/war-training",
     "total_hp": 350000,
-    "room": "wartraining"
+    "room": "wartraining",
+    "max_players": 7
   },
   {
     "name": "Very Ebil Mech Dragon",
@@ -4717,7 +5189,8 @@
     "location_name": "EbilCorp Roof",
     "location_link": "/ebilcorp-roof",
     "total_hp": 2000000,
-    "room": "ebilroof"
+    "room": "ebilroof",
+    "max_players": 7
   },
   {
     "name": "Victorious",
@@ -4725,7 +5198,8 @@
     "location_name": "Darkplane",
     "location_link": "/darkplane",
     "total_hp": 221220,
-    "room": "darkplane"
+    "room": "darkplane",
+    "max_players": 7
   },
   {
     "name": "Vi'eel Dreaddacovra",
@@ -4733,7 +5207,8 @@
     "location_name": "Black Maze",
     "location_link": "/black-maze",
     "total_hp": 100000,
-    "room": "blackmaze"
+    "room": "blackmaze",
+    "max_players": 7
   },
   {
     "name": "Vindicator BeastTamer",
@@ -4741,7 +5216,8 @@
     "location_name": "Dawn Vindicators' Tower",
     "location_link": "/dawn-vindicators-tower",
     "total_hp": 120000,
-    "room": "neotower"
+    "room": "neotower",
+    "max_players": 7
   },
   {
     "name": "Vindicator General",
@@ -4749,7 +5225,8 @@
     "location_name": "Dawn Vindicators' Fortress",
     "location_link": "/dawn-vindicators-fortress",
     "total_hp": 190000,
-    "room": "neofortress"
+    "room": "neofortress",
+    "max_players": 7
   },
   {
     "name": "Vindicator Priest (Monster)",
@@ -4757,7 +5234,8 @@
     "location_name": "Dawn Vindicators' Tower",
     "location_link": "/dawn-vindicators-tower",
     "total_hp": 150000,
-    "room": "neotower"
+    "room": "neotower",
+    "max_players": 7
   },
   {
     "name": "Violence",
@@ -4765,7 +5243,8 @@
     "location_name": "Seven Circles War",
     "location_link": "/seven-circles-war",
     "total_hp": 202000,
-    "room": "sevencircleswar"
+    "room": "sevencircleswar",
+    "max_players": 7
   },
   {
     "name": "Voice in the Sea",
@@ -4773,7 +5252,8 @@
     "location_name": "Sea Voice",
     "location_link": "/sea-voice",
     "total_hp": 1200000,
-    "room": "seavoice"
+    "room": "seavoice",
+    "max_players": 7
   },
   {
     "name": "Volgritian (Monster)",
@@ -4781,7 +5261,8 @@
     "location_name": "Naoise Grave",
     "location_link": "/naoise-grave",
     "total_hp": 720000,
-    "room": "naoisegrave"
+    "room": "naoisegrave",
+    "max_players": 7
   },
   {
     "name": "Vortrix",
@@ -4789,7 +5270,8 @@
     "location_name": "Tech Fortress",
     "location_link": "/tech-fortress",
     "total_hp": 182890,
-    "room": "techfortress"
+    "room": "techfortress",
+    "max_players": 7
   },
   {
     "name": "War",
@@ -4797,7 +5279,8 @@
     "location_name": "Undervoid",
     "location_link": "/undervoid",
     "total_hp": 182910,
-    "room": "undervoid"
+    "room": "undervoid",
+    "max_players": 6
   },
   {
     "name": "Warden Illaria",
@@ -4805,7 +5288,8 @@
     "location_name": "Lia Tara Hill",
     "location_link": "/lia-tara-hill",
     "total_hp": 275000,
-    "room": "liatarahill"
+    "room": "liatarahill",
+    "max_players": 7
   },
   {
     "name": "Warden Indradeep (Monster)",
@@ -4813,7 +5297,8 @@
     "location_name": "Castle Eblana",
     "location_link": "/castle-eblana",
     "total_hp": 325000,
-    "room": "castleeblana"
+    "room": "castleeblana",
+    "max_players": 7
   },
   {
     "name": "Warden Iseul",
@@ -4821,7 +5306,8 @@
     "location_name": "Loughshine",
     "location_link": "/loughshine",
     "total_hp": 300000,
-    "room": "loughshine"
+    "room": "loughshine",
+    "max_players": 7
   },
   {
     "name": "Warlord Harley (Monster)",
@@ -4829,7 +5315,8 @@
     "location_name": "Training Hall",
     "location_link": "/training-hall",
     "total_hp": 500000,
-    "room": "trainers"
+    "room": "trainers",
+    "max_players": 6
   },
   {
     "name": "Warlord Icewing (Monster)",
@@ -4837,7 +5324,8 @@
     "location_name": "Icewing",
     "location_link": "/icewing",
     "total_hp": 978350,
-    "room": "icewing"
+    "room": "icewing",
+    "max_players": 7
   },
   {
     "name": "Warlord Vaioh",
@@ -4845,7 +5333,8 @@
     "location_name": "Hearts Day Grave",
     "location_link": "/hearts-day-grave",
     "total_hp": 220000,
-    "room": "heartsdaygrave"
+    "room": "heartsdaygrave",
+    "max_players": 7
   },
   {
     "name": "Well Guardian",
@@ -4853,7 +5342,8 @@
     "location_name": "Celestial Past",
     "location_link": "/celestial-past",
     "total_hp": 171780,
-    "room": "celestialpast"
+    "room": "celestialpast",
+    "max_players": 7
   },
   {
     "name": "Wisterrora (2)",
@@ -4861,7 +5351,8 @@
     "location_name": "Ghost Beach",
     "location_link": "/ghost-beach",
     "total_hp": 100000,
-    "room": "ghostbeach"
+    "room": "ghostbeach",
+    "max_players": 10
   },
   {
     "name": "Witch Queen Talia",
@@ -4869,7 +5360,8 @@
     "location_name": "Birgitta Spire",
     "location_link": "/birgitta-spire",
     "total_hp": 700000,
-    "room": "birgittaspire"
+    "room": "birgittaspire",
+    "max_players": 7
   },
   {
     "name": "Withered Archfiend",
@@ -4877,7 +5369,8 @@
     "location_name": "Oblivion Tundra",
     "location_link": "/oblivion-tundra",
     "total_hp": 115000,
-    "room": "obliviontundra"
+    "room": "obliviontundra",
+    "max_players": 7
   },
   {
     "name": "Wrath (Monster)",
@@ -4885,7 +5378,8 @@
     "location_name": "Seven Circles War",
     "location_link": "/seven-circles-war",
     "total_hp": 148460,
-    "room": "sevencircleswar"
+    "room": "sevencircleswar",
+    "max_players": 7
   },
   {
     "name": "Wretched Rider",
@@ -4893,7 +5387,8 @@
     "location_name": "Dullahan",
     "location_link": "/dullahan",
     "total_hp": 161130,
-    "room": "dullahan"
+    "room": "dullahan",
+    "max_players": 6
   },
   {
     "name": "Writhing Chaos",
@@ -4901,7 +5396,8 @@
     "location_name": "Laguna",
     "location_link": "/laguna",
     "total_hp": 275440,
-    "room": "laguna"
+    "room": "laguna",
+    "max_players": 7
   },
   {
     "name": "Xiang (Monster)",
@@ -4909,7 +5405,8 @@
     "location_name": "Chaos Duality",
     "location_link": "/chaos-duality",
     "total_hp": 161130,
-    "room": "dualplane"
+    "room": "dualplane",
+    "max_players": 6
   },
   {
     "name": "Xyfrag",
@@ -4917,7 +5414,8 @@
     "location_name": "Void Xyfrag",
     "location_link": "/void-xyfrag",
     "total_hp": 3000000,
-    "room": "voidxyfrag"
+    "room": "voidxyfrag",
+    "max_players": 7
   },
   {
     "name": "Yaga",
@@ -4925,7 +5423,8 @@
     "location_name": "Holiday Horror",
     "location_link": "/holiday-horror",
     "total_hp": 120000,
-    "room": "holidayhorror"
+    "room": "holidayhorror",
+    "max_players": 7
   },
   {
     "name": "Zahad",
@@ -4933,7 +5432,8 @@
     "location_name": "Dream Palace",
     "location_link": "/dream-palace",
     "total_hp": 99400,
-    "room": "dreampalace"
+    "room": "dreampalace",
+    "max_players": 7
   },
   {
     "name": "Zakhvatchik",
@@ -4941,7 +5441,8 @@
     "location_name": "Haku War",
     "location_link": "/haku-war",
     "total_hp": 225000,
-    "room": "hakuwar"
+    "room": "hakuwar",
+    "max_players": 7
   },
   {
     "name": "Zellare",
@@ -4949,7 +5450,8 @@
     "location_name": "Fire",
     "location_link": "/fire",
     "total_hp": 148800,
-    "room": "fire"
+    "room": "fire",
+    "max_players": 6
   },
   {
     "name": "Zeph'gorog",
@@ -4957,7 +5459,8 @@
     "location_name": "Void Vault",
     "location_link": "/void-vault",
     "total_hp": 102720,
-    "room": "voidvault"
+    "room": "voidvault",
+    "max_players": 7
   },
   {
     "name": "Zhenzhu Shé",
@@ -4965,7 +5468,8 @@
     "location_name": "Yokai Hunt",
     "location_link": "/yokai-hunt",
     "total_hp": 202025,
-    "room": "yokaihunt"
+    "room": "yokaihunt",
+    "max_players": 7
   },
   {
     "name": "Zorba the Bakk (Monster)",
@@ -4973,7 +5477,8 @@
     "location_name": "Zorba's Palace",
     "location_link": "/zorba-s-palace",
     "total_hp": 113470,
-    "room": "zorbaspalace"
+    "room": "zorbaspalace",
+    "max_players": 7
   },
   {
     "name": "ZorBLATT",
@@ -4981,7 +5486,8 @@
     "location_name": "Zorba's Pit",
     "location_link": "/zorba-s-pit",
     "total_hp": 444444,
-    "room": "zorbaspit"
+    "room": "zorbaspit",
+    "max_players": 7
   },
   {
     "name": "Zweinichthirsch",
@@ -4989,7 +5495,8 @@
     "location_name": "Deer Hunt",
     "location_link": "/deer-hunt",
     "total_hp": 200000,
-    "room": "deerhunt"
+    "room": "deerhunt",
+    "max_players": 7
   },
   {
     "name": "Zyrus the BioKnight",
@@ -4997,6 +5504,7 @@
     "location_name": "Thorngarde",
     "location_link": "/thorngarde",
     "total_hp": 142830,
-    "room": "thorngarde"
+    "room": "thorngarde",
+    "max_players": 7
   }
 ]

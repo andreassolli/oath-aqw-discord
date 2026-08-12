@@ -66,13 +66,10 @@ async def update_spam_panel(
             ephemeral=True,
         )
 
-    # Get existing bosses
     bosses = cache.get("bosses", [])
 
-    # Add new bosses
     bosses.extend(new_bosses)
 
-    # Optional: remove duplicates while preserving order
     bosses = list(dict.fromkeys(bosses))
 
     view = SpamCreateView(

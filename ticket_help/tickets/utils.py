@@ -114,7 +114,7 @@ async def monster_autocomplete(
     matches = [
         app_commands.Choice(
             name=canonical["name"],
-            value=canonical["room"],
+            value=canonical["name"],
         )
         for canonical in SPAM_BOSSES
         if normalized_current in _normalize(canonical["name"])
