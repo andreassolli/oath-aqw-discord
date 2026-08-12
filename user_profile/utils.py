@@ -7,13 +7,23 @@ import aiohttp
 import discord
 from google.cloud.firestore_v1 import FieldFilter
 from PIL import Image, ImageDraw
-
-from config import AQW_BADGES, AQW_INVENTORY, WEAPON_SHEET
+from urllib.parse import parse_qs
+from config import AQW_BADGES, AQW_INVENTORY, WEAPON_SHEET, CCID_PAGE, PROXY_SERVICE
 from firebase_client import db
 from http_client import get_session
 from request_utils import rate_limited_get_json
 
 _weapon_name_cache: set[str] | None = None
+HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/122.0.0.0 Safari/537.36"
+    ),
+    "Accept": "application/json, text/plain, */*",
+    "Accept-Language": "en-US,en;q=0.9",
+    "Referer": "https://account.aq.com/CharPage",
+}
 
 
 def ordinal(n: int) -> str:
@@ -32,6 +42,20 @@ async def fetch_badges(ccid: str) -> list[dict]:
 async def fetch_inventory(ccid: str) -> list[dict]:
     url = f"{AQW_INVENTORY}{ccid}"
     return await rate_limited_get_json(url)
+
+async def fetch_ccid(username: str) -> str:
+    url = f"{CCID_PAGE}{username}"
+
+    session = await get_session()
+
+    async with session.get(url, headers=HEADERS, proxy=PROXY_SERVICE) as resp:
+        text = await resp.text()
+
+    data = parse_qs(text.lstrip("&"))
+
+    char_id = data.get("CharID", [None])[0]
+
+    return char_id if char_id else ""
 
 
 async def fetch_avatar(url: str) -> Image.Image:

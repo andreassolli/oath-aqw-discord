@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from typing import Optional
-
+from collections import Counter
 import discord
 from firebase_admin import firestore
 from firebase_client import db
@@ -10,6 +10,132 @@ DIFFICULTY_MAP = {
     "hard": "🔴🔴🔴⚫️",
     "very hard": "🟣🟣🟣🟣"
 }
+
+
+POTIONS = [
+    "Fate",
+    "Battle",
+    "Might",
+    "Sage",
+    "Malevolence",
+    "Malice",
+    "Honor",
+    "Philtre",
+]
+
+WEAPONS = [
+    "Burning Sword of Doom",
+    "Dual Exalted Apotheosis",
+    "Dual Necrotic Swords of Doom",
+    "Empowered BladeMaster's Katana",
+    "Empowered Bloodletter",
+    "Empowered Caladbolg",
+    "Empowered Charged Oblivion Blade",
+    "Empowered Dual Caladbolgs",
+    "Empowered Dual Hollowborn Caladbolgs",
+    "Empowered Dual Katanas",
+    "Empowered Higure",
+    "Empowered Hollowborn Caladbolg",
+    "Empowered Oblivion Blade",
+    "Empowered Overfiend Blade",
+    "Empowered Prismatic Manslayer",
+    "Empowered Prismatic Manslayers",
+    "Empowered Shadow Spear",
+    "Empowered Sole Bloodletter",
+    "Empowered Ungodly Reavers",
+    "Exalted Apotheosis",
+    "Gramiel's Divine Enoch",
+    "Greatblade of the Entwined Eclipse",
+    "Hollowborn Sword of Doom",
+    "Malgor's ShadowFlame Blade",
+    "Necrotic Blade of Doom",
+    "Necrotic Blade of the Underworld",
+    "Necrotic Sword of Doom",
+    "Necrotic Sword of the Abyss",
+    "Providence",
+    "Sin of the Abyss",
+    "Sin Of The Underworld",
+    "Star Light of the Empyrean",
+    "Star Lights of the Empyrean",
+]
+
+CLASSES = [
+    "Lord of Order",
+    "ArchPaladin",
+    "Chrono ShadowHunter",
+    "Chrono ShadowSlayer",
+    "Verus DoomKnight",
+    "Legion Revenant",
+    "StoneCrusher",
+    "Infinity Titan",
+    "Dragon of Time"
+]
+CLASS_BADGES = {
+    "Verus DoomKnight",
+    "Chaos Avenger",
+    "Legion Revenant",
+    "Void Highlord",
+    "Dragon of Time",
+    "King's Echo",
+}
+BADGES_TO_FIND = {
+    "Blade of Awe",
+    "Awe Ascension",
+    "Radiant Goddess Of War",
+}
+
+def sort_badges(badges: list[dict]):
+    others = {
+        item["sTitle"]
+        for item in badges
+        if any(badge in item["strName"] for badge in BADGES_TO_FIND)
+    }
+
+    class_badges = {
+        item["sTitle"]
+        for item in badges
+        if any(badge in item["strName"] for badge in CLASS_BADGES)
+    }
+
+    return {"class_badges": class_badges, "others": others}
+
+
+def sort_inventory(inventory: list[dict]):
+    weapons = Counter(
+        item["strName"]
+        for item in inventory
+        if any(weapon in item["strName"] for weapon in WEAPONS)
+    )
+
+    taunt = next(
+        (
+            item["intCount"]
+            for item in inventory
+            if item["strName"] == "Scroll of Enrage"
+        ),
+        0,
+    )
+
+    classes = {
+        class_name
+        for item in inventory
+        for class_name in CLASSES
+        if class_name in item["strName"]
+    }
+
+    potions = {
+        item["strName"]: item["intCount"]
+        for item in inventory
+        if any(potion in item["strName"] for potion in POTIONS)
+    }
+
+    return {
+        "weapons": weapons,
+        "classes": classes,
+        "potions": potions,
+        "taunt": taunt,
+    }
+
 def get_week_start(dt: datetime):
     # Monday start (ISO week)
     return dt - timedelta(days=dt.weekday())

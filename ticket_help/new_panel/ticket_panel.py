@@ -193,8 +193,10 @@ class TicketLayout(discord.ui.LayoutView):
                     visible=False,
                     spacing=discord.SeparatorSpacing.small,
                 ),
-                discord.ui.TextDisplay(
-                    content=f"<:id2:1505158104810262558> **Requester** {requester_mention} ({username}){'\n >>> ' + notes if notes else ''}"
+                discord.ui.Section(
+                    discord.ui.TextDisplay(
+                    content=f"<:id2:1505158104810262558> **Requester** {requester_mention} ({username}){'\n >>> ' + notes if notes else ''}"),
+                    accessory=RequesterInfoButton()
                 ),
                 discord.ui.Section(
                     discord.ui.TextDisplay(
@@ -396,6 +398,42 @@ class CertificateButton(discord.ui.Button):
         return await interaction.response.send_message(
             content=f"Certificate only has been set to {not layout.certificate_only} by {interaction.user.mention}."
         )
+
+class RequesterInfoButton(discord.ui.Button):
+    def __init__(self):
+        super().__init__(
+            label=" Requester Info",
+            style=discord.ButtonStyle.secondary,
+            emoji=discord.PartialEmoji(
+                name="requester_info",
+                id=1536964898494488606,
+            ),
+            custom_id="requester_info_button",
+        )
+
+    async def callback(self, interaction: discord.Interaction):
+        layout: TicketLayout = self.view
+        data = layout.get_ticket_data()
+        inventory_info = data.get("inventory", {}).to_dict()
+        found_badges = data.get("badges", {}).to_dict()
+
+        requester_info = (
+            "<:requester_info:1536964898494488606> **Requester Information**\n\n"
+
+            f"<:aqwClass:1501670684101840906> **Classes:** "
+            f"{', '.join(sorted(inventory_info['classes'])) if inventory_info['classes'] else 'None'}\n\n"
+
+            f"<:swordaqw:1487004634307629056> **51% Weapons:** {inventory_info['weapons']} \n\n"
+
+            f"<:potion:1457810711706341544> **Potions:** "
+            f"{', '.join(f'{name} `×{count}`' for name, count in inventory_info['potions'].items()) if inventory_info['potions'] else 'None'}\n\n"
+
+            f"<:aqwScroll:1487000863867277432> **Scroll of Enrage:** `x{inventory_info['taunt']}`\n\n"
+
+            f"<:questend:1491012211609702451> **Others:** "
+            f"{', '.join(sorted(found_badges)) if found_badges else 'None'}"
+        )
+        await interaction.response.send_message(requester_info, ephemeral=True)
 
 
 class RoomButton(discord.ui.Button):
