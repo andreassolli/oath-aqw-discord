@@ -412,10 +412,11 @@ class RequesterInfoButton(discord.ui.Button):
         )
 
     async def callback(self, interaction: discord.Interaction):
+        await interaction.response.defer(ephemeral=True)
         layout: TicketLayout = self.view
         data = layout.get_ticket_data()
-        inventory_info = data.get("inventory", {}).to_dict()
-        found_badges = data.get("badges", {}).to_dict()
+        inventory_info = data.get("inventory", {})
+        found_badges = data.get("badges", {})
 
         requester_info = (
             "<:requester_info:1536964898494488606> **Requester Information**\n\n"
@@ -433,7 +434,7 @@ class RequesterInfoButton(discord.ui.Button):
             f"<:questend:1491012211609702451> **Others:** "
             f"{', '.join(sorted(found_badges)) if found_badges else 'None'}"
         )
-        await interaction.response.send_message(requester_info, ephemeral=True)
+        await interaction.followup.send(requester_info, ephemeral=True)
 
 
 class RoomButton(discord.ui.Button):
