@@ -16,7 +16,7 @@ async def update_dashboard(client: discord.Client):
 
     async for msg in channel.history(limit=10):
         if msg.author == client.user and msg.embeds:
-            await msg.edit(view=view)
+            await msg.edit(embeds=[], view=view)
             return
 
     await channel.send(view=view)
