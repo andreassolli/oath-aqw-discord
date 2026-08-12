@@ -32,6 +32,7 @@ from config import (
     TRANSCENDED_ROLE_ID,
 )
 from extra_commands.ioda_view import IodaView
+from extra_commands.page_pending_cert import PendingApplicationsView
 from extra_commands.record_holder import record_holder
 from extra_commands.record_view import LeaderboardView
 from extra_commands.utils import (
