@@ -130,7 +130,7 @@ def sort_inventory(inventory: list[dict]):
     }
 
     return {
-        "weapons": weapons,
+        "weapons": len(weapons),
         "classes": classes,
         "potions": potions,
         "taunt": taunt,
