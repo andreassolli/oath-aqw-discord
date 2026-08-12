@@ -12,13 +12,13 @@ from ticket_help.tickets.points import SPAM_BOSSES
 
 
 DIFFICULTY_BOSSES = {
-    "Champion Drakath": "easy",
-    "Ultra Nulgath": "easy",
-    "Ultra Drago": "easy",
-    "Ultra Speaker": "hard",
-    "Ultra Gramiel": "hard",
-    "Ultra Darkon": "medium",
-    "Ultra Dage": "medium",
+    "Champion Drakath": "🟢⚫️⚫️⚫️",
+    "Ultra Nulgath": "🟢⚫️⚫️⚫️",
+    "Ultra Drago": "🟢⚫️⚫️⚫️",
+    "Ultra Speaker": "🔴🔴🔴⚫️",
+    "Ultra Gramiel": "🔴🔴🔴⚫️",
+    "Ultra Darkon": "🟠🟠⚫️⚫️",
+    "Ultra Dage": "🟠🟠⚫️⚫️",
 }
 
 DIFFICULTY_MAP = {
