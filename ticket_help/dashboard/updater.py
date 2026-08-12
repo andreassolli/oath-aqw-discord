@@ -14,6 +14,6 @@ async def update_dashboard(client: discord.Client):
 
     view = LeaderboardView(channel.guild)
 
-    message = channel.fetch_message(1465382095714259045)
+    message = await channel.fetch_message(1465382095714259045)
     await message.edit(view=view)
     return
