@@ -959,13 +959,18 @@ class Extra(commands.Cog):
 
         for boss in bosses:
             custom_tickets = {"spamming", "testing", "until drop"}
-            if ticket_data.get("type") in custom_tickets:
+            if self.type in custom_tickets and self.is_infinity:
                 if "TempleShrine" in boss:
                     rooms = "templeshrine"
                 elif "Flame Usurper" in boss:
                     rooms = "flameusurper"
                 else:
                     rooms = boss
+            elif self.type == "spamming":
+                spam_boss = get_spam_boss_room(boss)
+                rooms = spam_boss.get("room")
+                limit = spam_boss.get("players", 1)
+                min_helpers = min(min_helpers, limit)
             else:
                 rooms = get_boss_room(boss)
 
