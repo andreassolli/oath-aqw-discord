@@ -44,6 +44,8 @@ from extra_commands.utils import (
     send_winner_embed,
 )
 from firebase_client import db
+from panels.spam_cache import SPAM_PANEL_CACHE
+from panels.spam_view import SpamCreateView
 from panels.staff_panel import (
     EndLayout,
     ExLayout,
@@ -51,6 +53,7 @@ from panels.staff_panel import (
     OfficerLayout,
 )
 from ticket_help.tickets.points import get_boss_room
+from ticket_help.tickets.utils import monster_autocomplete
 from user_profile.utils import fetch_inventory
 with open("ioda_list.json", "r", encoding="utf-8") as ioda:
     IODA_ITEMS = json.load(ioda)
@@ -864,6 +867,76 @@ class Extra(commands.Cog):
         )
         return await interaction.response.send_message(embed=embed)
 
+
+    @app_commands.command(
+        name="add-bosses",
+        description="Add bosses to your spam ticket"
+    )
+    @app_commands.autocomplete(
+        monster1=monster_autocomplete,
+        monster2=monster_autocomplete,
+        monster3=monster_autocomplete,
+        monster4=monster_autocomplete,
+        monster5=monster_autocomplete,
+    )
+    async def update_spam_panel(
+        self,
+        interaction: discord.Interaction,
+        monster1: str | None = None,
+        monster2: str | None = None,
+        monster3: str | None = None,
+        monster4: str | None = None,
+        monster5: str | None = None,
+    ):
+        cache = SPAM_PANEL_CACHE.get(interaction.user.id)
+
+        if not cache:
+            return await interaction.response.send_message(
+                "The spam panel hasn't been created yet.",
+                ephemeral=True,
+            )
+
+        new_bosses = [
+            boss for boss in (
+                monster1,
+                monster2,
+                monster3,
+                monster4,
+                monster5,
+            )
+            if boss
+        ]
+
+        if not new_bosses:
+            return await interaction.response.send_message(
+                "You need to provide at least one boss.",
+                ephemeral=True,
+            )
+
+        bosses = cache.get("bosses", [])
+
+        bosses.extend(new_bosses)
+
+        bosses = list(dict.fromkeys(bosses))
+
+        view = SpamCreateView(
+            servers=cache["servers"],
+            type=cache["type"],
+            practice=cache["is_practice"],
+            bosses=bosses,
+        )
+
+        await interaction.response.send_message(
+            f"Current bosses: {', '.join(bosses)}",
+            view=view,
+            ephemeral=True,
+        )
+
+        # Store the updated state
+        cache["bosses"] = bosses
+        cache["view"] = view
+
+        return
 
     @app_commands.command(
         name="room-codes", description="Get room codes for your claimed ticket"

@@ -22,74 +22,6 @@ from ticket_help.tickets.points import clear_point_rule_cache
 from ticket_help.tickets.utils import clear_active_ticket, monster_autocomplete
 from ticket_help.tickets.views import TicketActionView
 
-@app_commands.command(
-    name="add-bosses",
-    description="Add bosses to your spam ticket"
-)
-@app_commands.autocomplete(
-    monster1=monster_autocomplete,
-    monster2=monster_autocomplete,
-    monster3=monster_autocomplete,
-    monster4=monster_autocomplete,
-    monster5=monster_autocomplete,
-)
-async def update_spam_panel(
-    interaction: discord.Interaction,
-    monster1: str | None = None,
-    monster2: str | None = None,
-    monster3: str | None = None,
-    monster4: str | None = None,
-    monster5: str | None = None,
-):
-    cache = SPAM_PANEL_CACHE.get(interaction.user.id)
-
-    if not cache:
-        return await interaction.response.send_message(
-            "The spam panel hasn't been created yet.",
-            ephemeral=True,
-        )
-
-    new_bosses = [
-        boss for boss in (
-            monster1,
-            monster2,
-            monster3,
-            monster4,
-            monster5,
-        )
-        if boss
-    ]
-
-    if not new_bosses:
-        return await interaction.response.send_message(
-            "You need to provide at least one boss.",
-            ephemeral=True,
-        )
-
-    bosses = cache.get("bosses", [])
-
-    bosses.extend(new_bosses)
-
-    bosses = list(dict.fromkeys(bosses))
-
-    view = SpamCreateView(
-        servers=cache["servers"],
-        type=cache["type"],
-        practice=cache["is_practice"],
-        bosses=bosses,
-    )
-
-    await interaction.response.send_message(
-        f"Current bosses: {', '.join(bosses)}",
-        view=view,
-        ephemeral=True,
-    )
-
-    # Store the updated state
-    cache["bosses"] = bosses
-    cache["view"] = view
-
-    return
 
 @app_commands.command(
     name="clear-active-ticket", description="Clear active ticket for a user"
@@ -594,39 +526,6 @@ async def delete_boss(interaction: discord.Interaction, ticket_type: str, boss: 
         f"✅ Removed **{boss}** from **{ticket_type}** bosses.", ephemeral=True
     )
 
-
-@app_commands.command(
-    name="add-boss", description="Add a boss to a ticket type with points"
-)
-async def add_boss(
-    interaction: discord.Interaction,
-    ticket_type: str,
-    boss: str,
-    points: int,
-    room: str,
-):
-    if not has_admin_role(interaction):
-        return await interaction.response.send_message(
-            "🚫 You do not have permission to use this command.", ephemeral=True
-        )
-
-    # Ticket type → bosses list
-    type_ref = db.collection("bosses").document(ticket_type)
-    type_doc = type_ref.get()
-
-    if type_doc.exists:
-        type_ref.update({"bosses": firestore.ArrayUnion([boss])})
-    else:
-        type_ref.set({"bosses": [boss]})
-
-    boss_ref = db.collection("point_rules").document(boss)
-
-    boss_ref.set({"points": points, "room": room}, merge=True)
-
-    await interaction.response.send_message(
-        f"✅ Added **{boss}** to **{ticket_type}** with **{points}** points in **{room}**.",
-        ephemeral=True,
-    )
 
 
 @app_commands.command(
