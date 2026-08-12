@@ -33,13 +33,26 @@ from ticket_help.utils.message_logging import log_ticket_view_event
 from ticket_help.utils.ticket import get_overwrites
 
 CORRECT_BOSS_ORDER = [
+    "Void Aura (mem)",
+    "Void Aura (non mem)",
+    "Legion Daily Exercise (2-4)",
     "Ultra Dage",
+    "Ultra Tyndarius",
+    "TimeInn Trio",
+    "Temple Shrine",
     "Ultra Nulgath",
     "Ultra Drago",
     "Ultra Darkon",
     "Champion Drakath",
     "Ultra Speaker",
     "Ultra Gramiel",
+    "Lavarock Shore",
+    "Void Trio",
+    "Azalith",
+    "Apex Azalith",
+    "Astral Shrine",
+    "Kathool Depths",
+    "Grim Challenge",
 ]
 
 TYPE_TO_IMAGE = {
@@ -55,13 +68,30 @@ TYPE_TO_IMAGE = {
 SERVER_TO_RECOMMEND = {
     "Artix": " - Not recommended",
     "Yokai (SEA)": " - Not recommended",
+    "Espada": " - Not recommended",
     "Swordhaven (EU)": " - Recommended",
     "Safiria": " - Recommended",
     "Yorumi": " - Recommended"
 }
 
-BOSS_ORDER_MAP = {boss: i for i, boss in enumerate(CORRECT_BOSS_ORDER)}
+SERVER_PRIORITY = {
+    "Recommended": 0,
+    "Neutral": 1,
+    "Not recommended": 2,
+}
 
+def server_priority(server):
+    recommendation = SERVER_TO_RECOMMEND.get(server["sName"], "")
+
+    if "Recommended" in recommendation:
+        return SERVER_PRIORITY["Recommended"]
+
+    if "Not recommended" in recommendation:
+        return SERVER_PRIORITY["Not recommended"]
+
+    return SERVER_PRIORITY["Neutral"]
+
+BOSS_ORDER_MAP = {boss: i for i, boss in enumerate(CORRECT_BOSS_ORDER)}
 
 def sort_bosses(bosses: list[str]) -> list[str]:
     return sorted(bosses, key=lambda b: BOSS_ORDER_MAP.get(b, len(BOSS_ORDER_MAP)))
@@ -87,6 +117,13 @@ class CreateTicketModal(discord.ui.Modal):
         self.username = discord.ui.TextInput(label="Username", required=True)
         self.username.default = username
         self.add_item(self.username)
+        servers = sorted(
+            servers,
+            key=lambda server: (
+                server_priority(server),
+                server["sName"],
+            ),
+        )
 
         if self.is_infinity:
             server_options = [
