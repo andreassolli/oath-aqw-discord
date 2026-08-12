@@ -279,7 +279,7 @@ class CreateTicketModal(discord.ui.Modal):
             drops_list = []
             if self.type in {"weekly bosses", "daily bosses", "7 man bosses"}:
                 bosses = sort_bosses(self.boss_selection.component.values)
-            elif self.type == "spamming" and self.is_infinity:
+            elif self.type == "spamming" and not self.is_infinity:
                 bosses = self.spam_bosses
             else:
                 bosses = [
