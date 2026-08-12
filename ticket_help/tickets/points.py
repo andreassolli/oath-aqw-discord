@@ -42,11 +42,11 @@ INPUT_FILE = "spam_bosses.json"
 with open(INPUT_FILE, "r", encoding="utf-8") as f:
     SPAM_BOSSES = json.load(f)
 
-def get_spam_boss_room(boss:str) -> str:
+def get_spam_boss_room(boss:str) -> dict:
     for spam_boss in SPAM_BOSSES:
         if boss == spam_boss["name"]:
-            return(spam_boss["room"])
-    return ""
+            return({"room": spam_boss["room"], "players": spam_boss["max_players"]-1})
+    return {}
 
 def load_boss_rooms():
     global _rooms_cache

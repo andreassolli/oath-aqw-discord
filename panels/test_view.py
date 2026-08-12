@@ -9,7 +9,7 @@ from panels.spam_cache import SPAM_PANEL_CACHE
 
 class TicketCreateView(discord.ui.View):
     def __init__(self, servers):
-        super().__init__(timeout=120)
+        super().__init__(timeout=600)
 
         self.selected_type = "daily bosses"
         self.selected_practice = "standard"
@@ -30,6 +30,7 @@ class TicketCreateView(discord.ui.View):
 
             await interaction.followup.send(
                 "Add the bosses you need help with using the command `/add-bosses <boss1> <boss2>`",
+                ephemeral=True
             )
 
             SPAM_PANEL_CACHE[interaction.user.id] = {
