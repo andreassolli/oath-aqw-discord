@@ -1,0 +1,5002 @@
+[
+  {
+    "name": "13th Doom Lord",
+    "url": "https://aqwwiki.wikidot.com/13th-doom-lord",
+    "location_name": "Battledoom",
+    "location_link": "/battledoom",
+    "total_hp": 182890,
+    "room": "battledoom"
+  },
+  {
+    "name": "Abel (Monster)",
+    "url": "https://aqwwiki.wikidot.com/abel-monster",
+    "location_name": "Ice Dungeon",
+    "location_link": "/ice-dungeon",
+    "total_hp": 110000,
+    "room": "icedungeon"
+  },
+  {
+    "name": "Aberrant Horror",
+    "url": "https://aqwwiki.wikidot.com/aberrant-horror",
+    "location_name": "Deep Forest",
+    "location_link": "/deep-forest",
+    "total_hp": 178690,
+    "room": "deepforest"
+  },
+  {
+    "name": "Absurd Foot",
+    "url": "https://aqwwiki.wikidot.com/absurd-foot",
+    "location_name": "Banzai B",
+    "location_link": "/banzai-b",
+    "total_hp": 120040,
+    "room": "banzaib"
+  },
+  {
+    "name": "Accursed Agape",
+    "url": "https://aqwwiki.wikidot.com/accursed-agape",
+    "location_name": "Infernal Arena",
+    "location_link": "/infernal-arena",
+    "total_hp": 175000,
+    "room": "infernalarena"
+  },
+  {
+    "name": "Accursed Apephyrx",
+    "url": "https://aqwwiki.wikidot.com/accursed-apephyrx",
+    "location_name": "Infernal Arena",
+    "location_link": "/infernal-arena",
+    "total_hp": 200000,
+    "room": "infernalarena"
+  },
+  {
+    "name": "Adimonde (Monster)",
+    "url": "https://aqwwiki.wikidot.com/adimonde-monster",
+    "location_name": "Fiendshard",
+    "location_link": "/fiendshard",
+    "total_hp": 1000000000,
+    "room": "fiendshard"
+  },
+  {
+    "name": "Admiral Zheng",
+    "url": "https://aqwwiki.wikidot.com/admiral-zheng",
+    "location_name": "Yokai Treasure",
+    "location_link": "/yokai-treasure",
+    "total_hp": 175000,
+    "room": "yokaitreasure"
+  },
+  {
+    "name": "Aeacus",
+    "url": "https://aqwwiki.wikidot.com/aeacus",
+    "location_name": "Judgement",
+    "location_link": "/judgement",
+    "total_hp": 140850,
+    "room": "judgement"
+  },
+  {
+    "name": "Aermhar",
+    "url": "https://aqwwiki.wikidot.com/aermhar",
+    "location_name": "Masquerade",
+    "location_link": "/masquerade",
+    "total_hp": 175880,
+    "room": "masquerade"
+  },
+  {
+    "name": "Agape",
+    "url": "https://aqwwiki.wikidot.com/agape",
+    "location_name": "Arcadia",
+    "location_link": "/arcadia",
+    "total_hp": 100214,
+    "room": "arcadia"
+  },
+  {
+    "name": "Akriloth (2)",
+    "url": "https://aqwwiki.wikidot.com/akriloth-2",
+    "location_name": "Charred Plains",
+    "location_link": "/charred-plains",
+    "total_hp": 875130,
+    "room": "charredplains"
+  },
+  {
+    "name": "Akriloth's Head",
+    "url": "https://aqwwiki.wikidot.com/akriloth-s-head",
+    "location_name": "Fear House",
+    "location_link": "/fear-house",
+    "total_hp": 816620,
+    "room": "fearhouse"
+  },
+  {
+    "name": "All Fears",
+    "url": "https://aqwwiki.wikidot.com/all-fears",
+    "location_name": "Fear House",
+    "location_link": "/fear-house",
+    "total_hp": 133880,
+    "room": "fearhouse"
+  },
+  {
+    "name": "Alpha Cabdury",
+    "url": "https://aqwwiki.wikidot.com/alpha-cabdury",
+    "location_name": "Grenwog Warren",
+    "location_link": "/grenwog-warren",
+    "total_hp": 100000,
+    "room": "grenwogwarren"
+  },
+  {
+    "name": "Amarok",
+    "url": "https://aqwwiki.wikidot.com/amarok",
+    "location_name": "Wolf Lake",
+    "location_link": "/wolf-lake",
+    "total_hp": 300000,
+    "room": "wolflake"
+  },
+  {
+    "name": "Ancient Dread Dragon",
+    "url": "https://aqwwiki.wikidot.com/ancient-dread-dragon",
+    "location_name": "Breakstone",
+    "location_link": "/breakstone",
+    "total_hp": 446659,
+    "room": "breakstone"
+  },
+  {
+    "name": "Ancient Horror",
+    "url": "https://aqwwiki.wikidot.com/ancient-horror",
+    "location_name": null,
+    "location_link": null,
+    "total_hp": 370560,
+    "room": null
+  },
+  {
+    "name": "Ancient Mecha",
+    "url": "https://aqwwiki.wikidot.com/ancient-mecha",
+    "location_name": "Genesis Garden",
+    "location_link": "/genesis-garden",
+    "total_hp": 180000,
+    "room": "genesisgarden"
+  },
+  {
+    "name": "Anima Animus Aiwass",
+    "url": "https://aqwwiki.wikidot.com/anima-animus-aiwass",
+    "location_name": "Sanctuary Aiwass",
+    "location_link": "/sanctuary-aiwass",
+    "total_hp": 220000,
+    "room": "sanctuaryaiwass"
+  },
+  {
+    "name": "Anka",
+    "url": "https://aqwwiki.wikidot.com/anka",
+    "location_name": "Down Below",
+    "location_link": "/down-below",
+    "total_hp": 600000,
+    "room": "downbelow"
+  },
+  {
+    "name": "Anqa",
+    "url": "https://aqwwiki.wikidot.com/anqa",
+    "location_name": "Sunset Ridge",
+    "location_link": "/sunset-ridge",
+    "total_hp": 1000000,
+    "room": "sunsetridge"
+  },
+  {
+    "name": "Apophis Chantress",
+    "url": "https://aqwwiki.wikidot.com/apophis-chantress",
+    "location_name": "Lotus Tomb",
+    "location_link": "/lotus-tomb",
+    "total_hp": 275000,
+    "room": null
+  },
+  {
+    "name": "Aquamancer",
+    "url": "https://aqwwiki.wikidot.com/aquamancer",
+    "location_name": "Hidden Depths",
+    "location_link": "/hidden-depths",
+    "total_hp": 599370,
+    "room": "hiddendepths"
+  },
+  {
+    "name": "Aranx (Monster)",
+    "url": "https://aqwwiki.wikidot.com/aranx-monster",
+    "location_name": "Celestial Arena D",
+    "location_link": "/celestial-arena-d",
+    "total_hp": 626330,
+    "room": "celestialarenad"
+  },
+  {
+    "name": "Aranx, Nightstar",
+    "url": "https://aqwwiki.wikidot.com/aranx-nightstar",
+    "location_name": "Infernal Dianoia",
+    "location_link": "/infernal-dianoia",
+    "total_hp": 625000,
+    "room": "infernaldianoia"
+  },
+  {
+    "name": "Archfiend Casimir (Monster)",
+    "url": "https://aqwwiki.wikidot.com/archfiend-casimir-monster",
+    "location_name": "Fiend Void",
+    "location_link": "/fiend-void",
+    "total_hp": 290000,
+    "room": "fiendvoid"
+  },
+  {
+    "name": "ArchFiend DragonLord (Monster)",
+    "url": "https://aqwwiki.wikidot.com/archfiend-dragonlord-monster",
+    "location_name": "Underlair",
+    "location_link": "/underlair",
+    "total_hp": 668280,
+    "room": "underlair"
+  },
+  {
+    "name": "Archfiend Oblivion (Monster)",
+    "url": "https://aqwwiki.wikidot.com/archfiend-oblivion-monster",
+    "location_name": "Oblivion Tundra",
+    "location_link": "/oblivion-tundra",
+    "total_hp": 275000,
+    "room": "obliviontundra"
+  },
+  {
+    "name": "Archfiend Rodeleros (Monster)",
+    "url": "https://aqwwiki.wikidot.com/archfiend-rodeleros-monster",
+    "location_name": "Terces Invasion",
+    "location_link": "/terces-invasion",
+    "total_hp": 320000,
+    "room": "tercesinvasion"
+  },
+  {
+    "name": "Archfiend Vigneron (Monster)",
+    "url": "https://aqwwiki.wikidot.com/archfiend-vigneron-monster",
+    "location_name": "Terces Invasion",
+    "location_link": "/terces-invasion",
+    "total_hp": 240000,
+    "room": "tercesinvasion"
+  },
+  {
+    "name": "Argo (Monster)",
+    "url": "https://aqwwiki.wikidot.com/argo-monster",
+    "location_name": "Envy (Location) (2)",
+    "location_link": "/envy-location-2",
+    "total_hp": 133420,
+    "room": "dragoncrown"
+  },
+  {
+    "name": "Argus Panoptes (Monster)",
+    "url": "https://aqwwiki.wikidot.com/argus-panoptes-monster",
+    "location_name": "Phlegethon",
+    "location_link": "/phlegethon",
+    "total_hp": 2000000,
+    "room": "phlegethon"
+  },
+  {
+    "name": "Armadeddon",
+    "url": "https://aqwwiki.wikidot.com/armadeddon",
+    "location_name": "Lich War",
+    "location_link": "/lich-war",
+    "total_hp": 225000,
+    "room": "lichwar"
+  },
+  {
+    "name": "Arthelyn (Monster)",
+    "url": "https://aqwwiki.wikidot.com/arthelyn-monster",
+    "location_name": "Ivoliss (Location)",
+    "location_link": "/ivoliss-location",
+    "total_hp": 175880,
+    "room": "ivoliss"
+  },
+  {
+    "name": "Astero (Monster)",
+    "url": "https://aqwwiki.wikidot.com/astero-monster",
+    "location_name": "Fortress Delve",
+    "location_link": "/fortress-delve",
+    "total_hp": 220000,
+    "room": "fortressdelve"
+  },
+  {
+    "name": "Astice",
+    "url": "https://aqwwiki.wikidot.com/astice",
+    "location_name": "Canal Shore",
+    "location_link": "/canal-shore",
+    "total_hp": 151000,
+    "room": "canalshore"
+  },
+  {
+    "name": "Aurola (Monster)",
+    "url": "https://aqwwiki.wikidot.com/aurola-monster",
+    "location_name": "Astravia Past",
+    "location_link": "/astravia-past",
+    "total_hp": 110000,
+    "room": null
+  },
+  {
+    "name": "Aurora Vaderix",
+    "url": "https://aqwwiki.wikidot.com/aurora-vaderix",
+    "location_name": "Snowview Race",
+    "location_link": "/snowview-race",
+    "total_hp": 140000,
+    "room": "snowviewrace"
+  },
+  {
+    "name": "Avarice",
+    "url": "https://aqwwiki.wikidot.com/avarice",
+    "location_name": "Fiend Past",
+    "location_link": "/fiend-past",
+    "total_hp": 100000,
+    "room": "fiendpast"
+  },
+  {
+    "name": "Avatar of Desolich",
+    "url": "https://aqwwiki.wikidot.com/avatar-of-desolich",
+    "location_name": "Dragons' Heart",
+    "location_link": "/dragons-heart",
+    "total_hp": 123300,
+    "room": "dragonheart"
+  },
+  {
+    "name": "Avatar of Time (Monster) (2)",
+    "url": "https://aqwwiki.wikidot.com/avatar-of-time-monster-2",
+    "location_name": "Infernal Dianoia",
+    "location_link": "/infernal-dianoia",
+    "total_hp": 150000,
+    "room": "infernaldianoia"
+  },
+  {
+    "name": "Avatar Tyndarius",
+    "url": "https://aqwwiki.wikidot.com/avatar-tyndarius",
+    "location_name": "Fire Avatar",
+    "location_link": "/fire-avatar",
+    "total_hp": 1500000,
+    "room": "fireavatar"
+  },
+  {
+    "name": "Azal the Infernal (Monster)",
+    "url": "https://aqwwiki.wikidot.com/azal-the-infernal-monster",
+    "location_name": "Dreadrock Citadel",
+    "location_link": "/dreadrock-citadel",
+    "total_hp": 170050,
+    "room": "dreadrock"
+  },
+  {
+    "name": "Azalith (Monster) (2)",
+    "url": "https://aqwwiki.wikidot.com/azalith-monster-2",
+    "location_name": "Champion Azalith",
+    "location_link": "/champion-azalith",
+    "total_hp": 888888,
+    "room": "champazalith"
+  },
+  {
+    "name": "Baby",
+    "url": "https://aqwwiki.wikidot.com/baby",
+    "location_name": "Twig's Arcade",
+    "location_link": "/twig-s-arcade",
+    "total_hp": 111180,
+    "room": "twigsarcade"
+  },
+  {
+    "name": "Barghest",
+    "url": "https://aqwwiki.wikidot.com/barghest",
+    "location_name": "Mystcroft Forest (Location)",
+    "location_link": "/mystcroft-forest-location",
+    "total_hp": 136460,
+    "room": "mystcroftforest"
+  },
+  {
+    "name": "Baron Luca (Monster)",
+    "url": "https://aqwwiki.wikidot.com/baron-luca-monster",
+    "location_name": "BakeShop of Horrors",
+    "location_link": "/bakeshop-of-horrors",
+    "total_hp": 126720,
+    "room": "pie"
+  },
+  {
+    "name": "Befuddled Broc",
+    "url": "https://aqwwiki.wikidot.com/befuddled-broc",
+    "location_name": "Wedding",
+    "location_link": "/wedding",
+    "total_hp": 200000,
+    "room": "wed"
+  },
+  {
+    "name": "Befuddled Brody",
+    "url": "https://aqwwiki.wikidot.com/befuddled-brody",
+    "location_name": "Wedding",
+    "location_link": "/wedding",
+    "total_hp": 195000,
+    "room": "wed"
+  },
+  {
+    "name": "Bellona",
+    "url": "https://aqwwiki.wikidot.com/bellona",
+    "location_name": "Camlan Forest",
+    "location_link": "/camlan-forest",
+    "total_hp": 125000,
+    "room": "camlan"
+  },
+  {
+    "name": "Bicho Papao",
+    "url": "https://aqwwiki.wikidot.com/bicho-papao",
+    "location_name": "Dance Guru",
+    "location_link": "/dance-guru",
+    "total_hp": 140330,
+    "room": "danceguru"
+  },
+  {
+    "name": "Big Bad Ancient Goose",
+    "url": "https://aqwwiki.wikidot.com/big-bad-ancient-goose",
+    "location_name": "Cysero's Secret",
+    "location_link": "/cysero-s-secret",
+    "total_hp": 142960,
+    "room": "goose"
+  },
+  {
+    "name": "Binky (Monster)",
+    "url": "https://aqwwiki.wikidot.com/binky-monster",
+    "location_name": null,
+    "location_link": null,
+    "total_hp": 866680,
+    "room": "doomvaultb"
+  },
+  {
+    "name": "Birthday Cake",
+    "url": "https://aqwwiki.wikidot.com/birthday-cake",
+    "location_name": "Birthday",
+    "location_link": "/birthday",
+    "total_hp": 100017,
+    "room": "birthday"
+  },
+  {
+    "name": "Birthday Gifts",
+    "url": "https://aqwwiki.wikidot.com/birthday-gifts",
+    "location_name": "Event Hub (October)",
+    "location_link": "/event-hub",
+    "total_hp": 101008,
+    "room": "eventhub"
+  },
+  {
+    "name": "Black BOGOdrone Prime",
+    "url": "https://aqwwiki.wikidot.com/black-bogodrone-prime",
+    "location_name": "Ebil Mega Mall",
+    "location_link": "/ebil-mega-mall",
+    "total_hp": 251128,
+    "room": "ebilmegamall"
+  },
+  {
+    "name": "Blight",
+    "url": "https://aqwwiki.wikidot.com/blight",
+    "location_name": "Bright Chaos",
+    "location_link": "/bright-chaos",
+    "total_hp": 179290,
+    "room": "brightchaos"
+  },
+  {
+    "name": "Blighted Zubami",
+    "url": "https://aqwwiki.wikidot.com/blighted-zubami",
+    "location_name": "Deleuze Tundra",
+    "location_link": "/deleuze-tundra",
+    "total_hp": 12000000,
+    "room": "deleuzetundra"
+  },
+  {
+    "name": "Blood Titan (Monster)",
+    "url": "https://aqwwiki.wikidot.com/blood-titan-monster",
+    "location_name": "Blood Titan (Location)",
+    "location_link": "/blood-titan-location",
+    "total_hp": 196460,
+    "room": "bloodtitan"
+  },
+  {
+    "name": "Blood Witch",
+    "url": "https://aqwwiki.wikidot.com/blood-witch",
+    "location_name": "Lae's Wedding",
+    "location_link": "/lae-s-wedding",
+    "total_hp": 100524,
+    "room": "laewed"
+  },
+  {
+    "name": "Bloodthirsty Bonnie",
+    "url": "https://aqwwiki.wikidot.com/bloodthirsty-bonnie",
+    "location_name": "Blood Isles",
+    "location_link": "/blood-isles",
+    "total_hp": 100000,
+    "room": "bloodisles"
+  },
+  {
+    "name": "BOGOdrone Prime",
+    "url": "https://aqwwiki.wikidot.com/bogodrone-prime",
+    "location_name": "Black Friday War",
+    "location_link": "/black-friday-war",
+    "total_hp": 142830,
+    "room": "blackfridaywar"
+  },
+  {
+    "name": "Book Wyrm",
+    "url": "https://aqwwiki.wikidot.com/book-wyrm",
+    "location_name": "Back Room",
+    "location_link": "/back-room",
+    "total_hp": 170210,
+    "room": "backroom"
+  },
+  {
+    "name": "Boto",
+    "url": "https://aqwwiki.wikidot.com/boto",
+    "location_name": "Myth Perception",
+    "location_link": "/myth-perception",
+    "total_hp": 150000,
+    "room": "mythperception"
+  },
+  {
+    "name": "Brado Retumbante (Monster)",
+    "url": "https://aqwwiki.wikidot.com/brado-retumbante-monster",
+    "location_name": "Povo Heroico (Location)",
+    "location_link": "/povo-heroico-location",
+    "total_hp": 791822,
+    "room": "povoheroico"
+  },
+  {
+    "name": "Bubble (Monster)",
+    "url": "https://aqwwiki.wikidot.com/bubble-monster",
+    "location_name": "Blood Moon",
+    "location_link": "/blood-moon",
+    "total_hp": 129050,
+    "room": "bloodmoon"
+  },
+  {
+    "name": "Burglinster",
+    "url": "https://aqwwiki.wikidot.com/burglinster",
+    "location_name": "Yulgar's Börgars (Location)",
+    "location_link": "/yulgar-s-borgars-location",
+    "total_hp": 179290,
+    "room": "borgars"
+  },
+  {
+    "name": "Byro-Dax Monstrosity",
+    "url": "https://aqwwiki.wikidot.com/byro-dax-monstrosity",
+    "location_name": "ByroDax",
+    "location_link": "/byrodax",
+    "total_hp": 159750,
+    "room": "byrodax"
+  },
+  {
+    "name": "Calamitous Warlic (Monster)",
+    "url": "https://aqwwiki.wikidot.com/calamitous-warlic-monster",
+    "location_name": "Ruined Crown",
+    "location_link": "/ruined-crown",
+    "total_hp": 250000,
+    "room": "ruinedcrown"
+  },
+  {
+    "name": "Carcano",
+    "url": "https://aqwwiki.wikidot.com/carcano",
+    "location_name": "Void Chasm",
+    "location_link": "/void-chasm",
+    "total_hp": 250000,
+    "room": "voidchasm"
+  },
+  {
+    "name": "Carnage (Monster) (2)",
+    "url": "https://aqwwiki.wikidot.com/carnage-monster-2",
+    "location_name": "Void Refuge",
+    "location_link": "/void-refuge",
+    "total_hp": 180000,
+    "room": "voidrefuge"
+  },
+  {
+    "name": "Catrina (Monster)",
+    "url": "https://aqwwiki.wikidot.com/catrina-monster",
+    "location_name": "Memento",
+    "location_link": "/memento",
+    "total_hp": 123520,
+    "room": "memento"
+  },
+  {
+    "name": "Cecaelia",
+    "url": "https://aqwwiki.wikidot.com/cecaelia",
+    "location_name": "Merrow Trench",
+    "location_link": "/merrow-trench",
+    "total_hp": 326430,
+    "room": "merrowtrench"
+  },
+  {
+    "name": "Celestial Gramiel",
+    "url": "https://aqwwiki.wikidot.com/celestial-gramiel",
+    "location_name": "Dawn Vindicators' Sanctum",
+    "location_link": "/dawn-vindicators-sanctum",
+    "total_hp": 300000,
+    "room": "dawnsanctum"
+  },
+  {
+    "name": "Cellot",
+    "url": "https://aqwwiki.wikidot.com/cellot",
+    "location_name": "Wind",
+    "location_link": "/wind",
+    "total_hp": 120690,
+    "room": "wind"
+  },
+  {
+    "name": "Cerberus (Monster)",
+    "url": "https://aqwwiki.wikidot.com/cerberus-monster",
+    "location_name": "Styx",
+    "location_link": "/styx",
+    "total_hp": 145320,
+    "room": "styx"
+  },
+  {
+    "name": "Cervus Malus",
+    "url": "https://aqwwiki.wikidot.com/cervus-malus",
+    "location_name": "Infernal Arena",
+    "location_link": "/infernal-arena",
+    "total_hp": 400000,
+    "room": "infernalarena"
+  },
+  {
+    "name": "Chained Kezeroth",
+    "url": "https://aqwwiki.wikidot.com/chained-kezeroth",
+    "location_name": "Frostval 2016",
+    "location_link": "/frostval-2016",
+    "total_hp": 216400,
+    "room": "icepike"
+  },
+  {
+    "name": "Champion of Chaos (Monster)",
+    "url": "https://aqwwiki.wikidot.com/champion-of-chaos-monster",
+    "location_name": "Ultra Drakath",
+    "location_link": "/ultra-drakath",
+    "total_hp": 923300,
+    "room": "ultradrakath"
+  },
+  {
+    "name": "Chaorrupted Guardian",
+    "url": "https://aqwwiki.wikidot.com/chaorrupted-guardian",
+    "location_name": null,
+    "location_link": null,
+    "total_hp": 106351,
+    "room": null
+  },
+  {
+    "name": "Chaos Dragon (1)",
+    "url": "https://aqwwiki.wikidot.com/chaos-dragon-1",
+    "location_name": "Chaos Beast",
+    "location_link": "/chaos-beast",
+    "total_hp": 131850,
+    "room": "chaosbeast"
+  },
+  {
+    "name": "Chaos Giant",
+    "url": "https://aqwwiki.wikidot.com/chaos-giant",
+    "location_name": "Queen's Battle",
+    "location_link": "/queen-s-battle",
+    "total_hp": 100000,
+    "room": "queenbattle"
+  },
+  {
+    "name": "Chaos Kraken (Monster)",
+    "url": "https://aqwwiki.wikidot.com/chaos-kraken-monster",
+    "location_name": "Chaos Kraken (Location)",
+    "location_link": "/chaos-kraken-location",
+    "total_hp": 365770,
+    "room": "chaoskraken"
+  },
+  {
+    "name": "Chaos Lord Alteon (Monster)",
+    "url": "https://aqwwiki.wikidot.com/chaos-lord-alteon-monster",
+    "location_name": "Swordhaven Falls",
+    "location_link": "/swordhaven-falls",
+    "total_hp": 100000,
+    "room": "swordhavenfalls"
+  },
+  {
+    "name": "ChaosWeaver Cleric (Monster)",
+    "url": "https://aqwwiki.wikidot.com/chaosweaver-cleric-monster",
+    "location_name": "Chaos Web",
+    "location_link": "/chaos-web",
+    "total_hp": 199580,
+    "room": "chaosweb"
+  },
+  {
+    "name": "ChaosWeaver Warrior",
+    "url": "https://aqwwiki.wikidot.com/chaosweaver-warrior",
+    "location_name": "Twilight's Edge",
+    "location_link": "/twilight-s-edge",
+    "total_hp": 132840,
+    "room": "twilightedge"
+  },
+  {
+    "name": "Child of the Depths",
+    "url": "https://aqwwiki.wikidot.com/child-of-the-depths",
+    "location_name": "Elodea Temple",
+    "location_link": "/elodea-temple",
+    "total_hp": 350000,
+    "room": "elodeatemple"
+  },
+  {
+    "name": "Chillbite (Monster)",
+    "url": "https://aqwwiki.wikidot.com/chillbite-monster",
+    "location_name": "Everfrost Valley",
+    "location_link": "/everfrost-valley",
+    "total_hp": 105260,
+    "room": "everfrost"
+  },
+  {
+    "name": "Chimera (Monster) (2)",
+    "url": "https://aqwwiki.wikidot.com/chimera-monster-2",
+    "location_name": "Coliseum",
+    "location_link": "/coliseum",
+    "total_hp": 500000,
+    "room": "coliseum"
+  },
+  {
+    "name": "Chromafection (Monster)",
+    "url": "https://aqwwiki.wikidot.com/chromafection-monster",
+    "location_name": "Chromafection (Location)",
+    "location_link": "/chromafection-location",
+    "total_hp": 111180,
+    "room": "chromafection"
+  },
+  {
+    "name": "Chronocide",
+    "url": "https://aqwwiki.wikidot.com/chronocide",
+    "location_name": "Time Ritual (Location)",
+    "location_link": "/time-ritual-location",
+    "total_hp": 180830,
+    "room": "timeritual"
+  },
+  {
+    "name": "Chronocide Prime",
+    "url": "https://aqwwiki.wikidot.com/chronocide-prime",
+    "location_name": "Chronomancy Hub",
+    "location_link": "/chronomancy-hub",
+    "total_hp": 250000,
+    "room": "chronohub"
+  },
+  {
+    "name": "Chrono-Phoenix (Monster)",
+    "url": "https://aqwwiki.wikidot.com/chrono-phoenix-monster",
+    "location_name": "Chrono Phoenix (Location)",
+    "location_link": "/chrono-phoenix-location",
+    "total_hp": 164830,
+    "room": "chronophoenix"
+  },
+  {
+    "name": "Clematis",
+    "url": "https://aqwwiki.wikidot.com/clematis",
+    "location_name": "Forge Citrinitas",
+    "location_link": "/forge-citrinitas",
+    "total_hp": 125000,
+    "room": "forgecitrinas"
+  },
+  {
+    "name": "Clementine",
+    "url": "https://aqwwiki.wikidot.com/clementine",
+    "location_name": "Carcossa Cabins",
+    "location_link": "/carcossa-cabins",
+    "total_hp": 660000,
+    "room": "forgecitrinas"
+  },
+  {
+    "name": "Cluckmoo Mach 2",
+    "url": "https://aqwwiki.wikidot.com/cluckmoo-mach-2",
+    "location_name": "Battleon Town",
+    "location_link": "/battleon-town",
+    "total_hp": 406703,
+    "room": "battleontown"
+  },
+  {
+    "name": "Coelho (Monster)",
+    "url": "https://aqwwiki.wikidot.com/coelho-monster",
+    "location_name": "Atlas Kingdom",
+    "location_link": "/atlas-kingdom",
+    "total_hp": 250000,
+    "room": "atlaskingdom"
+  },
+  {
+    "name": "Cold Grudge",
+    "url": "https://aqwwiki.wikidot.com/cold-grudge",
+    "location_name": "Holiday Horror",
+    "location_link": "/holiday-horror",
+    "total_hp": 999999,
+    "room": "holidayhorror"
+  },
+  {
+    "name": "Cold Thunder Avatar",
+    "url": "https://aqwwiki.wikidot.com/cold-thunder-avatar",
+    "location_name": "Cold Thunder",
+    "location_link": "/cold-thunder",
+    "total_hp": 1300000,
+    "room": "coldthunder"
+  },
+  {
+    "name": "Colonicus",
+    "url": "https://aqwwiki.wikidot.com/colonicus",
+    "location_name": "Gluttony (Location)",
+    "location_link": "/gluttony-location",
+    "total_hp": 124370,
+    "room": "gluttony"
+  },
+  {
+    "name": "Colossal Primarch",
+    "url": "https://aqwwiki.wikidot.com/colossal-primarch",
+    "location_name": null,
+    "location_link": null,
+    "total_hp": 594740,
+    "room": "doomvaultb"
+  },
+  {
+    "name": "Colossal Vordred",
+    "url": "https://aqwwiki.wikidot.com/colossal-vordred",
+    "location_name": "More Skulls (Location)",
+    "location_link": "/more-skulls-location",
+    "total_hp": 666666,
+    "room": "moreskulls"
+  },
+  {
+    "name": "Commander Gallaeon",
+    "url": "https://aqwwiki.wikidot.com/commander-gallaeon",
+    "location_name": "Doom Pirate",
+    "location_link": "/doom-pirate",
+    "total_hp": 1000000,
+    "room": "doompirate"
+  },
+  {
+    "name": "Conquest",
+    "url": "https://aqwwiki.wikidot.com/conquest",
+    "location_name": "Undervoid",
+    "location_link": "/undervoid",
+    "total_hp": 162070,
+    "room": "undervoid"
+  },
+  {
+    "name": "Cornholio",
+    "url": "https://aqwwiki.wikidot.com/cornholio",
+    "location_name": "Ubear (Location)",
+    "location_link": "/ubear-location",
+    "total_hp": 124370,
+    "room": "ubear"
+  },
+  {
+    "name": "Corrupted Luma",
+    "url": "https://aqwwiki.wikidot.com/corrupted-luma",
+    "location_name": "Luma Fortress",
+    "location_link": "/luma-fortress",
+    "total_hp": 106640,
+    "room": "lumafortress"
+  },
+  {
+    "name": "Count Maxius (2)",
+    "url": "https://aqwwiki.wikidot.com/count-maxius-2",
+    "location_name": "Maxius",
+    "location_link": "/maxius",
+    "total_hp": 106910,
+    "room": "maxius"
+  },
+  {
+    "name": "Covetous Disgrace",
+    "url": "https://aqwwiki.wikidot.com/covetous-disgrace",
+    "location_name": "Lost Villa",
+    "location_link": "/lost-villa",
+    "total_hp": 200000,
+    "room": "lostvilla"
+  },
+  {
+    "name": "Creature 12",
+    "url": "https://aqwwiki.wikidot.com/creature-12",
+    "location_name": "Darkon's Garden",
+    "location_link": "/darkon-s-garden",
+    "total_hp": 201400,
+    "room": "garden"
+  },
+  {
+    "name": "Creature 6",
+    "url": "https://aqwwiki.wikidot.com/creature-6",
+    "location_name": "Eridani",
+    "location_link": "/eridani",
+    "total_hp": 275260,
+    "room": "eridani"
+  },
+  {
+    "name": "Creel",
+    "url": "https://aqwwiki.wikidot.com/creel",
+    "location_name": "Tower of Doom (5)",
+    "location_link": "/tower-of-doom-5",
+    "total_hp": 178470,
+    "room": "towerofdoom5"
+  },
+  {
+    "name": "Cryptbreaker",
+    "url": "https://aqwwiki.wikidot.com/cryptbreaker",
+    "location_name": "Razorclaw (Location)",
+    "location_link": "/razorclaw-location",
+    "total_hp": 163070,
+    "room": "razorclaw"
+  },
+  {
+    "name": "Crystal Prima",
+    "url": "https://aqwwiki.wikidot.com/crystal-prima",
+    "location_name": "Sanctuary Aiwass",
+    "location_link": "/sanctuary-aiwass",
+    "total_hp": 100000,
+    "room": "sanctuaryaiwass"
+  },
+  {
+    "name": "Cured Phlegnn",
+    "url": "https://aqwwiki.wikidot.com/cured-phlegnn",
+    "location_name": "Sloth",
+    "location_link": "/sloth",
+    "total_hp": 221220,
+    "room": "sloth"
+  },
+  {
+    "name": "Cursed Cecaelia",
+    "url": "https://aqwwiki.wikidot.com/cursed-cecaelia",
+    "location_name": null,
+    "location_link": null,
+    "total_hp": 326428,
+    "room": "ghostship"
+  },
+  {
+    "name": "Cursed Spirit",
+    "url": "https://aqwwiki.wikidot.com/cursed-spirit",
+    "location_name": "Oddities",
+    "location_link": "/oddities",
+    "total_hp": 350000,
+    "room": "oddities"
+  },
+  {
+    "name": "Dai Tengu (2)",
+    "url": "https://aqwwiki.wikidot.com/dai-tengu-2",
+    "location_name": "Haku Village",
+    "location_link": "/haku-village",
+    "total_hp": 185000,
+    "room": "hakuvillage"
+  },
+  {
+    "name": "Dark Boitata",
+    "url": "https://aqwwiki.wikidot.com/dark-boitata",
+    "location_name": "Dark Festa",
+    "location_link": "/dark-festa",
+    "total_hp": 209890,
+    "room": "darkfesta"
+  },
+  {
+    "name": "Dark Pit of Despair (Monster)",
+    "url": "https://aqwwiki.wikidot.com/dark-pit-of-despair-monster",
+    "location_name": "Memet's Nightmare",
+    "location_link": "/memet-s-nightmare",
+    "total_hp": 167790,
+    "room": "memetnightmare"
+  },
+  {
+    "name": "Darkon (Monster)",
+    "url": "https://aqwwiki.wikidot.com/darkon-monster",
+    "location_name": "The World",
+    "location_link": "/the-world",
+    "total_hp": 222222,
+    "room": "theworld"
+  },
+  {
+    "name": "Deadfly",
+    "url": "https://aqwwiki.wikidot.com/deadfly",
+    "location_name": "Dead Fly",
+    "location_link": "/dead-fly",
+    "total_hp": 100000,
+    "room": "deadfly"
+  },
+  {
+    "name": "Death (Monster) (2)",
+    "url": "https://aqwwiki.wikidot.com/death-monster-2",
+    "location_name": "Undervoid",
+    "location_link": "/undervoid",
+    "total_hp": 242820,
+    "room": "undervoid"
+  },
+  {
+    "name": "Death's Head (Monster)",
+    "url": "https://aqwwiki.wikidot.com/death-s-head-monster",
+    "location_name": "Citadel",
+    "location_link": "/citadel",
+    "total_hp": 100000,
+    "room": "citadel"
+  },
+  {
+    "name": "Deflated Glutus",
+    "url": "https://aqwwiki.wikidot.com/deflated-glutus",
+    "location_name": "Gluttony (Location)",
+    "location_link": "/gluttony-location",
+    "total_hp": 221220,
+    "room": "gluttony"
+  },
+  {
+    "name": "Deimos (Monster)",
+    "url": "https://aqwwiki.wikidot.com/deimos-monster",
+    "location_name": "Reap Finals",
+    "location_link": "/reap-finals",
+    "total_hp": 250000,
+    "room": "reapfinals"
+  },
+  {
+    "name": "Depths of Isfet",
+    "url": "https://aqwwiki.wikidot.com/depths-of-isfet",
+    "location_name": "Hidden Duat",
+    "location_link": "/hidden-duat",
+    "total_hp": 40000000,
+    "room": "hiddenduat"
+  },
+  {
+    "name": "Desolich (Monster)",
+    "url": "https://aqwwiki.wikidot.com/desolich-monster",
+    "location_name": "Desolich (Location)",
+    "location_link": "/desolich-location",
+    "total_hp": 8195130,
+    "room": "desolich"
+  },
+  {
+    "name": "Desoloth (Monster)",
+    "url": "https://aqwwiki.wikidot.com/desoloth-monster",
+    "location_name": "Desoloth (Location)",
+    "location_link": "/desoloth-location",
+    "total_hp": 176150,
+    "room": "desoloth"
+  },
+  {
+    "name": "Desoloth the Final",
+    "url": "https://aqwwiki.wikidot.com/desoloth-the-final",
+    "location_name": "Dragon Challenge",
+    "location_link": "/dragon-challenge",
+    "total_hp": 250000,
+    "room": "dragonchallenge"
+  },
+  {
+    "name": "Destructive Defiler",
+    "url": "https://aqwwiki.wikidot.com/destructive-defiler",
+    "location_name": "Infernal Arena",
+    "location_link": "/infernal-arena",
+    "total_hp": 125000,
+    "room": "infernalarena"
+  },
+  {
+    "name": "Dethrix",
+    "url": "https://aqwwiki.wikidot.com/dethrix",
+    "location_name": "Ebonslate Dungeon",
+    "location_link": "/ebonslate-dungeon",
+    "total_hp": 260710,
+    "room": "ebondungeon"
+  },
+  {
+    "name": "Deva",
+    "url": "https://aqwwiki.wikidot.com/deva",
+    "location_name": "Necro Carnival",
+    "location_link": "/necro-carnival",
+    "total_hp": 100000,
+    "room": "necrocarnival"
+  },
+  {
+    "name": "Devastator Deimos",
+    "url": "https://aqwwiki.wikidot.com/devastator-deimos",
+    "location_name": "Deimos (Location)",
+    "location_link": "/deimos-location",
+    "total_hp": 1000000,
+    "room": "deimos"
+  },
+  {
+    "name": "Devourer of Souls (Monster)",
+    "url": "https://aqwwiki.wikidot.com/devourer-of-souls-monster",
+    "location_name": "Abyssal Lair",
+    "location_link": "/abyssal-lair",
+    "total_hp": 848160,
+    "room": "abysslair"
+  },
+  {
+    "name": "Dire Groglurk",
+    "url": "https://aqwwiki.wikidot.com/dire-groglurk",
+    "location_name": null,
+    "location_link": null,
+    "total_hp": 102790,
+    "room": "bosschallenge"
+  },
+  {
+    "name": "Doom Overlord",
+    "url": "https://aqwwiki.wikidot.com/doom-overlord",
+    "location_name": "Necropolis Dungeon",
+    "location_link": "/necropolis-dungeon",
+    "total_hp": 666666,
+    "room": "necrodungeon"
+  },
+  {
+    "name": "Doomed Fiend",
+    "url": "https://aqwwiki.wikidot.com/doomed-fiend",
+    "location_name": "Temple Delve",
+    "location_link": "/temple-delve",
+    "total_hp": 225000,
+    "room": "templedelve"
+  },
+  {
+    "name": "Doomed Oblivion",
+    "url": "https://aqwwiki.wikidot.com/doomed-oblivion",
+    "location_name": "Temple Siege",
+    "location_link": "/temple-siege",
+    "total_hp": 200000,
+    "room": "templesiege"
+  },
+  {
+    "name": "DoomKnight Dryden (1)",
+    "url": "https://aqwwiki.wikidot.com/doomknight-dryden-1",
+    "location_name": "Shadow Duat",
+    "location_link": "/shadow-duat",
+    "total_hp": 350000,
+    "room": "shadowduat"
+  },
+  {
+    "name": "Doomknight Dryden (2)",
+    "url": "https://aqwwiki.wikidot.com/doomknight-dryden-2",
+    "location_name": "Carcossa Court",
+    "location_link": "/carcossa-court",
+    "total_hp": 375000,
+    "room": "carcossacourt"
+  },
+  {
+    "name": "Doomknight Prince",
+    "url": "https://aqwwiki.wikidot.com/doomknight-prince",
+    "location_name": "Victor Matsuri",
+    "location_link": "/victor-matsuri",
+    "total_hp": 750000,
+    "room": "victormatsuri"
+  },
+  {
+    "name": "Downfall of Empires",
+    "url": "https://aqwwiki.wikidot.com/downfall-of-empires",
+    "location_name": "Temple of Doom",
+    "location_link": "/temple-of-doom",
+    "total_hp": 4000000,
+    "room": "templeofdoom"
+  },
+  {
+    "name": "Dragon Drakath (2)",
+    "url": "https://aqwwiki.wikidot.com/dragon-drakath-2",
+    "location_name": "Eternal Chaos",
+    "location_link": "/eternal-chaos",
+    "total_hp": 100000,
+    "room": "eternalchaos"
+  },
+  {
+    "name": "Drakonnan (Monster)",
+    "url": "https://aqwwiki.wikidot.com/drakonnan-monster",
+    "location_name": "Drakonnan (Location)",
+    "location_link": "/drakonnan-location",
+    "total_hp": 179290,
+    "room": "drakonnan"
+  },
+  {
+    "name": "Drayko",
+    "url": "https://aqwwiki.wikidot.com/drayko",
+    "location_name": "Tree Titan",
+    "location_link": "/tree-titan",
+    "total_hp": 196460,
+    "room": "livingdungeon"
+  },
+  {
+    "name": "Dread Avatar",
+    "url": "https://aqwwiki.wikidot.com/dread-avatar",
+    "location_name": "Tower of Doom (8)",
+    "location_link": "/tower-of-doom-8",
+    "total_hp": 359610,
+    "room": "towerofdoom8"
+  },
+  {
+    "name": "Dread Fang",
+    "url": "https://aqwwiki.wikidot.com/dread-fang",
+    "location_name": "Tower of Doom (9)",
+    "location_link": "/tower-of-doom-9",
+    "total_hp": 433760,
+    "room": "towerofdoom9"
+  },
+  {
+    "name": "Dread Terror",
+    "url": "https://aqwwiki.wikidot.com/dread-terror",
+    "location_name": "Tower of Doom (6)",
+    "location_link": "/tower-of-doom-6",
+    "total_hp": 241610,
+    "room": "towerofdoom6"
+  },
+  {
+    "name": "Dread Warrior",
+    "url": "https://aqwwiki.wikidot.com/dread-warrior",
+    "location_name": "Tower of Doom (7)",
+    "location_link": "/tower-of-doom-7",
+    "total_hp": 319680,
+    "room": "towerofdoom7"
+  },
+  {
+    "name": "Dreadmaw the Defiler",
+    "url": "https://aqwwiki.wikidot.com/dreadmaw-the-defiler",
+    "location_name": "Dragon Challenge",
+    "location_link": "/dragon-challenge",
+    "total_hp": 136610,
+    "room": "dragonchallenge"
+  },
+  {
+    "name": "Duncan (Monster)",
+    "url": "https://aqwwiki.wikidot.com/duncan-monster",
+    "location_name": "Ice Storm",
+    "location_link": "/ice-storm",
+    "total_hp": 175880,
+    "room": "icestorm"
+  },
+  {
+    "name": "Dzeza the Boundless",
+    "url": "https://aqwwiki.wikidot.com/dzeza-the-boundless",
+    "location_name": "Eldritch World",
+    "location_link": "/eldritch-world",
+    "total_hp": 300000,
+    "room": "eldritchworld"
+  },
+  {
+    "name": "Ebil AI Blender",
+    "url": "https://aqwwiki.wikidot.com/ebil-ai-blender",
+    "location_name": "Chairman Platinum's Evolving Environmental Art Gallery",
+    "location_link": "/chairman-platinum-s-evolving-environmental-art-gallery",
+    "total_hp": 99999999,
+    "room": "ebilart"
+  },
+  {
+    "name": "Ebil Red Dragon",
+    "url": "https://aqwwiki.wikidot.com/ebil-red-dragon",
+    "location_name": "EbilCorp Takeover",
+    "location_link": "/ebilcorp-takeover",
+    "total_hp": 175000,
+    "room": "ebiltakeover"
+  },
+  {
+    "name": "Egg-stremis",
+    "url": "https://aqwwiki.wikidot.com/egg-stremis",
+    "location_name": "Battle Fowl",
+    "location_link": "/battle-fowl",
+    "total_hp": 406700,
+    "room": "battlefowl"
+  },
+  {
+    "name": "EGGZilla",
+    "url": "https://aqwwiki.wikidot.com/eggzilla",
+    "location_name": "Event Hub (April)",
+    "location_link": "/event-hub",
+    "total_hp": 100000,
+    "room": "eventhub"
+  },
+  {
+    "name": "Ektorax",
+    "url": "https://aqwwiki.wikidot.com/ektorax",
+    "location_name": "Ecto Cave",
+    "location_link": "/ecto-cave",
+    "total_hp": 963190,
+    "room": "ectocave"
+  },
+  {
+    "name": "Elder Necromancer",
+    "url": "https://aqwwiki.wikidot.com/elder-necromancer",
+    "location_name": "Bocklin Grove (Location)",
+    "location_link": "/bocklin-grove-location",
+    "total_hp": 100000,
+    "room": "bocklingrove"
+  },
+  {
+    "name": "Eldritch Amalgamation",
+    "url": "https://aqwwiki.wikidot.com/eldritch-amalgamation",
+    "location_name": "Broken Woods",
+    "location_link": "/broken-woods",
+    "total_hp": 200000,
+    "room": "brokenwoods"
+  },
+  {
+    "name": "Eldritch Gifthulu",
+    "url": "https://aqwwiki.wikidot.com/eldritch-gifthulu",
+    "location_name": null,
+    "location_link": null,
+    "total_hp": 125860,
+    "room": "caroltown"
+  },
+  {
+    "name": "Elius (Monster)",
+    "url": "https://aqwwiki.wikidot.com/elius-monster",
+    "location_name": "ShadowFire Plane",
+    "location_link": "/shadowfire-plane",
+    "total_hp": 150000,
+    "room": "fireavatar"
+  },
+  {
+    "name": "Elixir Etokoun",
+    "url": "https://aqwwiki.wikidot.com/elixir-etokoun",
+    "location_name": "Yokai Hunt",
+    "location_link": "/yokai-hunt",
+    "total_hp": 121223,
+    "room": "yokaihunt"
+  },
+  {
+    "name": "Empowered Prime",
+    "url": "https://aqwwiki.wikidot.com/empowered-prime",
+    "location_name": "Starsinc Fortress",
+    "location_link": "/starsinc-fortress",
+    "total_hp": 233850,
+    "room": "starsinc"
+  },
+  {
+    "name": "Empowered Scalebeard",
+    "url": "https://aqwwiki.wikidot.com/empowered-scalebeard",
+    "location_name": "Dragon Capital",
+    "location_link": "/dragon-capital",
+    "total_hp": 190000,
+    "room": "dragoncapital"
+  },
+  {
+    "name": "Empress' Finger",
+    "url": "https://aqwwiki.wikidot.com/empress-finger",
+    "location_name": "First Observatory",
+    "location_link": "/first-observatory",
+    "total_hp": 333333,
+    "room": "firstobservatory"
+  },
+  {
+    "name": "Encore Darkon",
+    "url": "https://aqwwiki.wikidot.com/encore-darkon",
+    "location_name": "The World",
+    "location_link": "/the-world",
+    "total_hp": 222222,
+    "room": "theworld"
+  },
+  {
+    "name": "Enn'tröpy (Monster)",
+    "url": "https://aqwwiki.wikidot.com/enn-tropy-monster",
+    "location_name": "Citadel Ruins",
+    "location_link": "/citadel-ruins",
+    "total_hp": 216830,
+    "room": "citadelruins"
+  },
+  {
+    "name": "Enraged Constantin",
+    "url": "https://aqwwiki.wikidot.com/enraged-constantin",
+    "location_name": "Blood War (Vampire)",
+    "location_link": "/blood-war-vampire",
+    "total_hp": 142830,
+    "room": "bloodwarvamp"
+  },
+  {
+    "name": "Enraged Dread Dragon",
+    "url": "https://aqwwiki.wikidot.com/enraged-dread-dragon",
+    "location_name": "Breakstone",
+    "location_link": "/breakstone",
+    "total_hp": 185937,
+    "room": "breakstone"
+  },
+  {
+    "name": "Enslaved Astero",
+    "url": "https://aqwwiki.wikidot.com/enslaved-astero",
+    "location_name": "Siege Fortress",
+    "location_link": "/siege-fortress",
+    "total_hp": 220000,
+    "room": "siegefortress"
+  },
+  {
+    "name": "Eos Soulsworn",
+    "url": "https://aqwwiki.wikidot.com/eos-soulsworn",
+    "location_name": "Carcossa Court",
+    "location_link": "/carcossa-court",
+    "total_hp": 100000,
+    "room": "carcossacourt"
+  },
+  {
+    "name": "Epic Slayer",
+    "url": "https://aqwwiki.wikidot.com/epic-slayer",
+    "location_name": "Delta V Lab",
+    "location_link": "/delta-v-lab",
+    "total_hp": 136610,
+    "room": "deltavlab"
+  },
+  {
+    "name": "Eternal Dragon",
+    "url": "https://aqwwiki.wikidot.com/eternal-dragon",
+    "location_name": "Deadlines",
+    "location_link": "/deadlines",
+    "total_hp": 750000,
+    "room": "deadlines"
+  },
+  {
+    "name": "Eternal Drakath",
+    "url": "https://aqwwiki.wikidot.com/eternal-drakath",
+    "location_name": "Eternal Chaos",
+    "location_link": "/eternal-chaos",
+    "total_hp": 500000,
+    "room": "eternalchaos"
+  },
+  {
+    "name": "Etokoun",
+    "url": "https://aqwwiki.wikidot.com/etokoun",
+    "location_name": "Yokai Hunt",
+    "location_link": "/yokai-hunt",
+    "total_hp": 117210,
+    "room": "yokaihunt"
+  },
+  {
+    "name": "Evil ArchMage Brentan",
+    "url": "https://aqwwiki.wikidot.com/evil-archmage-brentan",
+    "location_name": "Lightovia Cave",
+    "location_link": "/lightovia-cave",
+    "total_hp": 299650,
+    "room": "lightoviacave"
+  },
+  {
+    "name": "Evolved Fear Muncher",
+    "url": "https://aqwwiki.wikidot.com/evolved-fear-muncher",
+    "location_name": null,
+    "location_link": null,
+    "total_hp": 157120,
+    "room": "bosschallenge"
+  },
+  {
+    "name": "Evolved Overlord",
+    "url": "https://aqwwiki.wikidot.com/evolved-overlord",
+    "location_name": "Necropolis Cavern",
+    "location_link": "/necropolis-cavern",
+    "total_hp": 666666,
+    "room": "necrocavern"
+  },
+  {
+    "name": "Executioner Ladon",
+    "url": "https://aqwwiki.wikidot.com/executioner-ladon",
+    "location_name": "Atlas Kingdom",
+    "location_link": "/atlas-kingdom",
+    "total_hp": 1500000,
+    "room": "atlaskingdom"
+  },
+  {
+    "name": "Exiled General Miel",
+    "url": "https://aqwwiki.wikidot.com/exiled-general-miel",
+    "location_name": "Low Tide",
+    "location_link": "/low-tide",
+    "total_hp": 140000,
+    "room": "lowtide"
+  },
+  {
+    "name": "Exos (Monster)",
+    "url": "https://aqwwiki.wikidot.com/exos-monster",
+    "location_name": "ChaosGuard",
+    "location_link": "/chaosguard",
+    "total_hp": 115000,
+    "room": "chaosguard"
+  },
+  {
+    "name": "Extreme Noxus (1)",
+    "url": "https://aqwwiki.wikidot.com/extreme-noxus-1",
+    "location_name": "Noxus (Location)",
+    "location_link": "/noxus-location",
+    "total_hp": 120040,
+    "room": "noxus"
+  },
+  {
+    "name": "Extreme Noxus (2)",
+    "url": "https://aqwwiki.wikidot.com/extreme-noxus-2",
+    "location_name": "Lightguard War (Location)",
+    "location_link": "/lightguard-war-location",
+    "total_hp": 290690,
+    "room": "lightguardwar"
+  },
+  {
+    "name": "Ezrajal",
+    "url": "https://aqwwiki.wikidot.com/ezrajal",
+    "location_name": "Inn at the Edge of Time",
+    "location_link": "/inn-at-the-edge-of-time",
+    "total_hp": 300000,
+    "room": "timeinn"
+  },
+  {
+    "name": "Fa (Monster) (1)",
+    "url": "https://aqwwiki.wikidot.com/fa-monster-1",
+    "location_name": "Darkon's Garden",
+    "location_link": "/darkon-s-garden",
+    "total_hp": 190000,
+    "room": "garden"
+  },
+  {
+    "name": "Fa (Monster) (2)",
+    "url": "https://aqwwiki.wikidot.com/fa-monster-2",
+    "location_name": "The World",
+    "location_link": "/the-world",
+    "total_hp": 190000,
+    "room": "theworld"
+  },
+  {
+    "name": "Fall Fae Queen (Monster)",
+    "url": "https://aqwwiki.wikidot.com/fall-fae-queen-monster",
+    "location_name": "Moglin Feast",
+    "location_link": "/moglin-feast",
+    "total_hp": 150000,
+    "room": "moglinfeast"
+  },
+  {
+    "name": "Fallen Arthelyn (Monster)",
+    "url": "https://aqwwiki.wikidot.com/fallen-arthelyn-monster",
+    "location_name": "Infernal Dianoia",
+    "location_link": "/infernal-dianoia",
+    "total_hp": 200000,
+    "room": "infernaldianoia"
+  },
+  {
+    "name": "Famine (1)",
+    "url": "https://aqwwiki.wikidot.com/famine-1",
+    "location_name": "Undervoid",
+    "location_link": "/undervoid",
+    "total_hp": 205830,
+    "room": "undervoid"
+  },
+  {
+    "name": "Famine (2)",
+    "url": "https://aqwwiki.wikidot.com/famine-2",
+    "location_name": "Blight Harvest",
+    "location_link": "/blight-harvest",
+    "total_hp": 125000,
+    "room": "blightharvest"
+  },
+  {
+    "name": "Feegrix Queen",
+    "url": "https://aqwwiki.wikidot.com/feegrix-queen",
+    "location_name": "Furborg Ship",
+    "location_link": "/furborg-ship",
+    "total_hp": 100380,
+    "room": "furborgship"
+  },
+  {
+    "name": "Feral Flintfang",
+    "url": "https://aqwwiki.wikidot.com/feral-flintfang",
+    "location_name": "Pirate Blood War (Vampire)",
+    "location_link": "/pirate-blood-war-vampire",
+    "total_hp": 185000,
+    "room": "piratevampire"
+  },
+  {
+    "name": "Fiend Champion",
+    "url": "https://aqwwiki.wikidot.com/fiend-champion",
+    "location_name": "Originul",
+    "location_link": "/originul",
+    "total_hp": 229160,
+    "room": "originul"
+  },
+  {
+    "name": "Fiend of Voracity (Monster)",
+    "url": "https://aqwwiki.wikidot.com/fiend-of-voracity-monster",
+    "location_name": "Terces Archive",
+    "location_link": "/terces-archive",
+    "total_hp": 280000,
+    "room": "tercesarchive"
+  },
+  {
+    "name": "Fifth Lord Arachne",
+    "url": "https://aqwwiki.wikidot.com/fifth-lord-arachne",
+    "location_name": "Space Yard",
+    "location_link": "/space-yard",
+    "total_hp": 400000,
+    "room": "spaceyard"
+  },
+  {
+    "name": "Fifth Sepulchure",
+    "url": "https://aqwwiki.wikidot.com/fifth-sepulchure",
+    "location_name": "Murder Moon",
+    "location_link": "/murder-moon",
+    "total_hp": 138300,
+    "room": "murdermoon"
+  },
+  {
+    "name": "Fimbulventr Witch (Monster)",
+    "url": "https://aqwwiki.wikidot.com/fimbulventr-witch-monster",
+    "location_name": "Fimbul's Tomb",
+    "location_link": "/fimbul-s-tomb",
+    "total_hp": 175000,
+    "room": "fimbultomb"
+  },
+  {
+    "name": "Fire Champion",
+    "url": "https://aqwwiki.wikidot.com/fire-champion",
+    "location_name": "War Training",
+    "location_link": "/war-training",
+    "total_hp": 250000,
+    "room": "wartraining"
+  },
+  {
+    "name": "Fire Orb (Monster)",
+    "url": "https://aqwwiki.wikidot.com/fire-orb-monster",
+    "location_name": "Fire Avatar",
+    "location_link": "/fire-avatar",
+    "total_hp": 300000,
+    "room": "fireavatar"
+  },
+  {
+    "name": "Firebird Anqa",
+    "url": "https://aqwwiki.wikidot.com/firebird-anqa",
+    "location_name": "Sunset Dunes",
+    "location_link": "/sunset-dunes",
+    "total_hp": 2000000,
+    "room": "sunsetdunes"
+  },
+  {
+    "name": "First Mate Bloodbone",
+    "url": "https://aqwwiki.wikidot.com/first-mate-bloodbone",
+    "location_name": "Blacksea Keep",
+    "location_link": "/blacksea-keep",
+    "total_hp": 119460,
+    "room": "blackseakeep"
+  },
+  {
+    "name": "Flame Dragon General",
+    "url": "https://aqwwiki.wikidot.com/flame-dragon-general",
+    "location_name": "Coliseum",
+    "location_link": "/coliseum",
+    "total_hp": 125000,
+    "room": "coliseum"
+  },
+  {
+    "name": "Flame of Albedo (Monster)",
+    "url": "https://aqwwiki.wikidot.com/flame-of-albedo-monster",
+    "location_name": "Forge Albedo",
+    "location_link": "/forge-albedo",
+    "total_hp": 300000,
+    "room": "forgealbedo"
+  },
+  {
+    "name": "Flame of Citrinitas (Monster)",
+    "url": "https://aqwwiki.wikidot.com/flame-of-citrinitas-monster",
+    "location_name": "Fort Luma",
+    "location_link": "/fort-luma",
+    "total_hp": 220000,
+    "room": "fortluma"
+  },
+  {
+    "name": "Flame of Maleno (Monster)",
+    "url": "https://aqwwiki.wikidot.com/flame-of-maleno-monster",
+    "location_name": "Thelima City",
+    "location_link": "/thelima-city",
+    "total_hp": 310000,
+    "room": "thelimacity"
+  },
+  {
+    "name": "Flame of Rubedo (Monster)",
+    "url": "https://aqwwiki.wikidot.com/flame-of-rubedo-monster",
+    "location_name": "Warwick Forest",
+    "location_link": "/warwick-forest",
+    "total_hp": 200000,
+    "room": "warwickforest"
+  },
+  {
+    "name": "Flame of the Beyond",
+    "url": "https://aqwwiki.wikidot.com/flame-of-the-beyond",
+    "location_name": "Magnum Opus",
+    "location_link": "/magnum-opus",
+    "total_hp": 1500000,
+    "room": "magnumopus"
+  },
+  {
+    "name": "Flamewing",
+    "url": "https://aqwwiki.wikidot.com/flamewing",
+    "location_name": "Firestorm Forge",
+    "location_link": "/firestorm-forge",
+    "total_hp": 319680,
+    "room": "fireforge"
+  },
+  {
+    "name": "Flibbitiestgibbet",
+    "url": "https://aqwwiki.wikidot.com/flibbitiestgibbet",
+    "location_name": "Void Flibbitiestgibbet",
+    "location_link": "/void-flibbitiestgibbet",
+    "total_hp": 1500000,
+    "room": "voidflibbi"
+  },
+  {
+    "name": "Flintfang (Monster)",
+    "url": "https://aqwwiki.wikidot.com/flintfang-monster",
+    "location_name": "Midnight War",
+    "location_link": "/midnight-war",
+    "total_hp": 99760,
+    "room": "midnightwar"
+  },
+  {
+    "name": "Forest Guardian",
+    "url": "https://aqwwiki.wikidot.com/forest-guardian",
+    "location_name": "Fable Forest",
+    "location_link": "/fable-forest",
+    "total_hp": 106350,
+    "room": "fableforest"
+  },
+  {
+    "name": "Fourth Lynaria",
+    "url": "https://aqwwiki.wikidot.com/fourth-lynaria",
+    "location_name": "Murder Moon",
+    "location_link": "/murder-moon",
+    "total_hp": 1000000,
+    "room": "murdermoon"
+  },
+  {
+    "name": "Fragment of Doom",
+    "url": "https://aqwwiki.wikidot.com/fragment-of-doom",
+    "location_name": "Shadow Void (Location)",
+    "location_link": "/shadow-void-location",
+    "total_hp": 326430,
+    "room": "shadowvoid"
+  },
+  {
+    "name": "Frost Dragon (3)",
+    "url": "https://aqwwiki.wikidot.com/frost-dragon-3",
+    "location_name": "Honor Hall",
+    "location_link": "/honor-hall",
+    "total_hp": 119760,
+    "room": "honorhall"
+  },
+  {
+    "name": "Frost Fang",
+    "url": "https://aqwwiki.wikidot.com/frost-fang",
+    "location_name": "Darkwinter",
+    "location_link": "/darkwinter",
+    "total_hp": 134140,
+    "room": "darkwinter"
+  },
+  {
+    "name": "Frost King",
+    "url": "https://aqwwiki.wikidot.com/frost-king",
+    "location_name": "King Coal",
+    "location_link": "/king-coal",
+    "total_hp": 116980,
+    "room": "kingcoal"
+  },
+  {
+    "name": "Frostspawn Horror",
+    "url": "https://aqwwiki.wikidot.com/frostspawn-horror",
+    "location_name": "Icewind Pass",
+    "location_link": "/icewind-pass",
+    "total_hp": 153590,
+    "room": "icewindpass"
+  },
+  {
+    "name": "Frostspinner Queen",
+    "url": "https://aqwwiki.wikidot.com/frostspinner-queen",
+    "location_name": "Frozen Queen",
+    "location_link": "/frozen-queen",
+    "total_hp": 175000,
+    "room": "frozenqueen"
+  },
+  {
+    "name": "Frostval Gifts",
+    "url": "https://aqwwiki.wikidot.com/frostval-gifts",
+    "location_name": null,
+    "location_link": null,
+    "total_hp": 202331,
+    "room": "frostvale"
+  },
+  {
+    "name": "Frozen Pyromancer (Monster)",
+    "url": "https://aqwwiki.wikidot.com/frozen-pyromancer-monster",
+    "location_name": "Underworld",
+    "location_link": "/underworld",
+    "total_hp": 209890,
+    "room": "underworld"
+  },
+  {
+    "name": "Gaiazor (Monster) (1)",
+    "url": "https://aqwwiki.wikidot.com/gaiazor-monster-1",
+    "location_name": "Dark Heart (Location)",
+    "location_link": "/dark-heart-location",
+    "total_hp": 239340,
+    "room": "darkheart"
+  },
+  {
+    "name": "Gaiazor (Monster) (2)",
+    "url": "https://aqwwiki.wikidot.com/gaiazor-monster-2",
+    "location_name": "Gaiazor (Location)",
+    "location_link": "/gaiazor-location",
+    "total_hp": 446190,
+    "room": "gaiazor"
+  },
+  {
+    "name": "Gallaeon",
+    "url": "https://aqwwiki.wikidot.com/gallaeon",
+    "location_name": "Doom Pirate",
+    "location_link": "/doom-pirate",
+    "total_hp": 220000,
+    "room": "doompirate"
+  },
+  {
+    "name": "Gedoz",
+    "url": "https://aqwwiki.wikidot.com/gedoz",
+    "location_name": "Djinn Gate",
+    "location_link": "/djinn-gate",
+    "total_hp": 136610,
+    "room": "djinngate"
+  },
+  {
+    "name": "Gem Forgemaster",
+    "url": "https://aqwwiki.wikidot.com/gem-forgemaster",
+    "location_name": "ChronoForge",
+    "location_link": "/chronoforge",
+    "total_hp": 325000,
+    "room": "chronogem"
+  },
+  {
+    "name": "General Drox",
+    "url": "https://aqwwiki.wikidot.com/general-drox",
+    "location_name": "Horc War (Location)",
+    "location_link": "/horc-war-location",
+    "total_hp": 137830,
+    "room": "warhorc"
+  },
+  {
+    "name": "General Goldhammer",
+    "url": "https://aqwwiki.wikidot.com/general-goldhammer",
+    "location_name": "Noxus Tower",
+    "location_link": "/noxus-tower",
+    "total_hp": 179260,
+    "room": "noxustower"
+  },
+  {
+    "name": "General Vaughn (Monster)",
+    "url": "https://aqwwiki.wikidot.com/general-vaughn-monster",
+    "location_name": "Reap Finals",
+    "location_link": "/reap-finals",
+    "total_hp": 500000,
+    "room": "reapfinals"
+  },
+  {
+    "name": "Ghostly Hasu",
+    "url": "https://aqwwiki.wikidot.com/ghostly-hasu",
+    "location_name": "Aozora Hills (Location)",
+    "location_link": "/aozora-hills-location",
+    "total_hp": 136610,
+    "room": "aozorahills"
+  },
+  {
+    "name": "Giant ChickenCow",
+    "url": "https://aqwwiki.wikidot.com/giant-chickencow",
+    "location_name": "Meateor Town",
+    "location_link": "/meateor-town",
+    "total_hp": 500000,
+    "room": "meateortown"
+  },
+  {
+    "name": "Gieferocious",
+    "url": "https://aqwwiki.wikidot.com/gieferocious",
+    "location_name": "Frostvale",
+    "location_link": "/frostvale",
+    "total_hp": 139480,
+    "room": "frostvale"
+  },
+  {
+    "name": "Giefurious",
+    "url": "https://aqwwiki.wikidot.com/giefurious",
+    "location_name": "Frostvale",
+    "location_link": "/frostvale",
+    "total_hp": 139480,
+    "room": "frostvale"
+  },
+  {
+    "name": "Giefury",
+    "url": "https://aqwwiki.wikidot.com/giefury",
+    "location_name": "Frostvale",
+    "location_link": "/frostvale",
+    "total_hp": 139480,
+    "room": "frostvale"
+  },
+  {
+    "name": "Giftblulu",
+    "url": "https://aqwwiki.wikidot.com/giftblulu",
+    "location_name": "Gifthulu (Location)",
+    "location_link": "/gifthulu-location",
+    "total_hp": 125860,
+    "room": "gifthulu"
+  },
+  {
+    "name": "Gifthulu (Monster)",
+    "url": "https://aqwwiki.wikidot.com/gifthulu-monster",
+    "location_name": "Gifthulu (Location)",
+    "location_link": "/gifthulu-location",
+    "total_hp": 125860,
+    "room": "gifthulu"
+  },
+  {
+    "name": "GleebleGlarble",
+    "url": "https://aqwwiki.wikidot.com/gleebleglarble",
+    "location_name": "Nursery",
+    "location_link": "/nursery",
+    "total_hp": 175880,
+    "room": "nursery"
+  },
+  {
+    "name": "Gluttony (Monster)",
+    "url": "https://aqwwiki.wikidot.com/gluttony-monster",
+    "location_name": "Seven Circles",
+    "location_link": "/seven-circles",
+    "total_hp": 109000,
+    "room": "sevencircles"
+  },
+  {
+    "name": "Goldun",
+    "url": "https://aqwwiki.wikidot.com/goldun",
+    "location_name": "Chaos Amulet",
+    "location_link": "/chaos-amulet",
+    "total_hp": 126860,
+    "room": "chaosamulet"
+  },
+  {
+    "name": "Goregold",
+    "url": "https://aqwwiki.wikidot.com/goregold",
+    "location_name": "Greed",
+    "location_link": "/greed",
+    "total_hp": 221220,
+    "room": "greed"
+  },
+  {
+    "name": "Gorgorath",
+    "url": "https://aqwwiki.wikidot.com/gorgorath",
+    "location_name": null,
+    "location_link": null,
+    "total_hp": 104540,
+    "room": "wrath"
+  },
+  {
+    "name": "Gramiel",
+    "url": "https://aqwwiki.wikidot.com/gramiel",
+    "location_name": "Trygve",
+    "location_link": "/trygve",
+    "total_hp": 180000,
+    "room": "trygve"
+  },
+  {
+    "name": "Grandmaster Gramiel (Monster)",
+    "url": "https://aqwwiki.wikidot.com/grandmaster-gramiel-monster",
+    "location_name": "Dawn Vindicators' Sanctum",
+    "location_link": "/dawn-vindicators-sanctum",
+    "total_hp": 190000,
+    "room": "dawnsanctum"
+  },
+  {
+    "name": "Graveclaw the Destroyer",
+    "url": "https://aqwwiki.wikidot.com/graveclaw-the-destroyer",
+    "location_name": "Grave Challenge",
+    "location_link": "/grave-challenge",
+    "total_hp": 1556100,
+    "room": "gravechallenge"
+  },
+  {
+    "name": "Gravelyn the Good (Monster)",
+    "url": "https://aqwwiki.wikidot.com/gravelyn-the-good-monster",
+    "location_name": "Brightshadow",
+    "location_link": "/brightshadow",
+    "total_hp": 270110,
+    "room": "brightshadow"
+  },
+  {
+    "name": "Grievous Inbunche",
+    "url": "https://aqwwiki.wikidot.com/grievous-inbunche",
+    "location_name": null,
+    "location_link": null,
+    "total_hp": 203570,
+    "room": "bosschallenge"
+  },
+  {
+    "name": "Grimlord Boss",
+    "url": "https://aqwwiki.wikidot.com/grimlord-boss",
+    "location_name": "ShadowBlast Arena",
+    "location_link": "/shadowblast-arena",
+    "total_hp": 99590,
+    "room": "shadowblast"
+  },
+  {
+    "name": "Grou'luu",
+    "url": "https://aqwwiki.wikidot.com/grou-luu",
+    "location_name": "Queen's Reign",
+    "location_link": "/queen-s-reign",
+    "total_hp": 100000,
+    "room": "queenreign"
+  },
+  {
+    "name": "Grrrberus",
+    "url": "https://aqwwiki.wikidot.com/grrrberus",
+    "location_name": "Dark Fortress (2)",
+    "location_link": "/dark-fortress-2",
+    "total_hp": 136460,
+    "room": "dagefortress"
+  },
+  {
+    "name": "Haruki Matsuoka (Monster)",
+    "url": "https://aqwwiki.wikidot.com/haruki-matsuoka-monster",
+    "location_name": "Victor Matsuri",
+    "location_link": "/victor-matsuri",
+    "total_hp": 300000,
+    "room": "victormatsuri"
+  },
+  {
+    "name": "Harvest Acromegalia",
+    "url": "https://aqwwiki.wikidot.com/harvest-acromegalia",
+    "location_name": "Eldritch Battletown",
+    "location_link": "/eldritch-battletown",
+    "total_hp": 250000,
+    "room": "eldritchbattletown"
+  },
+  {
+    "name": "Harvest Golem",
+    "url": "https://aqwwiki.wikidot.com/harvest-golem",
+    "location_name": "Feast War Evil",
+    "location_link": "/feast-war-evil",
+    "total_hp": 111180,
+    "room": "feastwarevil"
+  },
+  {
+    "name": "Harvest Queen (Monster)",
+    "url": "https://aqwwiki.wikidot.com/harvest-queen-monster",
+    "location_name": "Harvest Queen (Location)",
+    "location_link": "/harvest-queen-location",
+    "total_hp": 250000,
+    "room": "harvestqueen"
+  },
+  {
+    "name": "Headless Knight (Monster)",
+    "url": "https://aqwwiki.wikidot.com/headless-knight-monster",
+    "location_name": "Bocklin Castle",
+    "location_link": "/bocklin-castle",
+    "total_hp": 225000,
+    "room": "bocklincastle"
+  },
+  {
+    "name": "Heart of Chaos",
+    "url": "https://aqwwiki.wikidot.com/heart-of-chaos",
+    "location_name": "Laguna Beach",
+    "location_link": "/laguna-beach",
+    "total_hp": 201260,
+    "room": "lagunabeach"
+  },
+  {
+    "name": "Hebimaru",
+    "url": "https://aqwwiki.wikidot.com/hebimaru",
+    "location_name": "Dage Recruit",
+    "location_link": "/dage-recruit",
+    "total_hp": 130000,
+    "room": "dagerecruit"
+  },
+  {
+    "name": "Helsdottir",
+    "url": "https://aqwwiki.wikidot.com/helsdottir",
+    "location_name": "Helsgrove",
+    "location_link": "/helsgrove",
+    "total_hp": 300000,
+    "room": "helsgrove"
+  },
+  {
+    "name": "Hero (Boss) (4)",
+    "url": "https://aqwwiki.wikidot.com/hero-boss-4",
+    "location_name": "Vasalkar Lair - Attack (1)",
+    "location_link": "/vasalkar-lair-attack-1",
+    "total_hp": 106351,
+    "room": "lairattack"
+  },
+  {
+    "name": "Hero (Chaos Lord)",
+    "url": "https://aqwwiki.wikidot.com/hero-chaos-lord",
+    "location_name": "Chaos Lord",
+    "location_link": "/chaos-lord",
+    "total_hp": 100000,
+    "room": "chaoslord"
+  },
+  {
+    "name": "Hollowborn Judge (Monster)",
+    "url": "https://aqwwiki.wikidot.com/hollowborn-judge-monster",
+    "location_name": "Hollowborn Challenge",
+    "location_link": "/hollowborn-challenge",
+    "total_hp": 350000,
+    "room": "hbchallenge"
+  },
+  {
+    "name": "Hollowborn Lycan (Monster)",
+    "url": "https://aqwwiki.wikidot.com/hollowborn-lycan-monster",
+    "location_name": "Hollowborn Challenge",
+    "location_link": "/hollowborn-challenge",
+    "total_hp": 500000,
+    "room": "hbchallenge"
+  },
+  {
+    "name": "Hollowborn Nightmare (Monster)",
+    "url": "https://aqwwiki.wikidot.com/hollowborn-nightmare-monster",
+    "location_name": null,
+    "location_link": null,
+    "total_hp": 182890,
+    "room": "hbchallenge"
+  },
+  {
+    "name": "Hollowborn Vampire (Monster)",
+    "url": "https://aqwwiki.wikidot.com/hollowborn-vampire-monster",
+    "location_name": "Hollowborn Challenge",
+    "location_link": "/hollowborn-challenge",
+    "total_hp": 450000,
+    "room": "hbchallenge"
+  },
+  {
+    "name": "Horothotep",
+    "url": "https://aqwwiki.wikidot.com/horothotep",
+    "location_name": "Orb Hunt",
+    "location_link": "/orb-hunt",
+    "total_hp": 100000,
+    "room": "orbhunt"
+  },
+  {
+    "name": "Horseman of Death",
+    "url": "https://aqwwiki.wikidot.com/horseman-of-death",
+    "location_name": "Phlegethon Arena",
+    "location_link": "/phlegethon-arena",
+    "total_hp": 200000,
+    "room": "phlegethonarena"
+  },
+  {
+    "name": "Hot Mama (Monster)",
+    "url": "https://aqwwiki.wikidot.com/hot-mama-monster",
+    "location_name": "Battle Under E",
+    "location_link": "/battle-under-e",
+    "total_hp": 154780,
+    "room": "battleundere"
+  },
+  {
+    "name": "Hovercraft",
+    "url": "https://aqwwiki.wikidot.com/hovercraft",
+    "location_name": "Delta V Core",
+    "location_link": "/delta-v-core",
+    "total_hp": 182890,
+    "room": "deltavcore"
+  },
+  {
+    "name": "Howard's Grief",
+    "url": "https://aqwwiki.wikidot.com/howard-s-grief",
+    "location_name": "Howard's Hill",
+    "location_link": "/howard-s-hill",
+    "total_hp": 125860,
+    "room": "howardshill"
+  },
+  {
+    "name": "Howard's Rage",
+    "url": "https://aqwwiki.wikidot.com/howard-s-rage",
+    "location_name": "Winter Horror",
+    "location_link": "/winter-horror",
+    "total_hp": 125860,
+    "room": "winterhorror"
+  },
+  {
+    "name": "Hulking Castle Spider",
+    "url": "https://aqwwiki.wikidot.com/hulking-castle-spider",
+    "location_name": null,
+    "location_link": null,
+    "total_hp": 215390,
+    "room": "bosschallenge"
+  },
+  {
+    "name": "Human Clock (Monster)",
+    "url": "https://aqwwiki.wikidot.com/human-clock-monster",
+    "location_name": "The Magician's House",
+    "location_link": "/the-magician-s-house",
+    "total_hp": 121212,
+    "room": "magician"
+  },
+  {
+    "name": "Huntress Valais",
+    "url": "https://aqwwiki.wikidot.com/huntress-valais",
+    "location_name": "Otzi War",
+    "location_link": "/otzi-war",
+    "total_hp": 750000,
+    "room": "otziwar"
+  },
+  {
+    "name": "Hydra Crew",
+    "url": "https://aqwwiki.wikidot.com/hydra-crew",
+    "location_name": "Doom Pirate",
+    "location_link": "/doom-pirate",
+    "total_hp": 100000,
+    "room": "doompirate"
+  },
+  {
+    "name": "Hydra Head 65",
+    "url": "https://aqwwiki.wikidot.com/hydra-head-65",
+    "location_name": "Hydra Challenge",
+    "location_link": "/hydra-challenge",
+    "total_hp": 113880,
+    "room": "hydrachallenge"
+  },
+  {
+    "name": "Hydra Head 75",
+    "url": "https://aqwwiki.wikidot.com/hydra-head-75",
+    "location_name": "Hydra Challenge",
+    "location_link": "/hydra-challenge",
+    "total_hp": 172940,
+    "room": "hydrachallenge"
+  },
+  {
+    "name": "Hydra Head 85",
+    "url": "https://aqwwiki.wikidot.com/hydra-head-85",
+    "location_name": "Hydra Challenge",
+    "location_link": "/hydra-challenge",
+    "total_hp": 188620,
+    "room": "hydrachallenge"
+  },
+  {
+    "name": "Hydra Head 90",
+    "url": "https://aqwwiki.wikidot.com/hydra-head-90",
+    "location_name": "Hydra Challenge",
+    "location_link": "/hydra-challenge",
+    "total_hp": 206790,
+    "room": "hydrachallenge"
+  },
+  {
+    "name": "Iara (Monster)",
+    "url": "https://aqwwiki.wikidot.com/iara-monster",
+    "location_name": "Iara (Location)",
+    "location_link": "/iara-location",
+    "total_hp": 100000,
+    "room": "iara"
+  },
+  {
+    "name": "Icewing General",
+    "url": "https://aqwwiki.wikidot.com/icewing-general",
+    "location_name": "Icestorm Arena",
+    "location_link": "/icestorm-arena",
+    "total_hp": 128580,
+    "room": "icestormarena"
+  },
+  {
+    "name": "Icewing Terror",
+    "url": "https://aqwwiki.wikidot.com/icewing-terror",
+    "location_name": "Coliseum",
+    "location_link": "/coliseum",
+    "total_hp": 900000,
+    "room": "coliseum"
+  },
+  {
+    "name": "Idalion",
+    "url": "https://aqwwiki.wikidot.com/idalion",
+    "location_name": "Mount Maleno",
+    "location_link": "/mount-maleno",
+    "total_hp": 630000,
+    "room": "mountmaleno"
+  },
+  {
+    "name": "Idea of a Champion",
+    "url": "https://aqwwiki.wikidot.com/idea-of-a-champion",
+    "location_name": "Warwick Forest",
+    "location_link": "/warwick-forest",
+    "total_hp": 105000,
+    "room": "warwickforest"
+  },
+  {
+    "name": "Image of Crulon",
+    "url": "https://aqwwiki.wikidot.com/image-of-crulon",
+    "location_name": "Djinn Guardians",
+    "location_link": "/djinn-guardians",
+    "total_hp": 133880,
+    "room": "djinnguard"
+  },
+  {
+    "name": "Image of Glace",
+    "url": "https://aqwwiki.wikidot.com/image-of-glace",
+    "location_name": "Ice Dungeon",
+    "location_link": "/ice-dungeon",
+    "total_hp": 100000,
+    "room": "icedungeon"
+  },
+  {
+    "name": "Imperial Noxus (Monster)",
+    "url": "https://aqwwiki.wikidot.com/imperial-noxus-monster",
+    "location_name": "Necro Project",
+    "location_link": "/necro-project",
+    "total_hp": 1000000,
+    "room": "necroproject"
+  },
+  {
+    "name": "Infernal Guard Captain",
+    "url": "https://aqwwiki.wikidot.com/infernal-guard-captain",
+    "location_name": "Spire Past",
+    "location_link": "/spire-past",
+    "total_hp": 176010,
+    "room": "spirepast"
+  },
+  {
+    "name": "Infernal Krampus",
+    "url": "https://aqwwiki.wikidot.com/infernal-krampus",
+    "location_name": "Infernal Arena",
+    "location_link": "/infernal-arena",
+    "total_hp": 100000,
+    "room": "infernalarena"
+  },
+  {
+    "name": "Infernal Malxas",
+    "url": "https://aqwwiki.wikidot.com/infernal-malxas",
+    "location_name": "Infernal Paradise",
+    "location_link": "/infernal-paradise",
+    "total_hp": 135000,
+    "room": "infernalparadise"
+  },
+  {
+    "name": "Infinity Pool",
+    "url": "https://aqwwiki.wikidot.com/infinity-pool",
+    "location_name": "Oblivion Tundra",
+    "location_link": "/oblivion-tundra",
+    "total_hp": 1000000000,
+    "room": "obliviontundra"
+  },
+  {
+    "name": "Ivoliss (Monster)",
+    "url": "https://aqwwiki.wikidot.com/ivoliss-monster",
+    "location_name": "Ivoliss (Location)",
+    "location_link": "/ivoliss-location",
+    "total_hp": 133880,
+    "room": "ivoliss"
+  },
+  {
+    "name": "Izotz",
+    "url": "https://aqwwiki.wikidot.com/izotz",
+    "location_name": "North Mountain",
+    "location_link": "/north-mountain",
+    "total_hp": 142830,
+    "room": "northmountain"
+  },
+  {
+    "name": "J6 (Monster)",
+    "url": "https://aqwwiki.wikidot.com/j6-monster",
+    "location_name": "Saloon",
+    "location_link": "/saloon",
+    "total_hp": 488690,
+    "room": "saloon"
+  },
+  {
+    "name": "Jalnar",
+    "url": "https://aqwwiki.wikidot.com/jalnar",
+    "location_name": "ColdWind Valley",
+    "location_link": "/coldwind-valley",
+    "total_hp": 129050,
+    "room": "coldwindvalley"
+  },
+  {
+    "name": "Jing",
+    "url": "https://aqwwiki.wikidot.com/jing",
+    "location_name": "Zhu (Location)",
+    "location_link": "/zhu-location",
+    "total_hp": 99260,
+    "room": "zhu"
+  },
+  {
+    "name": "Jir'abin",
+    "url": "https://aqwwiki.wikidot.com/jir-abin",
+    "location_name": "Runed Woods",
+    "location_link": "/runed-woods",
+    "total_hp": 1156220,
+    "room": "runedwoods"
+  },
+  {
+    "name": "Jir'abin Challenge",
+    "url": "https://aqwwiki.wikidot.com/jir-abin-challenge",
+    "location_name": "Void Battle",
+    "location_link": "/void-battle",
+    "total_hp": 1156220,
+    "room": "voidbattle"
+  },
+  {
+    "name": "Jon S'Nooooooo",
+    "url": "https://aqwwiki.wikidot.com/jon-s-nooooooo",
+    "location_name": "Snowmore",
+    "location_link": "/snowmore",
+    "total_hp": 119460,
+    "room": "snowmore"
+  },
+  {
+    "name": "Kabasaran Waranei",
+    "url": "https://aqwwiki.wikidot.com/kabasaran-waranei",
+    "location_name": "Wentira",
+    "location_link": "/wentira",
+    "total_hp": 400000,
+    "room": "wentira"
+  },
+  {
+    "name": "Kala (Monster)",
+    "url": "https://aqwwiki.wikidot.com/kala-monster",
+    "location_name": "Kala (Location)",
+    "location_link": "/kala-location",
+    "total_hp": 200000,
+    "room": "kala"
+  },
+  {
+    "name": "Kalayo",
+    "url": "https://aqwwiki.wikidot.com/kalayo",
+    "location_name": "Lavarock Bay",
+    "location_link": "/lavarock-bay",
+    "total_hp": 500000,
+    "room": "lavarockbay"
+  },
+  {
+    "name": "Kall Haxa",
+    "url": "https://aqwwiki.wikidot.com/kall-haxa",
+    "location_name": "Frozen Balemorale Castle",
+    "location_link": "/frozen-balemorale-castle",
+    "total_hp": 150000,
+    "room": "frozenbalemorale"
+  },
+  {
+    "name": "Kalron the Cryptborg (Monster)",
+    "url": "https://aqwwiki.wikidot.com/kalron-the-cryptborg-monster",
+    "location_name": "Tech Dungeon",
+    "location_link": "/tech-dungeon",
+    "total_hp": 142830,
+    "room": "techdungeon"
+  },
+  {
+    "name": "Karok the Fallen (2)",
+    "url": "https://aqwwiki.wikidot.com/karok-the-fallen-2",
+    "location_name": "Frostval 2016",
+    "location_link": "/frostval-2016",
+    "total_hp": 315520,
+    "room": "icepike"
+  },
+  {
+    "name": "Kezeroth",
+    "url": "https://aqwwiki.wikidot.com/kezeroth",
+    "location_name": "IceRise Keep",
+    "location_link": "/icerise-keep",
+    "total_hp": 124260,
+    "room": "icerise"
+  },
+  {
+    "name": "Kezeroth, The World Ender",
+    "url": "https://aqwwiki.wikidot.com/kezeroth-the-world-ender",
+    "location_name": "World Ender",
+    "location_link": "/world-ender",
+    "total_hp": 26000000,
+    "room": "worldender"
+  },
+  {
+    "name": "Kha'in",
+    "url": "https://aqwwiki.wikidot.com/kha-in",
+    "location_name": "Djinn Valley",
+    "location_link": "/djinn-valley",
+    "total_hp": 8000000,
+    "room": "djinnvalley"
+  },
+  {
+    "name": "Killek BoneBreaker (Monster)",
+    "url": "https://aqwwiki.wikidot.com/killek-bonebreaker-monster",
+    "location_name": "BoneBreaker Fortress",
+    "location_link": "/bonebreaker-fortress",
+    "total_hp": 133420,
+    "room": "bonebreak"
+  },
+  {
+    "name": "Killek DeadChewer",
+    "url": "https://aqwwiki.wikidot.com/killek-deadchewer",
+    "location_name": "Lust",
+    "location_link": "/lust",
+    "total_hp": 133420,
+    "room": "lust"
+  },
+  {
+    "name": "King Almoravid",
+    "url": "https://aqwwiki.wikidot.com/king-almoravid",
+    "location_name": "Crulon's Wedding (Location)",
+    "location_link": "/crulon-s-wedding-location",
+    "total_hp": 145000,
+    "room": "crulonwed"
+  },
+  {
+    "name": "King Duncan",
+    "url": "https://aqwwiki.wikidot.com/king-duncan",
+    "location_name": "Lia Tara Hill",
+    "location_link": "/lia-tara-hill",
+    "total_hp": 140000,
+    "room": "liatarahill"
+  },
+  {
+    "name": "King of the Dark (Monster)",
+    "url": "https://aqwwiki.wikidot.com/king-of-the-dark-monster",
+    "location_name": "Castle Whistler",
+    "location_link": "/castle-whistler",
+    "total_hp": 800000,
+    "room": "castlewhistler"
+  },
+  {
+    "name": "King Zedek",
+    "url": "https://aqwwiki.wikidot.com/king-zedek",
+    "location_name": "Atlas Falls",
+    "location_link": "/atlas-falls",
+    "total_hp": 2000000,
+    "room": "atlasfalls"
+  },
+  {
+    "name": "Kitsune Himawari",
+    "url": "https://aqwwiki.wikidot.com/kitsune-himawari",
+    "location_name": "Victor Matsuri",
+    "location_link": "/victor-matsuri",
+    "total_hp": 100000,
+    "room": "victormatsuri"
+  },
+  {
+    "name": "Kitsune Kukol'nyy",
+    "url": "https://aqwwiki.wikidot.com/kitsune-kukol-nyy",
+    "location_name": "Yokai Portal",
+    "location_link": "/yokai-portal",
+    "total_hp": 150000,
+    "room": "yokaiportal"
+  },
+  {
+    "name": "Kitty Yu Yule",
+    "url": "https://aqwwiki.wikidot.com/kitty-yu-yule",
+    "location_name": "Yulecat",
+    "location_link": "/yulecat",
+    "total_hp": 200000,
+    "room": "yulecat"
+  },
+  {
+    "name": "Klashex",
+    "url": "https://aqwwiki.wikidot.com/klashex",
+    "location_name": "Kaiju War",
+    "location_link": "/kaiju-war",
+    "total_hp": 133880,
+    "room": "kaijuwar"
+  },
+  {
+    "name": "Kolr, Usurper of Flames",
+    "url": "https://aqwwiki.wikidot.com/kolr-usurper-of-flames",
+    "location_name": "Flame Usurper",
+    "location_link": "/flame-usurper",
+    "total_hp": 3000000,
+    "room": "flameusurper"
+  },
+  {
+    "name": "Krahen",
+    "url": "https://aqwwiki.wikidot.com/krahen",
+    "location_name": "Inner Shadows",
+    "location_link": "/inner-shadows",
+    "total_hp": 256450,
+    "room": "innershadows"
+  },
+  {
+    "name": "Krampus (Monster)",
+    "url": "https://aqwwiki.wikidot.com/krampus-monster",
+    "location_name": "Krampus (Location)",
+    "location_link": "/krampus-location",
+    "total_hp": 146070,
+    "room": "krampus"
+  },
+  {
+    "name": "Kriomein",
+    "url": "https://aqwwiki.wikidot.com/kriomein",
+    "location_name": "Glace's Tomb",
+    "location_link": "/glace-s-tomb",
+    "total_hp": 110000,
+    "room": "glacetomb"
+  },
+  {
+    "name": "La (Monster)",
+    "url": "https://aqwwiki.wikidot.com/la-monster",
+    "location_name": "Astravia Judgement",
+    "location_link": "/astravia-judgement",
+    "total_hp": 180000,
+    "room": "astraviajudge"
+  },
+  {
+    "name": "Ladon",
+    "url": "https://aqwwiki.wikidot.com/ladon",
+    "location_name": "Atlas Falls",
+    "location_link": "/atlas-falls",
+    "total_hp": 260000,
+    "room": "atlasfalls"
+  },
+  {
+    "name": "Lady Laidronette",
+    "url": "https://aqwwiki.wikidot.com/lady-laidronette",
+    "location_name": "Victor Matsuri",
+    "location_link": "/victor-matsuri",
+    "total_hp": 500000,
+    "room": "victormatsuri"
+  },
+  {
+    "name": "Lady Noelle",
+    "url": "https://aqwwiki.wikidot.com/lady-noelle",
+    "location_name": "Trench Observatory",
+    "location_link": "/trench-observatory",
+    "total_hp": 350000,
+    "room": "trenchobservatory"
+  },
+  {
+    "name": "Laken Clone 1.7",
+    "url": "https://aqwwiki.wikidot.com/laken-clone-1-7",
+    "location_name": "Reap Finals",
+    "location_link": "/reap-finals",
+    "total_hp": 125000,
+    "room": "reapfinals"
+  },
+  {
+    "name": "Laken Clone 2.3",
+    "url": "https://aqwwiki.wikidot.com/laken-clone-2-3",
+    "location_name": "Reap Finals",
+    "location_link": "/reap-finals",
+    "total_hp": 150000,
+    "room": "reapfinals"
+  },
+  {
+    "name": "Lascivia",
+    "url": "https://aqwwiki.wikidot.com/lascivia",
+    "location_name": "Lust",
+    "location_link": "/lust",
+    "total_hp": 151000,
+    "room": "lust"
+  },
+  {
+    "name": "Laser Memet",
+    "url": "https://aqwwiki.wikidot.com/laser-memet",
+    "location_name": "Fear House",
+    "location_link": "/fear-house",
+    "total_hp": 224700,
+    "room": "fearhouse"
+  },
+  {
+    "name": "Last Alutian",
+    "url": "https://aqwwiki.wikidot.com/last-alutian",
+    "location_name": "Alutea Nursery (Location)",
+    "location_link": "/alutea-nursery-location",
+    "total_hp": 200000,
+    "room": "aluteanursery"
+  },
+  {
+    "name": "Leanan Sidhe (Monster)",
+    "url": "https://aqwwiki.wikidot.com/leanan-sidhe-monster",
+    "location_name": "Castle Eblana",
+    "location_link": "/castle-eblana",
+    "total_hp": 750000,
+    "room": "castleeblana"
+  },
+  {
+    "name": "Legion Lich Lord (Monster)",
+    "url": "https://aqwwiki.wikidot.com/legion-lich-lord-monster",
+    "location_name": "Frozen Lair",
+    "location_link": "/frozen-lair",
+    "total_hp": 848160,
+    "room": "frozenlair"
+  },
+  {
+    "name": "Leviathan",
+    "url": "https://aqwwiki.wikidot.com/leviathan",
+    "location_name": "Twilight Zone",
+    "location_link": "/twilight-zone",
+    "total_hp": 230000,
+    "room": "twilightzone"
+  },
+  {
+    "name": "Leviathanius",
+    "url": "https://aqwwiki.wikidot.com/leviathanius",
+    "location_name": "Dragon Capital",
+    "location_link": "/dragon-capital",
+    "total_hp": 138000,
+    "room": "dragoncapital"
+  },
+  {
+    "name": "Lich Emperor",
+    "url": "https://aqwwiki.wikidot.com/lich-emperor",
+    "location_name": "Undead War (Location)",
+    "location_link": "/undead-war-location",
+    "total_hp": 102720,
+    "room": "warundead"
+  },
+  {
+    "name": "Lightguard Engine",
+    "url": "https://aqwwiki.wikidot.com/lightguard-engine",
+    "location_name": "Lightguard War (Location)",
+    "location_link": "/lightguard-war-location",
+    "total_hp": 179290,
+    "room": "lightguardwar"
+  },
+  {
+    "name": "Long Kukol'nyy",
+    "url": "https://aqwwiki.wikidot.com/long-kukol-nyy",
+    "location_name": "Haku War",
+    "location_link": "/haku-war",
+    "total_hp": 200000,
+    "room": "hakuwar"
+  },
+  {
+    "name": "Lord Reignolds",
+    "url": "https://aqwwiki.wikidot.com/lord-reignolds",
+    "location_name": "Dread Forest",
+    "location_link": "/dread-forest",
+    "total_hp": 250000,
+    "room": "dreadforest"
+  },
+  {
+    "name": "Luma Dragon Twins",
+    "url": "https://aqwwiki.wikidot.com/luma-dragon-twins",
+    "location_name": "Fort Luma",
+    "location_link": "/fort-luma",
+    "total_hp": 250000,
+    "room": "fortluma"
+  },
+  {
+    "name": "Luxuria",
+    "url": "https://aqwwiki.wikidot.com/luxuria",
+    "location_name": "Seven Circles",
+    "location_link": "/seven-circles",
+    "total_hp": 175880,
+    "room": "sevencircles"
+  },
+  {
+    "name": "Maah-na",
+    "url": "https://aqwwiki.wikidot.com/maah-na",
+    "location_name": "Champion Azalith",
+    "location_link": "/champion-azalith",
+    "total_hp": 100000,
+    "room": "champazalith"
+  },
+  {
+    "name": "Madam Ester",
+    "url": "https://aqwwiki.wikidot.com/madam-ester",
+    "location_name": "Tricktown",
+    "location_link": "/tricktown",
+    "total_hp": 103120,
+    "room": "tricktown"
+  },
+  {
+    "name": "Magpie Junk Heap",
+    "url": "https://aqwwiki.wikidot.com/magpie-junk-heap",
+    "location_name": "Junkhoard",
+    "location_link": "/junkhoard",
+    "total_hp": 167340,
+    "room": "junkhoard"
+  },
+  {
+    "name": "Mahou's Anguish",
+    "url": "https://aqwwiki.wikidot.com/mahou-s-anguish",
+    "location_name": "Ghost Nexus",
+    "location_link": "/ghost-nexus",
+    "total_hp": 136610,
+    "room": "ghostnexus"
+  },
+  {
+    "name": "Major Anomaly",
+    "url": "https://aqwwiki.wikidot.com/major-anomaly",
+    "location_name": "Eden City",
+    "location_link": "/eden-city",
+    "total_hp": 200000,
+    "room": "eden"
+  },
+  {
+    "name": "Maladrite",
+    "url": "https://aqwwiki.wikidot.com/maladrite",
+    "location_name": "Burning Beach",
+    "location_link": "/burning-beach",
+    "total_hp": 182890,
+    "room": "burningbeach"
+  },
+  {
+    "name": "Maleagant",
+    "url": "https://aqwwiki.wikidot.com/maleagant",
+    "location_name": "Cocytus Barracks",
+    "location_link": "/cocytus-barracks",
+    "total_hp": 250000,
+    "room": "cocytusbarracks"
+  },
+  {
+    "name": "Mal-formed Gar",
+    "url": "https://aqwwiki.wikidot.com/mal-formed-gar",
+    "location_name": "Time Keep",
+    "location_link": "/time-keep",
+    "total_hp": 600000,
+    "room": "timekeep"
+  },
+  {
+    "name": "Malgor (Monster) (1)",
+    "url": "https://aqwwiki.wikidot.com/malgor-monster-1",
+    "location_name": "Malgor (Location)",
+    "location_link": "/malgor-location",
+    "total_hp": 406700,
+    "room": "malgor"
+  },
+  {
+    "name": "Malgor (Monster) (2)",
+    "url": "https://aqwwiki.wikidot.com/malgor-monster-2",
+    "location_name": "Mana Cradle",
+    "location_link": "/mana-cradle",
+    "total_hp": 1700000,
+    "room": "manacradle"
+  },
+  {
+    "name": "Maloth (Monster)",
+    "url": "https://aqwwiki.wikidot.com/maloth-monster",
+    "location_name": "Maloth (Location)",
+    "location_link": "/maloth-location",
+    "total_hp": 133880,
+    "room": "maloth"
+  },
+  {
+    "name": "Malxas",
+    "url": "https://aqwwiki.wikidot.com/malxas",
+    "location_name": "Infernal Spire",
+    "location_link": "/infernal-spire",
+    "total_hp": 133880,
+    "room": "infernalspire"
+  },
+  {
+    "name": "Mananxiety",
+    "url": "https://aqwwiki.wikidot.com/mananxiety",
+    "location_name": "Mana Harvest",
+    "location_link": "/mana-harvest",
+    "total_hp": 110000,
+    "room": "manaharvest"
+  },
+  {
+    "name": "Marine Snow",
+    "url": "https://aqwwiki.wikidot.com/marine-snow",
+    "location_name": "Sunlight Zone",
+    "location_link": "/sunlight-zone",
+    "total_hp": 210000,
+    "room": "sunlightzone"
+  },
+  {
+    "name": "Masakado (Monster)",
+    "url": "https://aqwwiki.wikidot.com/masakado-monster",
+    "location_name": "Victor Matsuri",
+    "location_link": "/victor-matsuri",
+    "total_hp": 2000000,
+    "room": "victormatsuri"
+  },
+  {
+    "name": "Mask of Tranquility",
+    "url": "https://aqwwiki.wikidot.com/mask-of-tranquility",
+    "location_name": "World's Core",
+    "location_link": "/world-s-core",
+    "total_hp": 1500000,
+    "room": "worldscore"
+  },
+  {
+    "name": "Massive Dire Wolf",
+    "url": "https://aqwwiki.wikidot.com/massive-dire-wolf",
+    "location_name": "Battleground F",
+    "location_link": "/battleground-f",
+    "total_hp": 144360,
+    "room": "battlegroundf"
+  },
+  {
+    "name": "Master Chairman",
+    "url": "https://aqwwiki.wikidot.com/master-chairman",
+    "location_name": "EbilCorp HQ",
+    "location_link": "/ebilcorp-hq",
+    "total_hp": 150000,
+    "room": "ebilcorphq"
+  },
+  {
+    "name": "M'Boi",
+    "url": "https://aqwwiki.wikidot.com/m-boi",
+    "location_name": "Yguasu River",
+    "location_link": "/yguasu-river",
+    "total_hp": 120000,
+    "room": "yguasu"
+  },
+  {
+    "name": "MechaVortrix",
+    "url": "https://aqwwiki.wikidot.com/mechavortrix",
+    "location_name": "Tech Fortress",
+    "location_link": "/tech-fortress",
+    "total_hp": 294790,
+    "room": "techfortress"
+  },
+  {
+    "name": "Memory Leech",
+    "url": "https://aqwwiki.wikidot.com/memory-leech",
+    "location_name": "Holiday Hotel",
+    "location_link": "/holiday-hotel",
+    "total_hp": 130000,
+    "room": "holidayhotel"
+  },
+  {
+    "name": "Mercutio (Monster)",
+    "url": "https://aqwwiki.wikidot.com/mercutio-monster",
+    "location_name": "Mercutio (Location)",
+    "location_link": "/mercutio-location",
+    "total_hp": 109900,
+    "room": "mercutio"
+  },
+  {
+    "name": "Merpyre",
+    "url": "https://aqwwiki.wikidot.com/merpyre",
+    "location_name": "Blood Isles",
+    "location_link": "/blood-isles",
+    "total_hp": 200000,
+    "room": "bloodisles"
+  },
+  {
+    "name": "Metamorphosis Maw",
+    "url": "https://aqwwiki.wikidot.com/metamorphosis-maw",
+    "location_name": "Camlan Forest",
+    "location_link": "/camlan-forest",
+    "total_hp": 340000,
+    "room": "camlan"
+  },
+  {
+    "name": "Mikoto Kukol'nyy",
+    "url": "https://aqwwiki.wikidot.com/mikoto-kukol-nyy",
+    "location_name": "Yokai Realm",
+    "location_link": "/yokai-realm",
+    "total_hp": 1000000,
+    "room": "yokairealm"
+  },
+  {
+    "name": "Min'et's Corpse",
+    "url": "https://aqwwiki.wikidot.com/min-et-s-corpse",
+    "location_name": "Time Retaliate",
+    "location_link": "/time-retaliate",
+    "total_hp": 150000,
+    "room": "timeretaliate"
+  },
+  {
+    "name": "Minos",
+    "url": "https://aqwwiki.wikidot.com/minos",
+    "location_name": "Judgement",
+    "location_link": "/judgement",
+    "total_hp": 130710,
+    "room": "judgement"
+  },
+  {
+    "name": "Mockingbird",
+    "url": "https://aqwwiki.wikidot.com/mockingbird",
+    "location_name": "Holiday Horror",
+    "location_link": "/holiday-horror",
+    "total_hp": 200217,
+    "room": "holidayhorror"
+  },
+  {
+    "name": "Module 005",
+    "url": "https://aqwwiki.wikidot.com/module-005",
+    "location_name": "Hollowborn Challenge",
+    "location_link": "/hollowborn-challenge",
+    "total_hp": 400000,
+    "room": "hbchallenge"
+  },
+  {
+    "name": "Mogdring",
+    "url": "https://aqwwiki.wikidot.com/mogdring",
+    "location_name": "Musty Cave",
+    "location_link": "/musty-cave",
+    "total_hp": 126860,
+    "room": "mustycave"
+  },
+  {
+    "name": "Mogugudra",
+    "url": "https://aqwwiki.wikidot.com/mogugudra",
+    "location_name": "Ebil Mega Mall",
+    "location_link": "/ebil-mega-mall",
+    "total_hp": 200000,
+    "room": "ebilmegamall"
+  },
+  {
+    "name": "Mr. Wubbles (Monster)",
+    "url": "https://aqwwiki.wikidot.com/mr-wubbles-monster",
+    "location_name": "Wubblevania",
+    "location_link": "/wubblevania",
+    "total_hp": 99260,
+    "room": "wubblevania"
+  },
+  {
+    "name": "Mutated Void Dragon",
+    "url": "https://aqwwiki.wikidot.com/mutated-void-dragon",
+    "location_name": null,
+    "location_link": null,
+    "total_hp": 414050,
+    "room": "bosschallenge"
+  },
+  {
+    "name": "Mutou Hong",
+    "url": "https://aqwwiki.wikidot.com/mutou-hong",
+    "location_name": "Yokai Hunt",
+    "location_link": "/yokai-hunt",
+    "total_hp": 122024,
+    "room": "yokaihunt"
+  },
+  {
+    "name": "Mysterious Stranger (Monster) (3)",
+    "url": "https://aqwwiki.wikidot.com/mysterious-stranger-monster-3",
+    "location_name": "Shadow Battleon",
+    "location_link": "/shadow-battleon",
+    "total_hp": 666666,
+    "room": "shadowbattleon"
+  },
+  {
+    "name": "Na'al",
+    "url": "https://aqwwiki.wikidot.com/na-al",
+    "location_name": "Infernal Arena",
+    "location_link": "/infernal-arena",
+    "total_hp": 1500000,
+    "room": "infernalarena"
+  },
+  {
+    "name": "Nameless Dragonlord",
+    "url": "https://aqwwiki.wikidot.com/nameless-dragonlord",
+    "location_name": "Hollowborn Challenge",
+    "location_link": "/hollowborn-challenge",
+    "total_hp": 600000,
+    "room": "hbchallenge"
+  },
+  {
+    "name": "Narcis Arrhythmia (Monster)",
+    "url": "https://aqwwiki.wikidot.com/narcis-arrhythmia-monster",
+    "location_name": "Victor Matsuri",
+    "location_link": "/victor-matsuri",
+    "total_hp": 150000,
+    "room": "victormatsuri"
+  },
+  {
+    "name": "NeOni",
+    "url": "https://aqwwiki.wikidot.com/neoni",
+    "location_name": "Victor Matsuri",
+    "location_link": "/victor-matsuri",
+    "total_hp": 125000,
+    "room": "victormatsuri"
+  },
+  {
+    "name": "Nereid Princess",
+    "url": "https://aqwwiki.wikidot.com/nereid-princess",
+    "location_name": "Sunken City",
+    "location_link": "/sunken-city",
+    "total_hp": 1000000,
+    "room": "sunkencity"
+  },
+  {
+    "name": "Nerites (Monster)",
+    "url": "https://aqwwiki.wikidot.com/nerites-monster",
+    "location_name": "Nerites (Location)",
+    "location_link": "/nerites-location",
+    "total_hp": 3000000,
+    "room": "nerites"
+  },
+  {
+    "name": "Nevanna",
+    "url": "https://aqwwiki.wikidot.com/nevanna",
+    "location_name": "Gaiazor (Location)",
+    "location_link": "/gaiazor-location",
+    "total_hp": 245360,
+    "room": "gaiazor"
+  },
+  {
+    "name": "Nightbane",
+    "url": "https://aqwwiki.wikidot.com/nightbane",
+    "location_name": "Void Nightbane",
+    "location_link": "/void-nightbane",
+    "total_hp": 500000,
+    "room": "voidnightbane"
+  },
+  {
+    "name": "Nightlocke Axe",
+    "url": "https://aqwwiki.wikidot.com/nightlocke-axe",
+    "location_name": "3D Battleon",
+    "location_link": "/3d-battleon",
+    "total_hp": 133880,
+    "room": "aqw3d"
+  },
+  {
+    "name": "Nightmare Carnax",
+    "url": "https://aqwwiki.wikidot.com/nightmare-carnax",
+    "location_name": "Dark Carnax",
+    "location_link": "/dark-carnax",
+    "total_hp": 5000000,
+    "room": "darkcarnax"
+  },
+  {
+    "name": "Nightmare Zorbak",
+    "url": "https://aqwwiki.wikidot.com/nightmare-zorbak",
+    "location_name": "MoonLab",
+    "location_link": "/moonlab",
+    "total_hp": 216830,
+    "room": "moonlab"
+  },
+  {
+    "name": "Nomlem",
+    "url": "https://aqwwiki.wikidot.com/nomlem",
+    "location_name": "Feast War Good",
+    "location_link": "/feast-war-good",
+    "total_hp": 165440,
+    "room": "feastwargood"
+  },
+  {
+    "name": "Nomura",
+    "url": "https://aqwwiki.wikidot.com/nomura",
+    "location_name": "Cetoleon War",
+    "location_link": "/cetoleon-war",
+    "total_hp": 129050,
+    "room": "cetoleonwar"
+  },
+  {
+    "name": "Nova Empyrean",
+    "url": "https://aqwwiki.wikidot.com/nova-empyrean",
+    "location_name": "Nova Shrine",
+    "location_link": "/nova-shrine",
+    "total_hp": 280000,
+    "room": "novashrine"
+  },
+  {
+    "name": "Noxborg",
+    "url": "https://aqwwiki.wikidot.com/noxborg",
+    "location_name": "Necro Project",
+    "location_link": "/necro-project",
+    "total_hp": 142830,
+    "room": "necroproject"
+  },
+  {
+    "name": "Noxore",
+    "url": "https://aqwwiki.wikidot.com/noxore",
+    "location_name": "Necro Project",
+    "location_link": "/necro-project",
+    "total_hp": 350000,
+    "room": "necroproject"
+  },
+  {
+    "name": "Noxustrian",
+    "url": "https://aqwwiki.wikidot.com/noxustrian",
+    "location_name": "Necro Project",
+    "location_link": "/necro-project",
+    "total_hp": 866680,
+    "room": "necroproject"
+  },
+  {
+    "name": "Nulgath's Fiend Shard",
+    "url": "https://aqwwiki.wikidot.com/nulgath-s-fiend-shard",
+    "location_name": "Fiendshard",
+    "location_link": "/fiendshard",
+    "total_hp": 275440,
+    "room": "fiendshard"
+  },
+  {
+    "name": "Oblivion's Herald",
+    "url": "https://aqwwiki.wikidot.com/oblivion-s-herald",
+    "location_name": "Deleuze Tundra",
+    "location_link": "/deleuze-tundra",
+    "total_hp": 250000,
+    "room": "deleuzetundra"
+  },
+  {
+    "name": "Odium",
+    "url": "https://aqwwiki.wikidot.com/odium",
+    "location_name": "Greyguard",
+    "location_link": "/greyguard",
+    "total_hp": 100000,
+    "room": "greyguard"
+  },
+  {
+    "name": "Oh'Garr",
+    "url": "https://aqwwiki.wikidot.com/oh-garr",
+    "location_name": "Shadowsong",
+    "location_link": "/shadowsong",
+    "total_hp": 239340,
+    "room": "shadowsong"
+  },
+  {
+    "name": "Oizys",
+    "url": "https://aqwwiki.wikidot.com/oizys",
+    "location_name": "Lethe",
+    "location_link": "/lethe",
+    "total_hp": 750000,
+    "room": "lethe"
+  },
+  {
+    "name": "Oni",
+    "url": "https://aqwwiki.wikidot.com/oni",
+    "location_name": "Parades (Location)",
+    "location_link": "/parades-location",
+    "total_hp": 111170,
+    "room": "parades"
+  },
+  {
+    "name": "Onyx Lava Dragon",
+    "url": "https://aqwwiki.wikidot.com/onyx-lava-dragon",
+    "location_name": "Vasalkar's Lair",
+    "location_link": "/vasalkar-s-lair",
+    "total_hp": 116830,
+    "room": "lair"
+  },
+  {
+    "name": "Oubliette",
+    "url": "https://aqwwiki.wikidot.com/oubliette",
+    "location_name": "Tunnel of Love",
+    "location_link": "/tunnel-of-love",
+    "total_hp": 140000,
+    "room": "tunneloflove"
+  },
+  {
+    "name": "Paladin Arondight (Monster)",
+    "url": "https://aqwwiki.wikidot.com/paladin-arondight-monster",
+    "location_name": "Legion Barracks",
+    "location_link": "/legion-barracks",
+    "total_hp": 150000,
+    "room": "legionbarracks"
+  },
+  {
+    "name": "Paragon of Light (Monster)",
+    "url": "https://aqwwiki.wikidot.com/paragon-of-light-monster",
+    "location_name": "Bright Fortress (Location)",
+    "location_link": "/bright-fortress-location",
+    "total_hp": 106640,
+    "room": "brightfortress"
+  },
+  {
+    "name": "Perfect Beiza",
+    "url": "https://aqwwiki.wikidot.com/perfect-beiza",
+    "location_name": "Dragon Road",
+    "location_link": "/dragon-road",
+    "total_hp": 186660,
+    "room": "dragonroad"
+  },
+  {
+    "name": "Permafrost Dragon",
+    "url": "https://aqwwiki.wikidot.com/permafrost-dragon",
+    "location_name": "Skades Pass",
+    "location_link": "/skades-pass",
+    "total_hp": 1200000,
+    "room": "skadespass"
+  },
+  {
+    "name": "Phantom Jaws",
+    "url": "https://aqwwiki.wikidot.com/phantom-jaws",
+    "location_name": "Pirate Alliance",
+    "location_link": "/pirate-alliance",
+    "total_hp": 150000,
+    "room": "piratealliance"
+  },
+  {
+    "name": "Pharaoh Neith",
+    "url": "https://aqwwiki.wikidot.com/pharaoh-neith",
+    "location_name": "Hidden Duat",
+    "location_link": "/hidden-duat",
+    "total_hp": 140000,
+    "room": "hiddenduat"
+  },
+  {
+    "name": "Phlegnn",
+    "url": "https://aqwwiki.wikidot.com/phlegnn",
+    "location_name": "Sloth",
+    "location_link": "/sloth",
+    "total_hp": 221220,
+    "room": "sloth"
+  },
+  {
+    "name": "Pinky",
+    "url": "https://aqwwiki.wikidot.com/pinky",
+    "location_name": "Swaggy's Chateau",
+    "location_link": "/swaggy-s-chateau",
+    "total_hp": 179290,
+    "room": "chateau"
+  },
+  {
+    "name": "Pirate Queen Teja (Monster)",
+    "url": "https://aqwwiki.wikidot.com/pirate-queen-teja-monster",
+    "location_name": "Granite Cove",
+    "location_link": "/granite-cove",
+    "total_hp": 119460,
+    "room": "granitecove"
+  },
+  {
+    "name": "Potion Spider",
+    "url": "https://aqwwiki.wikidot.com/potion-spider",
+    "location_name": "Fear House",
+    "location_link": "/fear-house",
+    "total_hp": 139480,
+    "room": "fearhouse"
+  },
+  {
+    "name": "Prince Drakath",
+    "url": "https://aqwwiki.wikidot.com/prince-drakath",
+    "location_name": "Final Showdown",
+    "location_link": "/final-showdown",
+    "total_hp": 125000,
+    "room": "finalshowdown"
+  },
+  {
+    "name": "Princess Arethusa (Monster)",
+    "url": "https://aqwwiki.wikidot.com/princess-arethusa-monster",
+    "location_name": "Atlas Falls",
+    "location_link": "/atlas-falls",
+    "total_hp": 1000000,
+    "room": "atlasfalls"
+  },
+  {
+    "name": "Prismata",
+    "url": "https://aqwwiki.wikidot.com/prismata",
+    "location_name": "Archmage (Location)",
+    "location_link": "/archmage-location",
+    "total_hp": 500000,
+    "room": "archmage"
+  },
+  {
+    "name": "Proto Chaos Champion",
+    "url": "https://aqwwiki.wikidot.com/proto-chaos-champion",
+    "location_name": "Queen's Battle",
+    "location_link": "/queen-s-battle",
+    "total_hp": 200000,
+    "room": "queenbattle"
+  },
+  {
+    "name": "Queen Iona",
+    "url": "https://aqwwiki.wikidot.com/queen-iona",
+    "location_name": "Queen Iona Challenge Fight",
+    "location_link": "/queen-iona-challenge-fight",
+    "total_hp": 1000000,
+    "room": "queeniona"
+  },
+  {
+    "name": "Queen Meresankh",
+    "url": "https://aqwwiki.wikidot.com/queen-meresankh",
+    "location_name": "Meresankh Chambers",
+    "location_link": "/meresankh-chambers",
+    "total_hp": 250000,
+    "room": "meresankhchambers"
+  },
+  {
+    "name": "Queen of Envy",
+    "url": "https://aqwwiki.wikidot.com/queen-of-envy",
+    "location_name": "Envy (Location) (1)",
+    "location_link": "/envy-location-1",
+    "total_hp": 182890,
+    "room": "envy"
+  },
+  {
+    "name": "Queen of Monsters (Monster) (1)",
+    "url": "https://aqwwiki.wikidot.com/queen-of-monsters-monster-1",
+    "location_name": "Transformation",
+    "location_link": "/transformation",
+    "total_hp": 359750,
+    "room": "transformation"
+  },
+  {
+    "name": "Queen of Monsters (Monster) (2)",
+    "url": "https://aqwwiki.wikidot.com/queen-of-monsters-monster-2",
+    "location_name": "Queen's Battle",
+    "location_link": "/queen-s-battle",
+    "total_hp": 660000,
+    "room": "queenbattle"
+  },
+  {
+    "name": "Queen Victoria (Monster)",
+    "url": "https://aqwwiki.wikidot.com/queen-victoria-monster",
+    "location_name": "Balemorale",
+    "location_link": "/balemorale",
+    "total_hp": 300000,
+    "room": "balemorale"
+  },
+  {
+    "name": "Quetzal (Monster)",
+    "url": "https://aqwwiki.wikidot.com/quetzal-monster",
+    "location_name": "Orb Hunt",
+    "location_link": "/orb-hunt",
+    "total_hp": 175000,
+    "room": "orbhunt"
+  },
+  {
+    "name": "Rangda (Monster)",
+    "url": "https://aqwwiki.wikidot.com/rangda-monster",
+    "location_name": "Rangda (Location)",
+    "location_link": "/rangda-location",
+    "total_hp": 179290,
+    "room": "rangda"
+  },
+  {
+    "name": "RawrGobble",
+    "url": "https://aqwwiki.wikidot.com/rawrgobble",
+    "location_name": "Birds with Harms",
+    "location_link": "/birds-with-harms",
+    "total_hp": 120000,
+    "room": "birdswithharms"
+  },
+  {
+    "name": "Rax-goreless",
+    "url": "https://aqwwiki.wikidot.com/rax-goreless",
+    "location_name": "Lich War",
+    "location_link": "/lich-war",
+    "total_hp": 225000,
+    "room": "lichwar"
+  },
+  {
+    "name": "Re (Monster)",
+    "url": "https://aqwwiki.wikidot.com/re-monster",
+    "location_name": "The World",
+    "location_link": "/the-world",
+    "total_hp": 140000,
+    "room": "theworld"
+  },
+  {
+    "name": "Reaper",
+    "url": "https://aqwwiki.wikidot.com/reaper",
+    "location_name": "The Void",
+    "location_link": "/the-void",
+    "total_hp": 507750,
+    "room": "thevoid"
+  },
+  {
+    "name": "Red Hare",
+    "url": "https://aqwwiki.wikidot.com/red-hare",
+    "location_name": "Yokai Hunt",
+    "location_link": "/yokai-hunt",
+    "total_hp": 302026,
+    "room": "yokaihunt"
+  },
+  {
+    "name": "Reject Pile",
+    "url": "https://aqwwiki.wikidot.com/reject-pile",
+    "location_name": "Zorbot (Location)",
+    "location_link": "/zorbot-location",
+    "total_hp": 106640,
+    "room": "zorbot"
+  },
+  {
+    "name": "Retrograde Maw",
+    "url": "https://aqwwiki.wikidot.com/retrograde-maw",
+    "location_name": "Time Retaliate",
+    "location_link": "/time-retaliate",
+    "total_hp": 100000,
+    "room": "timeretaliate"
+  },
+  {
+    "name": "Rhadamanthys",
+    "url": "https://aqwwiki.wikidot.com/rhadamanthys",
+    "location_name": "Judgement",
+    "location_link": "/judgement",
+    "total_hp": 120560,
+    "room": "judgement"
+  },
+  {
+    "name": "Rigaud & Cassie",
+    "url": "https://aqwwiki.wikidot.com/rigaud-cassie",
+    "location_name": "Fort Luma",
+    "location_link": "/fort-luma",
+    "total_hp": 102000,
+    "room": "fortluma"
+  },
+  {
+    "name": "Rigaud the Forsaken",
+    "url": "https://aqwwiki.wikidot.com/rigaud-the-forsaken",
+    "location_name": "Carcossa Court",
+    "location_link": "/carcossa-court",
+    "total_hp": 280000,
+    "room": "carcossacourt"
+  },
+  {
+    "name": "Rotfinger",
+    "url": "https://aqwwiki.wikidot.com/rotfinger",
+    "location_name": "Rot Finger",
+    "location_link": "/rot-finger",
+    "total_hp": 130000,
+    "room": "rotfinger"
+  },
+  {
+    "name": "Royce",
+    "url": "https://aqwwiki.wikidot.com/royce",
+    "location_name": "Crescent Moon",
+    "location_link": "/crescent-moon",
+    "total_hp": 500000,
+    "room": "crescentmoon"
+  },
+  {
+    "name": "Saint Apa",
+    "url": "https://aqwwiki.wikidot.com/saint-apa",
+    "location_name": "Shinkansen",
+    "location_link": "/shinkansen",
+    "total_hp": 200000,
+    "room": "shinkansen"
+  },
+  {
+    "name": "Saint Eta",
+    "url": "https://aqwwiki.wikidot.com/saint-eta",
+    "location_name": "Shinkansen",
+    "location_link": "/shinkansen",
+    "total_hp": 100000,
+    "room": "shinkansen"
+  },
+  {
+    "name": "Sa-Laatan",
+    "url": "https://aqwwiki.wikidot.com/sa-laatan",
+    "location_name": "Queen's Reign",
+    "location_link": "/queen-s-reign",
+    "total_hp": 150000,
+    "room": "queenreign"
+  },
+  {
+    "name": "Salek Sprayer",
+    "url": "https://aqwwiki.wikidot.com/salek-sprayer",
+    "location_name": "Void Salek",
+    "location_link": "/void-salek",
+    "total_hp": 1005844,
+    "room": "voidsalek"
+  },
+  {
+    "name": "Salvaza (Monster)",
+    "url": "https://aqwwiki.wikidot.com/salvaza-monster",
+    "location_name": "Fezzini",
+    "location_link": "/fezzini",
+    "total_hp": 175880,
+    "room": "fezzini"
+  },
+  {
+    "name": "Sarah the NerfKitten",
+    "url": "https://aqwwiki.wikidot.com/sarah-the-nerfkitten",
+    "location_name": "Void NerfKitten",
+    "location_link": "/void-nerfkitten",
+    "total_hp": 5000000,
+    "room": "voidnerfkitten"
+  },
+  {
+    "name": "Sarah the NiceKitten",
+    "url": "https://aqwwiki.wikidot.com/sarah-the-nicekitten",
+    "location_name": "Coliseum",
+    "location_link": "/coliseum",
+    "total_hp": 125000,
+    "room": "coliseum"
+  },
+  {
+    "name": "Scalebeard",
+    "url": "https://aqwwiki.wikidot.com/scalebeard",
+    "location_name": "Dragonpirate",
+    "location_link": "/dragonpirate",
+    "total_hp": 138000,
+    "room": "dragonpirate"
+  },
+  {
+    "name": "Screamfeeder",
+    "url": "https://aqwwiki.wikidot.com/screamfeeder",
+    "location_name": "Dream Maze",
+    "location_link": "/dream-maze",
+    "total_hp": 120040,
+    "room": "dreammaze"
+  },
+  {
+    "name": "Scurvyfins McKrill",
+    "url": "https://aqwwiki.wikidot.com/scurvyfins-mckrill",
+    "location_name": "Heart of the Sea",
+    "location_link": "/heart-of-the-sea",
+    "total_hp": 175880,
+    "room": "heartofthesea"
+  },
+  {
+    "name": "Sea King Gravefang (Monster)",
+    "url": "https://aqwwiki.wikidot.com/sea-king-gravefang-monster",
+    "location_name": "Blood Testament Isles",
+    "location_link": "/blood-testament-isles",
+    "total_hp": 500000,
+    "room": "seakingkurok"
+  },
+  {
+    "name": "Sea King Kurok",
+    "url": "https://aqwwiki.wikidot.com/sea-king-kurok",
+    "location_name": "Blood Isles",
+    "location_link": "/blood-isles",
+    "total_hp": 100000,
+    "room": "bloodisles"
+  },
+  {
+    "name": "Seafoam Elemental",
+    "url": "https://aqwwiki.wikidot.com/seafoam-elemental",
+    "location_name": "Ashray",
+    "location_link": "/ashray",
+    "total_hp": 200000,
+    "room": "ashray"
+  },
+  {
+    "name": "Second Speaker",
+    "url": "https://aqwwiki.wikidot.com/second-speaker",
+    "location_name": "Timestream War",
+    "location_link": "/timestream-war",
+    "total_hp": 1000000,
+    "room": "timestreamwar"
+  },
+  {
+    "name": "Sepulchuroth",
+    "url": "https://aqwwiki.wikidot.com/sepulchuroth",
+    "location_name": "ShadowStrike",
+    "location_link": "/shadowstrike",
+    "total_hp": 143220,
+    "room": "shadowstrike"
+  },
+  {
+    "name": "Serepthys (Monster)",
+    "url": "https://aqwwiki.wikidot.com/serepthys-monster",
+    "location_name": "Yasaris",
+    "location_link": "/yasaris",
+    "total_hp": 996660,
+    "room": "yasaris"
+  },
+  {
+    "name": "Shade of Kyanos (Monster)",
+    "url": "https://aqwwiki.wikidot.com/shade-of-kyanos-monster",
+    "location_name": "Ice Dungeon",
+    "location_link": "/ice-dungeon",
+    "total_hp": 120000,
+    "room": "icedungeon"
+  },
+  {
+    "name": "Shadefire Colonel",
+    "url": "https://aqwwiki.wikidot.com/shadefire-colonel",
+    "location_name": "Fire Invasion",
+    "location_link": "/fire-invasion",
+    "total_hp": 175000,
+    "room": "fireinvasion"
+  },
+  {
+    "name": "Shadefire General",
+    "url": "https://aqwwiki.wikidot.com/shadefire-general",
+    "location_name": "Fire Invasion",
+    "location_link": "/fire-invasion",
+    "total_hp": 100000,
+    "room": "fireinvasion"
+  },
+  {
+    "name": "Shadefire Major",
+    "url": "https://aqwwiki.wikidot.com/shadefire-major",
+    "location_name": "Fire Invasion",
+    "location_link": "/fire-invasion",
+    "total_hp": 250000,
+    "room": "fireinvasion"
+  },
+  {
+    "name": "Shadow Destroyer",
+    "url": "https://aqwwiki.wikidot.com/shadow-destroyer",
+    "location_name": "ShadowBlast Arena",
+    "location_link": "/shadowblast-arena",
+    "total_hp": 99510,
+    "room": "shadowblast"
+  },
+  {
+    "name": "Shadow Fernando",
+    "url": "https://aqwwiki.wikidot.com/shadow-fernando",
+    "location_name": "Black Maze",
+    "location_link": "/black-maze",
+    "total_hp": 300000,
+    "room": "blackmaze"
+  },
+  {
+    "name": "Shadow of Malphas",
+    "url": "https://aqwwiki.wikidot.com/shadow-of-malphas",
+    "location_name": "Sramol Woes",
+    "location_link": "/sramol-woes",
+    "total_hp": 175000,
+    "room": "sramolwoes"
+  },
+  {
+    "name": "Shadow Rider",
+    "url": "https://aqwwiki.wikidot.com/shadow-rider",
+    "location_name": "Hollowborn Challenge",
+    "location_link": "/hollowborn-challenge",
+    "total_hp": 155390,
+    "room": "hbchallenge"
+  },
+  {
+    "name": "ShadowClaw",
+    "url": "https://aqwwiki.wikidot.com/shadowclaw",
+    "location_name": "Fire Plane Invasion",
+    "location_link": "/fire-plane-invasion",
+    "total_hp": 175000,
+    "room": "fireplanewar"
+  },
+  {
+    "name": "ShadowFlame Dragon (2)",
+    "url": "https://aqwwiki.wikidot.com/shadowflame-dragon-2",
+    "location_name": "Bright Forest",
+    "location_link": "/bright-forest",
+    "total_hp": 436260,
+    "room": "brightforest"
+  },
+  {
+    "name": "Shadowflame Kyron",
+    "url": "https://aqwwiki.wikidot.com/shadowflame-kyron",
+    "location_name": "Fire Invasion",
+    "location_link": "/fire-invasion",
+    "total_hp": 600000,
+    "room": "fireinvasion"
+  },
+  {
+    "name": "ShadowFlame Phedra (Monster)",
+    "url": "https://aqwwiki.wikidot.com/shadowflame-phedra-monster",
+    "location_name": "Fire Plane Invasion",
+    "location_link": "/fire-plane-invasion",
+    "total_hp": 250000,
+    "room": "fireplanewar"
+  },
+  {
+    "name": "Shadowflame Yulgar",
+    "url": "https://aqwwiki.wikidot.com/shadowflame-yulgar",
+    "location_name": "Junkheap",
+    "location_link": "/junkheap",
+    "total_hp": 164830,
+    "room": "junkheap"
+  },
+  {
+    "name": "ShadowKnight Gar (Monster)",
+    "url": "https://aqwwiki.wikidot.com/shadowknight-gar-monster",
+    "location_name": "Timestream",
+    "location_link": "/timestream",
+    "total_hp": 233850,
+    "room": "timestream"
+  },
+  {
+    "name": "Shadowstone Support",
+    "url": "https://aqwwiki.wikidot.com/shadowstone-support",
+    "location_name": "Necropolis Cavern",
+    "location_link": "/necropolis-cavern",
+    "total_hp": 100000,
+    "room": "necrocavern"
+  },
+  {
+    "name": "Shimazu (Monster)",
+    "url": "https://aqwwiki.wikidot.com/shimazu-monster",
+    "location_name": "Shimazu (Location)",
+    "location_link": "/shimazu-location",
+    "total_hp": 213250,
+    "room": "shimazu"
+  },
+  {
+    "name": "Shrade (1)",
+    "url": "https://aqwwiki.wikidot.com/shrade-1",
+    "location_name": "Camp Gonnagetcha",
+    "location_link": "/camp-gonnagetcha",
+    "total_hp": 114630,
+    "room": "gonnagetcha"
+  },
+  {
+    "name": "Shub-Hathrys",
+    "url": "https://aqwwiki.wikidot.com/shub-hathrys",
+    "location_name": "Crownsreach FXIII",
+    "location_link": "/crownsreach-fxiii",
+    "total_hp": 365770,
+    "room": "crownsreachfxiii"
+  },
+  {
+    "name": "Sigrid Sunshield (Monster)",
+    "url": "https://aqwwiki.wikidot.com/sigrid-sunshield-monster",
+    "location_name": "Lightguard War (Location)",
+    "location_link": "/lightguard-war-location",
+    "total_hp": 155390,
+    "room": "lightguardwar"
+  },
+  {
+    "name": "Simulated Elius",
+    "url": "https://aqwwiki.wikidot.com/simulated-elius",
+    "location_name": "War Training",
+    "location_link": "/war-training",
+    "total_hp": 350000,
+    "room": "wartraining"
+  },
+  {
+    "name": "Sir Kut",
+    "url": "https://aqwwiki.wikidot.com/sir-kut",
+    "location_name": "Stonewood Forest",
+    "location_link": "/stonewood-forest",
+    "total_hp": 186660,
+    "room": "stonewooddeep"
+  },
+  {
+    "name": "Slayer Cake",
+    "url": "https://aqwwiki.wikidot.com/slayer-cake",
+    "location_name": "Event Hub",
+    "location_link": "/event-hub",
+    "total_hp": 101023,
+    "room": "eventhub"
+  },
+  {
+    "name": "Sleep Paralysis",
+    "url": "https://aqwwiki.wikidot.com/sleep-paralysis",
+    "location_name": "Gothic Dream",
+    "location_link": "/gothic-dream",
+    "total_hp": 142830,
+    "room": "gothicdream"
+  },
+  {
+    "name": "Sleih",
+    "url": "https://aqwwiki.wikidot.com/sleih",
+    "location_name": "Camlan Forest",
+    "location_link": "/camlan-forest",
+    "total_hp": 175000,
+    "room": "camlan"
+  },
+  {
+    "name": "Sluagh Mellori",
+    "url": "https://aqwwiki.wikidot.com/sluagh-mellori",
+    "location_name": "Mount Otzi",
+    "location_link": "/mount-otzi",
+    "total_hp": 175000,
+    "room": "mountotzi"
+  },
+  {
+    "name": "Slugbutter",
+    "url": "https://aqwwiki.wikidot.com/slugbutter",
+    "location_name": "Tower of Doom (10)",
+    "location_link": "/tower-of-doom-10",
+    "total_hp": 600000,
+    "room": "towerofdoom10"
+  },
+  {
+    "name": "Smaras",
+    "url": "https://aqwwiki.wikidot.com/smaras",
+    "location_name": "Dage Recruit",
+    "location_link": "/dage-recruit",
+    "total_hp": 120000,
+    "room": "dagerecruit"
+  },
+  {
+    "name": "Smorgasbord",
+    "url": "https://aqwwiki.wikidot.com/smorgasbord",
+    "location_name": "EbilCorp Takeover",
+    "location_link": "/ebilcorp-takeover",
+    "total_hp": 130000,
+    "room": "ebiltakeover"
+  },
+  {
+    "name": "SMU BrutalCorn",
+    "url": "https://aqwwiki.wikidot.com/smu-brutalcorn",
+    "location_name": "Ultra Brutalcorn (Location)",
+    "location_link": "/ultra-brutalcorn-location",
+    "total_hp": 1951170,
+    "room": "ultrabrutalcorn"
+  },
+  {
+    "name": "SN.O.W. Challenge",
+    "url": "https://aqwwiki.wikidot.com/sn-o-w-challenge",
+    "location_name": "Extinction",
+    "location_link": "/extinction",
+    "total_hp": 150470,
+    "room": "extinction"
+  },
+  {
+    "name": "Sobekemsaph",
+    "url": "https://aqwwiki.wikidot.com/sobekemsaph",
+    "location_name": "Crocodile River",
+    "location_link": "/crocodile-river",
+    "total_hp": 200000,
+    "room": "crocriver"
+  },
+  {
+    "name": "Solar Flare",
+    "url": "https://aqwwiki.wikidot.com/solar-flare",
+    "location_name": "Water War",
+    "location_link": "/water-war",
+    "total_hp": 115720,
+    "room": "waterwar"
+  },
+  {
+    "name": "Sparagmos",
+    "url": "https://aqwwiki.wikidot.com/sparagmos",
+    "location_name": "Midnight Zone",
+    "location_link": "/midnight-zone",
+    "total_hp": 250000,
+    "room": "midnightzone"
+  },
+  {
+    "name": "Spineback Abaddon",
+    "url": "https://aqwwiki.wikidot.com/spineback-abaddon",
+    "location_name": "Abaddon Cave",
+    "location_link": "/abaddon-cave",
+    "total_hp": 300000,
+    "room": "abaddoncave"
+  },
+  {
+    "name": "Spirit of Voland",
+    "url": "https://aqwwiki.wikidot.com/spirit-of-voland",
+    "location_name": "Hunter's Moon",
+    "location_link": "/hunter-s-moon",
+    "total_hp": 107110,
+    "room": "huntersmoon"
+  },
+  {
+    "name": "Steaming Dragon",
+    "url": "https://aqwwiki.wikidot.com/steaming-dragon",
+    "location_name": "Beach Party",
+    "location_link": "/beach-party",
+    "total_hp": 213250,
+    "room": "beachparty"
+  },
+  {
+    "name": "Stolen Heart",
+    "url": "https://aqwwiki.wikidot.com/stolen-heart",
+    "location_name": "Love Spell",
+    "location_link": "/love-spell",
+    "total_hp": 125860,
+    "room": "lovespell"
+  },
+  {
+    "name": "Strong Dread Dragon",
+    "url": "https://aqwwiki.wikidot.com/strong-dread-dragon",
+    "location_name": "Breakstone",
+    "location_link": "/breakstone",
+    "total_hp": 151650,
+    "room": "breakstone"
+  },
+  {
+    "name": "Stymphalian Terror",
+    "url": "https://aqwwiki.wikidot.com/stymphalian-terror",
+    "location_name": "Birds with Harms",
+    "location_link": "/birds-with-harms",
+    "total_hp": 350000,
+    "room": "birdswithharms"
+  },
+  {
+    "name": "Suki (Monster)",
+    "url": "https://aqwwiki.wikidot.com/suki-monster",
+    "location_name": "Eridani Past",
+    "location_link": "/eridani-past",
+    "total_hp": 150000,
+    "room": "eridanipast"
+  },
+  {
+    "name": "Super Dragon Twig",
+    "url": "https://aqwwiki.wikidot.com/super-dragon-twig",
+    "location_name": "Dragon Road",
+    "location_link": "/dragon-road",
+    "total_hp": 315520,
+    "room": "dragonroad"
+  },
+  {
+    "name": "SUPER Dreadhaven General",
+    "url": "https://aqwwiki.wikidot.com/super-dreadhaven-general",
+    "location_name": "Dreadfight",
+    "location_link": "/dreadfight",
+    "total_hp": 330000,
+    "room": "dreadfight"
+  },
+  {
+    "name": "Super Ryoku",
+    "url": "https://aqwwiki.wikidot.com/super-ryoku",
+    "location_name": "Super Slayin'",
+    "location_link": "/super-slayin",
+    "total_hp": 200000,
+    "room": "superslayin"
+  },
+  {
+    "name": "Super-Charged Karok",
+    "url": "https://aqwwiki.wikidot.com/super-charged-karok",
+    "location_name": "Cryostorm War (Location)",
+    "location_link": "/cryostorm-war-location",
+    "total_hp": 125000,
+    "room": "cryowar"
+  },
+  {
+    "name": "Supercharged Laken",
+    "url": "https://aqwwiki.wikidot.com/supercharged-laken",
+    "location_name": "Seraphic War Dage",
+    "location_link": "/seraphic-war-dage",
+    "total_hp": 111500,
+    "room": "seraphicwardage"
+  },
+  {
+    "name": "Supreme Shadowscythe",
+    "url": "https://aqwwiki.wikidot.com/supreme-shadowscythe",
+    "location_name": null,
+    "location_link": null,
+    "total_hp": 234400,
+    "room": "bosschallenge"
+  },
+  {
+    "name": "Suzaku",
+    "url": "https://aqwwiki.wikidot.com/suzaku",
+    "location_name": "Vermillion Cliffs",
+    "location_link": "/vermillion-cliffs",
+    "total_hp": 170000,
+    "room": "vermillioncliffs"
+  },
+  {
+    "name": "Svelgr the Devourer",
+    "url": "https://aqwwiki.wikidot.com/svelgr-the-devourer",
+    "location_name": "Deep Portalspace",
+    "location_link": "/deep-portalspace",
+    "total_hp": 118970,
+    "room": "tachyon"
+  },
+  {
+    "name": "Sys Zero's Mech",
+    "url": "https://aqwwiki.wikidot.com/sys-zero-s-mech",
+    "location_name": "Cysero's Paradox",
+    "location_link": "/cysero-s-paradox",
+    "total_hp": 500000,
+    "room": "cyseroparadox"
+  },
+  {
+    "name": "Taotie",
+    "url": "https://aqwwiki.wikidot.com/taotie",
+    "location_name": "Shizaistrath",
+    "location_link": "/shizaistrath",
+    "total_hp": 1000000,
+    "room": "shizaistrath"
+  },
+  {
+    "name": "Taro Blademaster",
+    "url": "https://aqwwiki.wikidot.com/taro-blademaster",
+    "location_name": "Tercessuinotlim",
+    "location_link": "/tercessuinotlim",
+    "total_hp": 200000,
+    "room": "tercessuinotlim"
+  },
+  {
+    "name": "Terrane (Monster)",
+    "url": "https://aqwwiki.wikidot.com/terrane-monster",
+    "location_name": "Guardian Tree",
+    "location_link": "/guardian-tree",
+    "total_hp": 133880,
+    "room": "guardiantree"
+  },
+  {
+    "name": "Thanatos (Monster)",
+    "url": "https://aqwwiki.wikidot.com/thanatos-monster",
+    "location_name": "ShadowBlast Arena",
+    "location_link": "/shadowblast-arena",
+    "total_hp": 99590,
+    "room": "shadowblast"
+  },
+  {
+    "name": "THAT (Monster)",
+    "url": "https://aqwwiki.wikidot.com/that-monster",
+    "location_name": "That (Location)",
+    "location_link": "/that-location",
+    "total_hp": 265060,
+    "room": "that"
+  },
+  {
+    "name": "The Ashray",
+    "url": "https://aqwwiki.wikidot.com/the-ashray",
+    "location_name": "Abyssal Zone",
+    "location_link": "/abyssal-zone",
+    "total_hp": 260000,
+    "room": "abyssalzone"
+  },
+  {
+    "name": "The Beast (Monster)",
+    "url": "https://aqwwiki.wikidot.com/the-beast-monster",
+    "location_name": "Seven Circles War",
+    "location_link": "/seven-circles-war",
+    "total_hp": 1666666,
+    "room": "sevencircleswar"
+  },
+  {
+    "name": "The Crimson Rider (Monster)",
+    "url": "https://aqwwiki.wikidot.com/the-crimson-rider-monster",
+    "location_name": "Reap Finals",
+    "location_link": "/reap-finals",
+    "total_hp": 225000,
+    "room": "reapfinals"
+  },
+  {
+    "name": "The Darkdweller",
+    "url": "https://aqwwiki.wikidot.com/the-darkdweller",
+    "location_name": "Hollowborn Challenge",
+    "location_link": "/hollowborn-challenge",
+    "total_hp": 750000,
+    "room": "hbchallenge"
+  },
+  {
+    "name": "The Engineer",
+    "url": "https://aqwwiki.wikidot.com/the-engineer",
+    "location_name": "Inn at the Edge of Time",
+    "location_link": "/inn-at-the-edge-of-time",
+    "total_hp": 250000,
+    "room": "timeinn"
+  },
+  {
+    "name": "The Heartbreaker",
+    "url": "https://aqwwiki.wikidot.com/the-heartbreaker",
+    "location_name": "Coliseum",
+    "location_link": "/coliseum",
+    "total_hp": 900000,
+    "room": "coliseum"
+  },
+  {
+    "name": "The Mainyu",
+    "url": "https://aqwwiki.wikidot.com/the-mainyu",
+    "location_name": "Mana Cradle",
+    "location_link": "/mana-cradle",
+    "total_hp": 2000000,
+    "room": "manacradle"
+  },
+  {
+    "name": "The Master (Monster)",
+    "url": "https://aqwwiki.wikidot.com/the-master-monster",
+    "location_name": "Haku Village",
+    "location_link": "/haku-village",
+    "total_hp": 300000,
+    "room": "hakuvillage"
+  },
+  {
+    "name": "The Moon",
+    "url": "https://aqwwiki.wikidot.com/the-moon",
+    "location_name": "Astravia",
+    "location_link": "/astravia",
+    "total_hp": 181818,
+    "room": "astravia"
+  },
+  {
+    "name": "The Sun",
+    "url": "https://aqwwiki.wikidot.com/the-sun",
+    "location_name": "Astravia Castle",
+    "location_link": "/astravia-castle",
+    "total_hp": 191919,
+    "room": "astraviacastle"
+  },
+  {
+    "name": "The Sunsetter",
+    "url": "https://aqwwiki.wikidot.com/the-sunsetter",
+    "location_name": "Carcossa Court",
+    "location_link": "/carcossa-court",
+    "total_hp": 777666,
+    "room": "carcossacourt"
+  },
+  {
+    "name": "The UnDying",
+    "url": "https://aqwwiki.wikidot.com/the-undying",
+    "location_name": "Coliseum",
+    "location_link": "/coliseum",
+    "total_hp": 500000,
+    "room": "coliseum"
+  },
+  {
+    "name": "The Unsung",
+    "url": "https://aqwwiki.wikidot.com/the-unsung",
+    "location_name": "Unsung Necropolis",
+    "location_link": "/unsung-necropolis",
+    "total_hp": 150000,
+    "room": "unsungnecropolis"
+  },
+  {
+    "name": "The Warden",
+    "url": "https://aqwwiki.wikidot.com/the-warden",
+    "location_name": "Inn at the Edge of Time",
+    "location_link": "/inn-at-the-edge-of-time",
+    "total_hp": 200000,
+    "room": "timeinn"
+  },
+  {
+    "name": "The WarForge",
+    "url": "https://aqwwiki.wikidot.com/the-warforge",
+    "location_name": "Legion Tournament",
+    "location_link": "/legion-tournament",
+    "total_hp": 175000,
+    "room": "legiontournament"
+  },
+  {
+    "name": "THIS YEAR",
+    "url": "https://aqwwiki.wikidot.com/this-year",
+    "location_name": "Nightmare War",
+    "location_link": "/nightmare-war",
+    "total_hp": 182890,
+    "room": "nightmarewar"
+  },
+  {
+    "name": "Thronekeeper",
+    "url": "https://aqwwiki.wikidot.com/thronekeeper",
+    "location_name": "Bocklin Sanctum",
+    "location_link": "/bocklin-sanctum",
+    "total_hp": 300000,
+    "room": "bocklinsanctum"
+  },
+  {
+    "name": "Thundersnow Storm",
+    "url": "https://aqwwiki.wikidot.com/thundersnow-storm",
+    "location_name": "Castle Gaheris",
+    "location_link": "/castle-gaheris",
+    "total_hp": 150000,
+    "room": "castlegaheris"
+  },
+  {
+    "name": "Ti",
+    "url": "https://aqwwiki.wikidot.com/ti",
+    "location_name": "Astravia",
+    "location_link": "/astravia",
+    "total_hp": 165690,
+    "room": "astravia"
+  },
+  {
+    "name": "Titan Drakath (Monster)",
+    "url": "https://aqwwiki.wikidot.com/titan-drakath-monster",
+    "location_name": "Titan Drakath (Location)",
+    "location_link": "/titan-drakath-location",
+    "total_hp": 200000,
+    "room": "titandrakath"
+  },
+  {
+    "name": "Titan Shadow Dragonlord",
+    "url": "https://aqwwiki.wikidot.com/titan-shadow-dragonlord",
+    "location_name": "Shadowgrove",
+    "location_link": "/shadowgrove",
+    "total_hp": 170050,
+    "room": "shadowgrove"
+  },
+  {
+    "name": "Titania",
+    "url": "https://aqwwiki.wikidot.com/titania",
+    "location_name": "Astravia Past",
+    "location_link": "/astravia-past",
+    "total_hp": 140000,
+    "room": "astraviapast"
+  },
+  {
+    "name": "Titanic Destroyer (Monster)",
+    "url": "https://aqwwiki.wikidot.com/titanic-destroyer-monster",
+    "location_name": "Titan Strike",
+    "location_link": "/titan-strike",
+    "total_hp": 150000,
+    "room": "titanstrike"
+  },
+  {
+    "name": "Titanic DoomKnight",
+    "url": "https://aqwwiki.wikidot.com/titanic-doomknight",
+    "location_name": "Titan Attack",
+    "location_link": "/titan-attack",
+    "total_hp": 100000,
+    "room": "titanattack"
+  },
+  {
+    "name": "Titanic Paladin",
+    "url": "https://aqwwiki.wikidot.com/titanic-paladin",
+    "location_name": "Titan Attack",
+    "location_link": "/titan-attack",
+    "total_hp": 100000,
+    "room": "titanattack"
+  },
+  {
+    "name": "Treachery",
+    "url": "https://aqwwiki.wikidot.com/treachery",
+    "location_name": "Seven Circles War",
+    "location_link": "/seven-circles-war",
+    "total_hp": 234850,
+    "room": "sevencircleswar"
+  },
+  {
+    "name": "Treasure Pile (Monster) (2)",
+    "url": "https://aqwwiki.wikidot.com/treasure-pile-monster-2",
+    "location_name": "Yulgar's Party",
+    "location_link": "/yulgar-s-party",
+    "total_hp": 202020,
+    "room": "yulgarparty"
+  },
+  {
+    "name": "Trey Simulacrum",
+    "url": "https://aqwwiki.wikidot.com/trey-simulacrum",
+    "location_name": "Holiday Horror",
+    "location_link": "/holiday-horror",
+    "total_hp": 100000,
+    "room": "holidayhorror"
+  },
+  {
+    "name": "Trickster Duartaine",
+    "url": "https://aqwwiki.wikidot.com/trickster-duartaine",
+    "location_name": "Monaghan Gorge",
+    "location_link": "/monaghan-gorge",
+    "total_hp": 500000,
+    "room": "monaghangorge"
+  },
+  {
+    "name": "Trobbolegion",
+    "url": "https://aqwwiki.wikidot.com/trobbolegion",
+    "location_name": "Wormhole",
+    "location_link": "/wormhole",
+    "total_hp": 125120,
+    "room": "wormhole"
+  },
+  {
+    "name": "TurKing",
+    "url": "https://aqwwiki.wikidot.com/turking",
+    "location_name": "Birds With Harms",
+    "location_link": "/birds-with-harms",
+    "total_hp": 120000,
+    "room": "birdswithharms"
+  },
+  {
+    "name": "Twiggu (Monster)",
+    "url": "https://aqwwiki.wikidot.com/twiggu-monster",
+    "location_name": "Twiggu Hunt",
+    "location_link": "/twiggu-hunt",
+    "total_hp": 120000,
+    "room": "twigguhunt"
+  },
+  {
+    "name": "Twilly Pinata",
+    "url": "https://aqwwiki.wikidot.com/twilly-pinata",
+    "location_name": "Birthday",
+    "location_link": "/birthday",
+    "total_hp": 100016,
+    "room": "birthday"
+  },
+  {
+    "name": "Twisted Hunter (Monster)",
+    "url": "https://aqwwiki.wikidot.com/twisted-hunter-monster",
+    "location_name": "Bad Moon",
+    "location_link": "/bad-moon",
+    "total_hp": 120000,
+    "room": "badmoon"
+  },
+  {
+    "name": "Ubear (Monster)",
+    "url": "https://aqwwiki.wikidot.com/ubear-monster",
+    "location_name": "LIMFT (Location)",
+    "location_link": "/limft-location",
+    "total_hp": 135500,
+    "room": "limft"
+  },
+  {
+    "name": "Ultra Aeacus",
+    "url": "https://aqwwiki.wikidot.com/ultra-aeacus",
+    "location_name": null,
+    "location_link": null,
+    "total_hp": 205460,
+    "room": "judgement"
+  },
+  {
+    "name": "Ultra Akriloth",
+    "url": "https://aqwwiki.wikidot.com/ultra-akriloth",
+    "location_name": "GraveStrike",
+    "location_link": "/gravestrike",
+    "total_hp": 623680,
+    "room": "gravestrike"
+  },
+  {
+    "name": "Ultra Alteon (Monster)",
+    "url": "https://aqwwiki.wikidot.com/ultra-alteon-monster",
+    "location_name": "Alteon Battle",
+    "location_link": "/alteon-battle",
+    "total_hp": 201190,
+    "room": "alteonbattle"
+  },
+  {
+    "name": "Ultra Belo",
+    "url": "https://aqwwiki.wikidot.com/ultra-belo",
+    "location_name": "Firebird",
+    "location_link": "/firebird",
+    "total_hp": 233850,
+    "room": "firebird"
+  },
+  {
+    "name": "Ultra Bibliospectre",
+    "url": "https://aqwwiki.wikidot.com/ultra-bibliospectre",
+    "location_name": "FrostSpectre",
+    "location_link": "/frostspectre",
+    "total_hp": 179290,
+    "room": "frostspectre"
+  },
+  {
+    "name": "Ultra Blood Titan",
+    "url": "https://aqwwiki.wikidot.com/ultra-blood-titan",
+    "location_name": "Blood Titan (Location)",
+    "location_link": "/blood-titan-location",
+    "total_hp": 384110,
+    "room": "bloodtitan"
+  },
+  {
+    "name": "Ultra Brutalcorn (Monster)",
+    "url": "https://aqwwiki.wikidot.com/ultra-brutalcorn-monster",
+    "location_name": "Underground Lab B",
+    "location_link": "/underground-lab-b",
+    "total_hp": 206320,
+    "room": "undergroundlabb"
+  },
+  {
+    "name": "Ultra Chaos Alteon",
+    "url": "https://aqwwiki.wikidot.com/ultra-chaos-alteon",
+    "location_name": "Ultra Alteon (Location)",
+    "location_link": "/ultra-alteon-location",
+    "total_hp": 270000,
+    "room": "ultraalteon"
+  },
+  {
+    "name": "Ultra Chaos Dragon",
+    "url": "https://aqwwiki.wikidot.com/ultra-chaos-dragon",
+    "location_name": "Swordhaven Castle Roof",
+    "location_link": "/swordhaven-castle-roof",
+    "total_hp": 580000,
+    "room": "castleroof"
+  },
+  {
+    "name": "Ultra Chaos Harpy",
+    "url": "https://aqwwiki.wikidot.com/ultra-chaos-harpy",
+    "location_name": "Mirror Portal",
+    "location_link": "/mirror-portal",
+    "total_hp": 240000,
+    "room": "mirrorportal"
+  },
+  {
+    "name": "Ultra Chaos Warlord",
+    "url": "https://aqwwiki.wikidot.com/ultra-chaos-warlord",
+    "location_name": "Chaos Boss",
+    "location_link": "/chaos-boss",
+    "total_hp": 119660,
+    "room": "chaosboss"
+  },
+  {
+    "name": "Ultra Chaotic Server Hamster",
+    "url": "https://aqwwiki.wikidot.com/ultra-chaotic-server-hamster",
+    "location_name": "Chaos Lab",
+    "location_link": "/chaos-lab",
+    "total_hp": 142830,
+    "room": "chaoslab"
+  },
+  {
+    "name": "Ultra Cuca",
+    "url": "https://aqwwiki.wikidot.com/ultra-cuca",
+    "location_name": "Myth Perception",
+    "location_link": "/myth-perception",
+    "total_hp": 201260,
+    "room": "mythperception"
+  },
+  {
+    "name": "Ultra Drakonnan",
+    "url": "https://aqwwiki.wikidot.com/ultra-drakonnan",
+    "location_name": "Drakonnan (Location)",
+    "location_link": "/drakonnan-location",
+    "total_hp": 429240,
+    "room": "drakonnan"
+  },
+  {
+    "name": "ULTRA Dreadhaven General",
+    "url": "https://aqwwiki.wikidot.com/ultra-dreadhaven-general",
+    "location_name": "Ultra Dreadfight",
+    "location_link": "/ultra-dreadfight",
+    "total_hp": 1000000,
+    "room": "ultradread"
+  },
+  {
+    "name": "Ultra D'wain Jonsen",
+    "url": "https://aqwwiki.wikidot.com/ultra-d-wain-jonsen",
+    "location_name": "Dwarf War (Location)",
+    "location_link": "/dwarf-war-location",
+    "total_hp": 422650,
+    "room": "wardwarf"
+  },
+  {
+    "name": "Ultra Ebil Mech Dragon",
+    "url": "https://aqwwiki.wikidot.com/ultra-ebil-mech-dragon",
+    "location_name": "Ultra Chairman",
+    "location_link": "/ultra-chairman",
+    "total_hp": 508336,
+    "room": "ultrachairman"
+  },
+  {
+    "name": "Ultra Exos",
+    "url": "https://aqwwiki.wikidot.com/ultra-exos",
+    "location_name": "ChaosGuard",
+    "location_link": "/chaosguard",
+    "total_hp": 442020,
+    "room": "chaosguard"
+  },
+  {
+    "name": "Ultra Frankenwerepire",
+    "url": "https://aqwwiki.wikidot.com/ultra-frankenwerepire",
+    "location_name": "Ultra Franken",
+    "location_link": "/ultra-franken",
+    "total_hp": 185630,
+    "room": "ultrafranken"
+  },
+  {
+    "name": "Ultra Frost Fang",
+    "url": "https://aqwwiki.wikidot.com/ultra-frost-fang",
+    "location_name": "Ultra Frostfang",
+    "location_link": "/ultra-frostfang",
+    "total_hp": 451090,
+    "room": "ultrafrostfang"
+  },
+  {
+    "name": "Ultra Iadoa",
+    "url": "https://aqwwiki.wikidot.com/ultra-iadoa",
+    "location_name": "UltraVoid",
+    "location_link": "/ultravoid",
+    "total_hp": 160580,
+    "room": "ultravoid"
+  },
+  {
+    "name": "Ultra Kathool",
+    "url": "https://aqwwiki.wikidot.com/ultra-kathool",
+    "location_name": "UltraVoid",
+    "location_link": "/ultravoid",
+    "total_hp": 625000,
+    "room": "ultravoid"
+  },
+  {
+    "name": "Ultra Kezeroth",
+    "url": "https://aqwwiki.wikidot.com/ultra-kezeroth",
+    "location_name": "IceRise Keep",
+    "location_link": "/icerise-keep",
+    "total_hp": 206210,
+    "room": "icerise"
+  },
+  {
+    "name": "Ultra Lionfang (Monster)",
+    "url": "https://aqwwiki.wikidot.com/ultra-lionfang-monster",
+    "location_name": "Ultra Lionfang (Location)",
+    "location_link": "/ultra-lionfang-location",
+    "total_hp": 425000,
+    "room": "ultralionfang"
+  },
+  {
+    "name": "Ultra Lobthulhu (Monster)",
+    "url": "https://aqwwiki.wikidot.com/ultra-lobthulhu-monster",
+    "location_name": "Ultra Lobthulhu (Location)",
+    "location_link": "/ultra-lobthulhu-location",
+    "total_hp": 233850,
+    "room": "ultralob"
+  },
+  {
+    "name": "Ultra Maladrite",
+    "url": "https://aqwwiki.wikidot.com/ultra-maladrite",
+    "location_name": "Burning Beach",
+    "location_link": "/burning-beach",
+    "total_hp": 978350,
+    "room": "burningbeach"
+  },
+  {
+    "name": "Ultra Manticore",
+    "url": "https://aqwwiki.wikidot.com/ultra-manticore",
+    "location_name": "The Venom Vaults",
+    "location_link": "/the-venom-vaults",
+    "total_hp": 175000,
+    "room": "venomvaults"
+  },
+  {
+    "name": "Ultra Necronaut",
+    "url": "https://aqwwiki.wikidot.com/ultra-necronaut",
+    "location_name": "Necronaut (Location)",
+    "location_link": "/necronaut-location",
+    "total_hp": 182890,
+    "room": "necronaut"
+  },
+  {
+    "name": "Ultra Nightmare Frostmane",
+    "url": "https://aqwwiki.wikidot.com/ultra-nightmare-frostmane",
+    "location_name": "Frostmane",
+    "location_link": "/frostmane",
+    "total_hp": 1122290,
+    "room": "frostmane"
+  },
+  {
+    "name": "Ultra Phedra (Monster)",
+    "url": "https://aqwwiki.wikidot.com/ultra-phedra-monster",
+    "location_name": "Ultra Phedra (Location)",
+    "location_link": "/ultra-phedra-location",
+    "total_hp": 233850,
+    "room": "ultraphedra"
+  },
+  {
+    "name": "Ultra Sepulchure",
+    "url": "https://aqwwiki.wikidot.com/ultra-sepulchure",
+    "location_name": "Sepulchure Battle",
+    "location_link": "/sepulchure-battle",
+    "total_hp": 206880,
+    "room": "sepulchurebattle"
+  },
+  {
+    "name": "Ultra Shadowman",
+    "url": "https://aqwwiki.wikidot.com/ultra-shadowman",
+    "location_name": "Ravenblight",
+    "location_link": "/ravenblight",
+    "total_hp": 221470,
+    "room": "ravenblight"
+  },
+  {
+    "name": "Ultra Shrade",
+    "url": "https://aqwwiki.wikidot.com/ultra-shrade",
+    "location_name": "Greymoor",
+    "location_link": "/greymoor",
+    "total_hp": 248740,
+    "room": "greymoor"
+  },
+  {
+    "name": "Ultra SN.O.W.",
+    "url": "https://aqwwiki.wikidot.com/ultra-sn-o-w",
+    "location_name": "Extinction",
+    "location_link": "/extinction",
+    "total_hp": 1737280,
+    "room": "extinction"
+  },
+  {
+    "name": "Ultra Turdrakolich",
+    "url": "https://aqwwiki.wikidot.com/ultra-turdrakolich",
+    "location_name": "Killer Kitchen",
+    "location_link": "/killer-kitchen",
+    "total_hp": 245080,
+    "room": "killerkitchen"
+  },
+  {
+    "name": "Ultra Tyndarius (Monster)",
+    "url": "https://aqwwiki.wikidot.com/ultra-tyndarius-monster",
+    "location_name": "Ultra Tyndarius (Location)",
+    "location_link": "/ultra-tyndarius-location",
+    "total_hp": 233850,
+    "room": "ultraflamelord"
+  },
+  {
+    "name": "Ultra Uji No Hashihime",
+    "url": "https://aqwwiki.wikidot.com/ultra-uji-no-hashihime",
+    "location_name": "Yokai Star River",
+    "location_link": "/yokai-star-river",
+    "total_hp": 429240,
+    "room": "yokaistarriver"
+  },
+  {
+    "name": "Ultra Undead Raxgore",
+    "url": "https://aqwwiki.wikidot.com/ultra-undead-raxgore",
+    "location_name": "Doom Vault B",
+    "location_link": "/doom-vault-b",
+    "total_hp": 1445760,
+    "room": "doomvaultb"
+  },
+  {
+    "name": "Ultra Vordred (2)",
+    "url": "https://aqwwiki.wikidot.com/ultra-vordred-2",
+    "location_name": "Epic Vordred",
+    "location_link": "/epic-vordred",
+    "total_hp": 492520,
+    "room": "epicvordred"
+  },
+  {
+    "name": "Ultra Xiang",
+    "url": "https://aqwwiki.wikidot.com/ultra-xiang",
+    "location_name": "Mirror Portal",
+    "location_link": "/mirror-portal",
+    "total_hp": 280000,
+    "room": "mirrorportal"
+  },
+  {
+    "name": "Ultra Yaomo",
+    "url": "https://aqwwiki.wikidot.com/ultra-yaomo",
+    "location_name": "Akiba - Chinese New Year",
+    "location_link": "/akiba-chinese-new-year",
+    "total_hp": 1737280,
+    "room": "akibacny"
+  },
+  {
+    "name": "Ultra-Carnax (Monster)",
+    "url": "https://aqwwiki.wikidot.com/ultra-carnax-monster",
+    "location_name": "Ultra Carnax (Location)",
+    "location_link": "/ultra-carnax-location",
+    "total_hp": 625390,
+    "room": "ultracarnax"
+  },
+  {
+    "name": "Ultra-Tibicenas",
+    "url": "https://aqwwiki.wikidot.com/ultra-tibicenas",
+    "location_name": "Djinn",
+    "location_link": "/djinn",
+    "total_hp": 99760,
+    "room": "djinn"
+  },
+  {
+    "name": "Umbral Chaos",
+    "url": "https://aqwwiki.wikidot.com/umbral-chaos",
+    "location_name": "Hidden Duat",
+    "location_link": "/hidden-duat",
+    "total_hp": 225000,
+    "room": "hiddenduat"
+  },
+  {
+    "name": "Unborn Brood",
+    "url": "https://aqwwiki.wikidot.com/unborn-brood",
+    "location_name": "Castle Alnswick",
+    "location_link": "/castle-alnswick",
+    "total_hp": 103123,
+    "room": "cursedcastle"
+  },
+  {
+    "name": "Undead Raxgore",
+    "url": "https://aqwwiki.wikidot.com/undead-raxgore",
+    "location_name": "Doom Vault B",
+    "location_link": "/doom-vault-b",
+    "total_hp": 963190,
+    "room": "doomvaultb"
+  },
+  {
+    "name": "Underfiend",
+    "url": "https://aqwwiki.wikidot.com/underfiend",
+    "location_name": "Dark Ally",
+    "location_link": "/dark-ally",
+    "total_hp": 135500,
+    "room": "darkally"
+  },
+  {
+    "name": "Unsung Queen",
+    "url": "https://aqwwiki.wikidot.com/unsung-queen",
+    "location_name": "Frostval Gala",
+    "location_link": "/frostval-gala",
+    "total_hp": 125000,
+    "room": "frostvalgala"
+  },
+  {
+    "name": "Usurper Lord Slaine",
+    "url": "https://aqwwiki.wikidot.com/usurper-lord-slaine",
+    "location_name": "Atlas Promenade",
+    "location_link": "/atlas-promenade",
+    "total_hp": 1350000,
+    "room": "atlaspromenade"
+  },
+  {
+    "name": "Valsarian",
+    "url": "https://aqwwiki.wikidot.com/valsarian",
+    "location_name": "Pride",
+    "location_link": "/pride",
+    "total_hp": 221000,
+    "room": "pride"
+  },
+  {
+    "name": "Varga (Monster)",
+    "url": "https://aqwwiki.wikidot.com/varga-monster",
+    "location_name": "War Training",
+    "location_link": "/war-training",
+    "total_hp": 350000,
+    "room": "wartraining"
+  },
+  {
+    "name": "Very Ebil Mech Dragon",
+    "url": "https://aqwwiki.wikidot.com/very-ebil-mech-dragon",
+    "location_name": "EbilCorp Roof",
+    "location_link": "/ebilcorp-roof",
+    "total_hp": 2000000,
+    "room": "ebilroof"
+  },
+  {
+    "name": "Victorious",
+    "url": "https://aqwwiki.wikidot.com/victorious",
+    "location_name": "Darkplane",
+    "location_link": "/darkplane",
+    "total_hp": 221220,
+    "room": "darkplane"
+  },
+  {
+    "name": "Vi'eel Dreaddacovra",
+    "url": "https://aqwwiki.wikidot.com/vi-eel-dreaddacovra",
+    "location_name": "Black Maze",
+    "location_link": "/black-maze",
+    "total_hp": 100000,
+    "room": "blackmaze"
+  },
+  {
+    "name": "Vindicator BeastTamer",
+    "url": "https://aqwwiki.wikidot.com/vindicator-beasttamer",
+    "location_name": "Dawn Vindicators' Tower",
+    "location_link": "/dawn-vindicators-tower",
+    "total_hp": 120000,
+    "room": "neotower"
+  },
+  {
+    "name": "Vindicator General",
+    "url": "https://aqwwiki.wikidot.com/vindicator-general",
+    "location_name": "Dawn Vindicators' Fortress",
+    "location_link": "/dawn-vindicators-fortress",
+    "total_hp": 190000,
+    "room": "neofortress"
+  },
+  {
+    "name": "Vindicator Priest (Monster)",
+    "url": "https://aqwwiki.wikidot.com/vindicator-priest-monster",
+    "location_name": "Dawn Vindicators' Tower",
+    "location_link": "/dawn-vindicators-tower",
+    "total_hp": 150000,
+    "room": "neotower"
+  },
+  {
+    "name": "Violence",
+    "url": "https://aqwwiki.wikidot.com/violence",
+    "location_name": "Seven Circles War",
+    "location_link": "/seven-circles-war",
+    "total_hp": 202000,
+    "room": "sevencircleswar"
+  },
+  {
+    "name": "Voice in the Sea",
+    "url": "https://aqwwiki.wikidot.com/voice-in-the-sea",
+    "location_name": "Sea Voice",
+    "location_link": "/sea-voice",
+    "total_hp": 1200000,
+    "room": "seavoice"
+  },
+  {
+    "name": "Volgritian (Monster)",
+    "url": "https://aqwwiki.wikidot.com/volgritian-monster",
+    "location_name": "Naoise Grave",
+    "location_link": "/naoise-grave",
+    "total_hp": 720000,
+    "room": "naoisegrave"
+  },
+  {
+    "name": "Vortrix",
+    "url": "https://aqwwiki.wikidot.com/vortrix",
+    "location_name": "Tech Fortress",
+    "location_link": "/tech-fortress",
+    "total_hp": 182890,
+    "room": "techfortress"
+  },
+  {
+    "name": "War",
+    "url": "https://aqwwiki.wikidot.com/war",
+    "location_name": "Undervoid",
+    "location_link": "/undervoid",
+    "total_hp": 182910,
+    "room": "undervoid"
+  },
+  {
+    "name": "Warden Illaria",
+    "url": "https://aqwwiki.wikidot.com/warden-illaria",
+    "location_name": "Lia Tara Hill",
+    "location_link": "/lia-tara-hill",
+    "total_hp": 275000,
+    "room": "liatarahill"
+  },
+  {
+    "name": "Warden Indradeep (Monster)",
+    "url": "https://aqwwiki.wikidot.com/warden-indradeep-monster",
+    "location_name": "Castle Eblana",
+    "location_link": "/castle-eblana",
+    "total_hp": 325000,
+    "room": "castleeblana"
+  },
+  {
+    "name": "Warden Iseul",
+    "url": "https://aqwwiki.wikidot.com/warden-iseul",
+    "location_name": "Loughshine",
+    "location_link": "/loughshine",
+    "total_hp": 300000,
+    "room": "loughshine"
+  },
+  {
+    "name": "Warlord Harley (Monster)",
+    "url": "https://aqwwiki.wikidot.com/warlord-harley-monster",
+    "location_name": "Training Hall",
+    "location_link": "/training-hall",
+    "total_hp": 500000,
+    "room": "trainers"
+  },
+  {
+    "name": "Warlord Icewing (Monster)",
+    "url": "https://aqwwiki.wikidot.com/warlord-icewing-monster",
+    "location_name": "Icewing",
+    "location_link": "/icewing",
+    "total_hp": 978350,
+    "room": "icewing"
+  },
+  {
+    "name": "Warlord Vaioh",
+    "url": "https://aqwwiki.wikidot.com/warlord-vaioh",
+    "location_name": "Hearts Day Grave",
+    "location_link": "/hearts-day-grave",
+    "total_hp": 220000,
+    "room": "heartsdaygrave"
+  },
+  {
+    "name": "Well Guardian",
+    "url": "https://aqwwiki.wikidot.com/well-guardian",
+    "location_name": "Celestial Past",
+    "location_link": "/celestial-past",
+    "total_hp": 171780,
+    "room": "celestialpast"
+  },
+  {
+    "name": "Wisterrora (2)",
+    "url": "https://aqwwiki.wikidot.com/wisterrora-2",
+    "location_name": "Ghost Beach",
+    "location_link": "/ghost-beach",
+    "total_hp": 100000,
+    "room": "ghostbeach"
+  },
+  {
+    "name": "Witch Queen Talia",
+    "url": "https://aqwwiki.wikidot.com/witch-queen-talia",
+    "location_name": "Birgitta Spire",
+    "location_link": "/birgitta-spire",
+    "total_hp": 700000,
+    "room": "birgittaspire"
+  },
+  {
+    "name": "Withered Archfiend",
+    "url": "https://aqwwiki.wikidot.com/withered-archfiend",
+    "location_name": "Oblivion Tundra",
+    "location_link": "/oblivion-tundra",
+    "total_hp": 115000,
+    "room": "obliviontundra"
+  },
+  {
+    "name": "Wrath (Monster)",
+    "url": "https://aqwwiki.wikidot.com/wrath-monster",
+    "location_name": "Seven Circles War",
+    "location_link": "/seven-circles-war",
+    "total_hp": 148460,
+    "room": "sevencircleswar"
+  },
+  {
+    "name": "Wretched Rider",
+    "url": "https://aqwwiki.wikidot.com/wretched-rider",
+    "location_name": "Dullahan",
+    "location_link": "/dullahan",
+    "total_hp": 161130,
+    "room": "dullahan"
+  },
+  {
+    "name": "Writhing Chaos",
+    "url": "https://aqwwiki.wikidot.com/writhing-chaos",
+    "location_name": "Laguna",
+    "location_link": "/laguna",
+    "total_hp": 275440,
+    "room": "laguna"
+  },
+  {
+    "name": "Xiang (Monster)",
+    "url": "https://aqwwiki.wikidot.com/xiang-monster",
+    "location_name": "Chaos Duality",
+    "location_link": "/chaos-duality",
+    "total_hp": 161130,
+    "room": "dualplane"
+  },
+  {
+    "name": "Xyfrag",
+    "url": "https://aqwwiki.wikidot.com/xyfrag",
+    "location_name": "Void Xyfrag",
+    "location_link": "/void-xyfrag",
+    "total_hp": 3000000,
+    "room": "voidxyfrag"
+  },
+  {
+    "name": "Yaga",
+    "url": "https://aqwwiki.wikidot.com/yaga",
+    "location_name": "Holiday Horror",
+    "location_link": "/holiday-horror",
+    "total_hp": 120000,
+    "room": "holidayhorror"
+  },
+  {
+    "name": "Zahad",
+    "url": "https://aqwwiki.wikidot.com/zahad",
+    "location_name": "Dream Palace",
+    "location_link": "/dream-palace",
+    "total_hp": 99400,
+    "room": "dreampalace"
+  },
+  {
+    "name": "Zakhvatchik",
+    "url": "https://aqwwiki.wikidot.com/zakhvatchik",
+    "location_name": "Haku War",
+    "location_link": "/haku-war",
+    "total_hp": 225000,
+    "room": "hakuwar"
+  },
+  {
+    "name": "Zellare",
+    "url": "https://aqwwiki.wikidot.com/zellare",
+    "location_name": "Fire",
+    "location_link": "/fire",
+    "total_hp": 148800,
+    "room": "fire"
+  },
+  {
+    "name": "Zeph'gorog",
+    "url": "https://aqwwiki.wikidot.com/zeph-gorog",
+    "location_name": "Void Vault",
+    "location_link": "/void-vault",
+    "total_hp": 102720,
+    "room": "voidvault"
+  },
+  {
+    "name": "Zhenzhu Shé",
+    "url": "https://aqwwiki.wikidot.com/zhenzhu-she",
+    "location_name": "Yokai Hunt",
+    "location_link": "/yokai-hunt",
+    "total_hp": 202025,
+    "room": "yokaihunt"
+  },
+  {
+    "name": "Zorba the Bakk (Monster)",
+    "url": "https://aqwwiki.wikidot.com/zorba-the-bakk-monster",
+    "location_name": "Zorba's Palace",
+    "location_link": "/zorba-s-palace",
+    "total_hp": 113470,
+    "room": "zorbaspalace"
+  },
+  {
+    "name": "ZorBLATT",
+    "url": "https://aqwwiki.wikidot.com/zorblatt",
+    "location_name": "Zorba's Pit",
+    "location_link": "/zorba-s-pit",
+    "total_hp": 444444,
+    "room": "zorbaspit"
+  },
+  {
+    "name": "Zweinichthirsch",
+    "url": "https://aqwwiki.wikidot.com/zweinichthirsch",
+    "location_name": "Deer Hunt",
+    "location_link": "/deer-hunt",
+    "total_hp": 200000,
+    "room": "deerhunt"
+  },
+  {
+    "name": "Zyrus the BioKnight",
+    "url": "https://aqwwiki.wikidot.com/zyrus-the-bioknight",
+    "location_name": "Thorngarde",
+    "location_link": "/thorngarde",
+    "total_hp": 142830,
+    "room": "thorngarde"
+  }
+]
