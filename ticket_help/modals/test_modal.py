@@ -242,15 +242,36 @@ class CreateTicketModal(discord.ui.Modal):
                 ),
             )
             self.add_item(self.boss_selection)
-        if self.type == "weekly bosses":
-            self.experienced_only = discord.ui.Label(
-                text="Certificate only",
-                component=discord.ui.CheckboxGroup(
-                    options=[discord.CheckboxGroupOption(label="Enable", default=True)],
-                    required=False,
-                ),
+        #if self.type == "weekly bosses":
+        #   self.experienced_only = discord.ui.Label(
+        #       text="Certificate only",
+        #        component=discord.ui.CheckboxGroup(
+        #            options=[discord.CheckboxGroupOption(label="Enable", default=True)],
+        #            required=False,
+        #        ),
+        #    )
+        #    self.add_item(self.experienced_only)
+
+        skill_options = ["First time", "Done a couple times", "Very comfortable"]
+
+        self.skill_selection = discord.ui.RadioGroup(
+            options=[
+                discord.RadioGroupOption(
+                    label=skill,
+                    value=skill,
+                    default=skill == "First time",
+                )
+                for skill in skill_options
+            ],
+            required=False,
+        )
+
+        self.add_item(
+            discord.ui.Label(
+                text="How well do you know these bosses?",
+                component=self.skill_selection,
             )
-            self.add_item(self.experienced_only)
+        )
 
     async def on_submit(self, interaction: discord.Interaction):
         try:
@@ -377,6 +398,7 @@ class CreateTicketModal(discord.ui.Modal):
             channel_name = f"「🔖」ticket-{ticket_id:03d}"
             ticket_name = f"ticket-{ticket_id:03d}"
             category = interaction.guild.get_channel(TICKET_CATEGORY_ID)
+            skill_selection_value = self.skill_selection.value if self.skill_selection else "First time"
             experienced_only = False
             if (
                 self.type == "weekly bosses"
@@ -406,8 +428,9 @@ class CreateTicketModal(discord.ui.Modal):
                 drops=drops_list,
                 ticket_name=ticket_name,
                 claimer_roles={str(interaction.user.id): "DPS"},
-                certificate_only=experienced_only,
+                certificate_only=self.type == "weekly bosses",
                 is_practice=self.is_practice,
+
             )
 
             embed = discord.Embed(
@@ -455,11 +478,12 @@ class CreateTicketModal(discord.ui.Modal):
                     "reminder_sent": False,
                     "auto_closed": False,
                     "total_kills": total_kills_value,
-                    "experienced_only": experienced_only,
+                    "experienced_only": self.type == "weekly bosses",
                     "claimer_roles": {str(interaction.user.id): "DPS"},
                     "is_practice": self.is_practice,
                     "badges": found_badges["others"],
                     "inventory": inventory_info,
+                    "experience": skill_selection_value
                 }
             )
 
@@ -482,6 +506,7 @@ class CreateTicketModal(discord.ui.Modal):
                 is_practice=self.is_practice,
                 #badges=found_badges["others"],
                 #inventory=inventory_info,
+                experience=skill_selection_value
             )
 
             allowed_mentioning = discord.AllowedMentions(
