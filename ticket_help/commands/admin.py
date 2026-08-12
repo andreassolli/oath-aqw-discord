@@ -10,6 +10,8 @@ from config import (
     TICKET_LOG_CHANNEL_ID,
 )
 from firebase_client import db, firestore
+from panels.spam_cache import SPAM_PANEL_CACHE
+from panels.spam_view import SpamCreateView
 from ticket_help.commands.permissions import has_admin_role, has_oathsworn_role
 from ticket_help.dashboard.updater import update_dashboard
 from ticket_help.new_panel.ticket_panel import TicketLayout
@@ -17,9 +19,99 @@ from ticket_help.tickets.confirm_cancel_view import ConfirmCancelView
 from ticket_help.tickets.confirm_complete_view import ConfirmCompleteView
 from ticket_help.tickets.embed_utils import build_ticket_embed
 from ticket_help.tickets.points import clear_point_rule_cache
-from ticket_help.tickets.utils import clear_active_ticket
+from ticket_help.tickets.utils import clear_active_ticket, monster_autocomplete
 from ticket_help.tickets.views import TicketActionView
 
+@app_commands.command(
+    name="add-bosses",
+    description="Add bosses to your spam ticket"
+)
+@app_commands.autocomplete(
+    monster1=monster_autocomplete,
+    monster2=monster_autocomplete,
+    monster3=monster_autocomplete,
+    monster4=monster_autocomplete,
+    monster5=monster_autocomplete,
+)
+async def update_spam_panel(
+    interaction: discord.Interaction,
+    monster1: str | None = None,
+    monster2: str | None = None,
+    monster3: str | None = None,
+    monster4: str | None = None,
+    monster5: str | None = None,
+):
+    cache = SPAM_PANEL_CACHE.get(interaction.user.id)
+
+    if not cache:
+        return await interaction.response.send_message(
+            "The spam panel hasn't been created yet.",
+            ephemeral=True
+        )
+
+    message_id = cache.get("message")
+    channel_id = cache.get("channel")
+    servers = cache.get("servers")
+    is_practice = cache.get("is_practice")
+    ticket_type = cache.get("type")
+
+    bosses = [
+        boss for boss in (
+            monster1,
+            monster2,
+            monster3,
+            monster4,
+            monster5,
+        )
+        if boss
+    ]
+
+    if not bosses:
+        return await interaction.response.send_message(
+            "You need to provide at least one boss.",
+            ephemeral=True
+        )
+
+    guild = interaction.guild
+
+    if not guild:
+        return await interaction.response.send_message(
+            "This command can only be used in a server.",
+            ephemeral=True
+        )
+
+    channel = guild.get_channel(channel_id)
+
+    if channel is None:
+        return await interaction.response.send_message(
+            "I couldn't find the channel.",
+            ephemeral=True
+        )
+
+    try:
+        message = await channel.fetch_message(message_id)
+    except discord.NotFound:
+        return await interaction.response.send_message(
+            "The message no longer exists.",
+            ephemeral=True
+        )
+
+    view = SpamCreateView(
+        servers=servers,
+        type=ticket_type,
+        practice=is_practice,
+        bosses=bosses,
+    )
+
+    await message.edit(
+        content=f"Current bosses: {', '.join(bosses)}",
+        view=view,
+    )
+
+    await interaction.response.send_message(
+        "Bosses added.",
+        ephemeral=True
+    )
 
 @app_commands.command(
     name="clear-active-ticket", description="Clear active ticket for a user"

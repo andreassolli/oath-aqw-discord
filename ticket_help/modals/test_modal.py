@@ -21,9 +21,10 @@ from ticket_help.new_panel.ticket_panel import TicketLayout
 from ticket_help.panels.server_fetch import fetch_servers
 from ticket_help.tickets.boss_type import get_bosses_for_type
 from ticket_help.tickets.ids import get_next_ticket_id
-from ticket_help.tickets.points import calculate_ticket_points, get_boss_room
+from ticket_help.tickets.points import calculate_ticket_points, get_boss_room, get_spam_boss_room
 from ticket_help.tickets.ticket_cache import ticket_cache
 from ticket_help.tickets.utils import (
+    DIFFICULTY_BOSSES,
     find_guide_threads,
     set_active_ticket,
     sort_badges,
@@ -105,12 +106,14 @@ class CreateTicketModal(discord.ui.Modal):
         servers,
         is_practice: bool = False,
         is_infinity: bool = False,
+        spam_bosses: list[str] | None = None,
     ):
         super().__init__(title=f"Create {ticket_type.capitalize()} Ticket")
 
         self.type = ticket_type
         self.is_practice = is_practice
         self.is_infinity = is_infinity
+        self.spam_bosses = spam_bosses
 
         self.bosses_input: discord.ui.TextInput | None = None
         username = username if username else ""
@@ -171,17 +174,20 @@ class CreateTicketModal(discord.ui.Modal):
         # else:
 
         if self.type in {
-            "other bosses",
             "spamming",
-            "testing",
-            "until drop",
-        }:
+        } and self.is_infinity:
             self.bosses_input = discord.ui.TextInput(
                 label="List boss rooms (comma-separated)",
                 placeholder="Ectocave,WorldEnder,Voidlair...",
                 required=True,
             )
             self.add_item(self.bosses_input)
+
+        if self.type in {
+            "spamming",
+        } and not self.is_infinity and self.spam_bosses is not None:
+            self.bosses_list = discord.ui.TextDisplay(content=f"Bosses: {", ".join(self.spam_bosses)}")
+            self.add_item(self.bosses_list)
 
         self.room = random.randint(11111, 99999)
         self.room_input = None
@@ -229,7 +235,7 @@ class CreateTicketModal(discord.ui.Modal):
             options = []
             for boss in boss_options:
                 option = discord.CheckboxGroupOption(
-                    label=boss.get("name"),
+                    label=f"{boss.get('name')} {DIFFICULTY_BOSSES[boss.get('name', '')] if self.type == 'weekly bosses' else ''}",
                     value=boss.get("name"),
                 )
                 options.append(option)
@@ -289,6 +295,8 @@ class CreateTicketModal(discord.ui.Modal):
             drops_list = []
             if self.type in {"weekly bosses", "daily bosses", "7 man bosses"}:
                 bosses = sort_bosses(self.boss_selection.component.values)
+            elif self.type == "spamming" and self.is_infinity:
+                bosses = self.spam_bosses
             else:
                 bosses = [
                     boss.strip()
@@ -309,17 +317,6 @@ class CreateTicketModal(discord.ui.Modal):
             else:
                 total_kills_value = 1
 
-            six_helper_bosses = [
-                "Astral Shrine",
-                "Grim Challenge",
-                "Apex Azalith",
-                "The Beast",
-                "Void Trio",
-                "Lich King",
-                "Deimos",
-                "Azalith",
-                "Kathool Depths",
-            ]
             ccid = await fetch_ccid(self.username.value)
 
             badges = await fetch_badges(ccid)
@@ -558,13 +555,15 @@ class CreateTicketModal(discord.ui.Modal):
 
             for boss in bosses:
                 custom_tickets = {"spamming", "testing", "until drop"}
-                if self.type in custom_tickets:
+                if self.type in custom_tickets and self.is_infinity:
                     if "TempleShrine" in boss:
                         rooms = "templeshrine"
                     elif "Flame Usurper" in boss:
                         rooms = "flameusurper"
                     else:
                         rooms = boss
+                elif self.type == "spamming":
+                    rooms = get_spam_boss_room(boss)
                 else:
                     rooms = get_boss_room(boss)
 

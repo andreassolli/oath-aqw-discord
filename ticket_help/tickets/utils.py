@@ -4,6 +4,23 @@ from collections import Counter
 import discord
 from firebase_admin import firestore
 from firebase_client import db
+import json
+import re
+from discord import app_commands
+
+from ticket_help.tickets.points import SPAM_BOSSES
+
+
+DIFFICULTY_BOSSES = {
+    "Champion Drakath": "easy",
+    "Ultra Nulgath": "easy",
+    "Ultra Drago": "easy",
+    "Ultra Speaker": "hard",
+    "Ultra Gramiel": "hard",
+    "Ultra Darkon": "medium",
+    "Ultra Dage": "medium",
+}
+
 DIFFICULTY_MAP = {
     "easy": "🟢⚫️⚫️⚫️",
     "medium": "🟠🟠⚫️⚫️",
@@ -83,6 +100,27 @@ BADGES_TO_FIND = {
     "Awe Ascension",
     "Radiant Goddess Of War",
 }
+
+def _normalize(name: str) -> str:
+    return re.sub(r"\s+", "", name).lower()
+
+
+async def monster_autocomplete(
+    interaction: discord.Interaction,
+    current: str,
+):
+    normalized_current = _normalize(current)
+
+    matches = [
+        app_commands.Choice(
+            name=canonical["name"],
+            value=canonical["room"],
+        )
+        for canonical in SPAM_BOSSES
+        if normalized_current in _normalize(canonical["name"])
+    ][:25]
+
+    return matches
 
 def sort_badges(badges: list[dict]):
     others = {
