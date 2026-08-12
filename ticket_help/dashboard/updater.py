@@ -14,9 +14,6 @@ async def update_dashboard(client: discord.Client):
 
     view = LeaderboardView(channel.guild)
 
-    async for msg in channel.history(limit=10):
-        if msg.author == client.user:
-            await msg.edit(view=view)
-            return
-
-    await channel.send(view=view)
+    message = channel.fetch_message(1465382095714259045)
+    await message.edit(view=view)
+    return
