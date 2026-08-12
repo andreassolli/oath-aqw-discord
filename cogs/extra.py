@@ -598,15 +598,24 @@ class Extra(commands.Cog):
         description="List all users with pending applications",
     )
     @app_commands.checks.has_role(TICKET_INSPECTOR_ROLE_ID)
-    async def pending_applications(self, interaction: discord.Interaction):
+    async def pending_applications(
+        self,
+        interaction: discord.Interaction,
+        filter: Literal["Under review", "Awaiting Trial", "All"] = "All",
+    ):
         await interaction.response.defer(ephemeral=True)
+
         if interaction.channel_id != TICKET_INSPECTORS_CHANNEL_ID:
             return await interaction.followup.send(
                 "❌ This command can only be used in the Certifications channel.",
                 ephemeral=True,
             )
 
-        target_statuses = {"Awaiting Trial", "Under review"}
+        target_statuses = (
+            {"Awaiting Trial", "Under review"}
+            if filter == "All"
+            else {filter}
+        )
 
         results = []
 
@@ -615,11 +624,11 @@ class Extra(commands.Cog):
             statuses = data.get("application_statuses", {})
 
             if not isinstance(statuses, dict):
-                continue  # safety guard
+                continue
 
             for app_type, status in statuses.items():
                 if status in target_statuses:
-                    results.append((doc.id, app_type.lower(), status))  # normalize
+                    results.append((doc.id, app_type, status))
 
         if not results:
             return await interaction.followup.send(
@@ -627,23 +636,45 @@ class Extra(commands.Cog):
                 ephemeral=True,
             )
 
-        results.sort(key=lambda x: (x[1], x[2]))
+        results.sort(key=lambda x: (x[1].lower(), x[2]))
 
+        # Build all result lines
         lines = []
-        for uid, app_type, status in results[:25]:
-            member = interaction.guild.get_member(int(uid))
+
+        for uid, app_type, status in results:
+            try:
+                member = interaction.guild.get_member(int(uid))
+            except ValueError:
+                member = None
+
             name = member.display_name if member else f"<@{uid}>"
 
             lines.append(
-                f"• {name} — **{app_type.title()}** ({STATUS_TO_EMOJI[status]} {status})"
+                f"• {name} — **{app_type}** "
+                f"({STATUS_TO_EMOJI[status]} {status})"
             )
 
-        extra = len(results) - 25
-        if extra > 0:
-            lines.append(f"\n… and {extra} more")
+        # 25 results per page
+        page_size = 25
+        pages = []
+
+        total_pages = (len(lines) + page_size - 1) // page_size
+
+        for i in range(0, len(lines), page_size):
+            page_lines = lines[i:i + page_size]
+            page_number = (i // page_size) + 1
+
+            pages.append(
+                f"📋 **Pending Applications** — Page {page_number}/{total_pages}\n\n"
+                + "\n".join(page_lines)
+            )
+
+        view = PendingApplicationsView(pages)
 
         await interaction.followup.send(
-            "📋 **Pending Applications:**\n\n" + "\n".join(lines), ephemeral=True
+            content=pages[0],
+            view=view,
+            ephemeral=True,
         )
 
     @app_commands.command(name="leaderboard", description="View leaderboards")

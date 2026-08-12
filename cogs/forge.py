@@ -98,14 +98,14 @@ class Forge(commands.Cog):
         await interaction.response.send_message(
             dedent(
                 """\
-            <:cloakaqw:1457810628168253522> **Forge**
+            <:aqwCape:1501670762174746644> **Forge**
             - <:aqwcheck:1532278320870326382> Must have completed the 'Defeat Kitsune', part of 13th Lord of Chaos.
             - <:aqwcheck:1532278320870326382> Must be Level 30.
             - <:aqwcheck:1532278320870326382> Must have Rank 4 Blacksmithing.
-            * <:cloakaqw:1457810628168253522> Prismatic Celestial Wings  (🧟‍♂️ Diabolical Warlord, 📍  `/join lostruinswar`)
-            * <:cloakaqw:1457810628168253522> Broken Wings  (🧟‍♂️Infernal Warlord, 📍 `/join lostruins`)
-            * <:cloakaqw:1457810628168253522> Shadow's Wings  (🧟‍♂️Azkorath, 📍 `/join infernalspire`)
-            * <:cloakaqw:1457810628168253522> Wings Of Destruction  (🧟‍♂️Malxas, 📍 `/join infernalspire`)"""
+            * <:aqwCape:1501670762174746644> Prismatic Celestial Wings  (🧟‍♂️ Diabolical Warlord, 📍  `/join lostruinswar`)
+            * <:aqwCape:1501670762174746644> Broken Wings  (🧟‍♂️Infernal Warlord, 📍 `/join lostruins`)
+            * <:aqwCape:1501670762174746644> Shadow's Wings  (🧟‍♂️Azkorath, 📍 `/join infernalspire`)
+            * <:aqwCape:1501670762174746644> Wings Of Destruction  (🧟‍♂️Malxas, 📍 `/join infernalspire`)"""
             )
         )
 
@@ -116,7 +116,7 @@ class Forge(commands.Cog):
         await interaction.response.send_message(
             dedent(
                 """\
-            <:cloakaqw:1457810628168253522> **Absolution**
+            <:aqwCape:1501670762174746644> **Absolution**
             > +50% Healing Boost
             > -20% Physical Boost
             - <:aqwcheck:1532278320870326382> Must be Level 90.
@@ -132,7 +132,7 @@ class Forge(commands.Cog):
     async def vainglory(self, interaction: discord.Interaction):
         await interaction.response.send_message(
             dedent("""\
-                <:cloakaqw:1457810628168253522> **Vainglory**
+                <:aqwCape:1501670762174746644> **Vainglory**
         > +15% Damage Boost
         > -50% Healing Intake
         - <:aqwcheck:1532278320870326382> Must have completed the previous quest.
@@ -156,7 +156,7 @@ class Forge(commands.Cog):
     async def avarice(self, interaction: discord.Interaction):
         await interaction.response.send_message(
             dedent("""\
-        <:cloakaqw:1457810628168253522> **Avarice**
+        <:aqwCape:1501670762174746644> **Avarice**
         > +10% Haste
         > -35% Damage Resistance
         - <:aqwcheck:1532278320870326382> Must have completed the previous quest.
@@ -180,7 +180,7 @@ class Forge(commands.Cog):
     async def penitence(self, interaction: discord.Interaction):
         await interaction.response.send_message(
             dedent("""\
-        <:cloakaqw:1457810628168253522> **Penitence**
+        <:aqwCape:1501670762174746644> **Penitence**
         > +25% Damage Resistance
         > -25% DoT Boost
         <:aqwcheck:1532278320870326382> Must have completed the previous quest.
@@ -201,7 +201,7 @@ class Forge(commands.Cog):
     async def lament(self, interaction: discord.Interaction):
         await interaction.response.send_message(
             dedent("""\
-        <:cloakaqw:1457810628168253522>**Lament**
+        <:aqwCape:1501670762174746644>**Lament**
         > +20% Critical Chance
         > -5% Haste
         <:aqwcheck:1532278320870326382> Must have completed the previous quest.
@@ -290,7 +290,7 @@ class Forge(commands.Cog):
         - <:aqwcheck:1532278320870326382> Blacksmith Rep rank 6, ChronoSpan Rep rank 10, and Yokai Rep rank 10
         - <:aqwcheck:1532278320870326382> Level 60
         -  <:armoraqw:1487000736087670936> DragonSoul Shinobi *(Armor)* (<:misc:1532256591141929031> Dragon Shinobi Token `x100`, 📍`/join shadowfortress`)
-        - <:cloakaqw:1457810628168253522> Imperial Chunin Clone (💰 50 000 Gold, 📍`/join dragonkoiz` -> Yokai Rep)
+        - <:aqwCape:1501670762174746644> Imperial Chunin Clone (💰 50 000 Gold, 📍`/join dragonkoiz` -> Yokai Rep)
         - <:armoraqw:1487000736087670936> Dragon Rogue (🧟‍♂️Ektorax, 📍`/join ectocave`)
         - <:armoraqw:1487000736087670936> Hashashin Armor (💰 500 000 Gold, 📍`/join yulgar` -> Suggestion Shop)
         - <:armoraqw:1487000736087670936> Thief of Hours Armor (💰 0 Gold, 📍`/join thespan` -> The Span Rep)
@@ -551,23 +551,23 @@ class Forge(commands.Cog):
     async def all_cape(self, interaction: discord.Interaction):
         await interaction.response.send_message(
             dedent("""\
-            <:cloakaqw:1457810628168253522> **Absolution**
+            <:aqwCape:1501670762174746644> **Absolution**
             > +50% Healing Boost
             > -20% Physical Boost
 
-            <:cloakaqw:1457810628168253522> **Vainglory**
+            <:aqwCape:1501670762174746644> **Vainglory**
             > +15% Damage Boost
             > -50% Healing Intake
 
-            <:cloakaqw:1457810628168253522> **Avarice**
+            <:aqwCape:1501670762174746644> **Avarice**
             > +10% Haste
             > -35% Damage Resistance
 
-            <:cloakaqw:1457810628168253522> **Penitence**
+            <:aqwCape:1501670762174746644> **Penitence**
             > +25% Damage Resistance
             > -25% DoT Boost
 
-            <:cloakaqw:1457810628168253522> **Lament**
+            <:aqwCape:1501670762174746644> **Lament**
             > +20% Critical Chance
             > -5% Haste
             """)

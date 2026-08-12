@@ -3,7 +3,7 @@ import random
 
 import discord
 from firebase_admin import firestore
-
+from user_profile.utils import fetch_badges, fetch_inventory, fetch_ccid
 from config import (
     ADMIN_ROLE_ID,
     GUIDE_CHANNEL_ID,
@@ -26,6 +26,8 @@ from ticket_help.tickets.ticket_cache import ticket_cache
 from ticket_help.tickets.utils import (
     find_guide_threads,
     set_active_ticket,
+    sort_badges,
+    sort_inventory
 )
 from ticket_help.utils.message_logging import log_ticket_view_event
 from ticket_help.utils.ticket import get_overwrites
@@ -48,6 +50,14 @@ TYPE_TO_IMAGE = {
     "until drop": "https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/spamticket.png",
     "practice": "https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/practiceticket.png",
     "infinity": "https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/aqwi.png",
+}
+
+SERVER_TO_RECOMMEND = {
+    "Artix": " - Not recommended",
+    "Yokai (SEA)": " - Not recommended",
+    "Swordhaven (EU)": " - Recommended",
+    "Safiria": " - Recommended",
+    "Yorumi": " - Recommended"
 }
 
 BOSS_ORDER_MAP = {boss: i for i, boss in enumerate(CORRECT_BOSS_ORDER)}
@@ -99,7 +109,7 @@ class CreateTicketModal(discord.ui.Modal):
         else:
             server_options = [
                 discord.SelectOption(
-                    label=server["sName"],
+                    label=f"{server['sName']} {SERVER_TO_RECOMMEND.get(server['sName'], '')}",
                     value=server["sName"],
                     description=f"{server['iCount']}/{server['iMax']} players",
                 )
@@ -252,6 +262,17 @@ class CreateTicketModal(discord.ui.Modal):
                 "Azalith",
                 "Kathool Depths",
             ]
+            ccid = await fetch_ccid(self.username.value)
+
+            badges = await fetch_badges(ccid)
+            inventory = await fetch_inventory(ccid)
+
+            found_badges = sort_badges(badges)
+            inventory_info = sort_inventory(inventory)
+
+            for badge in found_badges["class_badges"]:
+                inventory_info["classes"].add(badge)
+
 
             if self.max_claims_input:
                 try:
@@ -400,6 +421,8 @@ class CreateTicketModal(discord.ui.Modal):
                     "experienced_only": experienced_only,
                     "claimer_roles": {str(interaction.user.id): "DPS"},
                     "is_practice": self.is_practice,
+                    "badges": found_badges["others"],
+                    "inventory": inventory_info,
                 }
             )
 
@@ -420,6 +443,8 @@ class CreateTicketModal(discord.ui.Modal):
                 claimer_roles={str(interaction.user.id): "DPS"},
                 certificate_only=experienced_only,
                 is_practice=self.is_practice,
+                #badges=found_badges["others"],
+                #inventory=inventory_info,
             )
 
             allowed_mentioning = discord.AllowedMentions(

@@ -13,7 +13,6 @@ from config import (
 )
 from extra_commands.render import render_png
 from firebase_client import db
-from update_badges import get_total_badges
 from user_profile.utils import (
     calculate_epic_badges,
     calculate_total_badges,
