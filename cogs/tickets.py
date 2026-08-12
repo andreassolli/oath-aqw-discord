@@ -51,7 +51,7 @@ class Tickets(commands.Cog):
 
         self._started = True
         await self.bot.wait_until_ready()
-        await setup_color_panel(self.bot)
+        # await setup_color_panel(self.bot)
         await setup_application_panel(self.bot)
         # await setup_ticket_system(self.bot)
 

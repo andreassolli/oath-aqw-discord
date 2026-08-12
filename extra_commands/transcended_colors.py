@@ -111,11 +111,6 @@ async def setup_color_panel(client: discord.Client):
     if not isinstance(channel, discord.TextChannel):
         return
 
-    # Delete old bot messages (optional)
-    async for msg in channel.history(limit=5):
-        if msg.author == client.user:
-            await msg.delete()
-
     embed = discord.Embed(
         title="Transcended Supporters of the Realm",
         description=(
