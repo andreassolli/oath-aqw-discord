@@ -88,13 +88,13 @@ def sort_badges(badges: list[dict]):
     others = {
         item["sTitle"]
         for item in badges
-        if any(badge in item["strName"] for badge in BADGES_TO_FIND)
+        if any(badge in item["sTitle"] for badge in BADGES_TO_FIND)
     }
 
     class_badges = {
         item["sTitle"]
         for item in badges
-        if any(badge in item["strName"] for badge in CLASS_BADGES)
+        if any(badge in item["sTitle"] for badge in CLASS_BADGES)
     }
 
     return {"class_badges": class_badges, "others": others}
