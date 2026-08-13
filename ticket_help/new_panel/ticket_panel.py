@@ -479,7 +479,7 @@ class RoomButton(discord.ui.Button):
                     rooms = "flameusurper"
                 else:
                     rooms = boss
-            elif self.type == "spamming":
+            elif layout.type == "spamming":
                 spam_boss = get_spam_boss_room(boss)
                 rooms = spam_boss.get("room")
             else:
