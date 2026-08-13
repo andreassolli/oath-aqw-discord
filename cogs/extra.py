@@ -52,7 +52,7 @@ from panels.staff_panel import (
     LeadLayout,
     OfficerLayout,
 )
-from ticket_help.tickets.points import get_boss_room
+from ticket_help.tickets.points import get_boss_room, get_spam_boss_room
 from ticket_help.tickets.utils import monster_autocomplete
 from user_profile.utils import fetch_inventory
 with open("ioda_list.json", "r", encoding="utf-8") as ioda:
@@ -969,8 +969,6 @@ class Extra(commands.Cog):
             elif self.type == "spamming":
                 spam_boss = get_spam_boss_room(boss)
                 rooms = spam_boss.get("room")
-                limit = spam_boss.get("players", 1)
-                min_helpers = min(min_helpers, limit)
             else:
                 rooms = get_boss_room(boss)
 
