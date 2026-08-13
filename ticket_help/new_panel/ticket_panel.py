@@ -29,7 +29,7 @@ from ticket_help.modals.server_modal import ServerModal
 from ticket_help.panels.server_fetch import fetch_servers
 from ticket_help.tickets.boss_type import get_bosses_for_type
 from ticket_help.tickets.embed_utils import ROLE_EMOJIS
-from ticket_help.tickets.points import calculate_ticket_points, get_boss_room
+from ticket_help.tickets.points import calculate_ticket_points, get_boss_room, get_spam_boss_room
 from ticket_help.tickets.utils import clear_active_ticket, set_active_ticket
 from ticket_help.utils.claim_generate import generate_claim
 from ticket_help.utils.gif_claim import gif_claim
@@ -482,8 +482,6 @@ class RoomButton(discord.ui.Button):
             elif self.type == "spamming":
                 spam_boss = get_spam_boss_room(boss)
                 rooms = spam_boss.get("room")
-                limit = spam_boss.get("players", 1)
-                min_helpers = min(min_helpers, limit)
             else:
                 rooms = get_boss_room(boss)
 
