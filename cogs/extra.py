@@ -956,19 +956,10 @@ class Extra(commands.Cog):
         bosses = ticket_data.get("bosses")
         room_code = ticket_data.get("room")
         type = ticket_data.get("type")
-        is_infinity = ticket_data.get("is_infinity")
         lines = []
 
         for boss in bosses:
-            custom_tickets = {"spamming", "testing", "until drop"}
-            if type in custom_tickets and is_infinity:
-                if "TempleShrine" in boss:
-                    rooms = "templeshrine"
-                elif "Flame Usurper" in boss:
-                    rooms = "flameusurper"
-                else:
-                    rooms = boss
-            elif type == "spamming":
+            if type == "spamming":
                 spam_boss = get_spam_boss_room(boss)
                 rooms = spam_boss.get("room")
             else:
