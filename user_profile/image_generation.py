@@ -53,9 +53,6 @@ async def generate_profile_card(
     badges = sort_badges(data.get("badges", []))
     points = data.get("points", 0)
     tickets_claimed = data.get("tickets_claimed", 0)
-    guild = str(data.get("guild", ""))
-    if guild == "None":
-        guild = ""
     has_been_potw = data.get("has_been_potw", False)
     is_potw = any(role.id == POTW_ROLE_ID for role in target.roles)
     total_wins = stats.get("wins", 0)
@@ -88,7 +85,8 @@ async def generate_profile_card(
     border = data.get("border", {})
     card = data.get("card", {})
     gems = data.get("gems", 0)
-    role = data.get("highlighted_role", "None")
+    guild = data.get("guild") or ""
+    role = data.get("highlighted_role") or "None"
     color = "#FFFFFF"
     outline_color = "#FFFFFF"
     outline_width = 0
