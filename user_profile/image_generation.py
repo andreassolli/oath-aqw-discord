@@ -67,6 +67,7 @@ async def generate_profile_card(
     rank = len(users_above) + 1
     pod_placement = -1
     total_badges = data.get("total_badges", 0)
+    guild = data.get("guild") or ""
     if guild == "Oath":
         pod_count = (
             db.collection("users")
@@ -85,7 +86,7 @@ async def generate_profile_card(
     border = data.get("border", {})
     card = data.get("card", {})
     gems = data.get("gems", 0)
-    guild = data.get("guild") or ""
+
     role = data.get("highlighted_role") or "None"
     color = "#FFFFFF"
     outline_color = "#FFFFFF"
