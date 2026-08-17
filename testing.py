@@ -12,11 +12,7 @@ import firebase_admin
 from firebase_admin import credentials
 from economy.gamba.blackjack import deal
 from economy.generate_rocks import generate_rocks
-from economy.inventory import generate_inventory
-from economy.shop_generation import generate_shop
 from extra_commands.twitter import check_twitter
-from extra_commands.wordle import choose_new_word
-from extra_commands.wordle_share import generate_wordle_share
 from firebase_client import db, firestore
 from inventory.utils import add_item
 from request_utils import get_session
@@ -624,24 +620,25 @@ async def post_kofi_summary():
     payload = {
         "embeds": [
             {
-                "title": "Oath Ko-Fi May '26 ☕️",
+                "title": "Oath Ko-Fi June + July '26 ☕️",
                 "description": (
                     "We want to be as open and transparent about the fundings, as well as spendings, for our community. "
                     "In order to do so we will be posting a summary each month of inventory, donations received, and prizes spent.\n\n"
                     "**Donations received 💵**\n"
-                    "- Total: **$615**\n"
-                    "- After fees: **$551**\n\n"
+                    "- Total: **$325**\n"
+                    "- After fees: **$289**\n\n"
                     "**Total spendings 💸**\n"
-                    "- Total: **$478**, $73 remaining\n\n"
+                    "- Total: **$280**, $72 remaining\n\n"
                     "**Expenses 🧾**\n"
-                    "- Hosting expense: **$13**\n"
-                    f"- Artix Points: **{478 - 13 - 300 - 50}**\n"
-                    "- Pay artists: **$300**\n"
-                    "- External Bot Service: **$50**\n\n"
+                    "- Hosting expense: **$26**\n"
+                    "- POTW: **$40**\n"
+                    "- Artix Points: **$95**\n"
+                    f"- HeroMart Items: **${45+169}**\n\n"
                     "**Inventory 🧳**\n"
                     "```diff\n"
-                    f"+ 60 000 Artix Points ($300)\n"
-                    "+ 23 HeroMart Items ($175)\n"
+                    f"+ 10 000 Artix Points ($50)\n"
+                    "+ 6 HeroMart Items ($120)\n"
+                    "+ 25 HeroPoints ($125)\n"
                     "```\n"
                     "Remember to check the Events channel for giveaways! "
                     "<:GoobHeart:1459836996381048863>"
@@ -1025,7 +1022,22 @@ def cleanup_boss_clears():
 
     print("Finished cleaning boss_clears.")
 if __name__ == "__main__":
-    cleanup_boss_clears()
+    #from firebase_client import db
+
+    #source_user = "733294879618367488"
+    #target_user = "1021020073139388498"
+
+    #source_ref = db.collection("users").document(source_user)
+    #target_ref = db.collection("users").document(target_user)
+
+    #source_doc = source_ref.get()
+
+#    if not source_doc.exists:
+ #       print("Source user does not exist.")
+ #  else:
+  #      target_ref.set(source_doc.to_dict(), merge=True)
+   #     print("User data copied successfully.")
+    #cleanup_boss_clears()
     # fix_gems_awarded_points()
     # asyncio.run(post_kofi_summary())
     # asyncio.run(add_killer_card())
@@ -1037,16 +1049,16 @@ if __name__ == "__main__":
     # get_all_users()
     # choose_new_word()
 
-    #asyncio.run(
-    #    add_item(
-    #        "292040660696039424",
-    #        "Proxy's Ninja",
-    #        "claim",
-    #        "proxy_claim.gif",
-    #        "proxy_claim_item.png",
-    #        "legendary",
-    #    )
-    #)
+    asyncio.run(
+        add_item(
+            "764704496784769024",
+            "1/1 Giveawyay",
+            "claim",
+            "rng2_claim.gif",
+            "rng2_claim_item.png",
+            "rare",
+        )
+    )
     # asyncio.run(test_fetch_call())
 # asyncio.run(generate_inventory(userId="292040660696039424"))
 # asyncio.run(backfill_ccids())
