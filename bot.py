@@ -41,9 +41,9 @@ async def on_ready():
         print("Startup task failed:")
         traceback.print_exc()
 
-    if not check_twitter.is_running():
-        print("🐦 Starting twitter loop...")
-        check_twitter.start()
+    #if not check_twitter.is_running():
+    #    print("🐦 Starting twitter loop...")
+    #    check_twitter.start()
 
     if bot.user:
         print(f"Logged in as {bot.user} (ID: {bot.user.id})")
