@@ -2,9 +2,13 @@ from io import BytesIO
 
 from PIL import Image, ImageDraw, ImageSequence
 
-from assets_caching import ASSET_CACHE, FONTS
+from assets_caching import FONTS
 from extra_commands.render import render_png
 from user_profile.hand_border_test import ASSETS_DIR
+
+
+IMAGE_SCALE = 1.2
+IMAGE_BOTTOM_OFFSET = 20
 
 
 async def text_welcome(username: str):
@@ -13,7 +17,6 @@ async def text_welcome(username: str):
     # BytesIO -> PIL Image
     image = Image.open(image_buffer).convert("RGBA")
 
-    # Already a PIL Image
     im = Image.open(ASSETS_DIR / "welcome-gif.gif")
     font_big = FONTS["claim_font"]
 
@@ -23,7 +26,9 @@ async def text_welcome(username: str):
         frame = frame.copy().convert("RGBA")
         d = ImageDraw.Draw(frame)
 
+        # -------------------------
         # Username
+        # -------------------------
         text_bbox = d.textbbox(
             (0, 0),
             username,
@@ -31,55 +36,43 @@ async def text_welcome(username: str):
         )
 
         text_width = text_bbox[2] - text_bbox[0]
-        text_height = text_bbox[3] - text_bbox[1]
 
-        spacing = 10
-        padding = 10
-
-        # Scale image to fit available height
-        max_image_height = (
-            frame.height
-            - text_height
-            - spacing
-            - padding * 2
-        )
-
-        if image.height > max_image_height:
-            scale = max_image_height / image.height
-
-            new_width = int(image.width * scale)
-            new_height = int(image.height * scale)
-
-            scaled_image = image.resize(
-                (new_width, new_height),
-                Image.Resampling.LANCZOS,
-            )
-        else:
-            scaled_image = image
-
-        # Center the complete username + image composition
-        total_height = (
-            text_height
-            + spacing
-            + scaled_image.height
-        )
-
-        start_y = (frame.height - total_height) // 2
-
-        # Username
         text_x = (frame.width - text_width) // 2
+        text_y = 10
 
         d.text(
-            (text_x, start_y),
+            (text_x, text_y),
             username,
             font=font_big,
             fill="#FFFFFF",
         )
 
-        # Rendered image
-        image_x = (frame.width - scaled_image.width) // 2
-        image_y = start_y + text_height + spacing
+        # -------------------------
+        # Scale rendered image
+        # -------------------------
+        new_width = int(image.width * IMAGE_SCALE)
+        new_height = int(image.height * IMAGE_SCALE)
 
+        scaled_image = image.resize(
+            (new_width, new_height),
+            Image.Resampling.LANCZOS,
+        )
+
+        # -------------------------
+        # Center image horizontally
+        # -------------------------
+        image_x = (frame.width - scaled_image.width) // 2
+
+        # Position image so it extends below
+        # the bottom of the GIF.
+        image_y = (
+            frame.height
+            - scaled_image.height
+            + IMAGE_BOTTOM_OFFSET
+        )
+
+        # Anything outside the GIF boundaries
+        # is automatically cropped.
         frame.paste(
             scaled_image,
             (image_x, image_y),

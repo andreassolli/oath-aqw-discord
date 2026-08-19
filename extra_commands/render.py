@@ -228,6 +228,30 @@ async def render_png(username: str):
     return output
 
 
+async def render_welcome(username: str):
+
+    driver = await setup_page(username)
+
+    canvas = await get_canvas(driver)
+
+    # get the canvas as a PNG base64 string
+    canvas_base64 = driver.execute_script(
+        "return arguments[0].toDataURL('image/png').substring(21);", canvas
+    )
+
+    # decode
+    png = base64.b64decode(canvas_base64)
+
+    image = Image.open(BytesIO(png)).convert("RGBA")
+
+    output = BytesIO()
+
+    image.save(output, format="PNG")
+
+    output.seek(0)
+    driver.quit()
+    return output
+
 async def render_gif(username: str):
 
     driver = await setup_page(username)
