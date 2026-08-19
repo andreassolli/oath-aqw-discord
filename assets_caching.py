@@ -115,6 +115,7 @@ def initialize_assets():
     ASSET_CACHE["whale_pod"] = load("whalepod.webp", (25, 25))
     ASSET_CACHE["plus"] = load("plus.png", (100, 100))
     ASSET_CACHE["minus"] = load("minus.png", (100, 100))
+    ASSET_CACHE["welcome-gif"] = load("welcome-gif.gif", (100, 100))
 
     ASSET_CACHE["potw_border"] = load("potw_border.webp", (226, 241))
     ASSET_CACHE["potw_flare"] = load("potw_flare.webp", (42, 42))
