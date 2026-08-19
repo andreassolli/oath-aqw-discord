@@ -8,7 +8,7 @@ from user_profile.hand_border_test import ASSETS_DIR
 
 
 IMAGE_SCALE = 1.2
-IMAGE_BOTTOM_OFFSET = 220
+IMAGE_BOTTOM_OFFSET = 180
 
 
 async def text_welcome(username: str):
@@ -18,7 +18,7 @@ async def text_welcome(username: str):
     image = Image.open(image_buffer).convert("RGBA")
 
     im = Image.open(ASSETS_DIR / "welcome-gif.gif")
-    font_big = FONTS["claim_font"]
+    font_big = FONTS["bold"]
 
     frames = []
 
@@ -38,11 +38,11 @@ async def text_welcome(username: str):
         text_width = text_bbox[2] - text_bbox[0]
 
         text_x = (frame.width - text_width) // 2
-        text_y = 10
+        text_y = (frame.height - 40)
 
         d.text(
             (text_x, text_y),
-            username,
+            f"Welcome {username}",
             font=font_big,
             fill="#FFFFFF",
         )
