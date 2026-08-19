@@ -31,7 +31,7 @@ async def text_welcome(username: str):
         # -------------------------
         text_bbox = d.textbbox(
             (0, 0),
-            username,
+            f"Welcome {username}",
             font=font_big,
         )
 
@@ -77,6 +77,12 @@ async def text_welcome(username: str):
             scaled_image,
             (image_x, image_y),
             scaled_image,
+        )
+        d.text(
+            (text_x, text_y),
+            f"Welcome {username}",
+            font=font_big,
+            fill="#FFFFFF",
         )
 
         frames.append(frame)
