@@ -38,7 +38,7 @@ async def text_welcome(username: str):
         text_width = text_bbox[2] - text_bbox[0]
 
         text_x = (frame.width - text_width) // 2
-        text_y = (frame.height - 40)
+        text_y = (frame.height - 120)
 
         d.text(
             (text_x, text_y),
