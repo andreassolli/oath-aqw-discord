@@ -9,7 +9,7 @@ from extra_commands.render import render_png
 ASSETS_DIR = Path(__file__).parent.parent.parent / "assets"
 
 
-async def gif_claim(username: str):
+async def text_welcome(username: str):
     image_buffer = await render_png(username)
 
     # BytesIO -> PIL Image
