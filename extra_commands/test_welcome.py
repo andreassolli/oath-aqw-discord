@@ -16,7 +16,7 @@ async def text_welcome(username: str):
     # Convert BytesIO -> PIL Image
     image = Image.open(image_buffer).convert("RGBA")
 
-    im = Image.open(ASSETS_DIR / "welcome-gif")
+    im = ASSET_CACHE["welcome-gif"]
     font_big = FONTS["claim_font"]
 
     frames = []
