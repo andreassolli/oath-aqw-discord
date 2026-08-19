@@ -8,7 +8,7 @@ from user_profile.hand_border_test import ASSETS_DIR
 
 
 IMAGE_SCALE = 1.2
-IMAGE_BOTTOM_OFFSET = 20
+IMAGE_BOTTOM_OFFSET = 220
 
 
 async def text_welcome(username: str):
