@@ -305,7 +305,7 @@ class Extra(commands.Cog):
         username = interaction.user.display_name
         image = await text_welcome(username)
 
-        filename = f"{username}.png"
+        filename = f"{username}.gif"
 
         file = discord.File(image, filename=filename)
         await interaction.followup.send("Generated image", ephemeral=True)
