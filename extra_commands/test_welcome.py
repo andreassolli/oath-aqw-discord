@@ -1,12 +1,9 @@
 from io import BytesIO
-from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageSequence
 
 from assets_caching import ASSET_CACHE, FONTS
 from extra_commands.render import render_png
-
-ASSETS_DIR = Path(__file__).parent.parent.parent / "assets"
 
 
 async def text_welcome(username: str):
@@ -15,7 +12,8 @@ async def text_welcome(username: str):
     # BytesIO -> PIL Image
     image = Image.open(image_buffer).convert("RGBA")
 
-    im = Image.open(ASSET_CACHE["welcome-gif"])
+    # Already a PIL Image
+    im = ASSET_CACHE["welcome-gif"]
     font_big = FONTS["claim_font"]
 
     frames = []
@@ -24,9 +22,7 @@ async def text_welcome(username: str):
         frame = frame.copy().convert("RGBA")
         d = ImageDraw.Draw(frame)
 
-        # -------------------------
         # Username
-        # -------------------------
         text_bbox = d.textbbox(
             (0, 0),
             username,
@@ -36,14 +32,10 @@ async def text_welcome(username: str):
         text_width = text_bbox[2] - text_bbox[0]
         text_height = text_bbox[3] - text_bbox[1]
 
-        # Space between username and image
         spacing = 10
-
-        # -------------------------
-        # Scale image to fit GIF
-        # -------------------------
         padding = 10
 
+        # Scale image to fit available height
         max_image_height = (
             frame.height
             - text_height
@@ -64,9 +56,7 @@ async def text_welcome(username: str):
         else:
             scaled_image = image
 
-        # -------------------------
-        # Center entire composition
-        # -------------------------
+        # Center the complete username + image composition
         total_height = (
             text_height
             + spacing
