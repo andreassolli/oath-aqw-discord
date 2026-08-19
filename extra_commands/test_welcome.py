@@ -4,6 +4,7 @@ from PIL import Image, ImageDraw, ImageSequence
 
 from assets_caching import ASSET_CACHE, FONTS
 from extra_commands.render import render_png
+from user_profile.hand_border_test import ASSETS_DIR
 
 
 async def text_welcome(username: str):
@@ -13,7 +14,7 @@ async def text_welcome(username: str):
     image = Image.open(image_buffer).convert("RGBA")
 
     # Already a PIL Image
-    im = ASSET_CACHE["welcome-gif"]
+    im = Image.open(ASSETS_DIR / "welcome-gif.gif")
     font_big = FONTS["claim_font"]
 
     frames = []
