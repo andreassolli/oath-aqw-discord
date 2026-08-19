@@ -301,22 +301,15 @@ class Extra(commands.Cog):
     @app_commands.command(name="test-welcome", description="Testing welcome gif")
     @app_commands.checks.has_permissions(manage_channels=True)
     async def send_test(self, interaction: discord.Interaction):
+        await interaction.response.defer(ephemeral=True)
         username = interaction.user.display_name
         image = await text_welcome(username)
 
         filename = f"{username}.png"
 
         file = discord.File(image, filename=filename)
-
-        embed = discord.Embed(
-            title=f"{username}",
-            color=discord.Colour(7344907),
-        )
-
-        embed.set_image(url=f"attachment://{filename}")
-
+        await interaction.followup.send("Generated image", ephemeral=True)
         return await interaction.channel.send(
-            embed=embed,
             file=file,
         )
 
