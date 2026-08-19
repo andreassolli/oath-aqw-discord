@@ -35,6 +35,8 @@ from extra_commands.ioda_view import IodaView
 from extra_commands.page_pending_cert import PendingApplicationsView
 from extra_commands.record_holder import record_holder
 from extra_commands.record_view import LeaderboardView
+from extra_commands.render import render_png
+from extra_commands.test_welcome import text_welcome
 from extra_commands.utils import (
     check_missing_badges,
     elect_potw,
@@ -295,6 +297,28 @@ class Extra(commands.Cog):
     #        return
     #    await log_channel.send(embed=log_embed)
     #    return await interaction.followup.send(f"Warned {user.mention}", ephemeral=True)
+
+    @app_commands.command(name="test-welcome", description="Testing welcome gif")
+    @app_commands.checks.has_permissions(manage_channels=True)
+    async def send_test(self, interaction: discord.Interaction):
+        username = interaction.user.display_name
+        image = await text_welcome(username)
+
+        filename = f"{username}.png"
+
+        file = discord.File(image, filename=filename)
+
+        embed = discord.Embed(
+            title=f"{username}",
+            color=discord.Colour(7344907),
+        )
+
+        embed.set_image(url=f"attachment://{filename}")
+
+        return await interaction.channel.send(
+            embed=embed,
+            file=file,
+        )
 
     @app_commands.command(
         name="update-application",
