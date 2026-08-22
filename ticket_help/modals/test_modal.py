@@ -542,7 +542,7 @@ class CreateTicketModal(discord.ui.Modal):
 
             if open_tickets > 0:
                 tickets_text = (
-                    f"🆘 **There are currently {open_tickets} in need of help.** "
+                    f"🆘 **There are currently {open_tickets} tickets already in need of help.** "
                     "Help those first then come back here.\n"
                     "As for the requester, we will get to you shortly!"
                     "<:pray:1533151454305583307>"
