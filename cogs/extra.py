@@ -36,6 +36,7 @@ from extra_commands.page_pending_cert import PendingApplicationsView
 from extra_commands.record_holder import record_holder
 from extra_commands.record_view import LeaderboardView
 from extra_commands.render import render_png
+from extra_commands.socials_modal import SocialsModal
 from extra_commands.test_welcome import text_welcome
 from extra_commands.utils import (
     check_missing_badges,
@@ -141,6 +142,12 @@ class Extra(commands.Cog):
         await interaction.response.send_message(
             f"🎉 {player.mention} has been elected POTW!\n"
             "🗑️ All POTW nominations have been reset."
+        )
+
+    @app_commands.command(name="content-creator", description="Apply for Content Creator Role")
+    async def apply_socials(self, interaction: discord.Interaction):
+        await interaction.response.send_modal(
+            SocialsModal()
         )
 
     @app_commands.command(name="nominate", description="Nominate a player for POTW")
