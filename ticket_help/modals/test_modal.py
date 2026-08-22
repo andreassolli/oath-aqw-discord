@@ -528,12 +528,25 @@ class CreateTicketModal(discord.ui.Modal):
 
             helper_role = interaction.guild.get_role(HELPER_ROLE_ID)
 
-            open_tickets = db.collection("tickets").where("status", "==", "open").count().get()
-            tickets_text = "⚠️ **More helpers needed for this ticket!**"
-            open_tickets -= 1
-            if open_tickets > 0:
-                tickets_text = f"🆘 **There are currently {open_tickets} in need of help.** Help those first then come back here.\nAs for the requester, we will get to you shortly!<:pray:1533151454305583307>"
+            open_tickets = (
+                db.collection("tickets")
+                .where("status", "==", "open")
+                .count()
+                .get()[0][0].value
+            )
 
+            tickets_text = "⚠️ **More helpers needed for this ticket!**"
+
+            # Don't count the ticket we just created
+            open_tickets -= 1
+
+            if open_tickets > 0:
+                tickets_text = (
+                    f"🆘 **There are currently {open_tickets} in need of help.** "
+                    "Help those first then come back here.\n"
+                    "As for the requester, we will get to you shortly!"
+                    "<:pray:1533151454305583307>"
+                )
             await channel.send(
                 f"{helper_role.mention}\n{tickets_text}",
                 allowed_mentions=discord.AllowedMentions(roles=True),
