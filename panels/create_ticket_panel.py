@@ -14,6 +14,16 @@ def world_times():
         "NA": datetime.now(ZoneInfo("America/New_York")).strftime("%H:%M"),
     }
 
+def current_tickets():
+    result = (
+        db.collection("tickets")
+        .where("status", "==", "open")
+        .count()
+        .get()
+    )
+
+    return result[0][0].value
+
 async def setup_new_tickets(client):
     channel = client.get_channel(TICKET_CHANNEL_ID)
 
@@ -134,11 +144,17 @@ class CreateTicketButton(discord.ui.Button):
 
         times = world_times()
 
+        open_tickets = current_tickets()
+        tickets_text = ""
+        if open_tickets > 0:
+            tickets_text = f"Already open tickets: {open_tickets}\n"
+
         await interaction.followup.send(
             f"Current time around the world 🌍\n"
             f"<:sea:1534042598937854092> SEA: `{times['SEA']}`\n"
             f"<:eu:1534042577979048076> EU: `{times['EU']}`\n"
             f"<:na:1534042597100617858> NA: `{times['NA']}`\n\n"
+            f"{tickets_text}"
             "Select the type for this ticket:",
             view=view,
             ephemeral=True,
