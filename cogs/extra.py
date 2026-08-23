@@ -31,6 +31,7 @@ from config import (
     TICKET_LOG_CHANNEL_ID,
     TRANSCENDED_ROLE_ID,
 )
+from extra_commands.bonus_view import BonusPackageView, get_package_items, package_autocomplete
 from extra_commands.ioda_view import IodaView
 from extra_commands.page_pending_cert import PendingApplicationsView
 from extra_commands.record_holder import record_holder
@@ -208,6 +209,36 @@ class Extra(commands.Cog):
     @app_commands.command(name="elp", description="Call for ELP")
     async def elp(self, interaction: discord.Interaction):
         await interaction.response.send_message("ELP ELLPPPPP CALL DRIADGEEEEEEEEEEEE")
+
+    @app_commands.command(
+        name="bonus",
+        description="View bonus packs",
+    )
+    @app_commands.describe(
+        package="The bonus package to view",
+    )
+    @app_commands.autocomplete(
+        package=package_autocomplete,
+    )
+    async def bonus_pack(
+        self,
+        interaction: discord.Interaction,
+        package: str,
+    ):
+        items = get_package_items(package)
+
+        if not items:
+            await interaction.response.send_message(
+                f"No items found for `{package}`.",
+                ephemeral=True,
+            )
+            return
+
+        view = BonusPackageView(package)
+
+        await interaction.response.send_message(
+            view=view,
+        )
 
     @app_commands.command(name="announce-event-winner")
     @has_any_role(ADMIN_ROLE_ID, DISCORD_MANAGER_ROLE_ID)
