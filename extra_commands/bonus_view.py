@@ -9,7 +9,7 @@ from extra_commands.preview_outfit import render_png
 
 
 JSON_FILE = Path("bonus_packages_with_images.json")
-PAGE_SIZE = 5
+PAGE_SIZE = 4
 
 
 with JSON_FILE.open("r", encoding="utf-8") as f:
