@@ -55,7 +55,7 @@ class InventoryLayout(discord.ui.LayoutView):
         self.equipped_card = equipped_card
         self.equipped_border = equipped_border
         self.equipped_claim = equipped_claim
-        self.title = equipped_title
+        self.equipped_title = equipped_title
 
         self.current_items = inventory
         self.page = 0
@@ -91,9 +91,9 @@ class InventoryLayout(discord.ui.LayoutView):
             ),
             discord.ui.TextDisplay(content="Displayed Title"),
             discord.ui.ActionRow(
-                RoleSelect(
-                    roles=self.titles,
-                    equipped_role=self.equipped_title,
+                TitleSelect(
+                    titles=self.titles,
+                    equipped_title=self.equipped_title,
                 ),
             ),
             discord.ui.Separator(
@@ -214,6 +214,71 @@ class InventoryLayout(discord.ui.LayoutView):
             print("INVENTORY UPDATE FAILED")
             traceback.print_exc()
 
+class TitleSelect(discord.ui.Select):
+    def __init__(
+        self,
+        titles: list[str],
+        equipped_title: str | None,
+    ):
+        options = [
+            discord.SelectOption(
+                label=title,
+                value=title,
+                default=title == equipped_title,
+            )
+            for title in titles
+        ]
+
+        options.insert(
+            0,
+            discord.SelectOption(
+                label="No Title",
+                value="None",
+                default=equipped_title is None,
+            ),
+        )
+
+        super().__init__(
+            placeholder=equipped_title or "No Title",
+            min_values=1,
+            max_values=1,
+            options=options,
+        )
+
+    async def callback(self, interaction: discord.Interaction):
+        view: InventoryLayout = self.view
+
+        selected_title = self.values[0]
+
+        if selected_title == "None":
+            selected_title = None
+
+        db.collection("users").document(
+            str(interaction.user.id)
+        ).update(
+            {
+                "title": selected_title,
+            }
+        )
+
+        view.equipped_title = selected_title
+
+        await interaction.response.defer()
+
+        view.container = view.build_container()
+        view.clear_items()
+        view.add_item(view.container)
+
+        await interaction.edit_original_response(view=view)
+
+        await interaction.followup.send(
+            (
+                "✨ Title removed."
+                if selected_title is None
+                else f"✨ Equipped title: **{selected_title}**"
+            ),
+            ephemeral=True,
+        )
 
 class EquipButton(discord.ui.Button):
     def __init__(
