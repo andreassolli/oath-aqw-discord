@@ -81,12 +81,14 @@ class ShopLayout(discord.ui.LayoutView):
                 visible=False,
                 spacing=discord.SeparatorSpacing.small,
             ),
-            discord.ui.TextDisplay(content="Buy Display Title"),
             discord.ui.ActionRow(
                 TitleSelect(
                     titles=self.titles,
                     selected_title=self.selected_title,
                 ),
+            ),
+            discord.ui.ActionRow(
+                BuyTitleButton(),
             ),
             discord.ui.ActionRow(
                 FilterButton(
@@ -218,13 +220,13 @@ class TitleSelect(discord.ui.Select):
     async def callback(self, interaction: discord.Interaction):
         view: ShopLayout = self.view
 
-        selected_id = self.values[0]
+        selected_name = self.values[0]
 
         view.selected_title = next(
             (
                 title
                 for title in view.titles
-                if str(title["id"]) == selected_id
+                if title["name"] == selected_name
             ),
             None,
         )
