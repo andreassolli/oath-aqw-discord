@@ -22,6 +22,7 @@ class ShopLayout(discord.ui.LayoutView):
         self.all_shop_items = shop_items
         self.shop_items = shop_items
         self.user = user
+        self.selected_title = None
         self.enabled_filters = {
             "card",
             "border",

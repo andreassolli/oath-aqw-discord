@@ -1,7 +1,7 @@
 # 2. Create gradient (FAST VERSION)
 from PIL import Image, ImageDraw
 
-TITLES_COLOR_MAP = {
+ROLES_COLOR_MAP = {
     "Taken the Oath": ["ffffff", "80daeb"],
     "Animal Advocate": ["87eb6c", "267d0f"],
     "Bird Brained": ["51d0db", "06c1d1"],
