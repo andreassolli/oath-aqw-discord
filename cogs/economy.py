@@ -42,7 +42,7 @@ class Economy(commands.Cog):
         interaction: discord.Interaction,
         name: str,
         image: str,
-        type: Literal["card", "border", "claim", "item"],
+        type: Literal["card", "border", "claim", "item", "title"],
         coin_price: int = 0,
         shard_price: int = 0,
         quantity: int | None = None,

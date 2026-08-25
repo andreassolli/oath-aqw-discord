@@ -6,7 +6,6 @@ import discord
 from economy.utils import ShopItem
 from firebase_client import db
 from inventory.utils import equip_item, unequip_item
-from user_profile.image_utils import ROLES_COLOR_MAP
 
 RARITY_EMOJIS = {
     "common": "🟢",
@@ -21,7 +20,6 @@ class InventoryLayout(discord.ui.LayoutView):
     def __init__(self, user: discord.Member):
         super().__init__(timeout=None)
         self.user = user
-        roles = ["None"]
         self.enabled_filters = {
             "card",
             "border",
@@ -31,26 +29,34 @@ class InventoryLayout(discord.ui.LayoutView):
         doc = db.collection("users").document(str(user.id)).get()
         data = doc.to_dict() or {}
         inventory = data.get("inventory", [])
-        user_role_names = {role.name for role in user.roles}
 
-        for role_name in ROLES_COLOR_MAP.keys():
-            if role_name in user_role_names:
-                roles.append(role_name)
+        self.titles = [
+            item["name"]
+            for item in inventory
+            if item["type"] == "title"
+        ]
+
+        inventory = [
+            item
+            for item in inventory
+            if item["type"] != "title"
+        ]
+
+        inventory.reverse()
+
+        self.all_items = inventory
 
         self.coins = data.get("coins", 0)
         self.gems = data.get("gems", 0)
         equipped_card = data.get("card", None)
         equipped_border = data.get("border", None)
         equipped_claim = data.get("claim", None)
-        equipped_role = data.get("highlighted_role", None)
-        self.roles = roles
-        self.equipped_role = equipped_role
+        equipped_title = data.get("title", None)
         self.equipped_card = equipped_card
         self.equipped_border = equipped_border
         self.equipped_claim = equipped_claim
+        self.title = equipped_title
 
-        inventory.reverse()
-        self.all_items = inventory
         self.current_items = inventory
         self.page = 0
         self.per_page = 3
@@ -83,11 +89,11 @@ class InventoryLayout(discord.ui.LayoutView):
                 visible=False,
                 spacing=discord.SeparatorSpacing.small,
             ),
-            discord.ui.TextDisplay(content="Highlight role"),
+            discord.ui.TextDisplay(content="Displayed Title"),
             discord.ui.ActionRow(
                 RoleSelect(
-                    roles=self.roles,
-                    equipped_role=self.equipped_role,
+                    roles=self.titles,
+                    equipped_role=self.equipped_title,
                 ),
             ),
             discord.ui.Separator(

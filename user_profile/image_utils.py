@@ -1,25 +1,14 @@
 # 2. Create gradient (FAST VERSION)
 from PIL import Image, ImageDraw
 
-ROLES_COLOR_MAP = {
-    "Initiate": ["ffffff", "80daeb"],
-    "Unsworn": ["ffffff", "ffffff"],
-    "Guide Writer": ["9e6bff", "9fc1ff"],
-    "AE Staff": ["b19550", "f6fda6"],
-    "Oathkeeper": ["f17a7a", "f0bbbb"],
-    "Grand Oathsworn": ["aa3b3b", "ff4848"],
-    "Oathsworn": ["ec3939", "cfab29"],
-    # "POTW": ["369876", "71ff9e"],
-    "Vow Council": ["ffffff", "ec9fff"],
-    "Ascended": ["9b8666", "ffe1b4"],
-    "Founder": ["f5e20c", "f1ff9f"],
+TITLES_COLOR_MAP = {
+    "Taken the Oath": ["ffffff", "80daeb"],
+    "Animal Advocate": ["87eb6c", "267d0f"],
+    "Bird Brained": ["51d0db", "06c1d1"],
+    "Cow Tipper": ["eda85f", "a65703"],
+    "Alchemist": ["cd5cf2", "4c07a6"],
+    "Ice Breaker": ["bcf6f7", "11cbcf"],
     "Oath Pillar": ["d4843d", "ffde90"],
-    "Arbiter": ["b2eb80", "80daeb"],
-    "Oathist": ["80ebc2", "80ebc2"],
-    "Cornerstone": ["b2eb80", "b2eb80"],
-    "Beta Tester": ["ffffff", "aa3b3b"],
-    "Ticket Inspector": ["9d5100", "febe58"],
-    "Ticket Officer": ["f684da", "80daeb"],
 }
 
 
