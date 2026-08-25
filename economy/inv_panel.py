@@ -31,7 +31,7 @@ class InventoryLayout(discord.ui.LayoutView):
         inventory = data.get("inventory", [])
 
         self.titles = [
-            item["name"]
+            item["id"]
             for item in inventory
             if item["type"] == "title"
         ]
