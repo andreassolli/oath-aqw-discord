@@ -195,10 +195,10 @@ class TitleSelect(discord.ui.Select):
         options = [
             discord.SelectOption(
                 label=title["name"],
-                value=str(title["id"]),
+                value=str(title["name"]),
                 default=(
                     selected_title is not None
-                    and selected_title["id"] == title["id"]
+                    and selected_title["name"] == title["name"]
                 ),
             )
             for title in titles
