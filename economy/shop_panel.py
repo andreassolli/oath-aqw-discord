@@ -19,6 +19,8 @@ RARITY_EMOJIS = {
 class ShopLayout(discord.ui.LayoutView):
     def __init__(self, shop_items: list[ShopItem], user: discord.User):
         super().__init__(timeout=None)
+        self.all_shop_items = shop_items
+        self.shop_items = shop_items
         self.user = user
         self.enabled_filters = {
             "card",
@@ -31,8 +33,20 @@ class ShopLayout(discord.ui.LayoutView):
 
         self.coins = data.get("coins", 0)
         self.gems = data.get("gems", 0)
-        self.all_shop_items = shop_items
-        self.shop_items = shop_items
+        # Keep titles separate from normal shop inventory.
+        self.titles = [
+            item
+            for item in shop_items
+            if item["type"] == "title"
+        ]
+
+        self.all_shop_items = [
+            item
+            for item in shop_items
+            if item["type"] != "title"
+        ]
+
+        self.shop_items = self.all_shop_items
         self.page = 0
         self.per_page = 3
 
@@ -65,6 +79,13 @@ class ShopLayout(discord.ui.LayoutView):
             discord.ui.Separator(
                 visible=False,
                 spacing=discord.SeparatorSpacing.small,
+            ),
+            discord.ui.TextDisplay(content="Buy Display Title"),
+            discord.ui.ActionRow(
+                TitleSelect(
+                    titles=self.titles,
+                    selected_title=self.selected_title,
+                ),
             ),
             discord.ui.ActionRow(
                 FilterButton(
@@ -164,6 +185,84 @@ class ShopLayout(discord.ui.LayoutView):
             print("SHOP UPDATE FAILED")
             traceback.print_exc()
 
+class TitleSelect(discord.ui.Select):
+    def __init__(
+        self,
+        titles: list[ShopItem],
+        selected_title: ShopItem | None,
+    ):
+        options = [
+            discord.SelectOption(
+                label=title["name"],
+                value=str(title["id"]),
+                default=(
+                    selected_title is not None
+                    and selected_title["id"] == title["id"]
+                ),
+            )
+            for title in titles
+        ]
+
+        super().__init__(
+            placeholder=(
+                selected_title["name"]
+                if selected_title
+                else "Select a title"
+            ),
+            min_values=1,
+            max_values=1,
+            options=options,
+        )
+
+    async def callback(self, interaction: discord.Interaction):
+        view: ShopLayout = self.view
+
+        selected_id = self.values[0]
+
+        view.selected_title = next(
+            (
+                title
+                for title in view.titles
+                if str(title["id"]) == selected_id
+            ),
+            None,
+        )
+
+        await interaction.response.defer()
+
+        view.container = view.build_container()
+        view.clear_items()
+        view.add_item(view.container)
+
+        await interaction.edit_original_response(view=view)
+
+class BuyTitleButton(discord.ui.Button):
+    def __init__(self):
+        super().__init__(
+            label="Buy Title",
+            style=discord.ButtonStyle.success,
+            emoji="🛒",
+        )
+
+    async def callback(self, interaction: discord.Interaction):
+        view: ShopLayout = self.view
+
+        if not view.selected_title:
+            await interaction.response.send_message(
+                "❌ Select a title first.",
+                ephemeral=True,
+            )
+            return
+
+        response = await buy_item(
+            view.selected_title,
+            interaction.user.id,
+        )
+
+        await interaction.response.send_message(
+            response,
+            ephemeral=True,
+        )
 
 class BuyButton(discord.ui.Button):
     def __init__(self, item: ShopItem):

@@ -87,7 +87,7 @@ async def generate_profile_card(
     card = data.get("card", {})
     gems = data.get("gems", 0)
 
-    role = data.get("highlighted_role") or "None"
+    role = data.get("title") or "None"
     color = "#FFFFFF"
     outline_color = "#FFFFFF"
     outline_width = 0
