@@ -52,75 +52,35 @@ class Quests(commands.Cog):
     async def quest_leaderboard(self, interaction: discord.Interaction):
         await interaction.response.defer()
 
-        QUEST_EVENT_BASELINES = {
-            "1217889539511554101": 10,
-            "1019047129882300486": 2,
-            "757590964343930891": 5,
-            "279531669567045632": 5,
-            "382337663719571467": 2,
-            "643214762129489934": 2,
-            "346738864607592449": 1,
-        }
-
-        # Get the top 25 based on the raw quest count
         docs = (
             db.collection("users")
             .order_by(
-                "quests_completed_count",
+                "quest_points",
                 direction="DESCENDING"
             )
-            .limit(25)
+            .limit(15)
             .stream()
         )
 
-        leaderboard = []
-
-        for doc in docs:
-            user_data = doc.to_dict() or {}
-
-            current_count = user_data.get("quests_completed_count", 0)
-
-            # Subtract quests completed before the event
-            baseline = QUEST_EVENT_BASELINES.get(doc.id, 0)
-
-            event_count = max(0, current_count - baseline)
-
-            leaderboard.append({
-                "user_id": doc.id,
-                "aqw_username": user_data.get("aqw_username", "Unknown User"),
-                "guild": user_data.get("guild", ""),
-                "quests": event_count,
-            })
-
-        # Re-sort after subtracting the pre-event quests
-        leaderboard.sort(
-            key=lambda x: x["quests"],
-            reverse=True
-        )
-
-        # Only display top 15
-        leaderboard = leaderboard[:15]
-
         lines = []
 
-        for i, entry in enumerate(leaderboard):
-            user_id = entry["user_id"]
-
-            member = interaction.guild.get_member(int(user_id))
+        for i, doc in enumerate(docs):
+            data = doc.to_dict() or {}
+            member = interaction.guild.get_member(int(doc.id))
 
             display_name = (
                 member.display_name
                 if member
-                else entry["aqw_username"]
+                else data.get("aqw_username", "Unknown User")
             )
 
-            aqw_guild = entry["guild"]
-            quests = entry["quests"]
+            aqw_guild = data.get("guild", "")
+            quest_points = data.get("quest_points", 0)
 
             lines.append(
                 f"{formatted_number_emote(i)} "
                 f"**{display_name}** "
-                f"— `{quests}` points"
+                f"— `{quest_points}` points"
             )
 
         embed = discord.Embed(
