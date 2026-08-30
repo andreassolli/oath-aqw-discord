@@ -1021,7 +1021,36 @@ def cleanup_boss_clears():
         batch.commit()
 
     print("Finished cleaning boss_clears.")
+
+def quests_points():
+    docs = (
+        db.collection("users")
+        .where("quests_completed_count", ">", 0)
+        .stream()
+    )
+
+    updated = 0
+    skipped = 0
+
+    for doc in docs:
+        data = doc.to_dict() or {}
+
+        completed_quests = data.get("completed_quests", [])
+
+        if not isinstance(completed_quests, list):
+            skipped += 1
+            continue
+
+        quest_points = len(completed_quests)
+
+        doc.reference.update({
+            "quest_points": quest_points
+        })
+
+        updated += 1
+
 if __name__ == "__main__":
+    quests_points()
     #from firebase_client import db
 
     #source_user = "733294879618367488"
@@ -1049,16 +1078,16 @@ if __name__ == "__main__":
     # get_all_users()
     # choose_new_word()
 
-    asyncio.run(
-        add_item(
-            "764704496784769024",
-            "1/1 Giveawyay",
-            "claim",
-            "rng2_claim.gif",
-            "rng2_claim_item.png",
-            "rare",
-        )
-    )
+    #asyncio.run(
+    #    add_item(
+    #        "764704496784769024",
+    #        "1/1 Giveawyay",
+    #        "claim",
+    #        "rng2_claim.gif",
+    #        "rng2_claim_item.png",
+    #        "rare",
+    #    )
+    #)
     # asyncio.run(test_fetch_call())
 # asyncio.run(generate_inventory(userId="292040660696039424"))
 # asyncio.run(backfill_ccids())

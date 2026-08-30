@@ -104,6 +104,7 @@ async def check_for_quest_completion(user_id: int) -> str:
         {
             "quests_completed": gc_firestore.ArrayUnion(completed_now),
             "quests_completed_count": gc_firestore.Increment(len(completed_now)),
+            "quest_points": gc_firestore.Increment(len(completed_now)),
             "coins": gc_firestore.Increment(coins_to_reward),
             "transactions": gc_firestore.ArrayUnion(
                 [f"+ Quest reward: ${coins_to_reward}"]

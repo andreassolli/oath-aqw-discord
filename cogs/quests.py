@@ -120,7 +120,7 @@ class Quests(commands.Cog):
             lines.append(
                 f"{formatted_number_emote(i)} "
                 f"**{display_name}** "
-                f"— `{quests}` quests"
+                f"— `{quests}` points"
             )
 
         embed = discord.Embed(
@@ -165,6 +165,7 @@ class Quests(commands.Cog):
 
         completed = data.get("quests_completed", [])
         total_completed = data.get("quests_completed_count", 0)
+        quest_points = data.get("quest_points", 0)
 
         all_quests = [
             "Weekly 1",
@@ -177,7 +178,7 @@ class Quests(commands.Cog):
 
         embed = discord.Embed(
             title=f"{interaction.user.display_name}'s Quest Stats <:queststart:1491012167170920560>",
-            description=f"\n<:misc:1532256591141929031> Total Quests Completed:`{total_completed}`\n\n<:aqwcheck:1532278320870326382> **Current Quests Completed**\n{"\n".join(f"> {q}" for q in completed)}{"\n\n<:scroll:1532256096063062157> Remaining\n" if len(remaining) > 0 else ""}{"\n".join(f"> {q}" for q in remaining)}",
+            description=f"\n🏴‍☠️ TLAPD Questing Points: `{quest_points}`\n<:misc:1532256591141929031> Total Quests Completed:`{total_completed}`\n\n<:aqwcheck:1532278320870326382> **Current Quests Completed**\n{"\n".join(f"> {q}" for q in completed)}{"\n\n<:scroll:1532256096063062157> Remaining\n" if len(remaining) > 0 else ""}{"\n".join(f"> {q}" for q in remaining)}",
             color=discord.Colour(7344907),
         )
 
