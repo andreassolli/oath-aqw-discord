@@ -5,14 +5,14 @@ from discord import app_commands
 from discord.ext import commands
 from quests.new_quests import ChangeQuestModal
 from firebase_client import db
-
+from datetime import datetime, timezone
 
 NUMBERS_EMOTES = [
     "<:rule1w:1505157671836454972>",
     "<:rule2w:1505157669995151381>",
     "<:rule3w:1505157669017751592>",
-    "<:rule4w:1505157667893543033>",
-    "<:rule5w:1505157666740375632>",
+    "<:4wht:1543576731217305690>",
+    "<:5wht:1543576732483723345>",
     "<:6wht:1537134850765492305>",
     "<:7wht:1537134853042999306>",
     "<:8wht:1537134854754410597>",
@@ -120,7 +120,7 @@ class Quests(commands.Cog):
             lines.append(
                 f"{formatted_number_emote(i)} "
                 f"**{display_name}** "
-                f"{get_guild(aqw_guild)}— `{quests}` quests"
+                f"— `{quests}` quests"
             )
 
         embed = discord.Embed(
@@ -132,7 +132,11 @@ class Quests(commands.Cog):
             color=discord.Colour(7344907),
         )
 
-        embed.set_footer(text="Event ends <t:1789833600:F>")
+        event_end = datetime.fromtimestamp(1789833600, tz=timezone.utc)
+
+        embed.set_footer(
+            text=f"Event ends {event_end.strftime('%B %d, %Y at %H:%M UTC')}"
+        )
 
         await interaction.followup.send(embed=embed)
 
