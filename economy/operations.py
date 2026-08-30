@@ -8,6 +8,27 @@ from economy.utils import ShopItem
 from firebase_client import db
 from inventory.utils import add_item
 
+async def add_item_by_name(
+    item: ShopItem,
+    user_id: int | str,
+):
+    user_ref = db.collection("users").document(str(user_id))
+
+    inventory = user_ref.get().to_dict().get("inventory", [])
+
+    inventory.append({
+        "name": item["name"],
+        "type": item["type"],
+        "image": item["image"],
+        "rarity": item.get("rarity", "common"),
+    })
+
+    user_ref.set(
+        {"inventory": inventory},
+        merge=True,
+    )
+
+    return f"Added **{item['name']}** to the user's inventory."
 
 async def list_item(
     name: str,

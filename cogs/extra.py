@@ -755,6 +755,7 @@ class Extra(commands.Cog):
         embed = await record_holder("points", guild)
         await interaction.followup.send(embed=embed, view=LeaderboardView())
 
+
     @app_commands.command(name="timeout", description="Timeout an officer for 1 hour.")
     async def timeout(self, interaction: discord.Interaction, target: discord.Member):
         await interaction.response.defer()

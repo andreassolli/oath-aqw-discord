@@ -6,9 +6,145 @@ from discord.ext import commands
 from quests.new_quests import ChangeQuestModal
 from firebase_client import db
 
+
+NUMBERS_EMOTES = [
+    "<:rule1w:1541450355592794112>",
+    "<:rule2w:1541450353566810252>",
+    "<:rule3w:1541450351960391811>",
+    "<:rule4w:1541450350047789137>",
+    "<:rule5w:1541450348030595092>",
+    "<:6wht:1541447767061303419>",
+    "<:7wht:1541447768613068878>",
+    "<:8wht:1541447770135863336>",
+    "<:9wht:1541447771750670386>",
+    "<:10wht:1541447774673960980>",
+    "<:11wht:1541447776511066203>",
+    "<:12wht:1541447778251706419>",
+    "<:13wht:1541447779828633620>",
+    "<:14wht:1541447781024010280>",
+    "<:15wht:1541447782685220984>",
+    "<:16wht:1541447784387846184>",
+    "<:17wht:1541447786162298980>",
+    "<:18wht:1541447788817162382>",
+    "<:19wht:1541447790599741592>",
+    "<:20wht:1541447791975338126>",
+    "<:21wht:1541447794110242934>",
+    "<:22wht:1541447796702453930>",
+    "<:23wht:1541447801584746527>",
+    "<:24wht:1541447802968604743>",
+    "<:25wht:1541447804323495936>"
+]
+
+GUILD_EMOTES = {
+    "Oath": "<:oath:1457451850184917122>",
+    "Ravens": "",
+    "Solaris": "",
+    "Stormforged": "",
+    "Vanaheim": "",
+}
+
+def formatted_number_emote(num: int):
+    if num < 5: return "<:leftwing:1541450358058917900>" + NUMBERS_EMOTES[num] + "<:rightwing:1541450356679118880>"
+    return "<:blank:1541450578448744548>" + NUMBERS_EMOTES[num] + "<:blank:1541450578448744548>"
+
+def get_guild(aqw_guild: str):
+    return f"{GUILD_EMOTES.get(aqw_guild, "")} `{aqw_guild}`"
+
 class Quests(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
+
+
+    @app_commands.command(
+        name="quest-leaderboard",
+        description="View leaderboard for Quests"
+    )
+    async def quest_leaderboard(self, interaction: discord.Interaction):
+        await interaction.response.defer()
+
+        QUEST_EVENT_BASELINES = {
+            "1217889539511554101": 10,
+            "1019047129882300486": 2,
+            "757590964343930891": 5,
+            "279531669567045632": 5,
+            "382337663719571467": 2,
+            "643214762129489934": 2,
+            "346738864607592449": 1,
+        }
+
+        # Get the top 25 based on the raw quest count
+        docs = (
+            db.collection("users")
+            .order_by(
+                "quests_completed_count",
+                direction="DESCENDING"
+            )
+            .limit(25)
+            .stream()
+        )
+
+        leaderboard = []
+
+        for doc in docs:
+            user_data = doc.to_dict() or {}
+
+            current_count = user_data.get("quests_completed_count", 0)
+
+            # Subtract quests completed before the event
+            baseline = QUEST_EVENT_BASELINES.get(doc.id, 0)
+
+            event_count = max(0, current_count - baseline)
+
+            leaderboard.append({
+                "user_id": doc.id,
+                "aqw_username": user_data.get("aqw_username", "Unknown User"),
+                "guild": user_data.get("guild", ""),
+                "quests": event_count,
+            })
+
+        # Re-sort after subtracting the pre-event quests
+        leaderboard.sort(
+            key=lambda x: x["quests"],
+            reverse=True
+        )
+
+        # Only display top 15
+        leaderboard = leaderboard[:15]
+
+        lines = []
+
+        for i, entry in enumerate(leaderboard):
+            user_id = entry["user_id"]
+
+            member = interaction.guild.get_member(int(user_id))
+
+            display_name = (
+                member.display_name
+                if member
+                else entry["aqw_username"]
+            )
+
+            aqw_guild = entry["guild"]
+            quests = entry["quests"]
+
+            lines.append(
+                f"{formatted_number_emote(i)} "
+                f"**{display_name}** "
+                f"{get_guild(aqw_guild)}— `{quests}` quests"
+            )
+
+        embed = discord.Embed(
+            title="TLAPD Questing Leaderboard <:queststart:1491012167170920560>",
+            description=(
+                f">>> {"\n".join(lines)}\n\n"
+                f"*Can't see yourself? Use `/quest-stats`*"
+            ),
+            color=discord.Colour(7344907),
+        )
+
+        embed.set_footer(text="Event ends <t:1789833600:F>")
+
+        await interaction.followup.send(embed=embed)
 
     @app_commands.command(
         name="quest-stats",
