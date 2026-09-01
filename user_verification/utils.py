@@ -7,6 +7,7 @@ from urllib.parse import parse_qs
 import discord
 
 from config import (
+    ALLIANCE_MAP,
     CCID_PAGE,
     HELPER_ROLE_ID,
     INITIATE_ROLE_ID,
@@ -112,7 +113,7 @@ async def change_roles(
     stranger_role = discord.utils.get(member.guild.roles, id=STRANGER_ROLE_ID)
     unsworn_role = discord.utils.get(member.guild.roles, id=UNSWORN_ROLE_ID)
     helper_role = discord.utils.get(member.guild.roles, id=HELPER_ROLE_ID)
-    vox_role = discord.utils.get(member.guild.roles, id=VOX_ROLE)
+
 
     try:
         if not verified_at_all:
@@ -156,14 +157,15 @@ async def change_roles(
             )
             return True
 
-        elif verified_guild == "Vox":
+        elif verified_guild in ["Ravens", "Vanaheim", "Stormforged", "Solaris"]:
+            role = discord.utils.get(member.guild.roles, id=ALLIANCE_MAP[verified_guild])
             await member.remove_roles(
                 stranger_role,
                 reason="User verified in Vox",
             )
             await member.add_roles(
                 unsworn_role,
-                vox_role,
+                role,
                 reason="User verified in Vox",
             )
             return True

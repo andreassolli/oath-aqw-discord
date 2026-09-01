@@ -342,3 +342,9 @@ ROLE_GROUPS: dict[str, list[RoleData]] = {
     "nitro_color": NITRO_ROLE_DATA,
 }
 GUIDE_WRITER_ROLE_ID = env_int("GUIDE_WRITER_ROLE_ID")
+ALLIANCE_MAP = {
+    "Ravens": env_int("RAVENS_ROLE"),
+    "Vanaheim": env_int("VANAHEIM_ROLE"),
+    "Stormforged": env_int("STORMFORGED_ROLE"),
+    "Solaris": env_int("SOLARIS_ROLE"),
+}

@@ -3,6 +3,10 @@ import discord
 from firebase_client import db
 from quests.setup_quests import setup_quests
 from google.cloud import firestore
+from quests.utils import (
+    get_weekly_cycle_id,
+    get_daily_cycle_id,
+)
 
 ITEM_TYPES = {
     "Axe": (
@@ -206,19 +210,36 @@ class ChangeQuestModal(discord.ui.Modal, title="Change Quest Items"):
 
 
 async def reset_quest_progress(quest_name: str):
+    """
+    Resets a quest for all users and clears the current
+    first/second-place completion record.
+
+    User quest_history is intentionally NOT modified.
+    """
+
+    # --------------------------------------------------------
+    # Remove quest from all users
+    # --------------------------------------------------------
+
     batch = db.batch()
     writes = 0
 
     for user in db.collection("users").stream():
+
         data = user.to_dict() or {}
 
-        if quest_name not in data.get("quests_completed", []):
+        if quest_name not in data.get(
+            "quests_completed",
+            [],
+        ):
             continue
 
         batch.update(
             user.reference,
             {
-                "quests_completed": firestore.ArrayRemove([quest_name]),
+                "quests_completed": firestore.ArrayRemove(
+                    [quest_name]
+                ),
             },
         )
 
@@ -226,8 +247,29 @@ async def reset_quest_progress(quest_name: str):
 
         if writes >= 500:
             batch.commit()
+
             batch = db.batch()
             writes = 0
 
     if writes:
         batch.commit()
+
+    # --------------------------------------------------------
+    # Reset first/second-place tracking
+    # --------------------------------------------------------
+
+    if quest_name.startswith("Weekly "):
+        cycle_id = get_weekly_cycle_id()
+    elif quest_name.startswith("Frequent "):
+        cycle_id = get_daily_cycle_id()
+    else:
+        return
+
+    completion_ref = (
+        db.collection("quest-completions")
+        .document(
+            f"{cycle_id}_{quest_name.replace(' ', '_')}"
+        )
+    )
+
+    completion_ref.delete()
