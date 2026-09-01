@@ -104,7 +104,6 @@ def archive_all_items(output_file="items.json"):
 if __name__ == "__main__":
 
 
-    WEBHOOK_URL = "https://discord.com/api/webhooks/1532790433007009832/yRyjLRxjWfrgLLn30CRmk_ZocnqfCYKOopwJL2sEJ33e6LBp1N-fhmGx6mmwx2cx3j3n"
 
 
     rotation = ["GOLD", "REP", "CLASS", "EXP"]

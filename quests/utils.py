@@ -48,17 +48,6 @@ def claim_quest_position(
     quest_id: str,
     cycle_id: str,
 ):
-    """
-    Atomically claims 1st or 2nd place for a quest.
-
-    Returns:
-        (position, points)
-
-        1, 1.0  -> first place
-        2, 0.5  -> second place
-        None, 0 -> third place or later
-    """
-
     completion_ref = (
         db.collection("quest-completions")
         .document(
@@ -77,57 +66,44 @@ def claim_quest_position(
 
         now = datetime.now(timezone.utc)
 
-        # ----------------------------------------------------
-        # First person to complete the quest
-        # ----------------------------------------------------
+        if snapshot.exists:
+            data = snapshot.to_dict()
 
-        if not snapshot.exists:
+            # Existing/legacy quest with ranking disabled.
+            if not data.get("ranking_enabled", True):
+                return None, 0.0
 
-            transaction.set(
-                completion_ref,
-                {
-                    "quest_id": quest_id,
-                    "cycle_id": cycle_id,
-                    "first_user": str(user_id),
-                    "first_completed_at": now,
-                },
-            )
+            if data.get("first_user") == str(user_id):
+                return None, 0.0
 
-            return 1, 1.0
+            if data.get("second_user") == str(user_id):
+                return None, 0.0
 
-        data = snapshot.to_dict()
+            if not data.get("second_user"):
+                transaction.update(
+                    completion_ref,
+                    {
+                        "second_user": str(user_id),
+                        "second_completed_at": now,
+                    },
+                )
 
-        # ----------------------------------------------------
-        # User already claimed a position
-        # ----------------------------------------------------
+                return 2, 0.5
 
-        if data.get("first_user") == str(user_id):
             return None, 0.0
 
-        if data.get("second_user") == str(user_id):
-            return None, 0.0
+        transaction.set(
+            completion_ref,
+            {
+                "quest_id": quest_id,
+                "cycle_id": cycle_id,
+                "ranking_enabled": True,
+                "first_user": str(user_id),
+                "first_completed_at": now,
+            },
+        )
 
-        # ----------------------------------------------------
-        # Second person to complete the quest
-        # ----------------------------------------------------
-
-        if not data.get("second_user"):
-
-            transaction.update(
-                completion_ref,
-                {
-                    "second_user": str(user_id),
-                    "second_completed_at": now,
-                },
-            )
-
-            return 2, 0.5
-
-        # ----------------------------------------------------
-        # Third or later
-        # ----------------------------------------------------
-
-        return None, 0.0
+        return 1, 1.0
 
     return transaction_handler(transaction)
 

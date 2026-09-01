@@ -1,7 +1,7 @@
 import asyncio
 import random
 from datetime import datetime
-
+from quests.utils import get_weekly_cycle_id
 import aiohttp
 import discord
 import requests
@@ -1103,8 +1103,37 @@ def reset_quest():
     print(f"Updated: {updated}")
     print(f"Skipped: {skipped}")
 
+
+def initialize_current_week_quest_ranking():
+    cycle_id = get_weekly_cycle_id()
+
+    batch = db.batch()
+
+    for quest_name in [
+        "Weekly 1",
+        "Weekly 2",
+    ]:
+        ref = (
+            db.collection("quest-completions")
+            .document(
+                f"{cycle_id}_{quest_name.replace(' ', '_')}"
+            )
+        )
+
+        batch.set(
+            ref,
+            {
+                "quest_id": quest_name,
+                "cycle_id": cycle_id,
+                "ranking_enabled": False,
+                "ranking_locked": True,
+            },
+        )
+
+    batch.commit()
+
 if __name__ == "__main__":
-    reset_quest()
+    initialize_current_week_quest_ranking()
     #from firebase_client import db
 
     #source_user = "733294879618367488"
