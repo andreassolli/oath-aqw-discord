@@ -1035,13 +1035,14 @@ def quests_points():
     for doc in docs:
         data = doc.to_dict() or {}
 
-        completed_quests = data.get("completed_quests", [])
+        completed_quests = data.get("quests_completed", [])
 
         if not isinstance(completed_quests, list):
             skipped += 1
             continue
 
         quest_points = len(completed_quests)
+        print(completed_quests)
 
         doc.reference.update({
             "quest_points": quest_points
@@ -1049,8 +1050,61 @@ def quests_points():
 
         updated += 1
 
+def reset_quest():
+    docs = db.collection("users").stream()
+
+    quest_order = [
+        "Weekly 1",
+        "Weekly 2",
+        "Frequent 1",
+        "Frequent 2",
+    ]
+
+    batch = db.batch()
+    batch_count = 0
+    updated = 0
+    skipped = 0
+
+    for doc in docs:
+        data = doc.to_dict() or {}
+
+        quest_points = data.get("quest_points", 0)
+
+        try:
+            quest_points = int(quest_points)
+        except (TypeError, ValueError):
+            skipped += 1
+            continue
+
+        quest_points = max(0, min(quest_points, 4))
+
+        completed_quests = quest_order[:quest_points]
+
+        batch.update(doc.reference, {
+            "quests_completed": completed_quests
+        })
+
+        batch_count += 1
+        updated += 1
+
+        # Commit every 400 updates
+        if batch_count >= 400:
+            batch.commit()
+            print(f"Committed batch of {batch_count} users.")
+
+            batch = db.batch()
+            batch_count = 0
+
+    # Commit remaining updates
+    if batch_count > 0:
+        batch.commit()
+        print(f"Committed final batch of {batch_count} users.")
+
+    print(f"Updated: {updated}")
+    print(f"Skipped: {skipped}")
+
 if __name__ == "__main__":
-    quests_points()
+    reset_quest()
     #from firebase_client import db
 
     #source_user = "733294879618367488"
