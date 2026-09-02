@@ -39,10 +39,6 @@ def get_daily_cycle_id() -> str:
     return f"frequent_{now.strftime('%Y_%m_%d')}"
 
 
-# ============================================================
-# Quest completion ranking
-# ============================================================
-
 def claim_quest_position(
     user_id: int,
     quest_id: str,
@@ -71,14 +67,17 @@ def claim_quest_position(
 
             # Existing/legacy quest with ranking disabled.
             if not data.get("ranking_enabled", True):
-                return None, 0.0
+                return None, 1.0
 
+            # User has already claimed this quest.
             if data.get("first_user") == str(user_id):
                 return None, 0.0
 
             if data.get("second_user") == str(user_id):
                 return None, 0.0
 
+            # Second person:
+            # 1 base point + 0.5 bonus = 1.5 points
             if not data.get("second_user"):
                 transaction.update(
                     completion_ref,
@@ -88,10 +87,14 @@ def claim_quest_position(
                     },
                 )
 
-                return 2, 0.5
+                return 2, 1.5
 
-            return None, 0.0
+            # Everyone after 1st and 2nd:
+            # 1 base point, no bonus
+            return None, 1.0
 
+        # First person:
+        # 1 base point + 1 bonus = 2 points
         transaction.set(
             completion_ref,
             {
@@ -103,14 +106,9 @@ def claim_quest_position(
             },
         )
 
-        return 1, 1.0
+        return 1, 2.0
 
     return transaction_handler(transaction)
-
-
-# ============================================================
-# History helpers
-# ============================================================
 
 def format_quest_items(required_items: list) -> str:
     names = [
@@ -140,11 +138,11 @@ def create_quest_history_entry(
     items_text = format_quest_items(required_items)
 
     if position == 1:
-        placement = "1st (+1 point)"
+        placement = "1st (+2 points)"
     elif position == 2:
-        placement = "2nd (+0.5 points)"
+        placement = "2nd (+1.5 points)"
     else:
-        placement = "completed (+0 points)"
+        placement = "completed (+1 point)"
 
     return (
         f"Completed {quest_id} with items {items_text} "
