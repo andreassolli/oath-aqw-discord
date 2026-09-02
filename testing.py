@@ -1036,12 +1036,13 @@ def quests_points():
         data = doc.to_dict() or {}
 
         completed_quests = data.get("quests_completed", [])
+        quest_points = data.get("quest_points", 0)
 
         if not isinstance(completed_quests, list):
             skipped += 1
             continue
 
-        quest_points = len(completed_quests)
+        quest_points += len(completed_quests)
         print(completed_quests)
 
         doc.reference.update({
@@ -1133,7 +1134,7 @@ def initialize_current_week_quest_ranking():
     batch.commit()
 
 if __name__ == "__main__":
-    initialize_current_week_quest_ranking()
+    quests_points()
     #from firebase_client import db
 
     #source_user = "733294879618367488"
