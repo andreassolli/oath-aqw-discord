@@ -4,6 +4,8 @@ import discord
 from PIL import Image
 from io import BytesIO
 
+BUTTONS_PER_ROW = 3
+
 def get_emote(type: str):
     if "Scroll" in type:
         return "<:scroll:1532256096063062157>"
@@ -98,10 +100,10 @@ class ClassView(discord.ui.LayoutView):
             ]
 
             # Discord ActionRows can contain max 5 buttons
-            for i in range(0, len(buttons), 5):
+            for i in range(0, len(buttons), BUTTONS_PER_ROW):
                 components.append(
                     discord.ui.ActionRow(
-                        *buttons[i:i + 5]
+                        *buttons[i:i + BUTTONS_PER_ROW]
                     )
                 )
 
@@ -129,7 +131,7 @@ class ClassView(discord.ui.LayoutView):
     ):
         components: List[discord.ui.Item] = [
             discord.ui.TextDisplay(
-                content=f"## <:lvl:1545134013906165800> {self.class_name}"
+                content=f"## <:lvl:1545782330747256862> {self.class_name}"
             ),
 
             discord.ui.Separator(),
@@ -174,10 +176,10 @@ class ClassView(discord.ui.LayoutView):
             for name, data in self.boss_loadouts.items()
         ]
 
-        for i in range(0, len(buttons), 5):
+        for i in range(0, len(buttons), BUTTONS_PER_ROW):
             components.append(
                 discord.ui.ActionRow(
-                    *buttons[i:i + 5]
+                    *buttons[i:i + BUTTONS_PER_ROW]
                 )
             )
 
