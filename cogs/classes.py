@@ -112,13 +112,13 @@ class ClassSetups(commands.Cog):
             )
 
         if image_file:
-            await interaction.response.send_message(
+            await interaction.followup.send(
                 embed=embed,
                 file=image_file,
                 view=view,
             )
         else:
-            await interaction.response.send_message(
+            await interaction.followup.send(
                 embed=embed,
                 view=view,
             )
