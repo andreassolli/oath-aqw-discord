@@ -2,11 +2,11 @@ import csv
 import re
 from io import StringIO
 
-from PIL.Image import Image
+from PIL import Image
 import aiohttp
 
 from config import BOSS_TO_SHEET, CLASSES_SHEET
-from assets_caching import CLASSES
+from assets_caching import CLASS_IMAGE_CACHE, CLASSES
 
 #_class_images: dict[str, str] = {}  # canonical_name → image_url
 
@@ -37,23 +37,21 @@ def get_class_loadouts() -> dict[str, dict[str, str]]:
     return _class_loadouts
 
 
-def get_class_image(canonical: str) -> Image | None:
-    # Exact match
-    if canonical in CLASSES:
-        return CLASSES[canonical]
+def get_class_image(class_name: str):
 
-    # Case-insensitive fallback
-    normalized = canonical.lower()
-    for name, image in CLASSES.items():
-        if name.lower() == normalized:
-            return image
+    if class_name in CLASS_IMAGE_CACHE:
+        return CLASS_IMAGE_CACHE[class_name]
 
-    for name, image in CLASSES.items():
-        if name.lower() == "no class":
-            return image
+    path = CLASSES.get(class_name)
 
-    return None
+    if path is None:
+        return None
 
+    image = Image.open(path).convert("RGBA")
+
+    CLASS_IMAGE_CACHE[class_name] = image
+
+    return image
 
 async def build_class_index() -> None:
     global _class_index, _class_loadouts
