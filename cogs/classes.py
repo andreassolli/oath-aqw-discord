@@ -4,12 +4,13 @@ from discord.ext import commands
 from io import BytesIO
 
 from class_setups.boss_setup_view import BossSetupView
-from class_setups.embed_class import build_class_embed
+from class_setups.embed_class import ClassView
 from class_setups.utils import (
     _normalize,
     build_class_index,
     clear_class_index,
     clear_sheet_cache,
+    get_class_across_bosses,
     get_class_image,
     get_class_index,
     get_class_loadouts,
@@ -17,8 +18,6 @@ from class_setups.utils import (
 )
 from config import (
     ALLOWED_COMMANDS_CHANNELS,
-    BOSS_TO_SHEET,
-    BOSS_TYPES,
     DISCORD_MANAGER_ROLE_ID,
 )
 
@@ -27,7 +26,6 @@ class ClassSetups(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    # 🔎 AUTOCOMPLETE
     async def class_autocomplete(
         self,
         interaction: discord.Interaction,
@@ -48,7 +46,6 @@ class ClassSetups(commands.Cog):
 
         return matches
 
-    # 🔥 CLASS COMMAND
     @app_commands.command(
         name="class",
         description="Show class setups and boss-specific loadouts",
@@ -71,101 +68,46 @@ class ClassSetups(commands.Cog):
             )
             return
 
-        await build_class_index()
+         await build_class_index()
 
-        index = get_class_index()  # alias → canonical
-        loadouts = get_class_loadouts()  # canonical → loadout
+         index = get_class_index()
+         loadouts = get_class_loadouts()
 
-        normalized = _normalize(class_name)
-        canonical = index.get(normalized)
+         normalized = _normalize(class_name)
+         canonical = index.get(normalized)
 
-        if not canonical:
-            return await interaction.followup.send("❌ Class not found.")
+         if not canonical:
+             return await interaction.followup.send(
+                 "❌ Class not found."
+             )
 
-        class_data = loadouts[canonical]
+         class_data = loadouts[canonical]
 
-        class_image = get_class_image(class_name)
+         # Get every boss this class appears in
+         boss_loadouts = await get_class_across_bosses(canonical)
 
-        embed = build_class_embed(
-            class_name=class_name,
-            general_loadout=class_data,
-            consumables=class_data,
-            has_image=class_image is not None,
-        )
+         # Get cached image
+         class_image = get_class_image(canonical)
 
-        view = BossSetupView(
-            class_name=canonical,  # pass canonical name to buttons
-            boss_types=BOSS_TYPES,
-            boss_sheets=BOSS_TO_SHEET,
-        )
+         view = ClassView(
+             class_name=canonical,
+             general_loadout=class_data,
+             consumables=class_data,
+             class_image=class_image,
+             boss_loadouts=boss_loadouts,
+         )
 
-        image_file = None
+         if view.class_file:
+             await interaction.followup.send(
+                 view=view,
+                 file=view.class_file,
+             )
+         else:
+             await interaction.followup.send(
+                 view=view,
+             )
 
-        if class_image:
-            image_bytes = BytesIO()
-            class_image.save(image_bytes, format="PNG")
-            image_bytes.seek(0)
 
-            image_file = discord.File(
-                image_bytes,
-                filename="class.png",
-            )
-
-        if image_file:
-            await interaction.followup.send(
-                embed=embed,
-                file=image_file,
-                view=view,
-            )
-        else:
-            await interaction.followup.send(
-                embed=embed,
-                view=view,
-            )
-
-    # 🔥 BOSS COMMAND
-    @app_commands.command(
-        name="boss",
-        description="Show all class loadouts for a boss",
-    )
-    async def boss_loadouts(
-        self,
-        interaction: discord.Interaction,
-        boss: str,
-    ):
-        await interaction.response.defer()
-
-        try:
-            data = await get_classes_for_boss(boss)
-        except ValueError:
-            return await interaction.followup.send("❌ Unknown boss.")
-
-        if not data:
-            return await interaction.followup.send("No loadouts found.")
-
-        embed = discord.Embed(
-            title=f"{boss.title()} Loadouts",
-            color=discord.Color.blurple(),
-        )
-
-        for class_name, loadout in list(data.items())[:10]:
-            embed.add_field(
-                name=class_name,
-                value=(
-                    f"<:swordaqw:1457810578994233434> {loadout.get('sword', '—')}\n"
-                    f"<:helmaqw:1457810605443383307> {loadout.get('helm', '—')}\n"
-                    f"<:cloakaqw:1457810628168253522> {loadout.get('cloak', '—')}"
-                ),
-                inline=False,
-            )
-
-        image_url = "https://pbs.twimg.com/media/DQ4C_sSV4AAwHqo.jpg"
-        if image_url:
-            embed.set_thumbnail(url=image_url)
-
-        await interaction.followup.send(embed=embed)
-
-    # 🔄 RECACHE
     @app_commands.command(
         name="recache-loadouts",
         description="Force refresh loadout and image cache",

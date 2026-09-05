@@ -2,47 +2,17 @@ import csv
 import re
 from io import StringIO
 
+from PIL.Image import Image
 import aiohttp
 
-from config import BOSS_TO_SHEET, CLASS_IMAGES_SHEET, CLASSES_SHEET
+from config import BOSS_TO_SHEET, CLASSES_SHEET
 from assets_caching import CLASSES
 
-_class_images: dict[str, str] = {}  # canonical_name → image_url
+#_class_images: dict[str, str] = {}  # canonical_name → image_url
 
 _sheet_cache: dict[str, list[dict[str, str]]] = {}
 _class_index: dict[str, str] = {}  # key → canonical_name
 _class_loadouts: dict[str, dict[str, str]] = {}  # canonical_name → loadout
-
-
-async def build_class_image_index() -> None:
-    global _class_images
-
-    if _class_images:
-        return
-
-    async with aiohttp.ClientSession() as session:
-        async with session.get(CLASS_IMAGES_SHEET) as resp:
-            resp.raise_for_status()
-            text = await resp.text()
-
-    reader = csv.reader(StringIO(text))
-
-    for row in reader:
-        if len(row) < 2:
-            continue
-
-        name = row[0].strip()
-        url = row[1].strip()
-
-        if not name:
-            continue
-
-        # Only store if a valid URL exists
-        if "drive.google.com/file/d/" in url:
-            file_id = url.split("/d/")[1].split("/")[0]
-            url = f"https://lh3.googleusercontent.com/d/{file_id}"
-
-            _class_images[name] = url
 
 
 def _normalize(name: str) -> str:
@@ -61,14 +31,13 @@ def get_class_index() -> dict[str, str]:
 def clear_class_index() -> None:
     _class_index.clear()
     _class_loadouts.clear()
-    _class_images.clear()
 
 
 def get_class_loadouts() -> dict[str, dict[str, str]]:
     return _class_loadouts
 
 
-def get_class_image(canonical: str) -> str | None:
+def get_class_image(canonical: str) -> Image | None:
     # Exact match
     if canonical in CLASSES:
         return CLASSES[canonical]
@@ -91,8 +60,6 @@ async def build_class_index() -> None:
 
     if _class_index:
         return
-
-    await build_class_image_index()
 
     for boss_name in BOSS_TO_SHEET.keys():
         rows = await get_boss_sheet(boss_name)
@@ -195,15 +162,27 @@ async def get_classes_for_boss(
 async def get_class_across_bosses(
     class_name: str,
 ) -> dict[str, dict[str, str]]:
-
-    normalized = class_name.strip().lower()
+    normalized = _normalize(class_name)
     results: dict[str, dict[str, str]] = {}
 
     for boss_name in BOSS_TO_SHEET.keys():
         rows = await get_boss_sheet(boss_name)
 
         for row in rows:
-            if row.get("Name", "").strip().lower() == normalized:
+            raw_name = row.get("Name", "").strip()
+
+            if not raw_name:
+                continue
+
+            # A row can contain multiple classes:
+            # "ArchPaladin / Lord of Order"
+            class_names = [
+                name.strip()
+                for name in raw_name.split("/")
+            ]
+
+            # Check each class independently
+            if any(_normalize(name) == normalized for name in class_names):
                 results[boss_name] = {
                     "sword": row.get("Sword", ""),
                     "class": row.get("Class", ""),
@@ -213,6 +192,7 @@ async def get_class_across_bosses(
                     "tonic": row.get("Tonic", ""),
                     "consumable": row.get("Consumable", ""),
                 }
+
                 break
 
     return results
