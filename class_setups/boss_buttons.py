@@ -1,6 +1,5 @@
 import discord
 
-from .embed_class import build_class_embed
 from .utils import get_class_image, get_classes_for_boss
 
 
