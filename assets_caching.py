@@ -9,7 +9,7 @@ FONTS = {}
 ROCKS_CACHE = {}
 RARITY_CACHE = {}
 CLASSES = {}
-
+CLASS_IMAGE_CACHE = {}
 BASE_DIR = Path(__file__).resolve().parent
 ASSETS_DIR = BASE_DIR / "assets"
 CLASSES_CACHE_DIR = ASSETS_DIR / "cached_classes"
@@ -85,13 +85,14 @@ BADGE_TO_IMAGE = {
 def initialize_assets():
     from PIL import Image, ImageFont
 
+    CLASSES_CACHE_DIR.mkdir(parents=True, exist_ok=True)
+
     for path in CLASSES_DIR.glob("*.png"):
         class_name = path.stem
 
         cache_path = CLASSES_CACHE_DIR / f"{class_name}.png"
 
-        if cache_path.exists():
-            CLASSES[class_name] = Image.open(cache_path).convert("RGBA")
+        CLASSES[class_name] = cache_path
 
     def load(name, size=None):
         img = Image.open(ASSETS_DIR / name).convert("RGBA")
