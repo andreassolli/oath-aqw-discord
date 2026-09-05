@@ -57,6 +57,7 @@ class ClassSetups(commands.Cog):
         class_name: str,
     ):
         await interaction.response.defer()
+
         if interaction.channel_id not in ALLOWED_COMMANDS_CHANNELS:
             allowed_mentions = ", ".join(
                 f"<#{cid}>" for cid in ALLOWED_COMMANDS_CHANNELS
@@ -68,44 +69,44 @@ class ClassSetups(commands.Cog):
             )
             return
 
-         await build_class_index()
+        await build_class_index()
 
-         index = get_class_index()
-         loadouts = get_class_loadouts()
+        index = get_class_index()
+        loadouts = get_class_loadouts()
 
-         normalized = _normalize(class_name)
-         canonical = index.get(normalized)
+        normalized = _normalize(class_name)
+        canonical = index.get(normalized)
 
-         if not canonical:
-             return await interaction.followup.send(
-                 "❌ Class not found."
-             )
+        if not canonical:
+            return await interaction.followup.send(
+                "❌ Class not found."
+            )
 
-         class_data = loadouts[canonical]
+        class_data = loadouts[canonical]
 
-         # Get every boss this class appears in
-         boss_loadouts = await get_class_across_bosses(canonical)
+        # Get every boss this class appears in
+        boss_loadouts = await get_class_across_bosses(canonical)
 
-         # Get cached image
-         class_image = get_class_image(canonical)
+        # Get cached image
+        class_image = get_class_image(canonical)
 
-         view = ClassView(
-             class_name=canonical,
-             general_loadout=class_data,
-             consumables=class_data,
-             class_image=class_image,
-             boss_loadouts=boss_loadouts,
-         )
+        view = ClassView(
+            class_name=canonical,
+            general_loadout=class_data,
+            consumables=class_data,
+            class_image=class_image,
+            boss_loadouts=boss_loadouts,
+        )
 
-         if view.class_file:
-             await interaction.followup.send(
-                 view=view,
-                 file=view.class_file,
-             )
-         else:
-             await interaction.followup.send(
-                 view=view,
-             )
+        if view.class_file:
+            await interaction.followup.send(
+                view=view,
+                file=view.class_file,
+            )
+        else:
+            await interaction.followup.send(
+                view=view,
+            )
 
 
     @app_commands.command(
