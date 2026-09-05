@@ -12,6 +12,7 @@ CLASSES = {}
 
 BASE_DIR = Path(__file__).resolve().parent
 ASSETS_DIR = BASE_DIR / "assets"
+CLASSES_CACHE_DIR = ASSETS_DIR / "cached_classes"
 FONTS_DIR = BASE_DIR / "assets/fonts"
 CLASSES_DIR = ASSETS_DIR / "classes"
 
@@ -85,8 +86,12 @@ def initialize_assets():
     from PIL import Image, ImageFont
 
     for path in CLASSES_DIR.glob("*.png"):
-        class_name = path.stem  # "Mage.png" -> "Mage"
-        CLASSES[class_name] = Image.open(path).convert("RGBA")
+        class_name = path.stem
+
+        cache_path = CLASSES_CACHE_DIR / f"{class_name}.png"
+
+        if cache_path.exists():
+            CLASSES[class_name] = Image.open(cache_path).convert("RGBA")
 
     def load(name, size=None):
         img = Image.open(ASSETS_DIR / name).convert("RGBA")
