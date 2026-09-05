@@ -8,10 +8,12 @@ BADGE_CACHE = {}
 FONTS = {}
 ROCKS_CACHE = {}
 RARITY_CACHE = {}
+CLASSES = {}
 
 BASE_DIR = Path(__file__).resolve().parent
 ASSETS_DIR = BASE_DIR / "assets"
 FONTS_DIR = BASE_DIR / "assets/fonts"
+CLASSES_DIR = ASSETS_DIR / "classes"
 
 CARD_CACHE = {}
 
@@ -81,6 +83,10 @@ BADGE_TO_IMAGE = {
 
 def initialize_assets():
     from PIL import Image, ImageFont
+
+    for path in CLASSES_DIR.glob("*.png"):
+        class_name = path.stem  # "Mage.png" -> "Mage"
+        CLASSES[class_name] = Image.open(path).convert("RGBA")
 
     def load(name, size=None):
         img = Image.open(ASSETS_DIR / name).convert("RGBA")

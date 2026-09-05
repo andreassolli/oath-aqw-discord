@@ -1,6 +1,5 @@
-from inspect import isclass
-
 import discord
+from PIL import Image
 
 
 def build_class_embed(
@@ -8,12 +7,13 @@ def build_class_embed(
     class_name: str,
     general_loadout: dict[str, str],
     consumables: dict[str, str],
-    image_url: str | None,
+    has_image: bool,
     description: str | None = None,
     is_class: bool = True,
 ) -> discord.Embed:
 
     description = description or "**Class Enhancement Setups**"
+
     embed = discord.Embed(
         title=class_name,
         description=description,
@@ -56,7 +56,7 @@ def build_class_embed(
             inline=False,
         )
 
-    if image_url:
-        embed.set_image(url=image_url)
+    if has_image:
+        embed.set_image(url="attachment://class.png")
 
     return embed
