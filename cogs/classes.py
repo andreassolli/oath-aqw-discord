@@ -1,6 +1,7 @@
 import discord
 from discord import app_commands
 from discord.ext import commands
+from io import BytesIO
 
 from class_setups.boss_setup_view import BossSetupView
 from class_setups.embed_class import build_class_embed
@@ -83,13 +84,13 @@ class ClassSetups(commands.Cog):
 
         class_data = loadouts[canonical]
 
-        image_url = get_class_image(canonical)
+        class_image = get_class_image(class_name)
 
         embed = build_class_embed(
-            class_name=canonical,
+            class_name=class_name,
             general_loadout=class_data,
             consumables=class_data,
-            image_url=image_url,
+            has_image=class_image is not None,
         )
 
         view = BossSetupView(
@@ -98,7 +99,29 @@ class ClassSetups(commands.Cog):
             boss_sheets=BOSS_TO_SHEET,
         )
 
-        await interaction.followup.send(embed=embed, view=view)
+        image_file = None
+
+        if class_image:
+            image_bytes = BytesIO()
+            class_image.save(image_bytes, format="PNG")
+            image_bytes.seek(0)
+
+            image_file = discord.File(
+                image_bytes,
+                filename="class.png",
+            )
+
+        if image_file:
+            await interaction.response.send_message(
+                embed=embed,
+                file=image_file,
+                view=view,
+            )
+        else:
+            await interaction.response.send_message(
+                embed=embed,
+                view=view,
+            )
 
     # 🔥 BOSS COMMAND
     @app_commands.command(

@@ -5,6 +5,7 @@ from io import StringIO
 import aiohttp
 
 from config import BOSS_TO_SHEET, CLASS_IMAGES_SHEET, CLASSES_SHEET
+from assets_caching import CLASSES
 
 _class_images: dict[str, str] = {}  # canonical_name → image_url
 
@@ -69,13 +70,18 @@ def get_class_loadouts() -> dict[str, dict[str, str]]:
 
 def get_class_image(canonical: str) -> str | None:
     # Exact match
-    if canonical in _class_images:
-        return _class_images[canonical]
+    if canonical in CLASSES:
+        return CLASSES[canonical]
 
     # Case-insensitive fallback
-    for name, url in _class_images.items():
+    normalized = canonical.lower()
+    for name, image in CLASSES.items():
+        if name.lower() == normalized:
+            return image
+
+    for name, image in CLASSES.items():
         if name.lower() == "no class":
-            return url
+            return image
 
     return None
 
