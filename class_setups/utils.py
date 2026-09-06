@@ -8,8 +8,6 @@ import aiohttp
 from config import BOSS_TO_SHEET, CLASSES_SHEET
 from assets_caching import CLASS_IMAGE_CACHE, CLASSES
 
-#_class_images: dict[str, str] = {}  # canonical_name → image_url
-
 _sheet_cache: dict[str, list[dict[str, str]]] = {}
 _class_index: dict[str, str] = {}  # key → canonical_name
 _class_loadouts: dict[str, dict[str, str]] = {}  # canonical_name → loadout

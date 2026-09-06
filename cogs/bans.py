@@ -33,7 +33,7 @@ class Bans(commands.Cog):
         await setup_badges(self.bot)
         #await setup_rules(self.bot)
         await setup_welcome(self.bot)
-        await setup_new_tickets(self.bot)
+        #await setup_new_tickets(self.bot)
         await setup_quests(self.bot)
 
     @app_commands.command(name="vet", description="View all banned users")
