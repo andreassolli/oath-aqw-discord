@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.log
+assets/cached_classes.zip
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment / secrets
+.env
+firebase_key.json
+firebase_key2.json
+
+# Local runtime files
+ticket_counter.txt
+
+# OS junk
+.DS_Store
+
+# Editor configs
+.vscode/
+.idea/
+
+# Testing / coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
