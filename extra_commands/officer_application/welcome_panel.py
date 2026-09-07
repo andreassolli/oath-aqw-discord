@@ -19,7 +19,7 @@ class OfficerApplicationLayout(discord.ui.LayoutView):
                 content="<:wing:1503517636695425164>** Apply for Officer**"
             ),
             discord.ui.Section(
-                discord.ui.TextDisplay("Enjoying your time in Oath and want to contribute to help make our community better? Apply to become an officer!\nYou need to have be part of the Oath guild, as well as having been in the Discord Server for a minimum of 1 month."
+                discord.ui.TextDisplay(">>> <a:arrow:1505157327584624712> Enjoying your time and want to help make our community better? Apply now!\nMust be in Oath, and been in Discord minimum a month."
                 ),
                 accessory=ApplicationButton(),
             ),
@@ -57,11 +57,11 @@ class OfficerApplicationLayout(discord.ui.LayoutView):
 class ApplicationButton(discord.ui.Button):
     def __init__(self):
         super().__init__(
-            label=" Apply for Officer",
+            label=" Apply",
             style=discord.ButtonStyle.primary,
             emoji=discord.PartialEmoji(
-                name="verify_button",
-                id=1505158460814262464,
+                name="whiteshield",
+                id=1546658412094296194,
             ),
             custom_id="officer_application_button",
         )

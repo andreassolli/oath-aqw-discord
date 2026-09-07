@@ -1097,19 +1097,6 @@ class Extra(commands.Cog):
             ephemeral=True,
         )
 
-    @app_commands.command(
-        name="test_officer",
-        description="Test officer application panel."
-    )
-    @app_commands.default_permissions(manage_channels=True)
-    async def officer_application(
-        self,
-        interaction: discord.Interaction,
-    ):
-        await interaction.response.defer(ephemeral=True)
-        view = OfficerApplicationLayout()
-        await interaction.followup.send(view=view)
-
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(Extra(bot))

@@ -1,8 +1,8 @@
 import discord
 
-from config import OFFICER_CHANNEL_ID, VERIFICATION_CHANNEL_ID
+from config import OFFICER_CHANNEL_ID, VERIFICATION_CHANNEL_ID, INITIATE_ROLE_ID
 from user_verification.verification_modal import VerificationModal
-
+from extra_commands.officer_application.modal import OfficerApplicationModal
 
 async def setup_welcome(client: discord.Client):
     channel = client.get_channel(VERIFICATION_CHANNEL_ID)
@@ -17,7 +17,6 @@ async def setup_welcome(client: discord.Client):
 
     await channel.send(view=WelcomeLayout())
 
-
 class WelcomeLayout(discord.ui.LayoutView):
     def __init__(self):
         super().__init__(timeout=None)
@@ -30,13 +29,12 @@ class WelcomeLayout(discord.ui.LayoutView):
             ),
             discord.ui.TextDisplay(content="‎"),
             discord.ui.TextDisplay(
-                content="<:wing:1503517636695425164> **Get access to the discord**"
+                content="<:wing:1503517636695425164>** Apply for Officer**"
             ),
             discord.ui.Section(
-                discord.ui.TextDisplay(
-                    content="> <a:redcheck:1503523456468254991> Verify by entering your AQW username, and get access to the rest of the discord. Click '**Verify**' to get started!"
+                discord.ui.TextDisplay(">>> <a:arrow:1505157327584624712> Enjoying your time and want to help make our community better? Apply now!\nMust be in Oath, and been in Discord minimum a month."
                 ),
-                accessory=VerifyButton(),
+                accessory=ApplicationButton(),
             ),
             discord.ui.TextDisplay(content="‎"),
             discord.ui.TextDisplay(
@@ -48,6 +46,16 @@ class WelcomeLayout(discord.ui.LayoutView):
                 ),
                 accessory=JoinGuildButton(),
             ),
+            discord.ui.TextDisplay(content="‎"),
+            discord.ui.TextDisplay(
+                content="<:wing:1503517636695425164> **Get access to the discord**"
+            ),
+            discord.ui.Section(
+                discord.ui.TextDisplay(
+                    content="> <a:redcheck:1503523456468254991> Verify by entering your AQW username, and get access to the rest of the discord. Click '**Verify**' to get started!"
+                ),
+                accessory=VerifyButton(),
+            ),
             discord.ui.MediaGallery(
                 discord.MediaGalleryItem(
                     media="https://raw.githubusercontent.com/andreassolli/oath-aqw-discord/refs/heads/main/assets/bright_separator.png",
@@ -57,6 +65,41 @@ class WelcomeLayout(discord.ui.LayoutView):
         )
 
         self.add_item(self.container1)
+
+
+class ApplicationButton(discord.ui.Button):
+    def __init__(self):
+        super().__init__(
+            label=" Apply",
+            style=discord.ButtonStyle.primary,
+            emoji=discord.PartialEmoji(
+                name="whiteshield",
+                id=1546658412094296194,
+            ),
+            custom_id="officer_application_button",
+        )
+
+    async def callback(self, interaction: discord.Interaction):
+        guild = interaction.guild
+        if not guild:
+            return
+        guild_role = guild.get_role(INITIATE_ROLE_ID)
+        member = guild.get_member(interaction.user.id)
+        if not member or member.joined_at is None:
+            return
+        account_age = (discord.utils.utcnow() - member.joined_at).days
+        if account_age < 30:
+            return await interaction.response.send_message(
+                "You need to have been a member of the discord for longer than 30 days in order to apply.",
+                ephemeral=True,
+            )
+        if guild_role not in member.roles:
+            return await interaction.response.send_message(
+                "You need to be a member of the Oath guild in AQW in order to apply.",
+                ephemeral=True,
+            )
+
+        await interaction.response.send_modal(OfficerApplicationModal())
 
 
 class VerifyButton(discord.ui.Button):
