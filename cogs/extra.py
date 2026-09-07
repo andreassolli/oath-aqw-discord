@@ -33,6 +33,7 @@ from config import (
 )
 from extra_commands.bonus_view import BonusPackageView, get_package_items, package_autocomplete
 from extra_commands.ioda_view import IodaView
+from extra_commands.officer_application.welcome_panel import OfficerApplicationLayout
 from extra_commands.page_pending_cert import PendingApplicationsView
 from extra_commands.record_holder import record_holder
 from extra_commands.record_view import LeaderboardView
@@ -1095,6 +1096,19 @@ class Extra(commands.Cog):
             f"✅ Created {channel.mention}.",
             ephemeral=True,
         )
+
+    @app_commands.command(
+        name="test_officer",
+        description="Test officer application panel."
+    )
+    @app_commands.default_permissions(manage_channels=True)
+    async def officer_application(
+        self,
+        interaction: discord.Interaction,
+    ):
+        await interaction.response.defer(ephemeral=True)
+        view = OfficerApplicationLayout()
+        await interaction.followup.send(view=view)
 
 
 async def setup(bot: commands.Bot):

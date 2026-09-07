@@ -99,7 +99,7 @@ BOSS_TYPES: dict[str, str] = {
     "drago": "Ultra Drago",
     "speaker": "Ultra Speaker",
 }
-
+OFFICER_UPDATES = env_int("OFFICER_UPDATES")
 CLASS_IMAGES_SHEET: str = os.getenv("CLASS_IMAGES_SHEET") or ""
 BANNED_LIST_CHANNEL_ID = env_int("BANNED_LIST_CHANNEL_ID")
 LEADERBOARD_HISTORY_CHANNEL_ID = env_int("LEADERBOARD_HISTORY_CHANNEL_ID")
