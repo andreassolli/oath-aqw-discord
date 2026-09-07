@@ -35,14 +35,14 @@ class OfficerApplicationModal(discord.ui.Modal, title="Officer Application"):
 
     q2 = discord.ui.TextInput(
         label="Why do you want to be officer?",
-        placeholder="Try to be concise, while still explaining how you want to contribute.",
+        placeholder="How you want to contribute? Try to be concise.",
         style=discord.TextStyle.paragraph,
         max_length=1000,
         required=True,
     )
     q3 = discord.ui.TextInput(
         label="Any previous experience?",
-        placeholder="No previous experience is fine, but if you have write it here.",
+        placeholder="None is fine, but if you have write it here.",
         style=discord.TextStyle.paragraph,
         max_length=1000,
         required=True,
