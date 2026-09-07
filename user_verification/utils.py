@@ -157,7 +157,7 @@ async def change_roles(
             )
             return True
 
-        elif verified_guild in ["Ravens", "Vanaheim", "Stormforged", "Solaris", "Cruel", "Cruelty"]:
+        elif verified_guild in ["Ravens", "Vanaheim", "Stormforged", "Solaris", "Cruel", "Cruelty", "Styx", "Kind"]:
             role = discord.utils.get(member.guild.roles, id=ALLIANCE_MAP[verified_guild])
             await member.remove_roles(
                 stranger_role,

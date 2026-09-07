@@ -349,4 +349,6 @@ ALLIANCE_MAP = {
     "Solaris": env_int("SOLARIS_ROLE"),
     "Cruel": env_int("CRUEL_ROLE"),
     "Cruelty": env_int("CRUEL_ROLE"),
+    "Styx": env_int("CRUEL_ROLE"),
+    "Kind": env_int("CRUEL_ROLE"),
 }
