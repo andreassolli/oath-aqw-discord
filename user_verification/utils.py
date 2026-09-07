@@ -157,16 +157,16 @@ async def change_roles(
             )
             return True
 
-        elif verified_guild in ["Ravens", "Vanaheim", "Stormforged", "Solaris"]:
+        elif verified_guild in ["Ravens", "Vanaheim", "Stormforged", "Solaris", "Cruel", "Cruelty"]:
             role = discord.utils.get(member.guild.roles, id=ALLIANCE_MAP[verified_guild])
             await member.remove_roles(
                 stranger_role,
-                reason="User verified in Vox",
+                reason=f"User verified in {verified_guild}",
             )
             await member.add_roles(
                 unsworn_role,
                 role,
-                reason="User verified in Vox",
+                reason=f"User verified in {verified_guild}",
             )
             return True
 

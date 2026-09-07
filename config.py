@@ -347,4 +347,6 @@ ALLIANCE_MAP = {
     "Vanaheim": env_int("VANAHEIM_ROLE"),
     "Stormforged": env_int("STORMFORGED_ROLE"),
     "Solaris": env_int("SOLARIS_ROLE"),
+    "Cruel": env_int("CRUEL_ROLE"),
+    "Cruelty": env_int("CRUEL_ROLE"),
 }
