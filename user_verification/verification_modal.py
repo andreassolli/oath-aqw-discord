@@ -123,6 +123,27 @@ class VerificationModal(discord.ui.Modal):
                 f"✅ **Verification complete**\nAQW Username: **{self.username.value}**\nGuild: **{user.get('guild', 'None')}**",
                 ephemeral=True,
             )
+            # Delete any messages in this channel that mention the verifying user
+            verify_channel = interaction.channel
+            if isinstance(verify_channel, discord.TextChannel):
+                try:
+                    await verify_channel.purge(
+                        check=lambda m: member is not None and member in m.mentions,
+                    )
+                except discord.Forbidden:
+                    if isinstance(log_channel, discord.TextChannel):
+                        await log_channel.send(
+                            f"⚠️ Missing permissions to purge mention messages for "
+                            f"{member.mention if member else user_id} in {verify_channel.mention}."
+                        )
+                except discord.HTTPException as e:
+                    if isinstance(log_channel, discord.TextChannel):
+                        await log_channel.send(
+                            f"⚠️ Failed to purge mention messages for "
+                            f"{member.mention if member else user_id} in {verify_channel.mention}: {e}"
+                        )
+
+
 
         elif self.action == "join":
             guild_obj = interaction.guild
@@ -263,3 +284,23 @@ class VerificationModal(discord.ui.Modal):
             await channel.send(
                 f"Hi {interaction.user.mention} <:GoobHeart:1459836996381048863>\nLet an officer know if you are online or not, and if so what server!",
             )
+
+            # Delete any messages in this channel that mention the verifying user
+            verify_channel = interaction.channel
+            if isinstance(verify_channel, discord.TextChannel):
+                try:
+                    await verify_channel.purge(
+                        check=lambda m: member is not None and member in m.mentions,
+                    )
+                except discord.Forbidden:
+                    if isinstance(log_channel, discord.TextChannel):
+                        await log_channel.send(
+                            f"⚠️ Missing permissions to purge mention messages for "
+                            f"{member.mention if member else user_id} in {verify_channel.mention}."
+                        )
+                except discord.HTTPException as e:
+                    if isinstance(log_channel, discord.TextChannel):
+                        await log_channel.send(
+                            f"⚠️ Failed to purge mention messages for "
+                            f"{member.mention if member else user_id} in {verify_channel.mention}: {e}"
+                        )
