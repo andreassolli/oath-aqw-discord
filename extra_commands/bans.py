@@ -12,7 +12,13 @@ BANS_COLLECTION = "bans"
 
 def get_all_bans() -> List[Dict[str, Any]]:
     docs = db.collection(BANS_COLLECTION).stream()
-    return [{"username": doc.id, **(doc.to_dict() or {})} for doc in docs]
+    bans = [{"username": doc.id, **(doc.to_dict() or {})} for doc in docs]
+
+    bans.sort(
+        key=lambda b: b.get("banned_at") or datetime.min,
+        reverse=True,
+    )
+    return bans
 
 
 async def is_user_banned(username: str):
