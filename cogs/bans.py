@@ -6,7 +6,7 @@ from discord.ext import commands
 
 from config import OATHSWORN_ROLE_ID, TICKET_LOG_CHANNEL_ID
 from extra_commands import ban_embed
-from extra_commands.ban_embed import BanListPaginator, build_ban_list_embed, build_ban_list_embeds
+from extra_commands.ban_embed import BanListPaginator, build_ban_list_embeds
 from extra_commands.bans import add_ban, get_all_bans, is_user_banned, remove_ban
 from extra_commands.log_ban_embed import build_ban_log_embed
 from extra_commands.utils import is_ban_channel
