@@ -225,7 +225,7 @@ async def check_missing_badges(user: discord.Member) -> discord.Embed:
 
 def is_ban_channel():
     async def predicate(interaction: discord.Interaction) -> bool:
-        if interaction.channel_id != BANNED_LIST_CHANNEL_ID:
+        if interaction.channel_id != OFFICER_CHANNEL_ID:
             await interaction.response.send_message(
                 "❌ This command can only be used in the designated moderation channel.",
                 ephemeral=True,

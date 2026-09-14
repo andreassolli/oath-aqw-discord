@@ -6,7 +6,7 @@ from discord.ext import commands
 
 from config import OATHSWORN_ROLE_ID, TICKET_LOG_CHANNEL_ID
 from extra_commands import ban_embed
-from extra_commands.ban_embed import build_ban_list_embed
+from extra_commands.ban_embed import BanListPaginator, build_ban_list_embed, build_ban_list_embeds
 from extra_commands.bans import add_ban, get_all_bans, is_user_banned, remove_ban
 from extra_commands.log_ban_embed import build_ban_log_embed
 from extra_commands.utils import is_ban_channel
@@ -60,9 +60,11 @@ class Bans(commands.Cog):
     async def banlist(self, interaction: discord.Interaction):
 
         bans = get_all_bans()
-        embed = build_ban_list_embed(bans)
+        embeds = build_ban_list_embeds(bans, per_page=10)
 
-        await interaction.response.send_message(embed=embed)
+        view = BanListPaginator(embeds, author_id=interaction.user.id)
+        await interaction.response.send_message(embed=embeds[0], view=view)
+        view.message = await interaction.original_response()
 
     @app_commands.command(name="ban", description="Add a user to the ban list")
     @app_commands.describe(username="User to ban", reason="Reason for the ban")
