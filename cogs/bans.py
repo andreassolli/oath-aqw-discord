@@ -46,7 +46,7 @@ class Bans(commands.Cog):
                 f"- **{user['username']}** is banned for: {user['reason']}" for user in users
             )
             await interaction.response.send_message(
-                f"⚠️ {users_str}",
+                f"⚠️ User is banned. \n{users_str}",
                 ephemeral=True,
             )
         else:
