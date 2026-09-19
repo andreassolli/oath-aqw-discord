@@ -40,12 +40,13 @@ class Bans(commands.Cog):
     @app_commands.describe(username="AQW username to check")
     @app_commands.checks.has_role(OATHSWORN_ROLE_ID)
     async def vet(self, interaction: discord.Interaction, username: str):
-        user = await is_user_banned(username)
-        user = user.to_dict() if user else None
-        if user:
-            ban_reason = user.get("reason")
+        users = await is_user_banned(username)
+        if users and len(users) > 0:
+            users_str = "\n".join(
+                f"- **{user['username']}** is banned for: {user['reason']}" for user in users
+            )
             await interaction.response.send_message(
-                f"⚠️ **{username}** is banned. Reason: {ban_reason}",
+                f"⚠️ {users_str}",
                 ephemeral=True,
             )
         else:

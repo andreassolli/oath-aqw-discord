@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 from urllib.parse import uses_relative
-
+from google.cloud.firestore_v1 import FieldFilter, Or
 from firebase_admin import firestore
 
 from firebase_client import db
@@ -23,17 +23,23 @@ def get_all_bans() -> List[Dict[str, Any]]:
 
 async def is_user_banned(username: str):
     user = await fetch_aqw_profile(username)
-    if not user:
+    ccid = user["ccid"] if user else "-1"
+
+    query = (
+        db.collection(BANS_COLLECTION)
+        .where(
+            filter=Or([
+                FieldFilter("ccid", "==", ccid),
+                FieldFilter("username", "==", username.lower()),
+            ])
+        )
+        .limit(5)
+    ).get()
+
+    if not query:
         return None
-    ccid = user["ccid"] if user["ccid"] else username.lower()
 
-    query = db.collection(BANS_COLLECTION).where("ccid", "==", ccid).limit(1).get()
-    docs = list(query)
-
-    if not docs:
-        return None
-
-    return docs[0]
+    return [doc.to_dict() for doc in query]
 
 
 # ➕ Add ban
