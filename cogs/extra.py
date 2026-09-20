@@ -380,7 +380,7 @@ class Extra(commands.Cog):
             if not member_certificate_roles:
                 continue
 
-            user_ref = self.db.collection("users").document(str(member.id))
+            user_ref = db.collection("users").document(str(member.id))
             user_doc = user_ref.get()
 
             if not user_doc.exists:
