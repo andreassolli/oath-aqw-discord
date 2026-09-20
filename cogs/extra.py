@@ -9,6 +9,7 @@ from discord.ext import commands
 from google.cloud import firestore
 from google.cloud import firestore as gc_firestore
 from google.cloud.firestore import ArrayUnion, Increment
+from firebase_client import db
 
 from config import (
     ADMIN_ROLE_ID,
