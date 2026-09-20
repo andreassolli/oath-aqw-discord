@@ -101,10 +101,10 @@ async def setup_application_panel(client: discord.Client):
     await color_msg.edit(view=colors)
     await social_msg.edit(view=social)
     await noti_msg.edit(view=notifications)
-    await cert_msg.edit(
-        embed=embed,
-        view=StartApplicationView(),
-    )
+    #await cert_msg.edit(
+    #    embed=embed,
+    #    view=StartApplicationView(),
+    #)
 
     # try:
     #    application_msg = await channel.fetch_message(1515795019372560424)

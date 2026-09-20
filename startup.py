@@ -9,7 +9,7 @@ from utils import unlock_all_coins
 async def run_startup_tasks(bot):
     await unlock_all_coins()
     await build_class_index()
-    await restore_tickets(bot)
-    await restore_join_tickets(bot)
+    #await restore_tickets(bot)
+    #await restore_join_tickets(bot)
 
     setup_tasks(bot)

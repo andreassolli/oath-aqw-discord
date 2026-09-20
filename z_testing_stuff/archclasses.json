@@ -1,0 +1,8 @@
+{
+  "cmd":"updateClass",
+  "uid":10923,
+  "sClassName":"SkyGuard Grenadier",
+  "sClassCat":"M1",
+  "iCP":302500,
+  "sDesc":"The Grenadiers are the toughest and most fearless soldiers that the Skyguard has to offer. They often lead assaults breaking through enemy lines with brute force and military weaponry.  ","aMRM":["Grenadier gain mana when they:\r","-Strike an enemy in combat (more effective on crits)\r","-Are struck by an enemy in combat"]
+}

@@ -1,0 +1,256 @@
+[
+  {
+    "t": "xt",
+    "b": {
+      "r": -1,
+      "o": {
+        "cmd": "updateClass",
+        "uid": 10923,
+        "sClassName": "SkyCharged Grenadier",
+        "sClassCat": "M1",
+        "iCP": 302500,
+        "sDesc": "Recommended enchantment: Fighter.This time you're the one yelling \"Bombs Away!\"",
+        "aMRM": [
+          "Evolved Grenadier gain mana when they:\r",
+          "-Strike an enemy in combat (more effective on crits)\r",
+          "-Are struck by an enemy in combat"
+        ]
+      }
+    }
+  },
+  {
+    "t": "xt",
+    "b": {
+      "r": -1,
+      "o": {
+        "cmd": "aura+p",
+        "tInf": "p:10923",
+        "auras": [
+          {
+            "nam": "Adrenaline Rush",
+            "e": [
+              {
+                "id": 2,
+                "typ": "+",
+                "sta": "tha",
+                "val": 0.1
+              }
+            ]
+          },
+          {
+            "nam": "Battle Horn",
+            "e": [
+              {
+                "id": 803,
+                "typ": "+",
+                "sta": "cao",
+                "val": 0.1
+              }
+            ]
+          },
+          {
+            "nam": "Sniper Sight",
+            "e": [
+              {
+                "id": 27,
+                "typ": "+",
+                "sta": "thi",
+                "val": 0.3
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  {
+    "t": "xt",
+    "b": {
+      "r": -1,
+      "o": {
+        "cmd": "sAct",
+        "actions": {
+          "active": [
+            {
+              "id": 1540,
+              "nam": "Bombard",
+              "typ": "aa",
+              "ref": "aa",
+              "desc": "Fire a powerful, long ranged explosive round. Deals 133% weapon damage and applies Scorched to your target, which deals a small amount of damage and lasts 3 seconds. At rank 10 you also Conduct your opponent, which grants additional effects to the rest of your skills.",
+              "tgt": "h",
+              "fx": "m",
+              "damage": 1.33,
+              "dsrc": "AP2",
+              "range": 808,
+              "mp": 0,
+              "cd": 2750,
+              "anim": "Cast1",
+              "icon": "ime2",
+              "auras": [
+                {},
+                {}
+              ],
+              "auto": true,
+              "hasPassives": true,
+              "isOK": true
+            },
+            {
+              "id": 1541,
+              "nam": "Plasma Bomb",
+              "typ": "p",
+              "ref": "a1",
+              "desc": "Deals moderate damage and applies Shocked which reduces enemy haste and dodge chance by 20% for 15 seconds. If the target is Conducted, it is consumed and they become Depolarized, which increases their incoming physical damage by 20% for 10 seconds.",
+              "tgt": "h",
+              "fx": "p",
+              "strl": "sp_ninja4",
+              "damage": 0.75,
+              "dsrc": "AP2",
+              "range": 808,
+              "mp": 30,
+              "cd": 3000,
+              "anim": "Cast3",
+              "icon": "imr1,iee2",
+              "auras": [
+                {},
+                {}
+              ],
+              "isOK": true
+            },
+            {
+              "id": 1542,
+              "nam": "Sonic Grenade",
+              "typ": "p",
+              "ref": "a2",
+              "desc": "Deals moderate damage and applies Deafened which reduces enemy hit and crit chance by 20% for 15 seconds. Also has a 25% chance to stun for 4 seconds. If the target is Conducted, it is consumed and they become Electrocuted, which increases their incoming damage by 20% for 10 seconds.",
+              "tgt": "h",
+              "fx": "w",
+              "strl": "sp_sun",
+              "damage": 1,
+              "dsrc": "AP2",
+              "range": 808,
+              "mp": 30,
+              "cd": 3000,
+              "anim": "Psychic2",
+              "icon": "iee2,vamplorda2",
+              "auras": [
+                {},
+                {},
+                {}
+              ],
+              "isOK": true
+            },
+            {
+              "id": 1543,
+              "nam": "Recharge",
+              "typ": "p",
+              "ref": "a3",
+              "desc": "Recharge your weapon to recover all of your mana. Recharging prevents you from using skills for 3 seconds. ",
+              "tgt": "s",
+              "fx": "m",
+              "dsrc": "AP2",
+              "range": 3000,
+              "mp": -200,
+              "cd": 3000,
+              "anim": "Powerup",
+              "icon": "iee2,iwgun",
+              "auras": [
+                {}
+              ],
+              "isOK": true
+            },
+            {
+              "id": 1546,
+              "nam": "Signal Flare",
+              "typ": "p",
+              "ref": "a4",
+              "desc": "Deals high damage, plus gives you additional effects if your target is Shocked or Deafened. If Shocked, you Rally, which heals you over time. If Deafened, you Advance, which increases your Crit Chance and Crit damage by 100%. All effects last 16 seconds. If the target is Conducted, it is consumed and they receive Arc Burn for 6 seconds, a very strong DoT. Deals more damage if the target is Scorched.",
+              "tgt": "h",
+              "fx": "m",
+              "damage": 2.75,
+              "dsrc": "Pyro1",
+              "range": 808,
+              "mp": 40,
+              "cd": 10000,
+              "anim": "Throw",
+              "icon": "ief2,imsh1",
+              "auras": [
+                {},
+                {},
+                {}
+              ],
+              "DmgFct": 2,
+              "auraName": "Scorched",
+              "forceResult": "crit",
+              "isOK": true
+            },
+            {
+              "nam": "Potions",
+              "ref": "i1",
+              "desc": "Equip a potion or scroll from your inventory to use it here.",
+              "typ": "i",
+              "fx": "",
+              "strl": "",
+              "tgt": "f",
+              "range": 808,
+              "mp": 0,
+              "cd": 60000,
+              "anim": "Cheer",
+              "icon": "icu1",
+              "isOK": true
+            }
+          ],
+          "passive": [
+            {
+              "id": 1544,
+              "nam": "Thunderflash",
+              "typ": "passive",
+              "ref": "p1",
+              "desc": "Increase Haste by 10%",
+              "tgt": "s",
+              "fx": "m",
+              "range": 301,
+              "icon": "isp2",
+              "auras": [
+                {}
+              ],
+              "cd": 60000,
+              "isOK": true
+            },
+            {
+              "id": 1545,
+              "nam": "Battle Horn",
+              "typ": "passive",
+              "ref": "p2",
+              "desc": "Outgoing damage increased by 10%.",
+              "tgt": "s",
+              "fx": "m",
+              "range": 301,
+              "icon": "isp2",
+              "auras": [
+                {}
+              ],
+              "cd": 60000,
+              "isOK": true
+            },
+            {
+              "id": 1547,
+              "nam": "Perfect Aim",
+              "typ": "passive",
+              "ref": "p3",
+              "desc": "Hit chance +30%",
+              "tgt": "s",
+              "fx": "m",
+              "range": 301,
+              "icon": "isp2",
+              "auras": [
+                {}
+              ],
+              "cd": 60000,
+              "isOK": true
+            }
+          ]
+        }
+      }
+    }
+  }
+]
