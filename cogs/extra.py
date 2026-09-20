@@ -49,6 +49,7 @@ from extra_commands.utils import (
     send_winner_embed,
 )
 from firebase_client import db
+from inventory.utils import add_item
 from panels.spam_cache import SPAM_PANEL_CACHE
 from panels.spam_view import SpamCreateView
 from panels.staff_panel import (
@@ -83,7 +84,6 @@ STATUS_TO_EMOJI = {
     "Passed Trial": "✅",
     "Approved": "✅",
 }
-
 
 class Extra(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -352,388 +352,73 @@ class Extra(commands.Cog):
             file=file,
         )
 
-    @app_commands.command(
-        name="update-application",
-        description="Update the application status for a user.",
-    )
-    @app_commands.checks.has_role(TICKET_INSPECTOR_ROLE_ID)
-    async def update_application(
-        self,
-        interaction: discord.Interaction,
-        user: discord.Member,
-        certificate: Literal[
-            "Champion Drakath",
-            "Ultra Dage",
-            "Ultra Drago",
-            "Ultra Darkon",
-            "Ultra Speaker",
-            "Ultra Gramiel",
-            "Ultra Nulgath",
-        ],
-        status: Literal["Awaiting Trial", "Rejected"],
-        extra_message: str = "",
-    ):
-        await interaction.response.defer()
-        app_type = certificate.split(" ")[1].lower()
-        db.collection("users").document(str(user.id)).update(
-            {
-                f"application_statuses.{app_type}": status,
-            },
-        )
-        try:
-            extra_message = f"\n {extra_message}" if extra_message else ""
-            dm = await user.create_dm()
-            await dm.send(
-                f"🔔 The status for your {certificate} application has been updated to {STATUS_TO_EMOJI[status]} {status}{extra_message}."
-            )
-        except discord.Forbidden:
-            helper_channel = interaction.guild.get_channel(HELPER_CHANNEL_ID)
-            if helper_channel:
-                await helper_channel.send(
-                    f"{user.mention}, we tried reaching out to you through DMs, but were unable to send you a message.\n🔔 The status for your {certificate} application has been updated to {STATUS_TO_EMOJI[status]} {status}{extra_message}."
-                )
 
-        await interaction.followup.send(
-            f"Updated {user.mention}'s {certificate} application status to {STATUS_TO_EMOJI[status]} {status}{extra_message}",
-            ephemeral=True,
-        )
+
 
     @app_commands.command(
-        name="promote-helper",
-        description="Award a certificate for specified boss.",
+        name="sync-certificates",
+        description="Sync certificates for all users based on their Discord roles.",
     )
     @app_commands.checks.has_role(TICKET_INSPECTOR_ROLE_ID)
-    async def add_role(
+    async def sync_certificates(
         self,
         interaction: discord.Interaction,
-        user: discord.Member,
-        certificate: Literal[
-            "Champion Drakath",
-            "Ultra Dage",
-            "Ultra Drago",
-            "Ultra Darkon",
-            "Ultra Speaker",
-            "Ultra Gramiel",
-            "Ultra Nulgath",
-        ],
-        reason: Literal[
-            "Passed Trial",
-            "Questions + Experience",
-            "Experience only",
-            "Questions Only",
-        ],
-        extra_message: str = "",
     ):
         await interaction.response.defer(ephemeral=True)
 
-        role = interaction.guild.get_role(BOSS_TO_CERTIFICATE[certificate])
-        if not role:
-            return await interaction.followup.send(
-                "❌ Role not found.",
-                ephemeral=True,
-            )
+        updated = 0
+        skipped = 0
 
-        if role in user.roles:
-            return await interaction.followup.send(
-                f"⚠️ {user.mention} already has {role.mention}.",
-                ephemeral=True,
-            )
+        for member in interaction.guild.members:
+            member_certificate_roles = [
+                certificate
+                for certificate, role_id in BOSS_TO_CERTIFICATE.items()
+                if any(role.id == role_id for role in member.roles)
+            ]
 
-        if role >= interaction.guild.me.top_role:
-            return await interaction.followup.send(
-                "❌ I can't manage that role (it's higher than me).",
-                ephemeral=True,
-            )
-
-        try:
-            await user.add_roles(role)
-        except discord.Forbidden:
-            return await interaction.followup.send(
-                "❌ Missing permissions to add role.",
-                ephemeral=True,
-            )
-
-        user_ref = db.collection("users").document(str(user.id))
-        user_doc = user_ref.get()
-        user_data = user_doc.to_dict() or {}
-        app_type = certificate.split(" ")[1].lower()
-        rewarded_certs = user_data.get("certificates_rewarded", [])
-        extra_message = f"\n {extra_message}" if extra_message else ""
-        if certificate not in rewarded_certs:
-            coins_to_add = (
-                3750 if certificate in ["Ultra Speaker", "Ultra Gramiel"] else 1950
-            )
-            coins_to_add = 2500 if certificate == "Ultra Darkon" else coins_to_add
-
-            update_data = {
-                "coins": firestore.Increment(coins_to_add),
-                "certificates_rewarded": ArrayUnion([certificate]),
-            }
-            db.collection("users").document(str(user.id)).update(
-                {
-                    f"application_statuses.{app_type}": "Approved",
-                },
-            )
-
-            user_ref.set(update_data, merge=True)
-
-            reward_text = f"\n💰 +{coins_to_add} coins awarded"
-        else:
-            reward_text = "\n⚠️ Reward already claimed for this certificate"
-
-        try:
-            dm = await user.create_dm()
-            await dm.send(
-                f"🔔 Your application has been approved, and you have been awarded {certificate} certificate.{reward_text}.{extra_message}"
-            )
-            await interaction.followup.send(
-                f"✅ Added {role.mention} to {user.mention}. {reward_text}{extra_message}\nMessage sent via DM.",
-                ephemeral=True,
-            )
-        except discord.Forbidden:
-            helper_channel = interaction.guild.get_channel(HELPER_CHANNEL_ID)
-            if helper_channel:
-                await helper_channel.send(
-                    f"{user.mention}, we tried reaching out to you through DMs, but were unable to send you a message.\n🫡 Your application has been approved and you have been awarded {certificate} certificate.{reward_text}{extra_message}"
-                )
-                await interaction.followup.send(
-                    f"✅ Added {role.mention} to {user.mention}. {reward_text}{extra_message}\nAnnounced in the helper channel.",
-                    ephemeral=True,
-                )
-
-        log_channel = interaction.guild.get_channel(TICKET_LOG_CHANNEL_ID)
-
-        if log_channel:
-            embed = discord.Embed(
-                title=f"🟢 Certificate Awarded ({certificate})",
-                color=discord.Color.green(),
-                timestamp=discord.utils.utcnow(),
-            )
-
-            embed.add_field(
-                name="User", value=f"{user.mention} ({user.display_name})", inline=True
-            )
-            embed.add_field(
-                name="Awarded By",
-                value=f"{interaction.user.mention} ({interaction.user.display_name})",
-                inline=True,
-            )
-            embed.add_field(name="Reason", value=reason, inline=False)
-
-            embed.set_footer(text=f"User ID: {user.id}")
-
-            await log_channel.send(embed=embed)
-
-    @app_commands.command(
-        name="demote-helper",
-        description="Strip a helper of a certificate.",
-    )
-    @app_commands.checks.has_role(TICKET_INSPECTOR_ROLE_ID)
-    async def remove_role(
-        self,
-        interaction: discord.Interaction,
-        user: discord.Member,
-        certificate: Literal[
-            "Champion Drakath",
-            "Ultra Dage",
-            "Ultra Drago",
-            "Ultra Darkon",
-            "Ultra Speaker",
-            "Ultra Gramiel",
-            "Ultra Nulgath",
-        ],
-        reason: str,
-        announce: bool = False,
-    ):
-        await interaction.response.defer(ephemeral=True)
-
-        role = interaction.guild.get_role(BOSS_TO_CERTIFICATE[certificate])
-        if not role:
-            return await interaction.followup.send(
-                "❌ Role not found.",
-                ephemeral=True,
-            )
-
-        if role not in user.roles:
-            return await interaction.followup.send(
-                f"⚠️ {user.mention} does not have {role.mention}.",
-                ephemeral=True,
-            )
-
-        if role >= interaction.guild.me.top_role:
-            return await interaction.followup.send(
-                "❌ I can't manage that role.",
-                ephemeral=True,
-            )
-
-        try:
-            await user.remove_roles(role)
-        except discord.Forbidden:
-            return await interaction.followup.send(
-                "❌ Missing permissions to remove role.",
-                ephemeral=True,
-            )
-
-        app_type = certificate.split(" ")[1].lower()
-        db.collection("users").document(str(user.id)).update(
-            {
-                f"application_statuses.{app_type}": "Revoked",
-            },
-        )
-        if announce:
-            try:
-                dm = await user.create_dm()
-                await dm.send(f"❌ Your {certificate} has been revoked.")
-                await interaction.followup.send(
-                    f"✅ Removed {role.mention} from {user.mention}.\nDM sent.",
-                    ephemeral=True,
-                )
-            except discord.Forbidden:
-                helper_channel = interaction.guild.get_channel(HELPER_CHANNEL_ID)
-                if helper_channel:
-                    await helper_channel.send(
-                        f"{user.mention}, we tried reaching out to you through DMs, but were unable to send you a message.\n❌ Your {certificate} has been revoked."
-                    )
-                    await interaction.followup.send(
-                        f"✅ Removed {role.mention} from {user.mention}.\nMentioned in the helper channel.",
-                        ephemeral=True,
-                    )
-        else:
-            await interaction.followup.send(
-                f"✅ Removed {role.mention} from {user.mention}.\nNo announcement made.",
-                ephemeral=True,
-            )
-        log_channel = interaction.guild.get_channel(TICKET_LOG_CHANNEL_ID)
-        if log_channel:
-            embed = discord.Embed(
-                title=f"🔴 {certificate} Removed",
-                color=discord.Color.red(),
-                timestamp=discord.utils.utcnow(),
-            )
-
-            embed.add_field(
-                name="User", value=f"{user.mention} ({user.display_name})", inline=True
-            )
-            embed.add_field(
-                name="Removed By",
-                value=f"{interaction.user.mention} ({interaction.user.display_name})",
-                inline=True,
-            )
-            embed.add_field(name="Reason", value=reason, inline=False)
-
-            embed.set_footer(text=f"User ID: {user.id}")
-
-            await log_channel.send(embed=embed)
-
-    @app_commands.command(
-        name="view-applications", description="View your application statuses"
-    )
-    async def view_applications(self, interaction: discord.Interaction):
-        await interaction.response.defer(ephemeral=True)
-
-        user = interaction.user
-
-        doc = db.collection("users").document(str(user.id)).get()
-        data = doc.to_dict() or {}
-
-        statuses = data.get("application_statuses", {})
-
-        if not statuses:
-            return await interaction.followup.send(
-                "📭 You have no applications.",
-                ephemeral=True,
-            )
-
-        lines = []
-        for app_type, status in statuses.items():
-            lines.append(f"**{app_type.title()}** — {STATUS_TO_EMOJI[status]} {status}")
-
-        await interaction.followup.send(
-            "📋 **Your Applications:**\n\n" + "\n".join(lines),
-            ephemeral=True,
-        )
-
-    @app_commands.command(
-        name="pending-applications",
-        description="List all users with pending applications",
-    )
-    @app_commands.checks.has_role(TICKET_INSPECTOR_ROLE_ID)
-    async def pending_applications(
-        self,
-        interaction: discord.Interaction,
-        filter: Literal["Under review", "Awaiting Trial", "All"] = "All",
-    ):
-        await interaction.response.defer(ephemeral=True)
-
-        if interaction.channel_id != TICKET_INSPECTORS_CHANNEL_ID:
-            return await interaction.followup.send(
-                "❌ This command can only be used in the Certifications channel.",
-                ephemeral=True,
-            )
-
-        target_statuses = (
-            {"Awaiting Trial", "Under review"}
-            if filter == "All"
-            else {filter}
-        )
-
-        results = []
-
-        for doc in db.collection("users").stream():
-            data = doc.to_dict() or {}
-            statuses = data.get("application_statuses", {})
-
-            if not isinstance(statuses, dict):
+            if not member_certificate_roles:
                 continue
 
-            for app_type, status in statuses.items():
-                if status in target_statuses:
-                    results.append((doc.id, app_type, status))
+            user_ref = self.db.collection("users").document(str(member.id))
+            user_doc = user_ref.get()
 
-        if not results:
-            return await interaction.followup.send(
-                "✅ No pending applications found.",
-                ephemeral=True,
-            )
+            if not user_doc.exists:
+                skipped += 1
+                continue
 
-        results.sort(key=lambda x: (x[1].lower(), x[2]))
+            user_data = user_doc.to_dict() or {}
+            existing_certificates = user_data.get("certificates", [])
 
-        # Build all result lines
-        lines = []
+            # Only the certificates this member doesn't already have on file
+            newly_added = [
+                certificate
+                for certificate in member_certificate_roles
+                if certificate not in existing_certificates
+            ]
 
-        for uid, app_type, status in results:
-            try:
-                member = interaction.guild.get_member(int(uid))
-            except ValueError:
-                member = None
+            if not newly_added:
+                continue
 
-            name = member.display_name if member else f"<@{uid}>"
+            user_ref.update({
+                "certificates": firestore.ArrayUnion(newly_added)
+            })
+            updated += 1
 
-            lines.append(
-                f"• {name} — **{app_type}** "
-                f"({STATUS_TO_EMOJI[status]} {status})"
-            )
-
-        # 25 results per page
-        page_size = 25
-        pages = []
-
-        total_pages = (len(lines) + page_size - 1) // page_size
-
-        for i in range(0, len(lines), page_size):
-            page_lines = lines[i:i + page_size]
-            page_number = (i // page_size) + 1
-
-            pages.append(
-                f"📋 **Pending Applications** — Page {page_number}/{total_pages}\n\n"
-                + "\n".join(page_lines)
-            )
-
-        view = PendingApplicationsView(pages)
+            for certificate in newly_added:
+                boss_short = certificate.split(" ")[1].lower()
+                await add_item(
+                    str(member.id),
+                    f"{boss_short} Cert",
+                    "claim",
+                    f"{boss_short}_item.png",
+                    f"{boss_short}.png",
+                    "epic",
+                )
 
         await interaction.followup.send(
-            content=pages[0],
-            view=view,
+            f"Certificate sync complete.\n"
+            f"Updated: **{updated}** users\n"
+            f"Skipped: **{skipped}** users",
             ephemeral=True,
         )
 

@@ -22,7 +22,7 @@ class VerificationButtonView(discord.ui.View):
                 )
 
             await interaction.response.send_message(
-                "Your account was recently created. You cannot verify at this momeny.",
+                "Your account was recently created. You cannot verify at this until it is 10 days old.\nContact an admin to get verified.",
                 ephemeral=True,
             )
             return
