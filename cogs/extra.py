@@ -50,7 +50,7 @@ from extra_commands.utils import (
     send_winner_embed,
 )
 from firebase_client import db
-from inventory.utils import add_item
+from inventory.utils import add_item, build_corrections
 from panels.spam_cache import SPAM_PANEL_CACHE
 from panels.spam_view import SpamCreateView
 from panels.staff_panel import (
@@ -407,12 +407,13 @@ class Extra(commands.Cog):
 
             for certificate in newly_added:
                 boss_short = certificate.split(" ")[1].lower()
+                capitalized_first = boss_short[0].upper() + boss_short[1:]
                 await add_item(
                     str(member.id),
-                    f"{boss_short} Cert",
+                    f"{capitalized_first} Cert",
                     "claim",
+                    f"{boss_short}claim.png",
                     f"{boss_short}_item.png",
-                    f"{boss_short}.png",
                     "epic",
                 )
 
@@ -420,6 +421,58 @@ class Extra(commands.Cog):
             f"Certificate sync complete.\n"
             f"Updated: **{updated}** users\n"
             f"Skipped: **{skipped}** users",
+            ephemeral=True,
+        )
+
+
+    @app_commands.command(
+        name="fix-certificate-items",
+        description="One-time fix: corrects wrongly-added certificate items in everyone's inventory.",
+    )
+    @app_commands.checks.has_role(TICKET_INSPECTOR_ROLE_ID)
+    async def fix_certificate_items(
+        self,
+        interaction: discord.Interaction,
+    ):
+        await interaction.response.defer(ephemeral=True)
+
+        corrections = build_corrections()
+
+        fixed_users = 0
+        fixed_items = 0
+        scanned = 0
+
+        users = db.collection("users").stream()
+
+        for doc in users:
+            scanned += 1
+            data = doc.to_dict() or {}
+            inventory = data.get("inventory", [])
+
+            if not inventory:
+                continue
+
+            by_id = {}
+            changed = False
+
+            for item in inventory:
+                old_id = item.get("id")
+                if old_id in corrections:
+                    corrected = corrections[old_id]
+                    by_id[corrected["id"]] = corrected  # collapses dupes onto the correct id
+                    changed = True
+                    fixed_items += 1
+                else:
+                    by_id[old_id] = item
+
+            if changed:
+                doc.reference.update({"inventory": list(by_id.values())})
+                fixed_users += 1
+
+        await interaction.followup.send(
+            f"Certificate item fix complete.\n"
+            f"Scanned: **{scanned}** users\n"
+            f"Fixed: **{fixed_items}** items across **{fixed_users}** users",
             ephemeral=True,
         )
 

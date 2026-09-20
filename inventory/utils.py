@@ -1,7 +1,32 @@
 from google.cloud.firestore import ArrayUnion
-
+from config import DRAKATH_CERTIFICATE_ID, DAGE_CERTIFICATE_ID, DRAGO_CERTIFICATE_ID, DARKON_CERTIFICATE_ID,SPEAKER_CERTIFICATE_ID,GRAMIEL_CERTIFICATE_ID,NULGATH_CERTIFICATE_ID
 from firebase_client import db
+BOSS_TO_CERTIFICATE = {
+    "Champion Drakath": DRAKATH_CERTIFICATE_ID,
+    "Ultra Dage": DAGE_CERTIFICATE_ID,
+    "Ultra Drago": DRAGO_CERTIFICATE_ID,
+    "Ultra Darkon": DARKON_CERTIFICATE_ID,
+    "Ultra Speaker": SPEAKER_CERTIFICATE_ID,
+    "Ultra Gramiel": GRAMIEL_CERTIFICATE_ID,
+    "Ultra Nulgath": NULGATH_CERTIFICATE_ID,
+}
+def build_corrections() -> dict:
+    """Maps the old (wrong) item id -> the corrected item dict, for every
+    certificate boss."""
+    corrections = {}
+    for certificate in BOSS_TO_CERTIFICATE:
+        boss_short = certificate.split(" ")[1].lower()
+        capitalized_first = boss_short[0].upper() + boss_short[1:]
 
+        old_id = f"{boss_short} Cert"  # what add_item was mistakenly called with
+        corrections[old_id] = {
+            "id": f"{capitalized_first} Cert",
+            "type": "claim",
+            "image": f"{boss_short}claim.png",
+            "display": f"{boss_short}_item.png",
+            "rarity": "epic",
+        }
+    return corrections
 
 async def get_inventory(user_id: str):
     doc_ref = db.collection("users").document(user_id).get()
