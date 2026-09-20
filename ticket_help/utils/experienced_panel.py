@@ -93,7 +93,7 @@ async def setup_application_panel(client: discord.Client):
     color_msg = await channel.fetch_message(1516881734183026810)
     social_msg = await channel.fetch_message(1516881736359874631)
     noti_msg = await channel.fetch_message(1516881738188460153)
-    cert_msg = await channel.fetch_message(1516881740457840760)
+    #cert_msg = await channel.fetch_message(1516881740457840760)
     ascended_channel = client.get_channel(ASCENDED_ROLE_CHANNEL_ID)
     ascended_message = await ascended_channel.fetch_message(1537067058074751118)
     await ascended_message.edit(view=nitro)
